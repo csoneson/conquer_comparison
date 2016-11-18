@@ -17,17 +17,17 @@ config/%.json: scripts/generate_config_%.R
 subsets/%_subsets.rds: data/%.rds config/%.json scripts/generate_subsets.R
 	$R "--args config_file='config/$*.json'" scripts/generate_subsets.R Rout/generate_subsets_$*.Rout
 
-results/GSE45719_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/GSE45719_subsets.rds
-	$R "--args config_file='config/GSE45719.json' demethod='$*'" scripts/run_diffexpression.R Rout/run_diffexpression_GSE45719_$*.Rout
+#results/GSE45719_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/GSE45719_subsets.rds
+#	$R "--args config_file='config/GSE45719.json' demethod='$*'" scripts/run_diffexpression.R Rout/run_diffexpression_GSE45719_$*.Rout
 
-results/GSE41265_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/GSE41265_subsets.rds
-	$R "--args config_file='config/GSE41265.json' demethod='$*'" scripts/run_diffexpression.R Rout/run_diffexpression_GSE41265_$*.Rout
+#results/GSE41265_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/GSE41265_subsets.rds
+#	$R "--args config_file='config/GSE41265.json' demethod='$*'" scripts/run_diffexpression.R Rout/run_diffexpression_GSE41265_$*.Rout
 
 
-# define myrule
-# results/$(1)_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds
-# 	$R "--args config_file='config/$(1).json' demethod='$$($*)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$$($*).Rout
-# endef
-# 
-# $(foreach i,$(DS),$(eval $(call myrule,$(i))))
+define myrule
+results/$(1)_%.rds: scripts/apply_%.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds
+	$R "--args config_file='config/$(1).json' demethod='$$*'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$$*.Rout
+endef
+
+$(foreach i,$(DS),$(eval $(call myrule,$(i))))
 

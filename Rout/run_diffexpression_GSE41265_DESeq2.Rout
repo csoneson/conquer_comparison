@@ -118,4 +118,4 @@ low counts [2]   : 6448, 30%
 > 
 > proc.time()
    user  system elapsed 
- 54.636   1.929  57.895 
+ 56.055   2.116  58.471 
