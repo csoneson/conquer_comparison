@@ -25,9 +25,9 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > print(config_file)
-[1] "config/GSE45719.json"
+[1] "config/GSE41265.json"
 > print(demethod)
-[1] "Wilcoxon"
+[1] "DESeq2"
 > 
 > suppressPackageStartupMessages(library(rjson))
 > suppressPackageStartupMessages(library(reshape2))
@@ -46,29 +46,28 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(config)
 $mae
-[1] "data/GSE45719.rds"
+[1] "data/GSE41265.rds"
 
 $subfile
-[1] "subsets/GSE45719_subsets.rds"
+[1] "subsets/GSE41265_subsets.rds"
 
 $resfilebase
-[1] "results/GSE45719"
+[1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE45719"
+[1] "figures/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
 
 $keepgroups
-[1] "16-cell stage blastomere"                       
-[2] "Mid blastocyst cell (92-94h post-fertilization)"
+NULL
 
 $seed
 [1] 42
 
 $sizes
-[1] 12
+[1] 4
 
 $nreps
 [1] 1
@@ -94,12 +93,29 @@ $nreps
 +     dev.off()
 +   }
 + }
-12.1
-Wilcoxon
-There were 50 or more warnings (use warnings() to see the first 50)
+4.1
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 21672 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 772, 3.6% 
+LFC < 0 (down)   : 234, 1.1% 
+outliers [1]     : 5943, 27% 
+low counts [2]   : 6448, 30% 
+(mean count < 6)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
    user  system elapsed 
- 65.479   6.046  71.917 
+ 54.636   1.929  57.895 

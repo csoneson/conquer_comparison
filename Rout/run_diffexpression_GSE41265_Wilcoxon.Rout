@@ -25,7 +25,7 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > print(config_file)
-[1] "config/GSE45719.json"
+[1] "config/GSE41265.json"
 > print(demethod)
 [1] "Wilcoxon"
 > 
@@ -46,29 +46,28 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(config)
 $mae
-[1] "data/GSE45719.rds"
+[1] "data/GSE41265.rds"
 
 $subfile
-[1] "subsets/GSE45719_subsets.rds"
+[1] "subsets/GSE41265_subsets.rds"
 
 $resfilebase
-[1] "results/GSE45719"
+[1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE45719"
+[1] "figures/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
 
 $keepgroups
-[1] "16-cell stage blastomere"                       
-[2] "Mid blastocyst cell (92-94h post-fertilization)"
+NULL
 
 $seed
 [1] 42
 
 $sizes
-[1] 12
+[1] 4
 
 $nreps
 [1] 1
@@ -94,7 +93,7 @@ $nreps
 +     dev.off()
 +   }
 + }
-12.1
+4.1
 Wilcoxon
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
@@ -102,4 +101,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
- 65.479   6.046  71.917 
+ 44.902   2.420  47.457 

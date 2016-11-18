@@ -1,0 +1,158 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/GSE41265.json"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> suppressPackageStartupMessages(library(survey))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE41265.rds"
+
+$subfile
+[1] "subsets/GSE41265_subsets.rds"
+
+$resfilebase
+[1] "results/GSE41265"
+
+$figfilebase
+[1] "figures/GSE41265"
+
+$groupid
+[1] "source_name_ch1"
+
+$keepgroups
+NULL
+
+$seed
+[1] 42
+
+$sizes
+[1] 4
+
+$nreps
+[1] 1
+
+> 
+> mae <- readRDS(config$mae)
+> pdata <- Biobase::pData(mae)
+> 
+> groupid <- config$groupid
+> keepgroups <- config$keepgroups
+> sizes <- config$sizes
+> nreps <- config$nreps
+> 
+> if (length(groupid) > 1) {
++   pdata[, paste(groupid, collapse = ".")] <- 
++     as.character(interaction(as.data.frame(pdata[, groupid])))
++   groupid <- paste(groupid, collapse = ".")
++ }
+> 
+> ## Keep only two groups for now
+> if (is.null(keepgroups)) 
++   keepgroups <- levels(factor(pdata[, groupid]))[1:2]
+> keepsamples <- rownames(pdata[pdata[, groupid] %in% keepgroups, ])
+> pdata <- droplevels(pdata[match(keepsamples, rownames(pdata)), ])
+> 
+> condt <- as.character(pdata[, groupid])
+> names(condt) <- rownames(pdata)
+> 
+> ngroups <- nlevels(factor(condt))
+> message("Considering the following ", ngroups, " groups: ", 
++         paste(levels(factor(condt)), collapse = " vs "))
+Considering the following 1 groups: BMDC (4h LPS stim)
+> 
+> names(sizes) <- sizes
+> names(nreps) <- sizes
+> set.seed(config$seed)
+> keep_tmp <- lapply(sizes, function(sz) {
++   unique(t(sapply(1:nreps[as.character(sz)], function(i) {
++     if (length(unique(condt)) == 1) {
++       tmpn <- names(condt)
++       condt2 <- paste0(condt, ".", sample(rep(c("1", "2"), ceiling(length(condt)/2)))[1:length(condt)])
++       names(condt2) <- tmpn
++       ngroups <- 2
++     } else {
++       condt2 <- condt
++     }
++     smp <- names(condt2)[sort(stratsample(as.character(condt2), 
++                                           structure(rep(sz, ngroups), 
++                                                     names = levels(factor(condt2)))))]
++     cdt <- condt2[smp]
++     paste(smp, cdt, sep = "___")
++   })))
++ })
+> 
+> keep_samples <- lapply(keep_tmp, function(w) {
++   rbind(apply(w, 2, function(s) sapply(strsplit(s, "___"), .subset, 1)))})
+> out_condition <- lapply(keep_tmp, function(w) {
++   rbind(apply(w, 2, function(s) sapply(strsplit(s, "___"), .subset, 2)))})
+> 
+> saveRDS(list(keep_samples = keep_samples, out_condition = out_condition), 
++         file = config$subfile)
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] grid      stats4    parallel  stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] survey_3.31-2              survival_2.40-1           
+ [3] Matrix_1.2-7.1             MultiAssayExperiment_1.0.0
+ [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
+ [7] GenomeInfoDb_1.10.0        IRanges_2.8.0             
+ [9] S4Vectors_0.12.0           Biobase_2.34.0            
+[11] BiocGenerics_0.20.0        rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.7          XVector_0.14.0       splines_3.3.1       
+ [4] zlibbioc_1.20.0      xtable_1.8-2         lattice_0.20-34     
+ [7] R6_2.2.0             tools_3.3.1          shinydashboard_0.5.3
+[10] htmltools_0.3.5      digest_0.6.10        shiny_0.14.2        
+[13] mime_0.5             httpuv_1.3.3        
+> 
+> proc.time()
+   user  system elapsed 
+  7.566   0.448   8.009 
