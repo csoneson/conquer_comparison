@@ -89,7 +89,7 @@ $nreps
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-+     pdf(paste0(config$figfilebase, ".", demethod, ".", sz, ".", i, ".pdf"))
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
 +     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
 +     dev.off()
 +   }
@@ -120,8 +120,8 @@ low counts [2]   : 8484, 34%
 [2] see 'independentFiltering' argument of ?results
 
 > 
-> saveRDS(res, file = paste0(config$resfilebase, ".", demethod, ".rds"))
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
    user  system elapsed 
-161.704  38.798 204.002 
+136.546   5.139 142.027 

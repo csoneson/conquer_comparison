@@ -89,7 +89,7 @@ $nreps
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-+     pdf(paste0(config$figfilebase, ".", demethod, ".", sz, ".", i, ".pdf"))
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
 +     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
 +     dev.off()
 +   }
@@ -97,8 +97,8 @@ $nreps
 12.1
 edgeRLRT
 > 
-> saveRDS(res, file = paste0(config$resfilebase, ".", demethod, ".rds"))
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
    user  system elapsed 
- 48.427  12.637  61.445 
+ 40.311   3.339  43.792 

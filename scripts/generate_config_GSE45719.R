@@ -1,3 +1,5 @@
+suppressPackageStartupMessages(library(rjson))
+
 ## Generate configuration file
 L <- list(mae = "data/GSE45719.rds", 
           subfile = "subsets/GSE45719_subsets.rds",

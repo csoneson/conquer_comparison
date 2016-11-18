@@ -38,10 +38,10 @@ for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-    pdf(paste0(config$figfilebase, ".", demethod, ".", sz, ".", i, ".pdf"))
+    pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
     dev.off()
   }
 }
 
-saveRDS(res, file = paste0(config$resfilebase, ".", demethod, ".rds"))
+saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
