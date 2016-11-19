@@ -25,9 +25,9 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > print(config_file)
-[1] "config/GSE45719.json"
+[1] "config/GSE41265.json"
 > print(demethod)
-[1] "edgeRLRTrobust"
+[1] "edgeRLRTdeconv"
 > 
 > suppressPackageStartupMessages(library(rjson))
 > suppressPackageStartupMessages(library(reshape2))
@@ -46,29 +46,28 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(config)
 $mae
-[1] "data/GSE45719.rds"
+[1] "data/GSE41265.rds"
 
 $subfile
-[1] "subsets/GSE45719_subsets.rds"
+[1] "subsets/GSE41265_subsets.rds"
 
 $resfilebase
-[1] "results/GSE45719"
+[1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE45719"
+[1] "figures/diffexpression/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
 
 $keepgroups
-[1] "16-cell stage blastomere"                       
-[2] "Mid blastocyst cell (92-94h post-fertilization)"
+NULL
 
 $seed
 [1] 42
 
 $sizes
-[1] 12
+[1] 4
 
 $nreps
 [1] 1
@@ -89,15 +88,16 @@ $nreps
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-+     pdf(paste0(config$figfilebase, ".", demethod, ".", sz, ".", i, ".pdf"))
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
 +     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
 +     dev.off()
 +   }
 + }
-12.1
-edgeRLRTrobust
-Error in .compressOffsets(y, lib.size = lib.size, offset = offset) : 
-  offsets should be finite values
-Calls: <Anonymous> ... estimateGLMCommonDisp.default -> aveLogCPM -> aveLogCPM.default -> .compressOffsets
-Timing stopped at: 1.279 0.335 1.632 
-Execution halted
+4.1
+edgeRdeconv
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+   user  system elapsed 
+ 23.232   1.538  24.917 

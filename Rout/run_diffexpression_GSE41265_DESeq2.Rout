@@ -55,7 +55,7 @@ $resfilebase
 [1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE41265"
+[1] "figures/diffexpression/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
@@ -118,4 +118,4 @@ low counts [2]   : 6448, 30%
 > 
 > proc.time()
    user  system elapsed 
- 56.055   2.116  58.471 
+ 58.018   2.351  60.458 

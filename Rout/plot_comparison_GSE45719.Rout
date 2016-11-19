@@ -1,0 +1,176 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> demethods <- strsplit(demethods, ",")[[1]]
+> 
+> print(demethods)
+[1] "DESeq2"         "edgeRLRT"       "Wilcoxon"       "edgeRLRTdeconv"
+> print(dataset)
+[1] "GSE45719"
+> 
+> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_functions.R")
+> suppressPackageStartupMessages(library(iCOBRA))
+> 
+> cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
++           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
++           "#ff6d9b", "#017671", "cyan")
+> 
+> ## Create iCOBRA object
+> (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
++                     dataset, "_", demethods, ".rds"))
+[1] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_DESeq2.rds"        
+[2] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_edgeRLRT.rds"      
+[3] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_Wilcoxon.rds"      
+[4] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_edgeRLRTdeconv.rds"
+> file.exists(resfiles)
+[1] TRUE TRUE TRUE TRUE
+> cobra <- NULL
+> timings <- list()
+> for (rf in resfiles) {
++   rf <- readRDS(rf)
++   for (nm in names(rf)) {
++     print(names(rf[[nm]]))
++     timings[[nm]] <- rf[[nm]]$timing
++     df <- rf[[nm]]$df
++     if ("pval" %in% colnames(df)) {
++       cobra <- COBRAData(pval = setNames(data.frame(mt = df$pval,
++                                                     row.names = rownames(df)), nm),
++                          object_to_extend = cobra)
++     }
++     if ("padj" %in% colnames(df)) {
++       cobra <- COBRAData(padj = setNames(data.frame(mt = df$padj,
++                                                     row.names = rownames(df)), nm),
++                          object_to_extend = cobra)
++     }
++     if ("score" %in% colnames(df)) {
++       cobra <- COBRAData(score = setNames(data.frame(mt = df$score,
++                                                      row.names = rownames(df)), nm),
++                          object_to_extend = cobra)
++     }
++   }
++ }
+[1] "session_info" "timing"       "res"          "df"          
+26606 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+> 
+> print(timings)
+$DESeq2.12.1
+   user  system elapsed 
+120.466  21.207 142.141 
+
+$edgeRLRT.12.1
+   user  system elapsed 
+ 14.479   0.808  15.361 
+
+$Wilcoxon.12.1
+   user  system elapsed 
+ 36.036   0.445  36.560 
+
+$edgeRLRTdeconv.12.1
+   user  system elapsed 
+ 15.724   0.608  16.381 
+
+> save(timings, file = "timings.Rdata")
+> 
+> cobra <- calculate_adjp(cobra)
+> pdf(paste0("figures/comparison/", dataset, ".pdf"))
+> plot_results(cobra, colvec = cols)
+Warning messages:
+1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
+  too many colors supplied, only the first 4 will be used
+2: In min(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to min; returning Inf
+3: In max(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to max; returning -Inf
+4: In min(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to min; returning Inf
+5: In max(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to max; returning -Inf
+> plot_results_relativetruth(cobra, colvec = cols)
+> plot_timing(timings, colvec = cols)
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+> dev.off()
+null device 
+          1 
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] reshape2_1.4.2     iCOBRA_1.2.0       tidyr_0.6.0        dplyr_0.5.0       
+[5] ggrepel_0.6.3      ggplot2_2.1.0.9001 pheatmap_1.0.8    
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.7          RColorBrewer_1.1-2   plyr_1.8.4          
+ [4] shinyBS_0.61         bitops_1.0-6         tools_3.3.1         
+ [7] digest_0.6.10        tibble_1.2           gtable_0.2.0        
+[10] shiny_0.14.2         DBI_0.5-1            gridExtra_2.2.1     
+[13] stringr_1.1.0        UpSetR_1.3.0         htmlwidgets_0.7     
+[16] gtools_3.5.0         caTools_1.17.1       grid_3.3.1          
+[19] shinydashboard_0.5.3 DT_0.2               R6_2.2.0            
+[22] limma_3.30.2         gdata_2.17.0         ROCR_1.0-7          
+[25] magrittr_1.5         scales_0.4.0.9003    gplots_3.0.1        
+[28] htmltools_0.3.5      assertthat_0.1       mime_0.5            
+[31] xtable_1.8-2         colorspace_1.2-7     httpuv_1.3.3        
+[34] labeling_0.3         KernSmooth_2.23-15   stringi_1.1.2       
+[37] lazyeval_0.2.0       munsell_0.4.3       
+> 
+> proc.time()
+   user  system elapsed 
+ 12.087   0.396  12.629 

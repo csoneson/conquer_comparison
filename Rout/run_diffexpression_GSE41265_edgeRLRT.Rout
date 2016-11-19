@@ -55,7 +55,7 @@ $resfilebase
 [1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE41265"
+[1] "figures/diffexpression/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
@@ -100,4 +100,4 @@ edgeRLRT
 > 
 > proc.time()
    user  system elapsed 
- 21.692   1.479  23.234 
+ 19.836   0.831  20.739 

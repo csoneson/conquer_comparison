@@ -25,7 +25,7 @@ Setting LC_CTYPE failed, using "C"
 > L <- list(mae = "data/GSE41265.rds", 
 +           subfile = "subsets/GSE41265_subsets.rds",
 +           resfilebase = "results/GSE41265",
-+           figfilebase = "figures/GSE41265", 
++           figfilebase = "figures/diffexpression/GSE41265", 
 +           groupid = "source_name_ch1", 
 +           keepgroups = NULL, 
 +           seed = 42, 
@@ -38,4 +38,4 @@ Setting LC_CTYPE failed, using "C"
 > 
 > proc.time()
    user  system elapsed 
-  0.163   0.035   0.178 
+  0.179   0.034   0.188 

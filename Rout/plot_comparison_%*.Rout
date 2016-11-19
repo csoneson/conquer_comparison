@@ -23,20 +23,9 @@ Setting LC_CTYPE failed, using "C"
 > for (i in 1:length(args)) {
 +   eval(parse(text = args[[i]]))
 + }
-> 
-> print(config_file)
-[1] "config/GSE41265.json"
-> print(demethod)
-[1] ""
-> 
-> suppressPackageStartupMessages(library(rjson))
-> suppressPackageStartupMessages(library(reshape2))
-> suppressPackageStartupMessages(library(tximport))
-> suppressPackageStartupMessages(library(GEOquery))
-> suppressPackageStartupMessages(library(survey))
-> suppressPackageStartupMessages(library(dplyr))
-> suppressPackageStartupMessages(library(tidyr))
-> suppressPackageStartupMessages(library(Biobase))
-> suppressPackageStartupMessages(library(SummarizedExperiment))
-
+Error in parse(text = args[[i]]) : 
+  <text>:1:11: unexpected INCOMPLETE_STRING
+1: demethods='DESeq2
+              ^
+Calls: eval -> parse
 Execution halted

@@ -55,7 +55,7 @@ $resfilebase
 [1] "results/GSE41265"
 
 $figfilebase
-[1] "figures/GSE41265"
+[1] "figures/diffexpression/GSE41265"
 
 $groupid
 [1] "source_name_ch1"
@@ -101,4 +101,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
- 40.259   1.953  42.330 
+ 41.932   1.045  43.034 

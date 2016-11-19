@@ -55,7 +55,7 @@ $resfilebase
 [1] "results/GSE45719"
 
 $figfilebase
-[1] "figures/GSE45719"
+[1] "figures/diffexpression/GSE45719"
 
 $groupid
 [1] "source_name_ch1"
@@ -89,7 +89,7 @@ $nreps
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-+     pdf(paste0(config$figfilebase, ".", demethod, ".", sz, ".", i, ".pdf"))
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
 +     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
 +     dev.off()
 +   }
@@ -97,8 +97,8 @@ $nreps
 12.1
 edgeRdeconv
 > 
-> saveRDS(res, file = paste0(config$resfilebase, ".", demethod, ".rds"))
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
    user  system elapsed 
- 52.176   7.800  60.243 
+ 44.880  34.576  79.857 

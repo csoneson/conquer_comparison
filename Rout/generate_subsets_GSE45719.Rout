@@ -46,7 +46,7 @@ $resfilebase
 [1] "results/GSE45719"
 
 $figfilebase
-[1] "figures/GSE45719"
+[1] "figures/diffexpression/GSE45719"
 
 $groupid
 [1] "source_name_ch1"
@@ -156,4 +156,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 14.878   0.869  15.831 
+ 16.951   5.883  22.911 
