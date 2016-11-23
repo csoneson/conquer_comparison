@@ -2,10 +2,10 @@
 R = R_LIBS=/home/Shared/Rlib/release-3.4-lib/ /usr/local/R/R-3.3.1/bin/R CMD BATCH --no-restore --no-save
 
 ## Define the data sets to run the analysis for
-DS := GSE45719 GSE41265
+DS := GSE45719 
 
 ## Define the methods to apply
-MT := DESeq2 edgeRLRT Wilcoxon edgeRLRTdeconv
+MT := DESeq2 edgeRLRT Wilcoxon edgeRLRTdeconv BPSC edgeRLRTrobust edgeRQLF MASTcounts MASTcountsDetRate MASTtpm monocle NODES SAMseq SCDE
 comma := ,
 empty :=
 space := $(empty) $(empty)

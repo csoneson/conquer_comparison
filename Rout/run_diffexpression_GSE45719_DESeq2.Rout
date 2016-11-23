@@ -68,10 +68,10 @@ $seed
 [1] 42
 
 $sizes
-[1] 12
+[1] 50 30 24 12
 
 $nreps
-[1] 1
+[1] 1 3 3 3
 
 > 
 > mae <- readRDS(config$mae)
@@ -94,7 +94,7 @@ $nreps
 +     dev.off()
 +   }
 + }
-12.1
+50.1
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -102,26 +102,3 @@ estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
-fitting model and testing
--- replacing outliers and refitting for 7234 genes
--- DESeq argument 'minReplicatesForReplace' = 7 
--- original counts are preserved in counts(dds)
-estimating dispersions
-fitting model and testing
-
-out of 24932 with nonzero total read count
-adjusted p-value < 0.05
-LFC > 0 (up)     : 831, 3.3% 
-LFC < 0 (down)   : 1784, 7.2% 
-outliers [1]     : 0, 0% 
-low counts [2]   : 8484, 34% 
-(mean count < 1)
-[1] see 'cooksCutoff' argument of ?results
-[2] see 'independentFiltering' argument of ?results
-
-> 
-> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
-> 
-> proc.time()
-   user  system elapsed 
-150.807 129.797 281.693 

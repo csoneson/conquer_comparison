@@ -45,9 +45,6 @@ for (rf in resfiles) {
   }
 }
 
-print(timings)
-save(timings, file = "timings.Rdata")
-
 cobra <- calculate_adjp(cobra)
 pdf(paste0("figures/comparison/", dataset, ".pdf"))
 plot_results(cobra, colvec = cols)

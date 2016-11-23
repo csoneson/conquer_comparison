@@ -9,8 +9,6 @@ L <- list(mae = "data/GSE45719.rds",
           keepgroups = c("16-cell stage blastomere",
                          "Mid blastocyst cell (92-94h post-fertilization)"), 
           seed = 42, 
-          # sizes = c(50, 30, 24, 12), 
-          # nreps = c(1, 3, 3, 3),
-          sizes = c(12), 
-          nreps = c(1))
+          sizes = c(50, 30, 24, 12), 
+          nreps = c(1, 3, 3, 3))
 write(toJSON(L), file = "config/GSE45719.json")
