@@ -68,10 +68,10 @@ $seed
 [1] 42
 
 $sizes
-[1] 12
+[1] 50 30 24 12
 
 $nreps
-[1] 1
+[1] 1 3 3 3
 
 > 
 > mae <- readRDS(config$mae)
@@ -94,7 +94,25 @@ $nreps
 +     dev.off()
 +   }
 + }
+50.1
+Wilcoxon
+30.1
+Wilcoxon
+30.2
+Wilcoxon
+30.3
+Wilcoxon
+24.1
+Wilcoxon
+24.2
+Wilcoxon
+24.3
+Wilcoxon
 12.1
+Wilcoxon
+12.2
+Wilcoxon
+12.3
 Wilcoxon
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
@@ -102,4 +120,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
- 62.142  47.500 110.045 
+514.312  29.843 546.115 

@@ -5,6 +5,11 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(iCOBRA))
 suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(rjson))
+suppressPackageStartupMessages(library(Biobase))
+suppressPackageStartupMessages(library(SummarizedExperiment))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
 
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
@@ -95,6 +100,90 @@ plot_results_relativetruth <- function(cobra, colvec) {
   }
 }
 
+plot_results_characterization <- function(cobra, config, colvec) {
+  ## TODO: Add some measure of outliers/non-homogeneity/multimodality?
+  config <- fromJSON(file = config)
+  mae <- readRDS(config$mae)
+  groupid <- config$groupid
+  mae <- clean_mae(mae = mae, groupid = groupid)
+  
+  subsets <- readRDS(config$subfile)
+  keep_samples <- subsets$keep_samples
+  imposed_condition <- subsets$out_condition
+  
+  sizes <- names(keep_samples)
+  for (sz in sizes) {
+    for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
+      message(sz, ".", i)
+      L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
+      pvals <- pval(cobra)[, grep(paste0("\\.", sz, "\\.", i, "$"), colnames(pval(cobra)))]
+      pvals[is.na(pvals)] <- 1
+      padjs <- padj(cobra)[, grep(paste0("\\.", sz, "\\.", i, "$"), colnames(padj(cobra)))]
+      padjs[is.na(padjs)] <- 1
+      avecount <- data.frame(avecount = apply(L$count, 1, mean))
+      avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean))
+      fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
+                             fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
+                                               1, function(x) mean(x == 0)),
+                             fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
+                                               1, function(x) mean(x == 0)))
+      fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
+      vartpm <- data.frame(vartpm = apply(L$tpm, 1, var))
+      df <- merge(merge(merge(merge(melt(as.matrix(pvals)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
+                              avecount, by.x = "Var1", by.y = 0, all = TRUE),
+                        fraczero, by.x = "Var1", by.y = 0, all = TRUE),
+                  vartpm, by.x = "Var1", by.y = 0, all = TRUE)
+      df <- subset(df, rowSums(is.na(df)) == 0)
+      for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
+        print(ggplot(df, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
+                geom_smooth() + theme_bw())
+      }
+      df2 <- merge(merge(merge(merge(melt(as.matrix(padjs)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
+                              avecount, by.x = "Var1", by.y = 0, all = TRUE),
+                        fraczero, by.x = "Var1", by.y = 0, all = TRUE),
+                  vartpm, by.x = "Var1", by.y = 0, all = TRUE)
+      df2 <- subset(df2, rowSums(is.na(df2)) == 0)
+      df2$sign <- df2$value <= 0.05
+      for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
+        print(ggplot(df2, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
+                geom_smooth() + theme_bw())
+      }
+      for (y in c("avetpm", "avecount", "vartpm")) {
+        print(ggplot(df2, aes_string(x = "Var2", y = paste0("log2(", y, ")"), 
+                                     fill = "Var2", dodge = "sign", alpha = "sign")) + 
+                geom_boxplot() + theme_bw() + scale_fill_manual(values = colvec) + 
+                scale_alpha_manual(values = c(0.2, 0.8)) + 
+                theme(axis.text.x = element_text(angle = 90, hjust = 0.5)) + 
+                guides(alpha = guide_legend(override.aes = 
+                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                   colour = NA))))
+        print(ggplot(df2, aes_string(x = paste0("log2(", y, ")"), fill = "Var2", alpha = "sign")) + 
+                geom_density() + theme_bw() + scale_fill_manual(values = colvec) + 
+                scale_alpha_manual(values = c(0.2, 0.8)) + facet_wrap(~Var2) + 
+                guides(alpha = guide_legend(override.aes = 
+                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                   colour = NA))))
+      }
+      for (y in c("fraczero", "fraczerodiff")) {
+        print(ggplot(df2, aes_string(x = "Var2", y = y, fill = "Var2", dodge = "sign", alpha = "sign")) + 
+                geom_boxplot() + theme_bw() + scale_fill_manual(values = colvec) + 
+                scale_alpha_manual(values = c(0.2, 0.8)) + 
+                theme(axis.text.x = element_text(angle = 90, hjust = 0.5)) + 
+                guides(alpha = guide_legend(override.aes = 
+                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                   colour = NA))))
+        print(ggplot(df2, aes_string(x = y, fill = "Var2", alpha = "sign")) + 
+                geom_density() + theme_bw() + scale_fill_manual(values = colvec) + 
+                scale_alpha_manual(values = c(0.2, 0.8)) + facet_wrap(~Var2) + 
+                guides(alpha = guide_legend(override.aes = 
+                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                   colour = NA))))
+      }
+    }
+  }
+  
+}
+
 plot_results <- function(cobra, colvec) {
   cobraperf <- calculate_performance(cobra, aspects = "overlap", 
                                      type_venn = "adjp", thr_venn = 0.05)
@@ -131,9 +220,9 @@ plot_results <- function(cobra, colvec) {
   
   ## ---------------------- Spearman correlations --------------------------- ##
   tmpmt <- pval(cobra)
-  if (!(all(colnames(score(cobra)) %in% colnames(tmpmt)))) {
-    sdn <- setdiff(colnames(score(cobra)), colnames(tmpmt))
-    tmpmt <- merge(tmpmt, -score(cobra)[, sdn, drop = FALSE], by = 0, all = TRUE)
+  if (!(all(colnames(iCOBRA::score(cobra)) %in% colnames(tmpmt)))) {
+    sdn <- setdiff(colnames(iCOBRA::score(cobra)), colnames(tmpmt))
+    tmpmt <- merge(tmpmt, -iCOBRA::score(cobra)[, sdn, drop = FALSE], by = 0, all = TRUE)
     rownames(tmpmt) <- tmpmt$Row.names
     tmpmt$Row.names <- NULL
   }
@@ -148,6 +237,7 @@ plot_results <- function(cobra, colvec) {
   # }
   tmpmt <- as.matrix(tmpmt)
   spdist <- 1 - cor(tmpmt, use = "pairwise.complete.obs", method = "spearman")
+  spdist[is.na(spdist)] <- 2
   mdssp <- cmdscale(spdist, k = 2, eig = TRUE)
   mdsspx <- data.frame(mdssp$points)
   colnames(mdsspx) <- c("MDS_Spearman_1", "MDS_Spearman_2")

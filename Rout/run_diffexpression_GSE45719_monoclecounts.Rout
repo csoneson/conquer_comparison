@@ -27,7 +27,7 @@ Setting LC_CTYPE failed, using "C"
 > print(config_file)
 [1] "config/GSE45719.json"
 > print(demethod)
-[1] "edgeRLRT"
+[1] "monoclecounts"
 > 
 > suppressPackageStartupMessages(library(rjson))
 > suppressPackageStartupMessages(library(reshape2))
@@ -95,28 +95,39 @@ $nreps
 +   }
 + }
 50.1
-edgeRLRT
+monoclecounts
+Removing 1058 outliers
 30.1
-edgeRLRT
+monoclecounts
+Removing 1001 outliers
 30.2
-edgeRLRT
+monoclecounts
+Removing 1048 outliers
 30.3
-edgeRLRT
+monoclecounts
+Removing 1036 outliers
 24.1
-edgeRLRT
+monoclecounts
+Removing 1008 outliers
 24.2
-edgeRLRT
+monoclecounts
+Removing 1170 outliers
 24.3
-edgeRLRT
+monoclecounts
+Removing 1001 outliers
 12.1
-edgeRLRT
+monoclecounts
+Removing 1074 outliers
 12.2
-edgeRLRT
+monoclecounts
+Removing 1033 outliers
 12.3
-edgeRLRT
+monoclecounts
+Removing 1070 outliers
+There were 19 warnings (use warnings() to see them)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
-   user  system elapsed 
-377.593  24.363 403.245 
+    user   system  elapsed 
+1010.352   34.692 1048.277 

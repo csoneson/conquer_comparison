@@ -7,6 +7,7 @@ demethods <- strsplit(demethods, ",")[[1]]
 
 print(demethods)
 print(dataset)
+print(config_file)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_functions.R")
 suppressPackageStartupMessages(library(iCOBRA))
@@ -47,6 +48,7 @@ for (rf in resfiles) {
 
 cobra <- calculate_adjp(cobra)
 pdf(paste0("figures/comparison/", dataset, ".pdf"))
+plot_results_characterization(cobra, config = config_file, colvec = cols)
 plot_results(cobra, colvec = cols)
 plot_results_relativetruth(cobra, colvec = cols)
 plot_timing(timings, colvec = cols)
