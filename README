@@ -1,6 +1,0 @@
-To run the comparison with available methods and datasets, just type 
-$ make
-
-To add a method, construct a script in the form of the "apply_*.R" scripts (in the scripts/ directory), where * should be the name of the method. Then add the name of the method to the makefile
-
-To add a dataset, put the rds file containing the MultiArrayExperiment in the data/ folder and construct a script in the form of the "generate_config_*.R" scripts (in the scripts/ directory), where * should be the name of the dataset. Then add the name of the dataset to the makefile. 

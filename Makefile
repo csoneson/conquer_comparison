@@ -2,14 +2,15 @@
 R := R_LIBS=/home/Shared/Rlib/release-3.4-lib/ /usr/local/R/R-3.3.1/bin/R CMD BATCH --no-restore --no-save
 
 ## Define the data sets to run the analysis for
-DS := GSE45719 
+#DS := GSE45719 
 
 ## Define the methods to apply to the data set
-MT := edgeRLRT SAMseq Wilcoxon edgeRZILRT edgeRQLF NODES monocle monoclecounts BPSC DESeq2 edgeRLRTdeconv edgeRLRTrobust MASTcounts MASTcountsDetRate MASTtpm SCDE 
-comma := ,
-empty :=
-space := $(empty) $(empty)
-MTc := $(subst $(space),$(comma),$(MT))
+#MT := edgeRLRT SAMseq Wilcoxon edgeRZILRT edgeRQLF NODES monocle monoclecounts BPSC DESeq2 edgeRLRTdeconv edgeRLRTrobust MASTcounts MASTcountsDetRate MASTtpm SCDE 
+#comma := ,
+#empty :=
+#space := $(empty) $(empty)
+#MTc := $(subst $(space),$(comma),$(MT))
+include include_methods.mk
 
 .PHONY: all
 
@@ -35,9 +36,6 @@ results/$(1)_$(2).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_di
 endef
 $(foreach j,$(MT), $(foreach i,$(DS),$(eval $(call dgerule,$(i),$(j)))))
 
-#results/GSE45719_edgeRQLF.rds: scripts/apply_edgeRQLF.R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/GSE45719_subsets.rds
-#	$R "--args config_file='config/GSE45719.json' demethod='edgeRQLF'" scripts/run_diffexpression.R Rout/run_diffexpression_GSE45719_edgeRQLF.Rout
-
 ## Plots for comparison
-figures/comparison/%.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) scripts/plot_comparison.R scripts/plot_functions.R
+figures/comparison/%.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
 	$R "--args demethods='${MTc}' dataset='$*' config_file='config/$*.json'" scripts/plot_comparison.R Rout/plot_comparison_$*.Rout
