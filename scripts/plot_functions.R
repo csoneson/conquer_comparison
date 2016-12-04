@@ -58,9 +58,25 @@ plot_results_relativetruth <- function(cobra, colvec) {
   cobrarel <- COBRAData(padj = vals, truth = truth)
   
   cobrares <- calculate_performance(cobrarel, onlyshared = TRUE, 
-                                    aspects = c("tpr", "fpr"), 
+                                    aspects = c("tpr", "fpr", "fdrtprcurve", "roc"), 
                                     binary_truth = "status", 
                                     thrs = 0.05)
+  
+  ttmp <- unique(get_nsamples(basemethods(cobrares)))
+  ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE)[-1])
+  for (m in ttmp) {
+    for (k in unique(get_repl(basemethods(cobrares)))) {
+      cobraplot <- 
+        prepare_data_for_plot(cobrares, 
+                              keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m & 
+                                                                    get_repl(basemethods(cobrares)) == k], 
+                              colorscheme = "Set3")
+      
+      ## Modify method column so that all replicates with the same number of samples have the same name
+      print(plot_fdrtprcurve(cobraplot, plottype = "curve"))
+      print(plot_roc(cobraplot))
+    }
+  }
   
   ## Extract subset
   for (m in unique(get_method(basemethods(cobrares)))) {
@@ -129,31 +145,31 @@ plot_results_characterization <- function(cobra, config, colvec) {
                                                1, function(x) mean(x == 0)))
       fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
       vartpm <- data.frame(vartpm = apply(L$tpm, 1, var))
-      df <- merge(merge(merge(merge(melt(as.matrix(pvals)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
-                              avecount, by.x = "Var1", by.y = 0, all = TRUE),
-                        fraczero, by.x = "Var1", by.y = 0, all = TRUE),
-                  vartpm, by.x = "Var1", by.y = 0, all = TRUE)
-      df <- subset(df, rowSums(is.na(df)) == 0)
-      for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
-        print(ggplot(df, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
-                geom_smooth() + theme_bw())
-      }
+      # df <- merge(merge(merge(merge(melt(as.matrix(pvals)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
+      #                         avecount, by.x = "Var1", by.y = 0, all = TRUE),
+      #                   fraczero, by.x = "Var1", by.y = 0, all = TRUE),
+      #             vartpm, by.x = "Var1", by.y = 0, all = TRUE)
+      # df <- subset(df, rowSums(is.na(df)) == 0)
+      # for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
+      #   print(ggplot(df, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
+      #           geom_smooth() + theme_bw())
+      # }
       df2 <- merge(merge(merge(merge(melt(as.matrix(padjs)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
                               avecount, by.x = "Var1", by.y = 0, all = TRUE),
                         fraczero, by.x = "Var1", by.y = 0, all = TRUE),
                   vartpm, by.x = "Var1", by.y = 0, all = TRUE)
       df2 <- subset(df2, rowSums(is.na(df2)) == 0)
       df2$sign <- df2$value <= 0.05
-      for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
-        print(ggplot(df2, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
-                geom_smooth() + theme_bw())
-      }
+      # for (x in c("avetpm", "avecount", "fraczero", "vartpm", "fraczerodiff")) {
+      #   print(ggplot(df2, aes_string(x = x, y = "value", group = "Var2", col = "Var2")) + 
+      #           geom_smooth() + theme_bw())
+      # }
       for (y in c("avetpm", "avecount", "vartpm")) {
         print(ggplot(df2, aes_string(x = "Var2", y = paste0("log2(", y, ")"), 
                                      fill = "Var2", dodge = "sign", alpha = "sign")) + 
                 geom_boxplot() + theme_bw() + scale_fill_manual(values = colvec) + 
                 scale_alpha_manual(values = c(0.2, 0.8)) + 
-                theme(axis.text.x = element_text(angle = 90, hjust = 0.5)) + 
+                theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5)) + 
                 guides(alpha = guide_legend(override.aes = 
                                               list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
                                                    colour = NA))))
@@ -168,7 +184,7 @@ plot_results_characterization <- function(cobra, config, colvec) {
         print(ggplot(df2, aes_string(x = "Var2", y = y, fill = "Var2", dodge = "sign", alpha = "sign")) + 
                 geom_boxplot() + theme_bw() + scale_fill_manual(values = colvec) + 
                 scale_alpha_manual(values = c(0.2, 0.8)) + 
-                theme(axis.text.x = element_text(angle = 90, hjust = 0.5)) + 
+                theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5)) + 
                 guides(alpha = guide_legend(override.aes = 
                                               list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
                                                    colour = NA))))
@@ -433,7 +449,7 @@ plot_results <- function(cobra, colvec) {
           plot(hcl)
           pheatmap(1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order], 
                    cluster_rows = FALSE, cluster_cols = FALSE, 
-                   scale = "none", main = "Spearman correlation")
+                   scale = "none", main = "Spearman correlation", display_numbers = TRUE)
         }
       }
       ## All replicates
@@ -446,7 +462,7 @@ plot_results <- function(cobra, colvec) {
         plot(hcl)
         pheatmap(1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order], 
                  cluster_rows = FALSE, cluster_cols = FALSE, 
-                 scale = "none", main = "Spearman correlation")
+                 scale = "none", main = "Spearman correlation", display_numbers = TRUE)
       }
     }
     

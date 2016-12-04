@@ -9,7 +9,7 @@ run_MASTcountsDetRate <- function(L) {
     colnames(countmelt) <- c("gene", "cell", "value")
     sca <- FromFlatDF(countmelt, idvars = "cell", primerid = "gene", 
                       measurement = "value")
-    cdr <- rowSums(assay(sca) > 0)
+    cdr <- colSums(assay(sca) > 0)
     colData(sca)$grp <- grp[match(rownames(colData(sca)), names(grp))]
     colData(sca)$cngeneson <- scale(cdr)
     zlmdata <- zlm.SingleCellAssay(~ cngeneson + grp, sca)

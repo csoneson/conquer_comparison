@@ -14,7 +14,7 @@ suppressPackageStartupMessages(library(iCOBRA))
 
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan")
+          "#ff6d9b", "#017671", "cyan", "red", "blue")
 
 ## Create iCOBRA object
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
@@ -47,10 +47,10 @@ for (rf in resfiles) {
 }
 
 cobra <- calculate_adjp(cobra)
-pdf(paste0("figures/comparison/", dataset, ".pdf"))
+pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14)
+plot_results_relativetruth(cobra, colvec = cols)
 plot_results_characterization(cobra, config = config_file, colvec = cols)
 plot_results(cobra, colvec = cols)
-plot_results_relativetruth(cobra, colvec = cols)
 plot_timing(timings, colvec = cols)
 dev.off()
 
