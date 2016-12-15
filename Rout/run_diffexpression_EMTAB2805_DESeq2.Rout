@@ -1,0 +1,351 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/EMTAB2805.json"
+> print(demethod)
+[1] "DESeq2"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/EMTAB2805.rds"
+
+$subfile
+[1] "subsets/EMTAB2805_subsets.rds"
+
+$resfilebase
+[1] "results/EMTAB2805"
+
+$figfilebase
+[1] "figures/diffexpression/EMTAB2805"
+
+$groupid
+[1] "cell_cycle_stage"
+
+$keepgroups
+NULL
+
+$seed
+[1] 42
+
+$sizes
+[1] 96 48 24 12
+
+$nreps
+[1] 1 3 3 3
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+96.1
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 12132 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 29348 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 860, 2.9% 
+LFC < 0 (down)   : 707, 2.4% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11583, 39% 
+(mean count < 0)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.1
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 10443 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 27020 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 535, 2% 
+LFC < 0 (down)   : 366, 1.4% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 10939, 40% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.2
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 10647 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 26905 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 494, 1.8% 
+LFC < 0 (down)   : 480, 1.8% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11339, 42% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.3
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 10774 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 26968 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 369, 1.4% 
+LFC < 0 (down)   : 399, 1.5% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11426, 42% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.1
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 8401 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 24644 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 244, 0.99% 
+LFC < 0 (down)   : 253, 1% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 10620, 43% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.2
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 9117 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 24637 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 231, 0.94% 
+LFC < 0 (down)   : 266, 1.1% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 10614, 43% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.3
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 8597 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 24519 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 300, 1.2% 
+LFC < 0 (down)   : 234, 0.95% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 10601, 43% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.1
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 8881 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 22299 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 97, 0.43% 
+LFC < 0 (down)   : 150, 0.67% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 9740, 44% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.2
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 8368 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 22095 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 104, 0.47% 
+LFC < 0 (down)   : 101, 0.46% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 12198, 55% 
+(mean count < 4)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.3
+DESeq2
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 8441 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 22519 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 154, 0.68% 
+LFC < 0 (down)   : 133, 0.59% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11219, 50% 
+(mean count < 3)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+    user   system  elapsed 
+5773.694   77.581 5862.513 

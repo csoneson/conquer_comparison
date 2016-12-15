@@ -124,10 +124,10 @@ Removing 1033 outliers
 12.3
 monoclecounts
 Removing 1070 outliers
-There were 19 warnings (use warnings() to see them)
+There were 29 warnings (use warnings() to see them)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
     user   system  elapsed 
-1010.352   34.692 1048.277 
+1041.002   51.972 1096.351 

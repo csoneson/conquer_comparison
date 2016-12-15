@@ -1,6 +1,6 @@
-suppressPackageStartupMessages(library(monocle))
 suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(DESeq2))
+suppressPackageStartupMessages(library(monocle))
 
 run_monoclecounts <- function(L) {
   message("monoclecounts")
@@ -13,7 +13,7 @@ run_monoclecounts <- function(L) {
                           expressionFamily = negbinomial.size(),
                           lowerDetectionLimit = 1)
     mon <- DESeq2::estimateSizeFactors(mon)
-    mon <- DESeq2::estimateDispersions(mon)
+    mon <- estimateDispersions(mon, fitType = "local")
     monres <- differentialGeneTest(mon, fullModelFormulaStr = "expression ~ condition",
                                    relative_expr = FALSE)
   })

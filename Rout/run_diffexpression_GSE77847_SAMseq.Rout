@@ -1,0 +1,1172 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/GSE77847.json"
+> print(demethod)
+[1] "SAMseq"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE77847.rds"
+
+$subfile
+[1] "subsets/GSE77847_subsets.rds"
+
+$resfilebase
+[1] "results/GSE77847"
+
+$figfilebase
+[1] "figures/diffexpression/GSE77847"
+
+$groupid
+[1] "characteristics_ch1"
+
+$keepgroups
+[1] "sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-1"
+[2] "sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-2"
+
+$seed
+[1] 42
+
+$sizes
+[1] 48 36 24 12
+
+$nreps
+[1] 1 3 3 3
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+48.1
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 3371
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+36.1
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 2191
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+36.2
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 2487
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+36.3
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 1954
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+24.1
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 466
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+24.2
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 2497
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+24.3
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 818
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+12.1
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 313
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+12.2
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 500
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+12.3
+SAMseq
+Estimating sequencing depths...
+Resampling to get new data matrices...
+perm= 1
+perm= 2
+perm= 3
+perm= 4
+perm= 5
+perm= 6
+perm= 7
+perm= 8
+perm= 9
+perm= 10
+perm= 11
+perm= 12
+perm= 13
+perm= 14
+perm= 15
+perm= 16
+perm= 17
+perm= 18
+perm= 19
+perm= 20
+perm= 21
+perm= 22
+perm= 23
+perm= 24
+perm= 25
+perm= 26
+perm= 27
+perm= 28
+perm= 29
+perm= 30
+perm= 31
+perm= 32
+perm= 33
+perm= 34
+perm= 35
+perm= 36
+perm= 37
+perm= 38
+perm= 39
+perm= 40
+perm= 41
+perm= 42
+perm= 43
+perm= 44
+perm= 45
+perm= 46
+perm= 47
+perm= 48
+perm= 49
+perm= 50
+perm= 51
+perm= 52
+perm= 53
+perm= 54
+perm= 55
+perm= 56
+perm= 57
+perm= 58
+perm= 59
+perm= 60
+perm= 61
+perm= 62
+perm= 63
+perm= 64
+perm= 65
+perm= 66
+perm= 67
+perm= 68
+perm= 69
+perm= 70
+perm= 71
+perm= 72
+perm= 73
+perm= 74
+perm= 75
+perm= 76
+perm= 77
+perm= 78
+perm= 79
+perm= 80
+perm= 81
+perm= 82
+perm= 83
+perm= 84
+perm= 85
+perm= 86
+perm= 87
+perm= 88
+perm= 89
+perm= 90
+perm= 91
+perm= 92
+perm= 93
+perm= 94
+perm= 95
+perm= 96
+perm= 97
+perm= 98
+perm= 99
+perm= 100
+Number of thresholds chosen (all possible thresholds) = 605
+Getting all the cutoffs for the thresholds...
+Getting number of false positives in the permutation...
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+    user   system  elapsed 
+1059.626   56.355 1118.341 

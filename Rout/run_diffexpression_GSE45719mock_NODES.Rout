@@ -1,0 +1,484 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/GSE45719mock.json"
+> print(demethod)
+[1] "NODES"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE45719.rds"
+
+$subfile
+[1] "subsets/GSE45719mock_subsets.rds"
+
+$resfilebase
+[1] "results/GSE45719mock"
+
+$figfilebase
+[1] "figures/diffexpression/GSE45719mock"
+
+$groupid
+[1] "source_name_ch1"
+
+$keepgroups
+[1] "16-cell stage blastomere"
+
+$seed
+[1] 42
+
+$sizes
+[1] 24 14 12  6
+
+$nreps
+[1] 1 3 3 3
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
++     pdf(paste0(config$figfilebase, "_", demethod, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+24.1
+NODES
+Loading required package: preprocessCore
+No. of discarded cells: 10
+Dimensions of supplied expression matrix:
+Genes=27388; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=24733; Cells=38
+
+Loading required package: MetaDE
+Loading required package: impute
+Loading required package: combinat
+
+Attaching package: 'combinat'
+
+The following object is masked from 'package:utils':
+
+    combn
+
+Loading required package: tools
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+14.1
+NODES
+No. of discarded cells: 6
+Dimensions of supplied expression matrix:
+Genes=25573; Cells=28
+
+Dimensions of supplied processed matrix:
+Genes=23498; Cells=22
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+14.2
+NODES
+No. of discarded cells: 6
+Dimensions of supplied expression matrix:
+Genes=25921; Cells=28
+
+Dimensions of supplied processed matrix:
+Genes=23190; Cells=22
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+14.3
+NODES
+No. of discarded cells: 5
+Dimensions of supplied expression matrix:
+Genes=25180; Cells=28
+
+Dimensions of supplied processed matrix:
+Genes=22262; Cells=23
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+12.1
+NODES
+No. of discarded cells: 4
+Dimensions of supplied expression matrix:
+Genes=24968; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=21951; Cells=20
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+12.2
+NODES
+No. of discarded cells: 5
+Dimensions of supplied expression matrix:
+Genes=25113; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=23134; Cells=19
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+12.3
+NODES
+No. of discarded cells: 3
+Dimensions of supplied expression matrix:
+Genes=25509; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=23474; Cells=21
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+6.1
+NODES
+No. of discarded cells: 2
+Dimensions of supplied expression matrix:
+Genes=23419; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=20713; Cells=10
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+6.2
+NODES
+No. of discarded cells: 3
+Dimensions of supplied expression matrix:
+Genes=23035; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=19920; Cells=9
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+6.3
+NODES
+No. of discarded cells: 1
+Dimensions of supplied expression matrix:
+Genes=23372; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=21848; Cells=11
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+    user   system  elapsed 
+2158.879  152.508 2316.835 

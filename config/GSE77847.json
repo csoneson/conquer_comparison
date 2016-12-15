@@ -1,0 +1,1 @@
+{"mae":"data/GSE77847.rds","subfile":"subsets/GSE77847_subsets.rds","resfilebase":"results/GSE77847","figfilebase":"figures/diffexpression/GSE77847","groupid":"characteristics_ch1","keepgroups":["sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-1","sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-2"],"seed":42,"sizes":[48,36,24,12],"nreps":[1,3,3,3]}

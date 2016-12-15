@@ -10,7 +10,7 @@ clean_mae <- function(mae, groupid) {
   
   if (length(groupid) > 1) {
     Biobase::pData(mae2)[, paste(groupid, collapse = ".")] <- 
-      as.character(interaction(as.data.frame(Biobase::pData[, groupid])))
+      as.character(interaction(as.data.frame(Biobase::pData(mae2)[, groupid])))
     groupid <- paste(groupid, collapse = ".")
   }
   
