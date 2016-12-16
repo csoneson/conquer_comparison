@@ -1,14 +1,14 @@
 suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(genefilter)) #for filtering functions
 
-run_edgeRZILRT <- function(L) {
-  message("edgeRZILRT")
+run_zingeR <- function(L) {
+  message("zingeR")
   session_info <- sessionInfo()
   timing <- system.time({
     dge <- DGEList(L$count, group = L$condt)
     dge <- calcNormFactors(dge)
     design <- model.matrix(~L$condt)
-    niter <- 5 #you may want to increase this for large (~ >200 cells) datasets, can checked this by looking whether the weight distribution of zero counts is still changing over the last few iterations.
+    niter <- 30 #you may want to increase this for large (~ >200 cells) datasets, can checked this by looking whether the weight distribution of zero counts is still changing over the last few iterations.
     zeroWeights <- zeroWeightsLibSizeFast(dge, design, plot = FALSE, 
                                           maxit = niter, initialWeightAt0 = TRUE, 
                                           plotW = FALSE)

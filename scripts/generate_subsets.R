@@ -29,7 +29,7 @@ if (length(groupid) > 1) {
   groupid <- paste(groupid, collapse = ".")
 }
 
-## Keep only two groups for now
+## Keep only two groups
 if (is.null(keepgroups)) 
   keepgroups <- levels(factor(pdata[, groupid]))[1:2]
 keepsamples <- rownames(pdata[pdata[, groupid] %in% keepgroups, ])
@@ -39,12 +39,23 @@ condt <- as.character(pdata[, groupid])
 names(condt) <- rownames(pdata)
 
 ngroups <- nlevels(factor(condt))
-message("Considering the following ", ngroups, " groups: ", 
+message("Considering the following ", ngroups, ifelse(ngroups == 1, " group: ", " groups: "), 
         paste(levels(factor(condt)), collapse = " vs "))
 
 names(sizes) <- sizes
 names(nreps) <- sizes
 set.seed(config$seed)
+
+## Subset the data set to the largest sample size, to make sure that all 
+## smaller data sets are indeed subsets of the largest data set.
+if (length(unique(condt)) == 1) {
+  condt <- condt[sort(sample(1:length(condt), 2 * max(sizes)))]
+} else {
+  condt <- condt[sort(stratsample(as.character(condt), 
+                                  structure(rep(max(sizes), 2), 
+                                            names = levels(factor(condt)))))]
+}
+
 keep_tmp <- lapply(sizes, function(sz) {
   unique(t(sapply(1:nreps[as.character(sz)], function(i) {
     if (length(unique(condt)) == 1) {

@@ -15,7 +15,7 @@ suppressPackageStartupMessages(library(iCOBRA))
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange", "black")
-names(cols) <- c("edgeRLRT", "edgeRZILRT", "SAMseq", "edgeRQLF", "NODES",
+names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                  "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                  "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", "MASTtpm")
 
@@ -50,6 +50,10 @@ for (rf in resfiles) {
 }
 
 cobra <- calculate_adjp(cobra)
+
+pval(cobra)[is.na(pval(cobra))] <- 1
+padj(cobra)[is.na(padj(cobra))] <- 1
+
 pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14)
 plot_results_relativetruth(cobra, colvec = cols)
 plot_results_relativetruth_all(cobra, colvec = cols)
