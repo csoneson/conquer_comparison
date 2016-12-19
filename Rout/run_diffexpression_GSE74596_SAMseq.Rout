@@ -197,7 +197,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 5928
+Number of thresholds chosen (all possible thresholds) = 5905
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.1
@@ -304,7 +304,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2966
+Number of thresholds chosen (all possible thresholds) = 3128
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.2
@@ -411,7 +411,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3321
+Number of thresholds chosen (all possible thresholds) = 3140
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.3
@@ -518,7 +518,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3138
+Number of thresholds chosen (all possible thresholds) = 2986
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.1
@@ -625,7 +625,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1184
+Number of thresholds chosen (all possible thresholds) = 1028
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.2
@@ -732,7 +732,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1069
+Number of thresholds chosen (all possible thresholds) = 1063
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.3
@@ -839,7 +839,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1153
+Number of thresholds chosen (all possible thresholds) = 1261
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 > 
@@ -847,4 +847,4 @@ Getting number of false positives in the permutation...
 > 
 > proc.time()
    user  system elapsed 
-550.377  30.598 583.561 
+545.927  32.869 580.243 

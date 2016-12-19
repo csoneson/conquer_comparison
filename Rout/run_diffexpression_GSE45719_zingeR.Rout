@@ -27,7 +27,7 @@ Setting LC_CTYPE failed, using "C"
 > print(config_file)
 [1] "config/GSE45719.json"
 > print(demethod)
-[1] "edgeRLRTrobust"
+[1] "zingeR"
 > 
 > suppressPackageStartupMessages(library(rjson))
 > suppressPackageStartupMessages(library(reshape2))
@@ -95,28 +95,29 @@ $nreps
 +   }
 + }
 50.1
-edgeRLRTrobust
+zingeR
 30.1
-edgeRLRTrobust
+zingeR
 30.2
-edgeRLRTrobust
+zingeR
 30.3
-edgeRLRTrobust
+zingeR
 24.1
-edgeRLRTrobust
+zingeR
 24.2
-edgeRLRTrobust
+zingeR
 24.3
-edgeRLRTrobust
+zingeR
 12.1
-edgeRLRTrobust
+zingeR
 12.2
-edgeRLRTrobust
+zingeR
 12.3
-edgeRLRTrobust
+zingeR
+There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
-    user   system  elapsed 
-3275.869  102.345 3383.804 
+     user    system   elapsed 
+22770.181   370.882 23170.857 

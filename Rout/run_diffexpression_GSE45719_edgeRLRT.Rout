@@ -96,3 +96,27 @@ $nreps
 + }
 50.1
 edgeRLRT
+30.1
+edgeRLRT
+30.2
+edgeRLRT
+30.3
+edgeRLRT
+24.1
+edgeRLRT
+24.2
+edgeRLRT
+24.3
+edgeRLRT
+12.1
+edgeRLRT
+12.2
+edgeRLRT
+12.3
+edgeRLRT
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+   user  system elapsed 
+387.913  17.270 406.374 

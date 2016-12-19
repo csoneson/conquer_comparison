@@ -1,0 +1,116 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> ## Read Usoskin data
+> x <- read.delim("data/Usoskin_External_resources_Table_1.txt", header = FALSE, as.is = TRUE)
+> 
+> sample_annot <- x[1:10, -(1:9)]
+> sample_annot <- t(sample_annot)
+> colnames(sample_annot) <- x[1:10, 9]
+> sample_annot <- data.frame(sample_annot, stringsAsFactors = FALSE)
+> 
+> gene_annot <- x[-(1:11), 1:8]
+> colnames(gene_annot) <- x[11, 1:8]
+> gene_annot <- data.frame(gene_annot, stringsAsFactors = FALSE)
+> 
+> rpms <- as.matrix(x[-(1:11), -(1:9)])
+> mode(rpms) <- "numeric"
+> rownames(rpms) <- x[-(1:11), 1]
+> colnames(rpms) <- x[1, -(1:9)]
+> 
+> ## Filter out empty wells
+> keep <- which(sample_annot$Content == "cell")
+> sample_annot <- sample_annot[keep, ]
+> rpms <- rpms[, keep]
+> 
+> # Filter on cell type
+> keep <- which(sample_annot$Level.1 %in% c("NF", "NP", "PEP", "TH"))
+> sample_annot <- sample_annot[keep, ]
+> rpms <- rpms[, keep]
+> 
+> counts <- sweep(rpms, 2, as.numeric(as.character(sample_annot$Reads))/1e6, "*")
+> 
+> sample_annot$Picking.sessions.Level.3 <- interaction(sample_annot$Picking.sessions, 
++                                                      sample_annot$Level.3)
+> rownames(sample_annot) <- sample_annot$Sample.ID
+> 
+> ## RT-1.NP1 vs RT-1.TH
+> 
+> library(SummarizedExperiment)
+Loading required package: GenomicRanges
+Loading required package: stats4
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: 'BiocGenerics'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from 'package:stats':
+
+    IQR, mad, xtabs
+
+The following objects are masked from 'package:base':
+
+    anyDuplicated, append, as.data.frame, cbind, colnames, do.call,
+    duplicated, eval, evalq, Filter, Find, get, grep, grepl, intersect,
+    is.unsorted, lapply, lengths, Map, mapply, match, mget, order,
+    paste, pmax, pmax.int, pmin, pmin.int, Position, rank, rbind,
+    Reduce, rownames, sapply, setdiff, sort, table, tapply, union,
+    unique, unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: 'S4Vectors'
+
+The following objects are masked from 'package:base':
+
+    colMeans, colSums, expand.grid, rowMeans, rowSums
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+> library(MultiAssayExperiment)
+> 
+> generse <- SummarizedExperiment(assays = list(TPM = rpms,
++                                               count = counts,
++                                               count_lstpm = counts))
+> 
+> ## Generate MultiAssayExperiment
+> mae <- MultiAssayExperiment(experiments = list(gene = generse),
++                             pData = droplevels(sample_annot))
+> mae@metadata <- list(organism = "Homo sapiens")
+> 
+> saveRDS(mae, file = paste0("data/UsoskinGSE59739.rds"))
+> 
+> proc.time()
+   user  system elapsed 
+ 34.606   5.617  40.353 

@@ -20,9 +20,13 @@ config/%.json: scripts/generate_config_%.R
 subsets/%_subsets.rds: data/%.rds config/%.json scripts/generate_subsets.R
 	$R "--args config_file='config/$*.json'" scripts/generate_subsets.R Rout/generate_subsets_$*.Rout
 
+## Generate Usoskin data set
+data/UsoskinGSE59739.rds: scripts/generate_Usoskin_mae.R data/Usoskin_External_resources_Table_1.txt
+	$R scripts/generate_Usoskin_mae.R Rout/generate_Usoskin_mae.Rout
+
 ## Define rules for differential expression
 define dgerule
-results/$(1)_$(2).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds
+results/$(1)_$(2).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$R "--args config_file='config/$(1).json' demethod='$(2)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2).Rout
 endef
 $(foreach j,$(MT), $(foreach i,$(DS),$(eval $(call dgerule,$(i),$(j)))))

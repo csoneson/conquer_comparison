@@ -25,7 +25,7 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > print(config_file)
-[1] "config/GSE74596.json"
+[1] "config/UsoskinGSE59739.json"
 > 
 > suppressPackageStartupMessages(library(rjson))
 > suppressPackageStartupMessages(library(Biobase))
@@ -37,31 +37,31 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(config)
 $mae
-[1] "data/GSE74596.rds"
+[1] "data/UsoskinGSE59739.rds"
 
 $subfile
-[1] "subsets/GSE74596_subsets.rds"
+[1] "subsets/UsoskinGSE59739_subsets.rds"
 
 $resfilebase
-[1] "results/GSE74596"
+[1] "results/UsoskinGSE59739"
 
 $figfilebase
-[1] "figures/diffexpression/GSE74596"
+[1] "figures/diffexpression/UsoskinGSE59739"
 
 $groupid
-[1] "source_name_ch1"
+[1] "Picking.sessions.Level.3"
 
 $keepgroups
-[1] "Single_cell_RNA-seq_NKT0"  "Single_cell_RNA-seq_NKT17"
+[1] "RT-1.NP1" "RT-1.TH" 
 
 $seed
 [1] 42
 
 $sizes
-[1] 44 24 12
+[1] 58 36 24 12
 
 $nreps
-[1] 1 3 3
+[1] 1 3 3 3
 
 > 
 > mae <- readRDS(config$mae)
@@ -90,7 +90,7 @@ $nreps
 > ngroups <- nlevels(factor(condt))
 > message("Considering the following ", ngroups, ifelse(ngroups == 1, " group: ", " groups: "), 
 +         paste(levels(factor(condt)), collapse = " vs "))
-Considering the following 2 groups: Single_cell_RNA-seq_NKT0 vs Single_cell_RNA-seq_NKT17
+Considering the following 2 groups: RT-1.NP1 vs RT-1.TH
 > 
 > names(sizes) <- sizes
 > names(nreps) <- sizes
@@ -166,4 +166,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 13.064   0.847  14.015 
+  7.462   0.505   8.036 
