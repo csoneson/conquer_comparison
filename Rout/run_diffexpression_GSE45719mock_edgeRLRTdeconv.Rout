@@ -118,4 +118,4 @@ edgeRdeconv
 > 
 > proc.time()
    user  system elapsed 
-214.558  85.469 300.817 
+208.195  16.411 225.758 

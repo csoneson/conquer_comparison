@@ -117,5 +117,5 @@ scde
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
-    user   system  elapsed 
-12617.06   170.25 12803.82 
+     user    system   elapsed 
+13319.612   610.717 14003.617 

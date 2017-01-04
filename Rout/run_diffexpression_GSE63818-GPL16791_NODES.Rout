@@ -145,12 +145,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 12.1
 NODES
-No. of discarded cells: 0
+No. of discarded cells: 2
 Dimensions of supplied expression matrix:
-Genes=28935; Cells=24
+Genes=28816; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=21329; Cells=24
+Genes=22139; Cells=22
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -182,12 +182,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 12.2
 NODES
-No. of discarded cells: 1
+No. of discarded cells: 0
 Dimensions of supplied expression matrix:
-Genes=28919; Cells=24
+Genes=28604; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=21258; Cells=23
+Genes=21286; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -221,10 +221,10 @@ Completed successfully.
 NODES
 No. of discarded cells: 0
 Dimensions of supplied expression matrix:
-Genes=28626; Cells=24
+Genes=28911; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=21382; Cells=24
+Genes=21714; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -256,12 +256,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 6.1
 NODES
-No. of discarded cells: 0
+No. of discarded cells: 1
 Dimensions of supplied expression matrix:
-Genes=24662; Cells=12
+Genes=24930; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=19413; Cells=12
+Genes=21637; Cells=11
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -293,12 +293,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 6.2
 NODES
-No. of discarded cells: 1
+No. of discarded cells: 2
 Dimensions of supplied expression matrix:
-Genes=25365; Cells=12
+Genes=25024; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=20077; Cells=11
+Genes=20310; Cells=10
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -330,12 +330,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 6.3
 NODES
-No. of discarded cells: 2
+No. of discarded cells: 0
 Dimensions of supplied expression matrix:
-Genes=25338; Cells=12
+Genes=24788; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=17968; Cells=10
+Genes=18505; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -371,4 +371,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
     user   system  elapsed 
-1469.081   77.961 1553.091 
+1494.669  240.841 1740.975 

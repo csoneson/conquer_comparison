@@ -118,4 +118,4 @@ edgeRQLF
 > 
 > proc.time()
    user  system elapsed 
-671.892  53.417 728.787 
+569.071 100.330 671.651 

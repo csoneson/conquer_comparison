@@ -118,5 +118,5 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
-     user    system   elapsed 
-84766.843   374.975 85257.300 
+    user   system  elapsed 
+83441.77   400.14 83970.22 

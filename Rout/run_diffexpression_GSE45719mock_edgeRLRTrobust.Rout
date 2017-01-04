@@ -118,4 +118,4 @@ edgeRLRTrobust
 > 
 > proc.time()
     user   system  elapsed 
-1504.591   30.127 1537.158 
+1948.078  265.554 2275.611 

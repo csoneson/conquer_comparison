@@ -28,7 +28,7 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(demethods)
  [1] "edgeRLRT"          "SAMseq"            "Wilcoxon"         
- [4] "edgeRZILRT"        "edgeRQLF"          "NODES"            
+ [4] "zingeR"            "edgeRQLF"          "NODES"            
  [7] "BPSC"              "DESeq2"            "edgeRLRTdeconv"   
 [10] "MASTcounts"        "MASTcountsDetRate" "MASTtpm"          
 [13] "SCDE"              "monocle"           "edgeRLRTrobust"   
@@ -44,7 +44,7 @@ Setting LC_CTYPE failed, using "C"
 > cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
 +           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
 +           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange", "black")
-> names(cols) <- c("edgeRLRT", "edgeRZILRT", "SAMseq", "edgeRQLF", "NODES",
+> names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
 +                  "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
 +                  "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", "MASTtpm")
 > 
@@ -54,7 +54,7 @@ Setting LC_CTYPE failed, using "C"
  [1] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_edgeRLRT.rds"         
  [2] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_SAMseq.rds"           
  [3] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_Wilcoxon.rds"         
- [4] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_edgeRZILRT.rds"       
+ [4] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_zingeR.rds"           
  [5] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_edgeRQLF.rds"         
  [6] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_NODES.rds"            
  [7] "/home/Shared/data/seq/conquer/comparison/results/GSE77847_BPSC.rds"             
@@ -925,9 +925,13 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 > 
 > cobra <- calculate_adjp(cobra)
+> 
+> pval(cobra)[is.na(pval(cobra))] <- 1
+> padj(cobra)[is.na(padj(cobra))] <- 1
+> 
 > pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14)
 > plot_results_relativetruth(cobra, colvec = cols)
-There were 34 warnings (use warnings() to see them)
+There were 50 or more warnings (use warnings() to see the first 50)
 > plot_results_relativetruth_all(cobra, colvec = cols)
 25741 new features and 1 new annotations added to truth table
 25741 new features and 1 new annotations added to truth table
@@ -1008,4 +1012,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-2364.873   35.830 2406.409 
+1547.634  246.408 1800.182 

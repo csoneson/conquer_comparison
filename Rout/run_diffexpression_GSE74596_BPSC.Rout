@@ -107,3 +107,10 @@ BPSC
 BPSC
 12.3
 BPSC
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
+> 
+> proc.time()
+     user    system   elapsed 
+44692.351   169.079 44924.722 

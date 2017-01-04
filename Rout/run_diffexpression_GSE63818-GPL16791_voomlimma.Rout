@@ -120,4 +120,4 @@ Removing intercept from test coefficients
 > 
 > proc.time()
    user  system elapsed 
-107.930  30.718 138.995 
+ 96.351  73.587 170.609 

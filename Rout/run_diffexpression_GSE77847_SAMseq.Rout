@@ -198,7 +198,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3371
+Number of thresholds chosen (all possible thresholds) = 3408
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 36.1
@@ -305,7 +305,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2191
+Number of thresholds chosen (all possible thresholds) = 2733
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 36.2
@@ -412,7 +412,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2487
+Number of thresholds chosen (all possible thresholds) = 3071
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 36.3
@@ -519,7 +519,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1954
+Number of thresholds chosen (all possible thresholds) = 2485
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.1
@@ -626,7 +626,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 466
+Number of thresholds chosen (all possible thresholds) = 791
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.2
@@ -733,7 +733,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2497
+Number of thresholds chosen (all possible thresholds) = 1042
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.3
@@ -840,7 +840,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 818
+Number of thresholds chosen (all possible thresholds) = 1711
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.1
@@ -947,7 +947,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 313
+Number of thresholds chosen (all possible thresholds) = 452
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.2
@@ -1054,7 +1054,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 500
+Number of thresholds chosen (all possible thresholds) = 429
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.3
@@ -1161,7 +1161,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 605
+Number of thresholds chosen (all possible thresholds) = 224
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 > 
@@ -1169,4 +1169,4 @@ Getting number of false positives in the permutation...
 > 
 > proc.time()
     user   system  elapsed 
-1059.626   56.355 1118.341 
+1022.100   78.549 1103.515 

@@ -112,4 +112,4 @@ monocle
 > 
 > proc.time()
    user  system elapsed 
-273.848   7.281 281.758 
+283.054  19.935 303.898 

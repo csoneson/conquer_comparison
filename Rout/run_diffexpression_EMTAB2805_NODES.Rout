@@ -144,80 +144,6 @@ Combining p values using Fisher's method...
 Completed successfully.
 48.1
 NODES
-No. of discarded cells: 13
-Dimensions of supplied expression matrix:
-Genes=28571; Cells=96
-
-Dimensions of supplied processed matrix:
-Genes=25682; Cells=83
-
-[1] "Randomization run = 1"
-[1] "Randomization run = 2"
-[1] "Randomization run = 3"
-[1] "Randomization run = 4"
-[1] "Randomization run = 5"
-[1] "Randomization run = 6"
-[1] "Randomization run = 7"
-[1] "Randomization run = 8"
-[1] "Randomization run = 9"
-[1] "Randomization run = 10"
-[1] "Randomization run = 11"
-[1] "Randomization run = 12"
-[1] "Randomization run = 13"
-[1] "Randomization run = 14"
-[1] "Randomization run = 15"
-[1] "Randomization run = 16"
-[1] "Randomization run = 17"
-[1] "Randomization run = 18"
-[1] "Randomization run = 19"
-[1] "Randomization run = 20"
-
-Smoothing the noise density...
-
-Computing Wilcoxon p values...
-
-Combining p values using Fisher's method...
-
-Completed successfully.
-48.2
-NODES
-No. of discarded cells: 9
-Dimensions of supplied expression matrix:
-Genes=28319; Cells=96
-
-Dimensions of supplied processed matrix:
-Genes=25163; Cells=87
-
-[1] "Randomization run = 1"
-[1] "Randomization run = 2"
-[1] "Randomization run = 3"
-[1] "Randomization run = 4"
-[1] "Randomization run = 5"
-[1] "Randomization run = 6"
-[1] "Randomization run = 7"
-[1] "Randomization run = 8"
-[1] "Randomization run = 9"
-[1] "Randomization run = 10"
-[1] "Randomization run = 11"
-[1] "Randomization run = 12"
-[1] "Randomization run = 13"
-[1] "Randomization run = 14"
-[1] "Randomization run = 15"
-[1] "Randomization run = 16"
-[1] "Randomization run = 17"
-[1] "Randomization run = 18"
-[1] "Randomization run = 19"
-[1] "Randomization run = 20"
-
-Smoothing the noise density...
-
-Computing Wilcoxon p values...
-
-Combining p values using Fisher's method...
-
-Completed successfully.
-48.3
-NODES
 No. of discarded cells: 6
 Dimensions of supplied expression matrix:
 Genes=28467; Cells=96
@@ -253,14 +179,88 @@ Computing Wilcoxon p values...
 Combining p values using Fisher's method...
 
 Completed successfully.
-24.1
+48.2
 NODES
-No. of discarded cells: 8
+No. of discarded cells: 9
 Dimensions of supplied expression matrix:
-Genes=26153; Cells=48
+Genes=28519; Cells=96
 
 Dimensions of supplied processed matrix:
-Genes=23777; Cells=40
+Genes=25577; Cells=87
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+48.3
+NODES
+No. of discarded cells: 9
+Dimensions of supplied expression matrix:
+Genes=28398; Cells=96
+
+Dimensions of supplied processed matrix:
+Genes=24992; Cells=87
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+
+Computing Wilcoxon p values...
+
+Combining p values using Fisher's method...
+
+Completed successfully.
+24.1
+NODES
+No. of discarded cells: 4
+Dimensions of supplied expression matrix:
+Genes=26304; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=23198; Cells=44
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -292,12 +292,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 24.2
 NODES
-No. of discarded cells: 7
+No. of discarded cells: 4
 Dimensions of supplied expression matrix:
-Genes=26183; Cells=48
+Genes=26327; Cells=48
 
 Dimensions of supplied processed matrix:
-Genes=23329; Cells=41
+Genes=23743; Cells=44
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -329,12 +329,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 24.3
 NODES
-No. of discarded cells: 7
+No. of discarded cells: 6
 Dimensions of supplied expression matrix:
-Genes=26092; Cells=48
+Genes=25763; Cells=48
 
 Dimensions of supplied processed matrix:
-Genes=23555; Cells=41
+Genes=23416; Cells=42
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -366,12 +366,12 @@ Combining p values using Fisher's method...
 Completed successfully.
 12.1
 NODES
-No. of discarded cells: 3
+No. of discarded cells: 0
 Dimensions of supplied expression matrix:
-Genes=23819; Cells=24
+Genes=24436; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=20699; Cells=21
+Genes=21398; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -405,10 +405,10 @@ Completed successfully.
 NODES
 No. of discarded cells: 4
 Dimensions of supplied expression matrix:
-Genes=23687; Cells=24
+Genes=23468; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=20412; Cells=20
+Genes=20614; Cells=20
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -442,10 +442,10 @@ Completed successfully.
 NODES
 No. of discarded cells: 2
 Dimensions of supplied expression matrix:
-Genes=24186; Cells=24
+Genes=23682; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=20942; Cells=22
+Genes=21026; Cells=22
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -481,4 +481,4 @@ There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
     user   system  elapsed 
-2932.885  685.274 3634.412 
+2827.103 1044.615 3890.789 

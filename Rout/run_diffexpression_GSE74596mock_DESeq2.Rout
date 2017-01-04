@@ -102,19 +102,19 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 11392 genes
+-- replacing outliers and refitting for 11325 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 20880 with nonzero total read count
+out of 20887 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 412, 2% 
-LFC < 0 (down)   : 775, 3.7% 
+LFC > 0 (up)     : 960, 4.6% 
+LFC < 0 (down)   : 700, 3.4% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 628, 3% 
-(mean count < 0)
+low counts [2]   : 12342, 59% 
+(mean count < 1)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -127,18 +127,18 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 9611 genes
+-- replacing outliers and refitting for 9166 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 19270 with nonzero total read count
+out of 19017 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 356, 1.8% 
-LFC < 0 (down)   : 692, 3.6% 
+LFC > 0 (up)     : 631, 3.3% 
+LFC < 0 (down)   : 382, 2% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 13390, 69% 
+low counts [2]   : 13207, 69% 
 (mean count < 3)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -152,19 +152,19 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 9347 genes
+-- replacing outliers and refitting for 9369 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 19037 with nonzero total read count
+out of 19325 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 402, 2.1% 
-LFC < 0 (down)   : 647, 3.4% 
+LFC > 0 (up)     : 424, 2.2% 
+LFC < 0 (down)   : 660, 3.4% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 12840, 67% 
-(mean count < 2)
+low counts [2]   : 13356, 69% 
+(mean count < 3)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -177,18 +177,18 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 9508 genes
+-- replacing outliers and refitting for 9357 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 18693 with nonzero total read count
+out of 18938 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 678, 3.6% 
-LFC < 0 (down)   : 430, 2.3% 
+LFC > 0 (up)     : 485, 2.6% 
+LFC < 0 (down)   : 619, 3.3% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 13377, 72% 
+low counts [2]   : 13138, 69% 
 (mean count < 3)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -203,13 +203,13 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 17340 with nonzero total read count
+out of 17634 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 269, 1.6% 
-LFC < 0 (down)   : 416, 2.4% 
-outliers [1]     : 4741, 27% 
-low counts [2]   : 8395, 48% 
-(mean count < 4)
+LFC > 0 (up)     : 398, 2.3% 
+LFC < 0 (down)   : 267, 1.5% 
+outliers [1]     : 4977, 28% 
+low counts [2]   : 8326, 47% 
+(mean count < 8)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -223,13 +223,13 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 17971 with nonzero total read count
+out of 17928 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 206, 1.1% 
-LFC < 0 (down)   : 451, 2.5% 
-outliers [1]     : 5447, 30% 
-low counts [2]   : 8082, 45% 
-(mean count < 3)
+LFC > 0 (up)     : 437, 2.4% 
+LFC < 0 (down)   : 193, 1.1% 
+outliers [1]     : 5114, 29% 
+low counts [2]   : 8521, 48% 
+(mean count < 5)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -243,13 +243,13 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 17646 with nonzero total read count
+out of 17314 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 268, 1.5% 
-LFC < 0 (down)   : 327, 1.9% 
-outliers [1]     : 5197, 29% 
-low counts [2]   : 8371, 47% 
-(mean count < 5)
+LFC > 0 (up)     : 273, 1.6% 
+LFC < 0 (down)   : 468, 2.7% 
+outliers [1]     : 4803, 28% 
+low counts [2]   : 7568, 44% 
+(mean count < 3)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -257,5 +257,5 @@ low counts [2]   : 8371, 47%
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, ".rds"))
 > 
 > proc.time()
-   user  system elapsed 
-797.826  70.680 871.390 
+    user   system  elapsed 
+ 852.849  179.665 1035.659 

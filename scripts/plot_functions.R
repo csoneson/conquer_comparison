@@ -9,13 +9,14 @@ suppressPackageStartupMessages(library(rjson))
 suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(UpSetR))
 source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
 
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
-plot_upset_with_reordering <- function(cobraplot, nintersects) {
+plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
   ## Reorder so that the first and last columns have something significant
   m <- min(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m)) 
@@ -23,7 +24,7 @@ plot_upset_with_reordering <- function(cobraplot, nintersects) {
   m <- max(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m))
     overlap(cobraplot) <- overlap(cobraplot)[, c(setdiff(1:ncol(overlap(cobraplot)), m), m)]
-  tryCatch(plot_upset(cobraplot, order.by = "freq", decreasing = TRUE, nintersects = nintersects),
+  tryCatch(plot_upset(cobraplot, order.by = "freq", decreasing = TRUE, nintersects = nintersects, ...),
            error = function(e) NULL)
 }
 
@@ -43,76 +44,52 @@ plot_results_relativetruth_all <- function(cobra, colvec) {
   fdr_all <- list()
   fpr_all <- list()
   tpr_all <- list()
-  maxn <- max(as.numeric(get_nsamples(colnames(padj(cobra)))))
-  for (m in unique(get_method(colnames(padj(cobra))))) {
-    truth <- data.frame(status = as.numeric(padj(cobra)[, paste0(m, ".", maxn, ".1")] <= 0.05),
-                        row.names = rownames(padj(cobra)),
-                        stringsAsFactors = FALSE)
-
-    cobrarel <- COBRAData(truth = truth, object_to_extend = cobra)
-    
-    cobrares <- calculate_performance(cobrarel, onlyshared = FALSE, 
+  for (m in gsub("\\.truth", "", grep("\\.truth", colnames(truth(cobra)), value = TRUE))[1:2]) {
+    cobrares <- calculate_performance(cobra, onlyshared = FALSE, 
                                       aspects = c("tpr", "fpr", "fdrtpr"), 
-                                      binary_truth = "status", 
+                                      binary_truth = paste0(m, ".truth"), 
                                       thrs = 0.05)
     fdr_all[[m]] <- data.frame(fdrtpr(cobrares)[, c("method", "FDR")], 
-                               truth = paste0(m, " (", sum(truth(cobrarel)$status, na.rm = TRUE), ")"))
+                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                                                           na.rm = TRUE), ")"))
     fpr_all[[m]] <- data.frame(fpr(cobrares)[, c("method", "FPR")], 
-                               truth = paste0(m, " (", sum(truth(cobrarel)$status, na.rm = TRUE), ")"))
+                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                                                           na.rm = TRUE), ")"))
     tpr_all[[m]] <- data.frame(tpr(cobrares)[, c("method", "TPR")], 
-                               truth = paste0(m, " (", sum(truth(cobrarel)$status, na.rm = TRUE), ")"))
+                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                                                           na.rm = TRUE), ")"))
   }
-  fdr <- do.call(rbind, fdr_all) %>% dcast(truth ~ method, value.var = "FDR") %>% as.data.frame()
-  fpr <- do.call(rbind, fpr_all) %>% dcast(truth ~ method, value.var = "FPR") %>% as.data.frame()
-  tpr <- do.call(rbind, tpr_all) %>% dcast(truth ~ method, value.var = "TPR") %>% as.data.frame()
-  rownames(fdr) <- fdr$truth
-  fdr$truth <- NULL
-  fdr <- fdr[order(rownames(fdr)), ]
-  rownames(fpr) <- fpr$truth
-  fpr$truth <- NULL
-  fpr <- fpr[order(rownames(fpr)), ]
-  rownames(tpr) <- tpr$truth
-  tpr$truth <- NULL
-  tpr <- tpr[order(rownames(tpr)), ]
+  RES <- list(fdr = do.call(rbind, fdr_all) %>% dcast(truth ~ method, value.var = "FDR") %>% as.data.frame(),
+              fpr = do.call(rbind, fpr_all) %>% dcast(truth ~ method, value.var = "FPR") %>% as.data.frame(),
+              tpr = do.call(rbind, tpr_all) %>% dcast(truth ~ method, value.var = "TPR") %>% as.data.frame())
+  RES <- lapply(RES, function(tb) {
+    rownames(tb) <- tb$truth
+    tb$truth <- NULL
+    tb[order(rownames(tb)), ]
+  })
   
   ttmp <- unique(as.numeric(get_nsamples(colnames(padj(cobra)))))
   ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE))
   for (m in ttmp) {
     for (k in unique(as.numeric(get_repl(colnames(padj(cobra)))))) {
-      fdrs <- get_nsamples(colnames(fdr)) == m & get_repl(colnames(fdr)) == k
-      if (any(fdrs))
-        pheatmap(fdr[, fdrs], 
-                 cluster_rows = FALSE, cluster_cols = FALSE, main = "FDR", display_numbers = TRUE,
-                 annotation_col = data.frame(method = colnames(fdr[, fdrs]), 
-                                             row.names = colnames(fdr[, fdrs])), 
-                 annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
-                                                                                    ".", m, ".", k))),
-                 annotation_legend = FALSE, annotation_names_col = FALSE)
-      
-      fprs <- get_nsamples(colnames(fpr)) == m & get_repl(colnames(fpr)) == k
-      if (any(fprs))
-        pheatmap(fpr[, fprs], 
-                 cluster_rows = FALSE, cluster_cols = FALSE, main = "FPR", display_numbers = TRUE,
-                 annotation_col = data.frame(method = colnames(fpr[, fprs]), 
-                                             row.names = colnames(fpr[, fprs])), 
-                 annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
-                                                                                    ".", m, ".", k))),
-                 annotation_legend = FALSE, annotation_names_col = FALSE)
-      
-      tprs <- get_nsamples(colnames(tpr)) == m & get_repl(colnames(tpr)) == k
-      if (any(tprs))
-        pheatmap(tpr[, tprs], 
-                 cluster_rows = FALSE, cluster_cols = FALSE, main = "TPR", display_numbers = TRUE,
-                 annotation_col = data.frame(method = colnames(tpr[, tprs]), 
-                                             row.names = colnames(tpr[, tprs])), 
-                 annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
-                                                                                    ".", m, ".", k))),
-                 annotation_legend = FALSE, annotation_names_col = FALSE)
+      for (tb in names(RES)) {
+        tbt <- RES[[tb]]
+        tbs <- get_nsamples(colnames(tbt)) == m & get_repl(colnames(tbt)) == k
+        if (any(tbs))
+          pheatmap(tbt[, tbs], 
+                   cluster_rows = FALSE, cluster_cols = FALSE, 
+                   main = paste0(toupper(tb), ", all method truths (rows)"), display_numbers = TRUE,
+                   annotation_col = data.frame(method = colnames(tbt[, tbs]), 
+                                               row.names = colnames(tbt[, tbs])), 
+                   annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
+                                                                                      ".", m, ".", k))),
+                   annotation_legend = FALSE, annotation_names_col = FALSE)
+      }
     }
   }
 }
 
-plot_results_relativetruth <- function(cobra, colvec) {
+plot_ks <- function(cobra, colvec) {
   ## For each method with p-values, calculate p-value from K-S test for uniformity
   pvs <- pval(cobra)
   ksp <- apply(pvs, 2, function(x) ks.test(x = x, y = punif, min = 0, max = 1)$p.value)
@@ -135,17 +112,39 @@ plot_results_relativetruth <- function(cobra, colvec) {
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
             ggtitle(paste0(i, " samples per condition")))
   }
+}
 
+plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
+  cobraplot <- 
+    prepare_data_for_plot(cobrares, keepmethods = keepmethods, colorscheme = colvec)
+  
+  ## Modify method column so that all replicates with the same number of samples have the same name
+  tpr(cobraplot) <- tpr(cobraplot) %>% 
+    dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
+  fpr(cobraplot) <- fpr(cobraplot) %>% 
+    dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
+  if (type == "method") {
+    tmpvec <- colvec[1:length(unique(tpr(cobraplot)$method))]
+    names(tmpvec) <- unique(tpr(cobraplot)$method)
+  } else if (type == "number") {
+    tmpvec <- colvec[sapply(strsplit(unique(tpr(cobraplot)$method), "\\."), .subset, 1)]
+    names(tmpvec) <- paste0(names(tmpvec), ".", nsamp)
+  }
+  plotcolors(cobraplot) <- tmpvec
+  print(plot_fpr(cobraplot, xaxisrange = c(0, min(1.1*max(fpr(cobrares)$FPR), 1))) + 
+          ggtitle("Truth defined by each method"))
+  print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
+}
+
+plot_results_relativetruth <- function(cobra, colvec) {
   ## Generate a new cobradata object where the truth of each method is 
   ## considered to be the results obtained with the largest sample size.
-  maxn <- max(as.numeric(sapply(strsplit(colnames(padj(cobra)), "\\."), .subset, 2)))
   tmp <- melt(as.matrix(padj(cobra))) %>% 
     tidyr::separate(Var2, into = c("method", "nsamples", "repl"), sep = "\\.", remove = FALSE) %>%
     dplyr::mutate(Var1 = paste0(method, ".", Var1)) 
-  truth <- tmp %>%
-    dplyr::filter(nsamples == maxn) %>% 
-    dplyr::mutate(status = as.numeric(value < 0.05)) %>%
-    dplyr::rename(gene = Var1) %>% 
+  truth <- melt(as.matrix(truth(cobra)[, grep("\\.truth", colnames(truth(cobra)))])) %>%
+    dplyr::mutate(gene = paste(gsub("\\.truth", "", Var2), Var1, sep = ".")) %>%
+    dplyr::mutate(status = value) %>%
     dplyr::select(gene, status)
   rownames(truth) <- truth$gene
   truth$gene <- NULL
@@ -167,157 +166,105 @@ plot_results_relativetruth <- function(cobra, colvec) {
       names(c2) <- paste0(names(c2), ".", m, ".", k)
       km <- basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m & 
                                     get_repl(basemethods(cobrares)) == k]
-      cobraplot <- 
-        prepare_data_for_plot(cobrares, 
-                              keepmethods = km, 
-                              colorscheme = c2[km])
+      cobraplot <- prepare_data_for_plot(cobrares, keepmethods = km, colorscheme = c2[km])
       
-      print(plot_fdrtprcurve(cobraplot, plottype = "curve"))
-      print(plot_roc(cobraplot))
+      print(plot_fdrtprcurve(cobraplot, plottype = "curve") + ggtitle("Truth defined by each method"))
+      print(plot_roc(cobraplot) + ggtitle("Truth defined by each method"))
     }
   }
   
   ## Extract subset
   for (m in unique(get_method(basemethods(cobrares)))) {
-    cobraplot <- 
-      prepare_data_for_plot(cobrares, 
-                            keepmethods = basemethods(cobrares)[get_method(basemethods(cobrares)) == m], 
-                            colorscheme = colvec)
-    
-    ## Modify method column so that all replicates with the same number of samples have the same name
-    tpr(cobraplot) <- tpr(cobraplot) %>% 
-      dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-    fpr(cobraplot) <- fpr(cobraplot) %>% 
-      dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-    tmpvec <- colvec[1:length(unique(tpr(cobraplot)$method))]
-    names(tmpvec) <- unique(tpr(cobraplot)$method)
-    plotcolors(cobraplot) <- tmpvec
-    print(plot_fpr(cobraplot, xaxisrange = c(0, min(1.1*max(fpr(cobrares)$FPR), 1))))
-    print(plot_tpr(cobraplot))
+    plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_method(basemethods(cobrares)) == m],
+                    type = "method", colvec = colvec)
   }
   
   for (m in unique(get_nsamples(basemethods(cobrares)))) {
-    cobraplot <- 
-      prepare_data_for_plot(cobrares, 
-                            keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m], 
-                            colorscheme = colvec)
-    
-    ## Modify method column so that all replicates with the same number of samples have the same name
-    tpr(cobraplot) <- tpr(cobraplot) %>% 
-      dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-    fpr(cobraplot) <- fpr(cobraplot) %>% 
-      dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-    tmpvec <- colvec[sapply(strsplit(unique(tpr(cobraplot)$method), "\\."), .subset, 1)]
-    names(tmpvec) <- paste0(names(tmpvec), ".", m)
-    plotcolors(cobraplot) <- tmpvec
-    print(plot_fpr(cobraplot, xaxisrange = c(0, min(1.1*max(fpr(cobrares)$FPR), 1))))
-    print(plot_tpr(cobraplot))
+    plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
+                    type = "number", colvec = colvec, nsamp = m)
   }
 }
 
-plot_results_characterization <- function(cobra, config, colvec) {
-  ## TODO: Add some measure of outliers/non-homogeneity/multimodality?
-  config <- fromJSON(file = config)
-  mae <- readRDS(config$mae)
-  groupid <- config$groupid
-  mae <- clean_mae(mae = mae, groupid = groupid)
-  
-  subsets <- readRDS(config$subfile)
-  keep_samples <- subsets$keep_samples
-  imposed_condition <- subsets$out_condition
-  
-  sizes <- names(keep_samples)
-  for (sz in sizes) {
-    for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
-      message(sz, ".", i)
-      L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
-      pvals <- pval(cobra)[, grep(paste0("\\.", sz, "\\.", i, "$"), colnames(pval(cobra)))]
-      pvals[is.na(pvals)] <- 1
-      padjs <- padj(cobra)[, grep(paste0("\\.", sz, "\\.", i, "$"), colnames(padj(cobra)))]
-      padjs[is.na(padjs)] <- 1
-      avecount <- data.frame(avecount = apply(L$count, 1, mean))
-      avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean))
-      fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
-                             fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
-                                               1, function(x) mean(x == 0)),
-                             fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
-                                               1, function(x) mean(x == 0)))
-      fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
-      vartpm <- data.frame(vartpm = apply(L$tpm, 1, var))
-      df2 <- merge(merge(merge(merge(melt(as.matrix(padjs)), avetpm, by.x = "Var1", by.y = 0, all = TRUE),
-                              avecount, by.x = "Var1", by.y = 0, all = TRUE),
-                        fraczero, by.x = "Var1", by.y = 0, all = TRUE),
-                  vartpm, by.x = "Var1", by.y = 0, all = TRUE)
-      df2 <- subset(df2, rowSums(is.na(df2)) == 0)
-      df2$sign <- df2$value <= 0.05
-      df2$Var2 <- factor(df2$Var2, levels = sort(levels(df2$Var2)))
-      col_reorder <- colvec
-      names(col_reorder) <- paste0(names(col_reorder), ".", sz, ".", i)
-      for (y in c("avetpm", "avecount", "vartpm")) {
-        print(ggplot(df2, aes_string(x = "Var2", y = paste0("log2(", y, ")"), 
-                                     fill = "Var2", dodge = "sign", alpha = "sign")) + 
-                geom_boxplot() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
-                scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
-                theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
-                guides(alpha = guide_legend(override.aes = 
-                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                                   colour = NA))) + 
-                stat_summary(fun.data = function(x) {return(c(y = log2(max(df2[, y])),
-                                                              label = length(x)))}, 
-                             geom = "text", alpha = 1, size = 2, vjust = -1, 
-                             position = position_dodge(width = 0.75)) + 
-                ylab(expression(paste0(log[2], "(", ifelse(y == "avetpm", "average TPM)", 
-                                                           ifelse(y == "avecount", "average count)", 
-                                                                  "variance(TPM))"))))))
-        # print(ggplot(df2, aes_string(x = "Var2", y = paste0("log2(", y, ")"), 
-        #                              fill = "Var2", dodge = "sign", alpha = "sign")) + 
-        #         geom_boxplot(outlier.size = 0) + theme_bw() + 
-        #         scale_fill_manual(values = col_reorder, name = "") + 
-        #         scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
-        #         geom_point(position = position_jitterdodge(), alpha = 0.2, size = 0.1) + 
-        #         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
-        #         guides(alpha = guide_legend(override.aes = 
-        #                                       list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-        #                                            colour = NA))))
-        print(ggplot(df2, aes_string(x = paste0("log2(", y, ")"), fill = "Var2", alpha = "sign")) + 
-                geom_density() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
-                scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + facet_wrap(~Var2) + 
-                guides(alpha = guide_legend(override.aes = 
-                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                                   colour = NA))) + 
-                xlab(expression(paste0(log[2], "(", ifelse(y == "avetpm", "average TPM)", 
-                                                           ifelse(y == "avecount", "average count)", 
-                                                                  "variance(TPM))"))))))
-      }
-      for (y in c("fraczero", "fraczerodiff")) {
-        print(ggplot(df2, aes_string(x = "Var2", y = y, fill = "Var2", dodge = "sign", alpha = "sign")) + 
-                geom_boxplot() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
-                scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
-                theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
-                guides(alpha = guide_legend(override.aes = 
-                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                                   colour = NA))) + 
-                stat_summary(fun.data = function(x) {return(c(y = max(df2[, y]), label = length(x)))}, 
-                             geom = "text", alpha = 1, size = 2, vjust = -1, 
-                             position = position_dodge(width = 0.75)) + 
-                ylab(ifelse(y == "fraczero", "Zero fraction", "Difference in zero fraction")))
-        # print(ggplot(df2, aes_string(x = "Var2", y = y, fill = "Var2", dodge = "sign", alpha = "sign")) + 
-        #         geom_boxplot(outlier.size = 0) + theme_bw() + 
-        #         scale_fill_manual(values = col_reorder, name = "") + 
-        #         scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
-        #         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
-        #         geom_point(position = position_jitterdodge(), alpha = 0.2, size = 0.1) + 
-        #         guides(alpha = guide_legend(override.aes = 
-        #                                       list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-        #                                            colour = NA))))
-        print(ggplot(df2, aes_string(x = y, fill = "Var2", alpha = "sign")) + 
-                geom_density() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
-                scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + facet_wrap(~Var2) + 
-                guides(alpha = guide_legend(override.aes = 
-                                              list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                                   colour = NA))) + 
-                xlab(ifelse(y == "fraczero", "Zero fraction", "Difference in zero fraction")))
-      }
+plot_results_characterization <- function(cobra, colvec) {
+  sizes_nsamples <- gsub("avetpm.", "", grep("avetpm.", colnames(truth(cobra)), value = TRUE))
+  for (szi in sizes_nsamples) {
+    message(szi)
+    pvals <- pval(cobra)[, grep(paste0("\\.", szi, "$"), colnames(pval(cobra)))]
+    pvals[is.na(pvals)] <- 1
+    padjs <- padj(cobra)[, grep(paste0("\\.", szi, "$"), colnames(padj(cobra)))]
+    padjs[is.na(padjs)] <- 1
+    tth <- truth(cobra)[, grep(paste0("\\.", szi, "$"), colnames(truth(cobra)))]
+    colnames(tth) <- gsub(paste0("\\.", szi), "", colnames(tth))
+
+    ## Number of methods calling each variable significant
+    tmp1 <- rowSums(padjs[match(rownames(tth), rownames(padjs)), ] <= 0.05)
+    tth$nbr_methods <- tmp1[match(rownames(tth), names(tmp1))]
+    
+    df2 <- merge(melt(as.matrix(padjs)), tth, by.x = "Var1", by.y = 0, all = TRUE)
+    df2 <- subset(df2, rowSums(is.na(df2)) == 0)
+    df2$sign <- df2$value <= 0.05
+    df2$Var2 <- factor(df2$Var2, levels = sort(levels(df2$Var2)))
+    col_reorder <- colvec
+    names(col_reorder) <- paste0(names(col_reorder), ".", szi)
+    for (y in c("avetpm", "avecount", "vartpm")) {
+      print(ggplot(df2, aes_string(x = "Var2", y = paste0("log2(", y, ")"), 
+                                   fill = "Var2", dodge = "sign", alpha = "sign")) + 
+              geom_boxplot() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
+              scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+              guides(alpha = guide_legend(override.aes = 
+                                            list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                 colour = NA))) + 
+              stat_summary(fun.data = function(x) {return(c(y = log2(max(df2[, y])),
+                                                            label = length(x)))}, 
+                           geom = "text", alpha = 1, size = 2, vjust = -1, 
+                           position = position_dodge(width = 0.75)) + 
+              ylab(paste0(expression(log[2]), "(", ifelse(y == "avetpm", "average TPM)", 
+                                                          ifelse(y == "avecount", "average count)", 
+                                                                 "variance(TPM))")))))
+      print(ggplot(df2, aes_string(x = paste0("log2(", y, ")"), fill = "Var2", alpha = "sign")) + 
+              geom_density() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
+              scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
+              facet_wrap(~Var2, scales = "free_y") + 
+              guides(alpha = guide_legend(override.aes = 
+                                            list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                 colour = NA))) + 
+              xlab(paste0(expression(log[2]), "(", ifelse(y == "avetpm", "average TPM)", 
+                                                          ifelse(y == "avecount", "average count)", 
+                                                                 "variance(TPM))")))))
+      print(ggplot(tth, aes_string(x = "nbr_methods", y = paste0("log2(", y, ")"), 
+                                   group = "nbr_methods")) + 
+              geom_boxplot() + theme_bw() + ylab(paste0(expression(log[2]), "(",
+                                                        ifelse(y == "avetpm", "average TPM)", 
+                                                               ifelse(y == "avecount", "average count)",
+                                                                      "variance(TPM))")))) + 
+              xlab("Number of methods calling gene significant"))
+    }
+    for (y in c("fraczero", "fraczerodiff")) {
+      print(ggplot(df2, aes_string(x = "Var2", y = y, fill = "Var2", dodge = "sign", alpha = "sign")) + 
+              geom_boxplot() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
+              scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+              guides(alpha = guide_legend(override.aes = 
+                                            list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                 colour = NA))) + 
+              stat_summary(fun.data = function(x) {return(c(y = max(df2[, y]), label = length(x)))}, 
+                           geom = "text", alpha = 1, size = 2, vjust = -1, 
+                           position = position_dodge(width = 0.75)) + 
+              ylab(ifelse(y == "fraczero", "Zero fraction", "Difference in zero fraction")))
+      print(ggplot(df2, aes_string(x = y, fill = "Var2", alpha = "sign")) + 
+              geom_density() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
+              scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
+              facet_wrap(~Var2, scales = "free_y") + 
+              guides(alpha = guide_legend(override.aes = 
+                                            list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
+                                                 colour = NA))) + 
+              xlab(ifelse(y == "fraczero", "Zero fraction", "Difference in zero fraction")))
+      print(ggplot(tth, aes_string(x = "nbr_methods", y = y, 
+                                   group = "nbr_methods")) + 
+              geom_boxplot() + theme_bw() + ylab(ifelse(y == "fraczero", "Zero fraction", 
+                                                        "Difference in zero fraction")) + 
+              xlab("Number of methods calling gene significant"))
     }
   }
 }
@@ -436,7 +383,8 @@ plot_results <- function(cobra, colvec) {
     }
   }
   df$nmethods <- as.numeric(df$nmethods)
-  df$nsamples <- factor(df$nsamples, levels = as.character(unique(sort(as.numeric(as.character(df$nsamples))))))
+  df$nsamples <- factor(df$nsamples, 
+                        levels = as.character(unique(sort(as.numeric(as.character(df$nsamples))))))
   ## Actual number
   print(
     df %>% 
@@ -570,10 +518,6 @@ plot_results <- function(cobra, colvec) {
       keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
                                              function(m) paste0(m, ".", all_replicates))), 
                                rownames(spdist))
-      # keepmethods <- intersect(c(paste0(all_methods, ".", sz, ".1"),
-      #                            paste0(all_methods, ".", sz, ".2"),
-      #                            paste0(all_methods, ".", sz, ".3")),
-      #                          rownames(spdist))
       if (length(keepmethods) > 0) {
         mdssub <- cmdscale(spdist[keepmethods, keepmethods], k = 2, eig = TRUE)
         mdssubx <- data.frame(mdssub$points)
@@ -616,10 +560,6 @@ plot_results <- function(cobra, colvec) {
       keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
                                              function(m) paste0(m, ".", all_replicates))), 
                                rownames(spdist))
-      # keepmethods <- intersect(c(paste0(all_methods, ".", sz, ".1"),
-      #                            paste0(all_methods, ".", sz, ".2"),
-      #                            paste0(all_methods, ".", sz, ".3")),
-      #                          rownames(spdist))
       if (length(keepmethods) > 0) {
         hcl <- hclust(d = as.dist(spdist[keepmethods, keepmethods]), method = "complete")
         plot(hcl)
@@ -632,13 +572,8 @@ plot_results <- function(cobra, colvec) {
                  annotation_colors = 
                    list(method = structure(rep(colvec, length(all_replicates)), 
                                            names = unlist(lapply(paste0(names(colvec), ".", sz), 
-                                                                 function(m) paste0(m, ".", all_replicates))))),
-                 # annotation_colors = list(method = c(structure(colvec, names = paste0(names(colvec),
-                 #                                                                    ".", sz, ".1")),
-                 #                                     structure(colvec, names = paste0(names(colvec),
-                 #                                                                      ".", sz, ".2")),
-                 #                                     structure(colvec, names = paste0(names(colvec),
-                 #                                                                      ".", sz, ".3")))),
+                                                                 function(m) paste0(m, ".", 
+                                                                                    all_replicates))))),
                  annotation_legend = FALSE, annotation_names_col = FALSE,
                  annotation_row = data.frame(method = rownames(hclspd), 
                                              row.names = rownames(hclspd)),
@@ -654,7 +589,82 @@ plot_results <- function(cobra, colvec) {
         km <- paste0(all_methods, ".", sz, ".", j)
         cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
                                      colorscheme = c2[km], incloverall = FALSE)
-        plot_upset_with_reordering(cpl, nintersects = 25)
+        if (ncol(overlap(cpl)) > 0) {
+          plot_upset_with_reordering(cpl, nintersects = 25,
+                                     set.metadata = list(data = data.frame(sets = km,
+                                                                           mth = km,
+                                                                           row.names = km),
+                                                         plots = list(list(type = "matrix_rows",
+                                                                           column = "mth",
+                                                                           colors = c2[km], alpha = 0.25))))
+        }
+      }
+    }
+    
+    ## Include attribute plot    
+    for (sz in all_sizes) {
+      for (j in all_replicates) {
+        c2 <- colvec
+        names(c2) <- paste0(names(c2), ".", sz, ".", j)
+        km <- paste0(all_methods, ".", sz, ".", j)
+        cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
+                                     colorscheme = c2[km], incloverall = FALSE)
+        if (ncol(overlap(cpl)) > 0) {
+          overlap_table <- overlap(cpl)
+          m <- min(which(colSums(overlap_table) > 0))
+          if (is.finite(m)) 
+            overlap_table <- overlap_table[, c(m, setdiff(1:ncol(overlap_table), m))]
+          m <- max(which(colSums(overlap_table) > 0))
+          if (is.finite(m))
+            overlap_table <- overlap_table[, c(setdiff(1:ncol(overlap_table), m), m)]
+          plotorder <- colnames(overlap_table)[order(colSums(overlap_table), 
+                                                     seq(1:ncol(overlap_table)),
+                                                     decreasing = "true")]
+          nsets <- ncol(overlap_table)
+          nintersects <- 25
+          sets.bar.color <- plotcolors(cpl)[plotorder]
+          overlap_table$fraczero <- truth(cobra)[match(rownames(overlap_table), 
+                                                       rownames(truth(cobra))), 
+                                                 paste0("fraczero.", sz, ".", j)]
+          upset(overlap_table, nsets = nsets, nintersects = nintersects, 
+                sets.bar.color = sets.bar.color, 
+                order.by = "freq", decreasing = TRUE, boxplot.summary = "fraczero",
+                set.metadata = list(data = data.frame(sets = km, 
+                                                      mth = km,
+                                                      row.names = km),
+                                    plots = list(list(type = "matrix_rows", 
+                                                      column = "mth", 
+                                                      colors = c2[km], alpha = 0.25))))
+        }
+      }
+    }
+    
+    for (sz in all_sizes) {
+      for (j in all_replicates) {
+        c2 <- colvec
+        names(c2) <- paste0(names(c2), ".", sz, ".", j)
+        km <- paste0(all_methods, ".", sz, ".", j)
+        cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
+                                     colorscheme = c2[km], incloverall = FALSE)
+        if (ncol(overlap(cpl)) > 0) {
+          for (k in all_methods) {
+            tmp_cp <- as(cpl, "COBRAPerformance")
+            overlap(tmp_cp) <- overlap(tmp_cp)[overlap(tmp_cp)[, paste0(k, ".", sz, ".", j)] == 0 & 
+                                                 rowSums(overlap(tmp_cp)) > 0, ]
+            km <- paste0(setdiff(all_methods, k), ".", sz, ".", j)
+            cpl1 <- prepare_data_for_plot(tmp_cp, keepmethods = km, 
+                                          colorscheme = c2[km], incloverall = FALSE)
+            plot_upset_with_reordering(cpl1, nintersects = 25, 
+                                       mainbar.y.label = paste0("Intersection Size (only genes ", 
+                                                                "not called DE by ", k, ")"), 
+                                       set.metadata = list(data = data.frame(sets = km, 
+                                                                             mth = km,
+                                                                             row.names = km),
+                                                           plots = list(list(type = "matrix_rows", 
+                                                                             column = "mth", 
+                                                                             colors = c2[km], alpha = 0.25))))
+          }
+        }
       }
     }
   }
@@ -664,13 +674,17 @@ plot_results <- function(cobra, colvec) {
       km <- intersect(unlist(lapply(paste0(mth, ".", all_sizes), 
                                     function(m) paste0(m, ".", all_replicates))), 
                       basemethods(cobraperf))
-      # km <- intersect(c(paste0(mth, ".", all_sizes, ".1"),
-      #                   paste0(mth, ".", all_sizes, ".2"),
-      #                   paste0(mth, ".", all_sizes, ".3")), basemethods(cobraperf))
       cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
                                    colorscheme = structure(rep(c2, length(km)), names = km), 
                                    incloverall = FALSE)
-      plot_upset_with_reordering(cpl, nintersects = 25)
+      if (ncol(overlap(cpl)) > 0)
+        plot_upset_with_reordering(cpl, nintersects = 25, 
+                                   set.metadata = list(data = data.frame(sets = km, 
+                                                                         mth = km,
+                                                                         row.names = km),
+                                                       plots = list(list(type = "matrix_rows", 
+                                                                         column = "mth", 
+                                                                         colors = c2[km], alpha = 0.25))))
     }
   }
   if (max_nreps > 1) {
@@ -682,7 +696,15 @@ plot_results <- function(cobra, colvec) {
           cpl <- prepare_data_for_plot(cobraperf, keepmethods = tmpmth, 
                                        colorscheme = structure(rep(c2, length(tmpmth)), names = tmpmth), 
                                        incloverall = FALSE)
-          plot_upset_with_reordering(cpl, nintersects = 25)
+          if (ncol(overlap(cpl)) > 0)
+            plot_upset_with_reordering(cpl, nintersects = 25, 
+                                       set.metadata = list(data = data.frame(sets = tmpmth, 
+                                                                             mth = tmpmth,
+                                                                             row.names = tmpmth),
+                                                           plots = list(list(type = "matrix_rows", 
+                                                                             column = "mth", 
+                                                                             colors = c2[tmpmth], 
+                                                                             alpha = 0.25))))
         }
       }
     }

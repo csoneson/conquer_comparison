@@ -108,12 +108,12 @@ fitting model and testing
 estimating dispersions
 fitting model and testing
 
-out of 22214 with nonzero total read count
+out of 22192 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 101, 0.45% 
-LFC < 0 (down)   : 183, 0.82% 
+LFC > 0 (up)     : 135, 0.61% 
+LFC < 0 (down)   : 241, 1.1% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 10477, 47% 
+low counts [2]   : 10917, 49% 
 (mean count < 1)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -127,18 +127,18 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 10380 genes
+-- replacing outliers and refitting for 9819 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 20018 with nonzero total read count
+out of 20007 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 116, 0.58% 
-LFC < 0 (down)   : 107, 0.53% 
+LFC > 0 (up)     : 259, 1.3% 
+LFC < 0 (down)   : 227, 1.1% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 11608, 58% 
+low counts [2]   : 11546, 58% 
 (mean count < 3)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -152,19 +152,19 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 10234 genes
+-- replacing outliers and refitting for 10098 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 20039 with nonzero total read count
+out of 20104 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 203, 1% 
-LFC < 0 (down)   : 146, 0.73% 
+LFC > 0 (up)     : 116, 0.58% 
+LFC < 0 (down)   : 174, 0.87% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 11625, 58% 
-(mean count < 3)
+low counts [2]   : 12013, 60% 
+(mean count < 4)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -177,19 +177,19 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 9866 genes
+-- replacing outliers and refitting for 10101 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 20138 with nonzero total read count
+out of 20122 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 231, 1.1% 
-LFC < 0 (down)   : 140, 0.7% 
+LFC > 0 (up)     : 103, 0.51% 
+LFC < 0 (down)   : 165, 0.82% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 11213, 56% 
-(mean count < 2)
+low counts [2]   : 12313, 61% 
+(mean count < 4)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -203,12 +203,12 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 19198 with nonzero total read count
+out of 19151 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 263, 1.4% 
-LFC < 0 (down)   : 165, 0.86% 
-outliers [1]     : 5064, 26% 
-low counts [2]   : 6814, 35% 
+LFC > 0 (up)     : 226, 1.2% 
+LFC < 0 (down)   : 187, 0.98% 
+outliers [1]     : 5049, 26% 
+low counts [2]   : 6903, 36% 
 (mean count < 8)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -223,13 +223,13 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 18607 with nonzero total read count
+out of 19386 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 144, 0.77% 
-LFC < 0 (down)   : 318, 1.7% 
-outliers [1]     : 5240, 28% 
-low counts [2]   : 6965, 37% 
-(mean count < 7)
+LFC > 0 (up)     : 112, 0.58% 
+LFC < 0 (down)   : 235, 1.2% 
+outliers [1]     : 4929, 25% 
+low counts [2]   : 6945, 36% 
+(mean count < 8)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
@@ -243,12 +243,12 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 19149 with nonzero total read count
+out of 19146 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 204, 1.1% 
-LFC < 0 (down)   : 115, 0.6% 
-outliers [1]     : 5094, 27% 
-low counts [2]   : 6873, 36% 
+LFC > 0 (up)     : 391, 2% 
+LFC < 0 (down)   : 139, 0.73% 
+outliers [1]     : 4945, 26% 
+low counts [2]   : 6935, 36% 
 (mean count < 7)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
@@ -258,4 +258,4 @@ low counts [2]   : 6873, 36%
 > 
 > proc.time()
    user  system elapsed 
-725.035  11.419 737.905 
+759.533 185.547 947.356 
