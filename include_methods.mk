@@ -5,3 +5,6 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 MTc := $(subst $(space),$(comma),$(MT))
+
+FILT := TPM_1_25p
+FILTc := $(subst $(space),$(comma),$(FILT))

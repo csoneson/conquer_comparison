@@ -926,8 +926,8 @@ Setting LC_CTYPE failed, using "C"
 > 
 > cobra <- calculate_adjp(cobra)
 > 
-> pval(cobra)[is.na(pval(cobra))] <- 1
-> padj(cobra)[is.na(padj(cobra))] <- 1
+> # pval(cobra)[is.na(pval(cobra))] <- 1
+> # padj(cobra)[is.na(padj(cobra))] <- 1
 > 
 > ## Add gene characteristics to the COBRA object
 > config <- fromJSON(file = config_file)
@@ -989,9 +989,9 @@ Setting LC_CTYPE failed, using "C"
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 13710 new features and 87 new annotations added to truth table
 > 
-> pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14)
+> pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14, height = 9)
 > plot_results_relativetruth(cobra, colvec = cols)
-There were 50 or more warnings (use warnings() to see the first 50)
+There were 33 warnings (use warnings() to see them)
 > plot_results_relativetruth_all(cobra, colvec = cols)
 > plot_results_characterization(cobra, colvec = cols)
 58.1
@@ -1004,9 +1004,12 @@ There were 50 or more warnings (use warnings() to see the first 50)
 12.1
 12.2
 12.3
+There were 45 warnings (use warnings() to see them)
 > plot_results(cobra, colvec = cols)
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+There were 50 or more warnings (use warnings() to see the first 50)
+> plot_ks(cobra, colvec = cols)
 There were 50 or more warnings (use warnings() to see the first 50)
 > plot_timing(timings, colvec = cols)
 > dev.off()
@@ -1059,4 +1062,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1285.856  161.118 1452.654 
+1304.212   50.060 1357.041 

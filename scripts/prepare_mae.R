@@ -17,7 +17,7 @@ clean_mae <- function(mae, groupid) {
   mae2
 }
   
-subset_mae <- function(mae, keep_samples, sz, i, imposed_condition) {
+subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt) {
   s <- keep_samples[[as.character(sz)]][i, ]
   
   ## Subset and filter data matrices
@@ -30,8 +30,29 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition) {
     condt <- structure(as.character(Biobase::pData(mae)[s, groupid]),
                        names = rownames(Biobase::pData(mae)[s, ]))
   }
-  count <- count[rowSums(count) > 0, ]
-  tpm <- tpm[rowSums(tpm) > 0, ]
+  
+  if (filt == "") {
+    count <- count[rowSums(count) > 0, ]
+    tpm <- tpm[rowSums(tpm) > 0, ]
+  } else {
+    filt <- strsplit(filt, "_")[[1]]
+    if (substr(filt[3], nchar(filt[3]), nchar(filt[3])) == "p") {
+      (nbr <- as.numeric(gsub("p", "", filt[3]))/100 * ncol(count))
+    } else {
+      (nbr <- as.numeric(filt[3]))
+    }
+    if (filt[1] == "count") {
+      keep_rows <- rownames(count)[which(rowSums(count > as.numeric(filt[2])) 
+                                         > nbr)]
+    } else if (filt[1] == "TPM") {
+      keep_rows <- rownames(tpm)[which(rowSums(tpm > as.numeric(filt[2])) 
+                                       > nbr)]
+    } else {
+      stop("First element of filt must be 'count' or 'TPM'.")
+    }
+    count <- count[match(keep_rows, rownames(count)), ]
+    tpm <- tpm[match(keep_rows, rownames(tpm)), ]
+  }
   stopifnot(all(names(condt) == colnames(count)))
   stopifnot(all(names(condt) == colnames(tpm)))
   stopifnot(length(unique(condt)) == 2)

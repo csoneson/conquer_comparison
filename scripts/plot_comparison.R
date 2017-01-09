@@ -8,6 +8,7 @@ demethods <- strsplit(demethods, ",")[[1]]
 print(demethods)
 print(dataset)
 print(config_file)
+print(filt)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_functions.R")
 suppressPackageStartupMessages(library(iCOBRA))
@@ -15,13 +16,19 @@ suppressPackageStartupMessages(library(iCOBRA))
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange")
-names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
-                 "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
-                 "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", "MASTtpm")
+if (filt == "") { 
+  exts <- filt
+} else {
+  exts <- paste0("_", filt)
+}
+names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
+                        "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
+                        "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
+                        "MASTtpm"), exts)
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
-                    dataset, "_", demethods, ".rds"))
+                    dataset, "_", demethods, exts, ".rds"))
 file.exists(resfiles)
 cobra <- NULL
 timings <- list()
@@ -51,8 +58,8 @@ for (rf in resfiles) {
 
 cobra <- calculate_adjp(cobra)
 
-pval(cobra)[is.na(pval(cobra))] <- 1
-padj(cobra)[is.na(padj(cobra))] <- 1
+# pval(cobra)[is.na(pval(cobra))] <- 1
+# padj(cobra)[is.na(padj(cobra))] <- 1
 
 ## Add gene characteristics to the COBRA object
 config <- fromJSON(file = config_file)
@@ -69,7 +76,7 @@ truth <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition)
+    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
     avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
@@ -103,7 +110,7 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-pdf(paste0("figures/comparison/", dataset, ".pdf"), width = 14, height = 9)
+pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
 plot_results_relativetruth(cobra, colvec = cols)
 plot_results_relativetruth_all(cobra, colvec = cols)
 plot_results_characterization(cobra, colvec = cols)

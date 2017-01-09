@@ -7,7 +7,8 @@ include include_methods.mk
 .PHONY: all
 
 ## Define the default rule
-all: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach X,$(DS),$X))) 
+all: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach X,$(DS),$X))) \
+$(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y)))) 
 
 ## Make sure no intermediate files are deleted
 .SECONDARY:
@@ -25,12 +26,28 @@ data/UsoskinGSE59739.rds: scripts/generate_Usoskin_mae.R data/Usoskin_External_r
 	$R scripts/generate_Usoskin_mae.R Rout/generate_Usoskin_mae.Rout
 
 ## Define rules for differential expression
+## Without filtering
 define dgerule
 results/$(1)_$(2).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
-	$R "--args config_file='config/$(1).json' demethod='$(2)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2).Rout
+	$R "--args config_file='config/$(1).json' demethod='$(2)' filt=''" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2).Rout
 endef
 $(foreach j,$(MT), $(foreach i,$(DS),$(eval $(call dgerule,$(i),$(j)))))
 
+## With filtering
+define dgerulefilt
+results/$(1)_$(2)_$(3).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
+	$R "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)_$(3).Rout
+endef
+$(foreach k, $(FILT), $(foreach j,$(MT), $(foreach i,$(DS),$(eval $(call dgerulefilt,$(i),$(j),$(k))))))
+
 ## Plots for comparison
-figures/comparison/%.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
-	$R "--args demethods='${MTc}' dataset='$*' config_file='config/$*.json'" scripts/plot_comparison.R Rout/plot_comparison_$*.Rout
+figures/comparison/%.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) \
+scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
+	$R "--args demethods='${MTc}' dataset='$*' config_file='config/$*.json' filt=''" scripts/plot_comparison.R Rout/plot_comparison_$*.Rout
+
+define plotrule
+figures/comparison/$(1)_$(2).pdf: $(addsuffix _$(2).rds, $(addprefix results/$(1)_, $(foreach Y,$(MT),$Y))) \
+scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
+	$R "--args demethods='${MTc}' dataset='$(1)' config_file='config/$(1).json' filt='$(2)'" scripts/plot_comparison.R Rout/plot_comparison_$(1)_$(2).Rout
+endef
+$(foreach k,$(FILT), $(foreach i,$(DS),$(eval $(call plotrule,$(i),$(k)))))

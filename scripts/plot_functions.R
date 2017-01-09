@@ -12,10 +12,16 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(UpSetR))
 source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
 
+#' Convenience functions to extract the first, second and third part of each of
+#' a vector of strings (parts are separated by .)
+#' 
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
+#' Make UpSet plot, making sure that the first and last columns have at least
+#' one significant feature
+#' 
 plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
   ## Reorder so that the first and last columns have something significant
   m <- min(which(colSums(overlap(cobraplot)) > 0))
@@ -28,35 +34,47 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
            error = function(e) NULL)
 }
 
+#' Plot time used for each method
+#' 
 plot_timing <- function(timinglist, colvec) {
   timings <- sapply(timinglist, function(i) i["elapsed"])
   timings <- data.frame(method = names(timings), timing = timings) %>% 
-    tidyr::separate(method, into = c("method", "nsamples", "repl", "elapsed")) %>%
+    tidyr::separate(method, into = c("method", "nsamples", "repl", "elapsed"), sep = "\\.") %>%
     group_by(method, nsamples) %>% dplyr::summarise(timing = median(timing)) %>%
     dplyr::mutate(nsamples = as.numeric(as.character(nsamples)))
   print(timings %>%    
           ggplot(aes(x = nsamples, y = timing, group = method, color = method)) + 
-          geom_line(size = 2.5) + geom_point() + scale_y_log10() + theme_bw() + 
+          geom_line(size = 2.5) + scale_y_log10() + theme_bw() + 
+          xlab("Number of replicates") + 
           scale_color_manual(values = colvec))
 }
 
+#' Calculate "relative performance", using the results for the largest sample 
+#' size as the truth. All performances (FDR, FPR, TPR) are calculated using each
+#' of the methods' results as truth and represented in matrix form
+#' 
 plot_results_relativetruth_all <- function(cobra, colvec) {
   fdr_all <- list()
   fpr_all <- list()
   tpr_all <- list()
-  for (m in gsub("\\.truth", "", grep("\\.truth", colnames(truth(cobra)), value = TRUE))[1:2]) {
-    cobrares <- calculate_performance(cobra, onlyshared = FALSE, 
+  
+  cobratmp <- cobra
+  pval(cobratmp)[is.na(pval(cobratmp))] <- 1
+  padj(cobratmp)[is.na(padj(cobratmp))] <- 1
+  
+  for (m in gsub("\\.truth", "", grep("\\.truth", colnames(truth(cobratmp)), value = TRUE))) {
+    cobrares <- calculate_performance(cobratmp, onlyshared = FALSE, 
                                       aspects = c("tpr", "fpr", "fdrtpr"), 
                                       binary_truth = paste0(m, ".truth"), 
                                       thrs = 0.05)
     fdr_all[[m]] <- data.frame(fdrtpr(cobrares)[, c("method", "FDR")], 
-                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                               truth = paste0(m, " (", sum(truth(cobratmp)[, paste0(m, ".truth")], 
                                                            na.rm = TRUE), ")"))
     fpr_all[[m]] <- data.frame(fpr(cobrares)[, c("method", "FPR")], 
-                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                               truth = paste0(m, " (", sum(truth(cobratmp)[, paste0(m, ".truth")], 
                                                            na.rm = TRUE), ")"))
     tpr_all[[m]] <- data.frame(tpr(cobrares)[, c("method", "TPR")], 
-                               truth = paste0(m, " (", sum(truth(cobra)[, paste0(m, ".truth")], 
+                               truth = paste0(m, " (", sum(truth(cobratmp)[, paste0(m, ".truth")], 
                                                            na.rm = TRUE), ")"))
   }
   RES <- list(fdr = do.call(rbind, fdr_all) %>% dcast(truth ~ method, value.var = "FDR") %>% as.data.frame(),
@@ -68,10 +86,10 @@ plot_results_relativetruth_all <- function(cobra, colvec) {
     tb[order(rownames(tb)), ]
   })
   
-  ttmp <- unique(as.numeric(get_nsamples(colnames(padj(cobra)))))
+  ttmp <- unique(as.numeric(get_nsamples(colnames(padj(cobratmp)))))
   ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE))
   for (m in ttmp) {
-    for (k in unique(as.numeric(get_repl(colnames(padj(cobra)))))) {
+    for (k in unique(as.numeric(get_repl(colnames(padj(cobratmp)))))) {
       for (tb in names(RES)) {
         tbt <- RES[[tb]]
         tbs <- get_nsamples(colnames(tbt)) == m & get_repl(colnames(tbt)) == k
@@ -89,15 +107,21 @@ plot_results_relativetruth_all <- function(cobra, colvec) {
   }
 }
 
+#' Plot p-value and statistic for Kolmogorov-Smirnov test for uniformity of
+#' p-values
+#' 
 plot_ks <- function(cobra, colvec) {
   ## For each method with p-values, calculate p-value from K-S test for uniformity
   pvs <- pval(cobra)
-  ksp <- apply(pvs, 2, function(x) ks.test(x = x, y = punif, min = 0, max = 1)$p.value)
-  kst <- apply(pvs, 2, function(x) ks.test(x = x, y = punif, min = 0, max = 1)$statistic)
+  ksp <- apply(pvs, 2, function(x) ks.test(x = x[!is.na(x)], y = punif, min = 0, max = 1)$p.value)
+  kst <- apply(pvs, 2, function(x) ks.test(x = x[!is.na(x)], y = punif, min = 0, max = 1)$statistic)
   
   print(data.frame(method = names(kst), KSstat = kst, stringsAsFactors = FALSE) %>% 
           tidyr::separate(method, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>%
-          ggplot(aes(x = method, y = KSstat, color = method)) + geom_point(size = 5) + 
+          dplyr::mutate(nbr_samples = 
+                          factor(nbr_samples, 
+                                 levels = as.character(sort(as.numeric(as.character(nbr_samples)))))) %>% 
+          ggplot(aes(x = method, y = KSstat, color = method, shape = nbr_samples)) + geom_point(size = 5) + 
           theme_bw() + xlab("") + ylab("Kolmogorov-Smirnov statistic, p-value distribution") + 
           scale_color_manual(values = colvec, name = "method") + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
@@ -114,6 +138,9 @@ plot_ks <- function(cobra, colvec) {
   }
 }
 
+#' Help function to plot FPR and TPR for a subset of methods (defined either by
+#' method or sample size)
+#' 
 plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
   cobraplot <- 
     prepare_data_for_plot(cobrares, keepmethods = keepmethods, colorscheme = colvec)
@@ -136,13 +163,20 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
   print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
 }
 
+#' Plot performance using each method's results with the largest sample size as
+#' truth
+#' 
 plot_results_relativetruth <- function(cobra, colvec) {
   ## Generate a new cobradata object where the truth of each method is 
   ## considered to be the results obtained with the largest sample size.
-  tmp <- melt(as.matrix(padj(cobra))) %>% 
+  cobratmp <- cobra
+  pval(cobratmp)[is.na(pval(cobratmp))] <- 1
+  padj(cobratmp)[is.na(padj(cobratmp))] <- 1
+  
+  tmp <- melt(as.matrix(padj(cobratmp))) %>% 
     tidyr::separate(Var2, into = c("method", "nsamples", "repl"), sep = "\\.", remove = FALSE) %>%
     dplyr::mutate(Var1 = paste0(method, ".", Var1)) 
-  truth <- melt(as.matrix(truth(cobra)[, grep("\\.truth", colnames(truth(cobra)))])) %>%
+  truth <- melt(as.matrix(truth(cobratmp)[, grep("\\.truth", colnames(truth(cobratmp)))])) %>%
     dplyr::mutate(gene = paste(gsub("\\.truth", "", Var2), Var1, sep = ".")) %>%
     dplyr::mutate(status = value) %>%
     dplyr::select(gene, status)
@@ -185,6 +219,9 @@ plot_results_relativetruth <- function(cobra, colvec) {
   }
 }
 
+#' Plot distribution of gene characteristics for significant/non-significant
+#' genes found with each method
+#' 
 plot_results_characterization <- function(cobra, colvec) {
   sizes_nsamples <- gsub("avetpm.", "", grep("avetpm.", colnames(truth(cobra)), value = TRUE))
   for (szi in sizes_nsamples) {
@@ -270,7 +307,11 @@ plot_results_characterization <- function(cobra, colvec) {
 }
 
 plot_results <- function(cobra, colvec) {
-  cobraperf <- calculate_performance(cobra, aspects = "overlap", 
+  cobratmp <- cobra
+  pval(cobratmp)[is.na(pval(cobratmp))] <- 1
+  padj(cobratmp)[is.na(padj(cobratmp))] <- 1
+  
+  cobraperf <- calculate_performance(cobratmp, aspects = "overlap", 
                                      type_venn = "adjp", thr_venn = 0.05)
   overlap(cobraperf) <- overlap(cobraperf)[, order(colnames(overlap(cobraperf)))]
   ol <- as.matrix(overlap(cobraperf))
@@ -282,7 +323,7 @@ plot_results <- function(cobra, colvec) {
   print(reshape2::melt(ol, varnames = c("gene", "method")) %>% 
           group_by(method) %>% 
           dplyr::summarise(nsignif = sum(value)) %>% 
-          tidyr::separate(method, into = c("method", "nbr_samples", "replicate")) %>%
+          tidyr::separate(method, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>%
           dplyr::mutate(nbr_samples = factor(nbr_samples, levels = as.character(unique(sort(as.numeric(as.character(nbr_samples))))))) %>%
           ggplot(aes(x = method, y = nsignif, color = method, shape = nbr_samples)) + 
           geom_point(size = 5) + theme_bw() + xlab("") + ylab("Number of detections") + 
@@ -312,16 +353,16 @@ plot_results <- function(cobra, colvec) {
   mdsjaccx2$mth <- rownames(mdsjaccx2)
   
   ## ---------------------- Spearman correlations --------------------------- ##
-  tmpmt <- pval(cobra)
-  if (!(all(colnames(iCOBRA::score(cobra)) %in% colnames(tmpmt)))) {
-    sdn <- setdiff(colnames(iCOBRA::score(cobra)), colnames(tmpmt))
-    tmpmt <- merge(tmpmt, -iCOBRA::score(cobra)[, sdn, drop = FALSE], by = 0, all = TRUE)
+  tmpmt <- pval(cobratmp)
+  if (!(all(colnames(iCOBRA::score(cobratmp)) %in% colnames(tmpmt)))) {
+    sdn <- setdiff(colnames(iCOBRA::score(cobratmp)), colnames(tmpmt))
+    tmpmt <- merge(tmpmt, -iCOBRA::score(cobratmp)[, sdn, drop = FALSE], by = 0, all = TRUE)
     rownames(tmpmt) <- tmpmt$Row.names
     tmpmt$Row.names <- NULL
   }
-  if (!(all(colnames(padj(cobra)) %in% colnames(tmpmt)))) {
-    sdn <- setdiff(colnames(padj(cobra)), colnames(tmpmt))
-    tmpmt <- merge(tmpmt, padj(cobra)[, sdn, drop = FALSE], by = 0, all = TRUE)
+  if (!(all(colnames(padj(cobratmp)) %in% colnames(tmpmt)))) {
+    sdn <- setdiff(colnames(padj(cobratmp)), colnames(tmpmt))
+    tmpmt <- merge(tmpmt, padj(cobratmp)[, sdn, drop = FALSE], by = 0, all = TRUE)
     rownames(tmpmt) <- tmpmt$Row.names
     tmpmt$Row.names <- NULL
   }
@@ -570,7 +611,7 @@ plot_results <- function(cobra, colvec) {
                  annotation_col = data.frame(method = colnames(hclspd), 
                                              row.names = colnames(hclspd)), 
                  annotation_colors = 
-                   list(method = structure(rep(colvec, length(all_replicates)), 
+                   list(method = structure(rep(colvec, each = length(all_replicates)), 
                                            names = unlist(lapply(paste0(names(colvec), ".", sz), 
                                                                  function(m) paste0(m, ".", 
                                                                                     all_replicates))))),
@@ -623,8 +664,8 @@ plot_results <- function(cobra, colvec) {
           nsets <- ncol(overlap_table)
           nintersects <- 25
           sets.bar.color <- plotcolors(cpl)[plotorder]
-          overlap_table$fraczero <- truth(cobra)[match(rownames(overlap_table), 
-                                                       rownames(truth(cobra))), 
+          overlap_table$fraczero <- truth(cobratmp)[match(rownames(overlap_table), 
+                                                          rownames(truth(cobratmp))), 
                                                  paste0("fraczero.", sz, ".", j)]
           upset(overlap_table, nsets = nsets, nintersects = nintersects, 
                 sets.bar.color = sets.bar.color, 
