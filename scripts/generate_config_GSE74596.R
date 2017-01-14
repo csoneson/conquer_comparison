@@ -9,6 +9,6 @@ L <- list(mae = "data/GSE74596.rds",
           keepgroups = c("Single_cell_RNA-seq_NKT0",
                          "Single_cell_RNA-seq_NKT17"), 
           seed = 42, 
-          sizes = c(44, 24, 12), 
-          nreps = c(1, 3, 3))
+          sizes = c(44, 22, 12, 6), 
+          nreps = c(1, 5, 5, 5))
 write(toJSON(L), file = "config/GSE74596.json")

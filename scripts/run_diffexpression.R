@@ -46,6 +46,7 @@ for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
+    message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
     dev.off()
@@ -53,3 +54,5 @@ for (sz in sizes) {
 }
 
 saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+
+sessionInfo()

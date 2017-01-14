@@ -108,3 +108,26 @@ $nreps
 zingeR
 30.1
 zingeR
+30.2
+zingeR
+30.3
+zingeR
+24.1
+zingeR
+24.2
+zingeR
+24.3
+zingeR
+12.1
+zingeR
+12.2
+zingeR
+12.3
+zingeR
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> proc.time()
+     user    system   elapsed 
+13994.600    64.721 14092.622 

@@ -10,5 +10,5 @@ L <- list(mae = "data/GSE63818-GPL16791.rds",
                          "Somatic Cells.developmental stage: 7 week gestation"), 
           seed = 42, 
           sizes = c(26, 12, 6), 
-          nreps = c(1, 3, 3))
+          nreps = c(1, 5, 5))
 write(toJSON(L), file = "config/GSE63818-GPL16791.json")

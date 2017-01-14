@@ -111,12 +111,21 @@ rownames(truth) <- truth$gene
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
 pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
-plot_results_relativetruth(cobra, colvec = cols)
-plot_results_relativetruth_all(cobra, colvec = cols)
-plot_results_characterization(cobra, colvec = cols)
-plot_results(cobra, colvec = cols)
-plot_ks(cobra, colvec = cols)
-plot_timing(timings, colvec = cols)
+summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = list())
+summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
+summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
+summary_data <- plot_results(cobra, colvec = cols, summary_data = summary_data)
+summary_data <- plot_ks(cobra, colvec = cols, summary_data = summary_data)
+summary_data <- plot_truefpr(cobra, colvec = cols, summary_data = summary_data)
+summary_data <- plot_timing(timings, colvec = cols, summary_data = summary_data)
 dev.off()
+
+## Save summary data
+summary_data$stats_charac$dataset <- dataset
+summary_data$stats_charac$filt <- filt
+summary_data$fracpbelow0.05$dataset <- dataset
+summary_data$fracpbelow0.05$filt <- filt
+
+saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts, "_summary_data.rds"))
 
 sessionInfo()

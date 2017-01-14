@@ -9,5 +9,5 @@ L <- list(mae = "data/GSE74596mock.rds",
           keepgroups = "Single_cell_RNA-seq_NKT0", 
           seed = 42, 
           sizes = c(22, 12, 6), 
-          nreps = c(1, 3, 3))
+          nreps = c(1, 5, 5))
 write(toJSON(L), file = "config/GSE74596mock.json")

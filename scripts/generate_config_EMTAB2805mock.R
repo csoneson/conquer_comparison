@@ -9,5 +9,5 @@ L <- list(mae = "data/EMTAB2805mock.rds",
           keepgroups = "G2M", 
           seed = 42, 
           sizes = c(48, 24, 12, 6), 
-          nreps = c(1, 3, 3, 3))
+          nreps = c(1, 5, 5, 5))
 write(toJSON(L), file = "config/EMTAB2805mock.json")

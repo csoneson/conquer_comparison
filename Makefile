@@ -8,7 +8,10 @@ include include_methods.mk
 
 ## Define the default rule
 all: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach X,$(DS),$X))) \
-$(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y)))) 
+$(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y)))) \
+$(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach X,$(DSb),$X))) \
+$(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(FILT),$(foreach X,$(DSb),$X_$Y)))) \
+figures/summary_crossds/summary_heatmaps.pdf
 
 ## Make sure no intermediate files are deleted
 .SECONDARY:
@@ -51,3 +54,25 @@ scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
 	$R "--args demethods='${MTc}' dataset='$(1)' config_file='config/$(1).json' filt='$(2)'" scripts/plot_comparison.R Rout/plot_comparison_$(1)_$(2).Rout
 endef
 $(foreach k,$(FILT), $(foreach i,$(DS),$(eval $(call plotrule,$(i),$(k)))))
+
+## Plots for comparison, orig vs mock
+figures/orig_vs_mock/%_orig_vs_mock.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) \
+$(addsuffix .rds, $(addprefix results/%mock_, $(foreach Y,$(MT),$Y))) \
+scripts/plot_orig_vs_mock.R scripts/plot_functions.R include_methods.mk
+	$R "--args demethods='${MTc}' dataset='$*' filt=''" scripts/plot_orig_vs_mock.R Rout/plot_orig_vs_mock_$*.Rout
+
+define plotrule_origvsmock
+figures/orig_vs_mock/$(1)_$(2)_orig_vs_mock.pdf: $(addsuffix _$(2).rds, $(addprefix results/$(1)_, $(foreach Y,$(MT),$Y))) \
+$(addsuffix _$(2).rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MT),$Y))) \
+scripts/plot_orig_vs_mock.R scripts/plot_functions.R include_methods.mk
+	$R "--args demethods='${MTc}' dataset='$(1)' filt='$(2)'" scripts/plot_orig_vs_mock.R Rout/plot_comparison_orig_vs_mock_$(1)_$(2).Rout
+endef
+$(foreach k,$(FILT), $(foreach i,$(DSb),$(eval $(call plotrule_origvsmock,$(i),$(k)))))
+
+## Plots for comparison of characteristics of significant genes, across mock data sets
+figures/summary_crossds/summary_heatmaps.pdf: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(Dss),$Y))) \
+scripts/plot_summarize_datasets.R include_methods.mk
+	$R "--args datasets='${Dssc}' filt=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets.Rout
+
+
+

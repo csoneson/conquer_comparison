@@ -9,5 +9,5 @@ L <- list(mae = "data/GSE77847mock.rds",
           keepgroups = "sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-1", 
           seed = 42, 
           sizes = c(24, 12, 6), 
-          nreps = c(1, 3, 3))
+          nreps = c(1, 5, 5))
 write(toJSON(L), file = "config/GSE77847mock.json")

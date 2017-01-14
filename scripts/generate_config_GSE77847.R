@@ -9,6 +9,6 @@ L <- list(mae = "data/GSE77847.rds",
           keepgroups = c("sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-1",
                          "sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-2"), 
           seed = 42, 
-          sizes = c(48, 36, 24, 12), 
-          nreps = c(1, 3, 3, 3))
+          sizes = c(48, 24, 12, 6), 
+          nreps = c(1, 5, 5, 5))
 write(toJSON(L), file = "config/GSE77847.json")

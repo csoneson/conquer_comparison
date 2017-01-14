@@ -9,5 +9,5 @@ L <- list(mae = "data/UsoskinGSE59739.rds",
           keepgroups = c("RT-1.NP1", "RT-1.TH"), 
           seed = 42, 
           sizes = c(58, 36, 24, 12), 
-          nreps = c(1, 3, 3, 3))
+          nreps = c(1, 5, 5, 5))
 write(toJSON(L), file = "config/UsoskinGSE59739.json")
