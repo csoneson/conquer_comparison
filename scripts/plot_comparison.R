@@ -15,7 +15,8 @@ suppressPackageStartupMessages(library(iCOBRA))
 
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange")
+          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
+          "#B17BA6")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -24,7 +25,7 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm"), exts)
+                        "MASTtpm", "zingeRauto"), exts)
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
@@ -125,6 +126,8 @@ summary_data$stats_charac$dataset <- dataset
 summary_data$stats_charac$filt <- filt
 summary_data$fracpbelow0.05$dataset <- dataset
 summary_data$fracpbelow0.05$filt <- filt
+summary_data$timing$dataset <- dataset
+summary_data$timing$filt <- filt
 
 saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts, "_summary_data.rds"))
 

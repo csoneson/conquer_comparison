@@ -27,12 +27,12 @@ Setting LC_CTYPE failed, using "C"
 +           resfilebase = "results/EMTAB2805",
 +           figfilebase = "figures/diffexpression/EMTAB2805", 
 +           groupid = "cell_cycle_stage", 
-+           keepgroups = NULL, 
++           keepgroups = c("G2M", "G1"), 
 +           seed = 42, 
 +           sizes = c(96, 48, 24, 12), 
-+           nreps = c(1, 3, 3, 3))
++           nreps = c(1, 5, 5, 5))
 > write(toJSON(L), file = "config/EMTAB2805.json")
 > 
 > proc.time()
    user  system elapsed 
-  0.195   0.030   0.240 
+  0.219   0.037   0.334 

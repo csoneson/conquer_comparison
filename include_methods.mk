@@ -11,7 +11,7 @@ Dss := GSE45719mock GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GP
 Dssc := $(subst $(space),$(comma),$(Dss))
 
 ## All methods
-MT := edgeRLRT SAMseq Wilcoxon zingeR edgeRQLF NODES BPSC DESeq2 edgeRLRTdeconv MASTcounts MASTcountsDetRate MASTtpm SCDE monocle edgeRLRTrobust voomlimma
+MT := edgeRLRT SAMseq Wilcoxon zingeR edgeRQLF NODES BPSC DESeq2 edgeRLRTdeconv MASTcounts MASTcountsDetRate MASTtpm SCDE monocle edgeRLRTrobust voomlimma zingeRauto Seurat DESeq2census edgeRLRTcensus
 MTc := $(subst $(space),$(comma),$(MT))
 
 ## All filterings

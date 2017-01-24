@@ -31,9 +31,9 @@ Setting LC_CTYPE failed, using "C"
 +                          "Somatic Cells.developmental stage: 7 week gestation"), 
 +           seed = 42, 
 +           sizes = c(26, 12, 6), 
-+           nreps = c(1, 3, 3))
++           nreps = c(1, 5, 5))
 > write(toJSON(L), file = "config/GSE63818-GPL16791.json")
 > 
 > proc.time()
    user  system elapsed 
-  0.214   0.043   0.340 
+  0.184   0.048   0.212 

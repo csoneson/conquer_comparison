@@ -30,9 +30,9 @@ Setting LC_CTYPE failed, using "C"
 +           keepgroups = c("RT-1.NP1", "RT-1.TH"), 
 +           seed = 42, 
 +           sizes = c(58, 36, 24, 12), 
-+           nreps = c(1, 3, 3, 3))
++           nreps = c(1, 5, 5, 5))
 > write(toJSON(L), file = "config/UsoskinGSE59739.json")
 > 
 > proc.time()
    user  system elapsed 
-  0.177   0.033   0.185 
+  0.172   0.041   0.196 

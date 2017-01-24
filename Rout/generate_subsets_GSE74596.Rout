@@ -58,10 +58,10 @@ $seed
 [1] 42
 
 $sizes
-[1] 44 24 12
+[1] 44 22 12  6
 
 $nreps
-[1] 1 3 3
+[1] 1 5 5 5
 
 > 
 > mae <- readRDS(config$mae)
@@ -161,9 +161,9 @@ loaded via a namespace (and not attached):
  [1] Rcpp_0.12.8          XVector_0.14.0       splines_3.3.1       
  [4] zlibbioc_1.20.0      xtable_1.8-2         lattice_0.20-34     
  [7] R6_2.2.0             tools_3.3.1          shinydashboard_0.5.3
-[10] htmltools_0.3.5      digest_0.6.10        shiny_0.14.2        
+[10] htmltools_0.3.5      digest_0.6.11        shiny_0.14.2        
 [13] mime_0.5             httpuv_1.3.3        
 > 
 > proc.time()
    user  system elapsed 
- 13.064   0.847  14.015 
+ 14.439   1.516  19.714 

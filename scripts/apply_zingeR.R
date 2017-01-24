@@ -30,7 +30,9 @@ run_zingeR <- function(L) {
   hist(tt$table$FDR, 50)
   limma::plotMDS(dge, col = as.numeric(as.factor(L$condt)), pch = 19)
   plotSmear(lrt)
-  hist(zeroWeights[dge$counts == 0], xlab="weight", main="post. prob. on zero-inflation for zero counts") #weights for zero counts to check if zero-inflation was identified
+  #weights for zero counts to check if zero-inflation was identified
+  hist(zeroWeights[dge$counts == 0], xlab = "weight", 
+       main = "post. prob. on zero-inflation for zero counts") 
 
   list(session_info = session_info,
        timing = timing,

@@ -11,7 +11,9 @@ all: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach X,$(DS),$X))) 
 $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y)))) \
 $(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach X,$(DSb),$X))) \
 $(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(FILT),$(foreach X,$(DSb),$X_$Y)))) \
-figures/summary_crossds/summary_heatmaps.pdf
+figures/summary_crossds/summary_heatmaps.pdf \
+$(addsuffix .pdf, $(addprefix figures/dataset_characteristics/, $(foreach X,$(DS),$X))) \
+$(addsuffix .pdf, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y))))
 
 ## Make sure no intermediate files are deleted
 .SECONDARY:
@@ -54,6 +56,18 @@ scripts/plot_comparison.R scripts/plot_functions.R include_methods.mk
 	$R "--args demethods='${MTc}' dataset='$(1)' config_file='config/$(1).json' filt='$(2)'" scripts/plot_comparison.R Rout/plot_comparison_$(1)_$(2).Rout
 endef
 $(foreach k,$(FILT), $(foreach i,$(DS),$(eval $(call plotrule,$(i),$(k)))))
+
+## Plots for characterization of data set
+figures/dataset_characteristics/%.pdf: include_methods.mk scripts/plot_characterize_dataset.R scripts/prepare_mae.R \
+subsets/%_subsets.rds data/%.rds
+	$R "--args dataset='$*' config_file='config/$*.json' filt=''" scripts/plot_characterize_dataset.R Rout/plot_characterize_dataset_$*.Rout
+
+define plotrule_characterization
+figures/dataset_characteristics/$(1)_$(2).pdf: include_methods.mk scripts/plot_characterize_dataset.R scripts/prepare_mae.R \
+subsets/$(1)_subsets.rds data/$(1).rds
+	$R "--args dataset='$(1)' config_file='config/$*.json' filt='$(2)'" scripts/plot_characterize_dataset.R Rout/plot_characterize_dataset_$(1)_$(2).Rout
+endef
+$(foreach k,$(FILT), $(foreach i,$(DS),$(eval $(call plotrule_characterization,$(i),$(k)))))
 
 ## Plots for comparison, orig vs mock
 figures/orig_vs_mock/%_orig_vs_mock.pdf: $(addsuffix .rds, $(addprefix results/%_, $(foreach Y,$(MT),$Y))) \

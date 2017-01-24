@@ -16,7 +16,8 @@ cobras <- list()
 
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange")
+          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
+          "#B17BA6")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -25,7 +26,7 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm"), exts)
+                        "MASTtpm", "zingeRauto"), exts)
 
 for (tp in c("", "mock")) {
   ## Create iCOBRA object from the result files for the different methods
