@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(iCOBRA))
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#B17BA6")
+          "#B17BA6", "#7BAFDE", "#F6C141", "#90C987")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -25,7 +25,7 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto"), exts)
+                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus"), exts)
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",

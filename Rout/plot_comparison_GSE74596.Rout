@@ -32,7 +32,7 @@ Setting LC_CTYPE failed, using "C"
  [7] "BPSC"              "DESeq2"            "edgeRLRTdeconv"   
 [10] "MASTcounts"        "MASTcountsDetRate" "MASTtpm"          
 [13] "SCDE"              "monocle"           "edgeRLRTrobust"   
-[16] "voomlimma"        
+[16] "voomlimma"         "zingeRauto"       
 > print(dataset)
 [1] "GSE74596"
 > print(config_file)
@@ -45,7 +45,8 @@ Setting LC_CTYPE failed, using "C"
 > 
 > cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
 +           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-+           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange")
++           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
++           "#B17BA6")
 > if (filt == "") { 
 +   exts <- filt
 + } else {
@@ -54,7 +55,7 @@ Setting LC_CTYPE failed, using "C"
 > names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
 +                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
 +                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-+                         "MASTtpm"), exts)
++                         "MASTtpm", "zingeRauto"), exts)
 > 
 > ## Create iCOBRA object from the result files for the different methods
 > (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
@@ -75,9 +76,10 @@ Setting LC_CTYPE failed, using "C"
 [14] "/home/Shared/data/seq/conquer/comparison/results/GSE74596_monocle.rds"          
 [15] "/home/Shared/data/seq/conquer/comparison/results/GSE74596_edgeRLRTrobust.rds"   
 [16] "/home/Shared/data/seq/conquer/comparison/results/GSE74596_voomlimma.rds"        
+[17] "/home/Shared/data/seq/conquer/comparison/results/GSE74596_zingeRauto.rds"       
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE
+[16] TRUE TRUE
 > cobra <- NULL
 > timings <- list()
 > for (rf in resfiles) {
@@ -1429,6 +1431,86 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
 > 
 > cobra <- calculate_adjp(cobra)
 > 
@@ -1499,11 +1581,11 @@ Setting LC_CTYPE failed, using "C"
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-23582 new features and 129 new annotations added to truth table
+23582 new features and 130 new annotations added to truth table
 > 
 > pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
 > summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = list())
-There were 23 warnings (use warnings() to see them)
+There were 40 warnings (use warnings() to see them)
 > summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
 > summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
 44.1
@@ -1545,6 +1627,8 @@ null device
 > summary_data$stats_charac$filt <- filt
 > summary_data$fracpbelow0.05$dataset <- dataset
 > summary_data$fracpbelow0.05$filt <- filt
+> summary_data$timing$dataset <- dataset
+> summary_data$timing$filt <- filt
 > 
 > saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts, "_summary_data.rds"))
 > 
@@ -1584,7 +1668,7 @@ loaded via a namespace (and not attached):
 [13] htmlwidgets_0.8      labeling_0.3         httpuv_1.3.3        
 [16] Rcpp_0.12.8          KernSmooth_2.23-15   xtable_1.8-2        
 [19] ROCR_1.0-7           scales_0.4.1         DT_0.2              
-[22] gdata_2.17.0         limma_3.30.2         XVector_0.14.0      
+[22] gdata_2.17.0         limma_3.30.8         XVector_0.14.0      
 [25] mime_0.5             gplots_3.0.1         gridExtra_2.2.1     
 [28] digest_0.6.11        stringi_1.1.2        shiny_0.14.2        
 [31] grid_3.3.1           tools_3.3.1          bitops_1.0-6        
@@ -1594,4 +1678,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-4008.859   79.814 4111.728 
+5677.421  941.943 8532.680 

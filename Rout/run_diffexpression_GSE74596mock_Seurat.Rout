@@ -25,9 +25,9 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > print(config_file)
-[1] "config/GSE60749-GPL13112mock.json"
+[1] "config/GSE74596mock.json"
 > print(demethod)
-[1] "zingeR"
+[1] "Seurat"
 > 
 > ## filt should be a string of the form type_value_nbr, where type is either TPM 
 > ## or count, and features will be filtered out unless they show at least a 
@@ -56,75 +56,31 @@ Setting LC_CTYPE failed, using "C"
 > 
 > print(config)
 $mae
-[1] "data/GSE60749-GPL13112mock.rds"
+[1] "data/GSE74596mock.rds"
 
 $subfile
-[1] "subsets/GSE60749-GPL13112mock_subsets.rds"
+[1] "subsets/GSE74596mock_subsets.rds"
 
 $resfilebase
-[1] "results/GSE60749-GPL13112mock"
+[1] "results/GSE74596mock"
 
 $figfilebase
-[1] "figures/diffexpression/GSE60749-GPL13112mock"
+[1] "figures/diffexpression/GSE74596mock"
 
 $groupid
-[1] "source_name_ch1"       "characteristics_ch1.1"
+[1] "source_name_ch1"
 
 $keepgroups
-[1] "v6.5 mouse embryonic stem cells.culture conditions: 2i+LIF"
+[1] "Single_cell_RNA-seq_NKT0"
 
 $seed
 [1] 42
 
 $sizes
-[1] 47 24 12  6
+[1] 22 12  6
 
 $nreps
-[1] 1 5 5 5
+[1] 1 5 5
 
 > 
 > mae <- readRDS(config$mae)
-> groupid <- config$groupid
-> mae <- clean_mae(mae = mae, groupid = groupid)
-> 
-> subsets <- readRDS(config$subfile)
-> keep_samples <- subsets$keep_samples
-> imposed_condition <- subsets$out_condition
-> 
-> res <- list()
-> 
-> sizes <- names(keep_samples)
-> for (sz in sizes) {
-+   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
-+     message(sz, ".", i)
-+     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
-+     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
-+     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
-+     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
-+     dev.off()
-+   }
-+ }
-47.1
-44495 genes, 94 samples.
-zingeR
-24.1
-43735 genes, 48 samples.
-zingeR
-24.2
-43759 genes, 48 samples.
-zingeR
-24.3
-43732 genes, 48 samples.
-zingeR
-24.4
-43711 genes, 48 samples.
-zingeR
-24.5
-43822 genes, 48 samples.
-zingeR
-12.1
-42412 genes, 24 samples.
-zingeR
-12.2
-42426 genes, 24 samples.
-zingeR

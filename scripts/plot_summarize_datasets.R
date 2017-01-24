@@ -11,6 +11,7 @@ suppressPackageStartupMessages(library(pheatmap))
 suppressPackageStartupMessages(library(ggrepel))
 
 datasets <- strsplit(datasets, ",")[[1]]
+names(datasets) <- datasets
 
 print(datasets)
 print(filt)
@@ -18,7 +19,7 @@ print(filt)
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#B17BA6")
+          "#B17BA6", "#7BAFDE", "#F6C141", "#90C987")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -27,7 +28,7 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto"), exts)
+                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus"), exts)
 
 
 summary_data_list <- lapply(datasets, function(ds) {
@@ -37,35 +38,37 @@ summary_data_list <- lapply(datasets, function(ds) {
 pdf(paste0("figures/summary_crossds/summary_pca", exts, ".pdf"))
 
 ## PCA of significant gene characteristics
-for (stat in c("tstat", "mediandiff")) {
-  x <- lapply(summary_data_list, function(m) {
-    m$stats_charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
-      dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
-      dplyr::select_("Var2", stat, "charac") 
-  })
-  x <- do.call(rbind, x) %>% dcast(charac ~ Var2, value.var = stat)
-  rownames(x) <- x$charac
-  x$charac <- NULL
-  
-  for (scl in c(TRUE, FALSE)) {
-    pca <- prcomp(t(x), scale. = scl)
-    annot <- data.frame(id = colnames(x), stringsAsFactors = FALSE) %>%
-      tidyr::separate(id, into = c("method", "n_samples", "repl", "dataset", "filt"), 
-                      sep = "\\.", remove = FALSE)
-    print(ggplot(merge(annot, pca$x[, 1:2], by.x = "id", by.y = 0, all = TRUE), 
-                 aes(x = PC1, y = PC2, color = method, shape = dataset)) +
-            geom_point(size = 3) + theme_bw() + 
-            scale_color_manual(values = cols) + 
-            ggtitle(paste0(stat, ".scale=", scl)))
-    print(ggplot(data.frame(id = rownames(pca$rotation), pca$rotation[, 1:2]), 
-                 aes(x = PC1, y = PC2, label = id)) + geom_point() + geom_text_repel() +
-            geom_segment(aes(x = 0, y = 0, xend = PC1, yend = PC2), 
-                         arrow = arrow(length = unit(0.03, "npc")), linetype = "dashed") + 
-            theme_bw() + 
-            ggtitle(paste0(stat, ".scale=", scl)))
-    plot(pca, main = "")
+lapply(c(list(datasets), as.list(datasets)), function(ds) {
+  for (stat in c("tstat", "mediandiff")) {
+    x <- lapply(summary_data_list[ds], function(m) {
+      m$stats_charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
+        dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
+        dplyr::select_("Var2", stat, "charac") 
+    })
+    x <- do.call(rbind, x) %>% dcast(charac ~ Var2, value.var = stat)
+    rownames(x) <- x$charac
+    x$charac <- NULL
+    
+    for (scl in c(TRUE, FALSE)) {
+      pca <- prcomp(t(x), scale. = scl)
+      annot <- data.frame(id = colnames(x), stringsAsFactors = FALSE) %>%
+        tidyr::separate(id, into = c("method", "n_samples", "repl", "dataset", "filt"), 
+                        sep = "\\.", remove = FALSE)
+      print(ggplot(merge(annot, pca$x[, 1:2], by.x = "id", by.y = 0, all = TRUE), 
+                   aes(x = PC1, y = PC2, color = method, shape = dataset)) +
+              geom_point(size = 3) + theme_bw() + 
+              scale_color_manual(values = cols) + 
+              ggtitle(paste0(stat, ".scale=", scl)))
+      print(ggplot(data.frame(id = rownames(pca$rotation), pca$rotation[, 1:2]), 
+                   aes(x = PC1, y = PC2, label = id)) + geom_point() + geom_text_repel() +
+              geom_segment(aes(x = 0, y = 0, xend = PC1, yend = PC2), 
+                           arrow = arrow(length = unit(0.03, "npc")), linetype = "dashed") + 
+              theme_bw() + 
+              ggtitle(paste0(stat, ".scale=", scl)))
+      plot(pca, main = "")
+    }
   }
-}
+})
 dev.off()
 
 pdf(paste0("figures/summary_crossds/summary_heatmaps", exts, ".pdf"),
@@ -99,3 +102,38 @@ pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", main = "
          annotation_colors = list(method = structure(cols, names = names(cols))[colnames(y)]),
          annotation_names_col = FALSE)
 dev.off()
+
+## Timing
+pdf(paste0("figures/summary_crossds/relative_timing", exts, ".pdf"))
+
+y <- lapply(summary_data_list, function(m) {
+  m$timing %>% group_by(dataset, filt, nsamples) %>%
+    dplyr::mutate(timing = timing/max(timing))
+})
+y <- do.call(rbind, y)
+## Boxplots
+print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = 0) + 
+        geom_point(position = position_jitter(width = 0.2)) + 
+        theme_bw() + xlab("") + ylab("Relative timing") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+
+print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = 0) + 
+        geom_point(position = position_jitter(width = 0.2)) + 
+        theme_bw() + xlab("") + ylab("Relative timing") + 
+        scale_color_manual(values = cols, name = "") + scale_y_log10() +
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+
+## Barplots
+y %>% group_by(method) %>% dplyr::summarize(mean = mean(timing), sd = sd(timing)) %>%
+  ggplot(aes(x = method, y = mean, fill = method)) + 
+  geom_errorbar(aes(ymin = min(mean)/2, ymax = mean + sd), width = 0.2) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + xlab("") + ylab("Relative timing") + 
+  scale_fill_manual(values = cols, name = "") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+dev.off()
+
+
+
