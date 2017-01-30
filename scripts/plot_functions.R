@@ -236,6 +236,9 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
     dplyr::select(gene, status)
   rownames(truth) <- truth$gene
   truth$gene <- NULL
+  ## Remove methods where the "truth" run failed
+  tmp <- subset(tmp, method %in% unique(get_method(rownames(truth))))
+  
   vals <- tmp %>% dplyr::select(Var1, Var2, value) %>% dcast(Var1 ~ Var2) %>% as.data.frame()
   rownames(vals) <- vals$Var1
   vals$Var1 <- NULL
@@ -423,11 +426,11 @@ compare_orig_mock <- function(cobras, colvec, summary_data = list()) {
   for (nbrsamples in unique(intersect(subset(spm, tp == "original")$nbr_samples1,
                                       subset(spm, tp == "mock")$nbr_samples1))) {
     print(spm %>% dplyr::filter(nbr_samples1 == nbrsamples & nbr_samples2 == nbrsamples) %>%
-            ggplot(aes(x = method1, y = value, color = method1, alpha = tp)) + 
+            ggplot(aes(x = method1, y = value, color = method1, shape = tp)) + 
             geom_point(size = 5) + theme_bw() + xlab("") + 
             ylab(paste0("Spearman correlation")) + 
             scale_color_manual(values = colvec, name = "method") + 
-            scale_alpha_discrete(name = "") + 
+            scale_shape_discrete(name = "") + 
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
             ggtitle(paste0(nbrsamples, " samples/group")))
   }
@@ -470,11 +473,11 @@ compare_orig_mock <- function(cobras, colvec, summary_data = list()) {
     for (nbrsamples in unique(intersect(subset(jaccm, tp == "original")$nbr_samples1,
                                         subset(jaccm, tp == "mock")$nbr_samples1))) {
       print(jaccm %>% dplyr::filter(nbr_samples1 == nbrsamples & nbr_samples2 == nbrsamples) %>%
-              ggplot(aes(x = method1, y = value, color = method1, alpha = tp)) + 
+              ggplot(aes(x = method1, y = value, color = method1, shape = tp)) + 
               geom_point(size = 5) + theme_bw() + xlab("") + 
               ylab(paste0("Jaccard index (padj thr = ", adjpthr, ")")) + 
               scale_color_manual(values = colvec, name = "method") + 
-              scale_alpha_discrete(name = "") + 
+              scale_shape_discrete(name = "") + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
               ggtitle(paste0(nbrsamples, " samples/group")))
     }
@@ -872,26 +875,28 @@ plot_results <- function(cobra, colvec, summary_data = list()) {
       for (j in all_replicates) {
         c2 <- colvec
         names(c2) <- paste0(names(c2), ".", sz, ".", j)
-        km <- paste0(all_methods, ".", sz, ".", j)
+        km <- intersect(paste0(all_methods, ".", sz, ".", j), basemethods(cobraperf))
         cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
                                      colorscheme = c2[km], incloverall = FALSE)
         if (ncol(overlap(cpl)) > 0) {
           for (k in all_methods) {
             tmp_cp <- as(cpl, "COBRAPerformance")
-            overlap(tmp_cp) <- overlap(tmp_cp)[overlap(tmp_cp)[, paste0(k, ".", sz, ".", j)] == 0 & 
-                                                 rowSums(overlap(tmp_cp)) > 0, ]
-            km <- paste0(setdiff(all_methods, k), ".", sz, ".", j)
-            cpl1 <- prepare_data_for_plot(tmp_cp, keepmethods = km, 
-                                          colorscheme = c2[km], incloverall = FALSE)
-            plot_upset_with_reordering(cpl1, nintersects = 25, 
-                                       mainbar.y.label = paste0("Intersection Size (only genes ", 
-                                                                "not called DE by ", k, ")"), 
-                                       set.metadata = list(data = data.frame(sets = km, 
-                                                                             mth = km,
-                                                                             row.names = km),
-                                                           plots = list(list(type = "matrix_rows", 
-                                                                             column = "mth", 
-                                                                             colors = c2[km], alpha = 0.25))))
+            tryCatch({
+              overlap(tmp_cp) <- overlap(tmp_cp)[overlap(tmp_cp)[, paste0(k, ".", sz, ".", j)] == 0 & 
+                                                   rowSums(overlap(tmp_cp)) > 0, ]
+              km <- intersect(paste0(setdiff(all_methods, k), ".", sz, ".", j), basemethods(cobraperf))
+              cpl1 <- prepare_data_for_plot(tmp_cp, keepmethods = km, 
+                                            colorscheme = c2[km], incloverall = FALSE)
+              plot_upset_with_reordering(cpl1, nintersects = 25, 
+                                         mainbar.y.label = paste0("Intersection Size (only genes ", 
+                                                                  "not called DE by ", k, ")"), 
+                                         set.metadata = list(data = data.frame(sets = km, 
+                                                                               mth = km,
+                                                                               row.names = km),
+                                                             plots = list(list(type = "matrix_rows", 
+                                                                               column = "mth", 
+                                                                               colors = c2[km], alpha = 0.25))))}, 
+              error = function(e) message(paste0("No overlap data for ", k, ".", sz, ".", j)))
           }
         }
       }

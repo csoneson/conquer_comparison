@@ -1,0 +1,611 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/EMTAB2805.json"
+> print(demethod)
+[1] "DESeq2census"
+> 
+> ## filt should be a string of the form type_value_nbr, where type is either TPM 
+> ## or count, and features will be filtered out unless they show at least a 
+> ## "type" of "value" in at least "nbr" samples (if nbr is a single number) or at
+> ## least nbr % of the samples (if nbr ends with p). For now, both value and nbr
+> ## need to be integers (no periods in the name).
+> print(filt)
+[1] ""
+> (exts <- ifelse(filt == "", "", paste0("_", filt)))
+[1] ""
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/EMTAB2805.rds"
+
+$subfile
+[1] "subsets/EMTAB2805_subsets.rds"
+
+$resfilebase
+[1] "results/EMTAB2805"
+
+$figfilebase
+[1] "figures/diffexpression/EMTAB2805"
+
+$groupid
+[1] "cell_cycle_stage"
+
+$keepgroups
+[1] "G2M" "G1" 
+
+$seed
+[1] 42
+
+$sizes
+[1] 96 48 24 12
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+96.1
+30676 genes, 192 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 430 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 21499 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 495, 2.3% 
+LFC < 0 (down)   : 585, 2.7% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 14300, 67% 
+(mean count < 0)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.1
+28467 genes, 96 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 514 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 19118 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 158, 0.83% 
+LFC < 0 (down)   : 273, 1.4% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13434, 70% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.2
+28519 genes, 96 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 536 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 19278 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 166, 0.86% 
+LFC < 0 (down)   : 232, 1.2% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13180, 68% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.3
+28398 genes, 96 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 532 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 19205 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 248, 1.3% 
+LFC < 0 (down)   : 255, 1.3% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13497, 70% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.4
+28405 genes, 96 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 584 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 19259 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 241, 1.3% 
+LFC < 0 (down)   : 291, 1.5% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 12826, 67% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+48.5
+28308 genes, 96 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 589 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 19128 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 245, 1.3% 
+LFC < 0 (down)   : 348, 1.8% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13095, 68% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.1
+26207 genes, 48 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 685 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 16847 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 28, 0.17% 
+LFC < 0 (down)   : 48, 0.28% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13136, 78% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.2
+26348 genes, 48 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 620 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 16834 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 67, 0.4% 
+LFC < 0 (down)   : 121, 0.72% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 12797, 76% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.3
+26480 genes, 48 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 659 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 17136 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 139, 0.81% 
+LFC < 0 (down)   : 179, 1% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 12728, 74% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.4
+26234 genes, 48 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 534 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 16936 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 97, 0.57% 
+LFC < 0 (down)   : 154, 0.91% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13192, 78% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+24.5
+25966 genes, 48 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+-- note: fitType='parametric', but the dispersion trend was not well captured by the
+   function: y = a/x + b, and a local regression fit was automatically substituted.
+   specify fitType='local' or 'mean' to avoid this message next time.
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 604 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 16610 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 122, 0.73% 
+LFC < 0 (down)   : 141, 0.85% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 12321, 74% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.1
+23754 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 538 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 14848 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 33, 0.22% 
+LFC < 0 (down)   : 40, 0.27% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13826, 93% 
+(mean count < 6)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.2
+23756 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 593 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 14463 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 66, 0.46% 
+LFC < 0 (down)   : 71, 0.49% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11533, 80% 
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.3
+23990 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 542 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 14773 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 18, 0.12% 
+LFC < 0 (down)   : 30, 0.2% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 11786, 80% 
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.4
+23622 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 604 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 14518 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 23, 0.16% 
+LFC < 0 (down)   : 33, 0.23% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 10792, 74% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.5
+23524 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 590 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 14460 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 14, 0.097% 
+LFC < 0 (down)   : 22, 0.15% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 13452, 93% 
+(mean count < 5)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] splines   stats4    grid      parallel  stats     graphics  grDevices
+ [8] utils     datasets  methods   base     
+
+other attached packages:
+ [1] monocle_2.2.0              DDRTree_0.1.4             
+ [3] irlba_2.1.2                VGAM_1.0-2                
+ [5] ggplot2_2.2.1              DESeq2_1.14.1             
+ [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [9] GenomicRanges_1.26.1       GenomeInfoDb_1.10.1       
+[11] IRanges_2.8.1              S4Vectors_0.12.0          
+[13] tidyr_0.6.0                dplyr_0.5.0               
+[15] survey_3.31-2              survival_2.40-1           
+[17] Matrix_1.2-7.1             GEOquery_2.40.0           
+[19] Biobase_2.34.0             BiocGenerics_0.20.0       
+[21] tximport_1.2.0             reshape2_1.4.2            
+[23] rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] httr_1.2.1             Formula_1.2-1          shiny_0.14.2          
+ [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-38           
+ [7] RSQLite_1.0.0          lattice_0.20-34        limma_3.30.8          
+[10] digest_0.6.11          RColorBrewer_1.1-2     XVector_0.14.0        
+[13] colorspace_1.3-1       fastICA_1.2-0          htmltools_0.3.5       
+[16] httpuv_1.3.3           plyr_1.8.4             XML_3.98-1.5          
+[19] pheatmap_1.0.8         qlcMatrix_0.9.5        HSMMSingleCell_0.108.0
+[22] genefilter_1.56.0      zlibbioc_1.20.0        xtable_1.8-2          
+[25] scales_0.4.1           BiocParallel_1.8.1     combinat_0.0-8        
+[28] htmlTable_1.7          tibble_1.2             annotate_1.52.0       
+[31] nnet_7.3-12            lazyeval_0.2.0         magrittr_1.5          
+[34] mime_0.5               foreign_0.8-67         shinydashboard_0.5.3  
+[37] tools_3.3.1            data.table_1.10.0      matrixStats_0.51.0    
+[40] stringr_1.1.0          munsell_0.4.3          locfit_1.5-9.1        
+[43] cluster_2.0.5          AnnotationDbi_1.36.0   RCurl_1.95-4.8        
+[46] igraph_1.0.1           bitops_1.0-6           gtable_0.2.0          
+[49] DBI_0.5-1              R6_2.2.0               gridExtra_2.2.1       
+[52] knitr_1.15.1           Hmisc_4.0-0            stringi_1.1.2         
+[55] Rcpp_0.12.8            geneplotter_1.52.0     rpart_4.1-10          
+[58] acepack_1.4.1         
+> 
+> proc.time()
+    user   system  elapsed 
+3331.324   55.581 3392.829 

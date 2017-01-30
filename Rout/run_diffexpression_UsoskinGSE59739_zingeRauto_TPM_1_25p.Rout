@@ -1,0 +1,1664 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/UsoskinGSE59739.json"
+> print(demethod)
+[1] "zingeRauto"
+> 
+> ## filt should be a string of the form type_value_nbr, where type is either TPM 
+> ## or count, and features will be filtered out unless they show at least a 
+> ## "type" of "value" in at least "nbr" samples (if nbr is a single number) or at
+> ## least nbr % of the samples (if nbr ends with p). For now, both value and nbr
+> ## need to be integers (no periods in the name).
+> print(filt)
+[1] "TPM_1_25p"
+> (exts <- ifelse(filt == "", "", paste0("_", filt)))
+[1] "_TPM_1_25p"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/UsoskinGSE59739.rds"
+
+$subfile
+[1] "subsets/UsoskinGSE59739_subsets.rds"
+
+$resfilebase
+[1] "results/UsoskinGSE59739"
+
+$figfilebase
+[1] "figures/diffexpression/UsoskinGSE59739"
+
+$groupid
+[1] "Picking.sessions.Level.3"
+
+$keepgroups
+[1] "RT-1.NP1" "RT-1.TH" 
+
+$seed
+[1] 42
+
+$sizes
+[1] 58 36 24 12
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+58.1
+3909 genes, 116 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0376055257099002
+iteration: 3. mean conv.: 0.0434893834740343
+iteration: 4. mean conv.: 0.046815042210284
+iteration: 5. mean conv.: 0.0478383218214377
+iteration: 6. mean conv.: 0.0601176771552827
+iteration: 7. mean conv.: 0.0683039140445127
+iteration: 8. mean conv.: 0.083141468406242
+iteration: 9. mean conv.: 0.0951650038372985
+iteration: 10. mean conv.: 0.109490918393451
+iteration: 11. mean conv.: 0.129444870810949
+iteration: 12. mean conv.: 0.154771041187004
+iteration: 13. mean conv.: 0.185981069327194
+iteration: 14. mean conv.: 0.227935533384497
+iteration: 15. mean conv.: 0.287029930928626
+iteration: 16. mean conv.: 0.360706062931696
+iteration: 17. mean conv.: 0.442312611921207
+iteration: 18. mean conv.: 0.540803274494756
+iteration: 19. mean conv.: 0.64978255308263
+iteration: 20. mean conv.: 0.747505755947813
+iteration: 21. mean conv.: 0.831926323867997
+iteration: 22. mean conv.: 0.883090304425684
+iteration: 23. mean conv.: 0.908928114607316
+iteration: 24. mean conv.: 0.933231005372218
+iteration: 25. mean conv.: 0.952673317984139
+iteration: 26. mean conv.: 0.97544128933231
+iteration: 27. mean conv.: 0.995906881555385
+iteration: 28. mean conv.: 1
+iteration: 29. mean conv.: 0.102839600920952
+iteration: 30. mean conv.: 0.265541059094398
+iteration: 31. mean conv.: 0.290611409567664
+iteration: 32. mean conv.: 0.326170376055257
+iteration: 33. mean conv.: 0.365310821181888
+iteration: 34. mean conv.: 0.421335379892556
+iteration: 35. mean conv.: 0.479662317728319
+iteration: 36. mean conv.: 0.541570734203121
+iteration: 37. mean conv.: 0.613456126886672
+iteration: 38. mean conv.: 0.685597339473011
+iteration: 39. mean conv.: 0.752110514198005
+iteration: 40. mean conv.: 0.811204911742133
+iteration: 41. mean conv.: 0.856996674341264
+iteration: 42. mean conv.: 0.888462522384242
+iteration: 43. mean conv.: 0.91327705295472
+iteration: 44. mean conv.: 0.928626247122026
+iteration: 45. mean conv.: 0.944742900997698
+iteration: 46. mean conv.: 0.962650294192888
+iteration: 47. mean conv.: 0.976720388846252
+iteration: 48. mean conv.: 0.992581222819135
+iteration: 49. mean conv.: 0.999488360194423
+iteration: 50. mean conv.: 0.526733179841392
+iteration: 51. mean conv.: 0.724481964696853
+iteration: 52. mean conv.: 0.771808646712714
+iteration: 53. mean conv.: 0.825530826298286
+iteration: 54. mean conv.: 0.864671271424917
+iteration: 55. mean conv.: 0.897927858787414
+iteration: 56. mean conv.: 0.919160910718854
+iteration: 57. mean conv.: 0.931696085955487
+iteration: 58. mean conv.: 0.945254540803275
+iteration: 59. mean conv.: 0.960603734970581
+iteration: 60. mean conv.: 0.974418009721156
+iteration: 61. mean conv.: 0.987976464568944
+iteration: 62. mean conv.: 0.998209260680481
+iteration: 63. mean conv.: 0.999744180097212
+iteration: 64. mean conv.: 0.99181376311077
+iteration: 65. mean conv.: 0.950115118956255
+iteration: 66. mean conv.: 0.961371194678946
+iteration: 67. mean conv.: 0.974929649526733
+iteration: 68. mean conv.: 0.986697365055001
+iteration: 69. mean conv.: 0.997953440777693
+iteration: 70. mean conv.: 0.999744180097212
+converged. 
+36.1
+3734 genes, 72 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0324049276914837
+iteration: 3. mean conv.: 0.0449919657204071
+iteration: 4. mean conv.: 0.0452597750401714
+iteration: 5. mean conv.: 0.0476700589180503
+iteration: 6. mean conv.: 0.0623995715050884
+iteration: 7. mean conv.: 0.0747188002142475
+iteration: 8. mean conv.: 0.0940010712372791
+iteration: 9. mean conv.: 0.113283342260311
+iteration: 10. mean conv.: 0.1336368505624
+iteration: 11. mean conv.: 0.162292447777183
+iteration: 12. mean conv.: 0.190144617032673
+iteration: 13. mean conv.: 0.223620782003214
+iteration: 14. mean conv.: 0.267005891805035
+iteration: 15. mean conv.: 0.316550615961435
+iteration: 16. mean conv.: 0.373594001071237
+iteration: 17. mean conv.: 0.441349758971612
+iteration: 18. mean conv.: 0.524906266738082
+iteration: 19. mean conv.: 0.615961435457954
+iteration: 20. mean conv.: 0.707016604177825
+iteration: 21. mean conv.: 0.788430637386181
+iteration: 22. mean conv.: 0.854043920728441
+iteration: 23. mean conv.: 0.899571505088377
+iteration: 24. mean conv.: 0.929566148901982
+iteration: 25. mean conv.: 0.957418318157472
+iteration: 26. mean conv.: 0.976700589180504
+iteration: 27. mean conv.: 0.995715050883771
+iteration: 28. mean conv.: 1
+iteration: 29. mean conv.: 0.116497054097483
+iteration: 30. mean conv.: 0.222817354043921
+iteration: 31. mean conv.: 0.249598286020353
+iteration: 32. mean conv.: 0.28468130690948
+iteration: 33. mean conv.: 0.320032137118372
+iteration: 34. mean conv.: 0.372254954472416
+iteration: 35. mean conv.: 0.424745581146224
+iteration: 36. mean conv.: 0.480985538296733
+iteration: 37. mean conv.: 0.5457953936797
+iteration: 38. mean conv.: 0.614622388859132
+iteration: 39. mean conv.: 0.685591858596679
+iteration: 40. mean conv.: 0.749330476700589
+iteration: 41. mean conv.: 0.80878414568827
+iteration: 42. mean conv.: 0.859132297803964
+iteration: 43. mean conv.: 0.893144081414033
+iteration: 44. mean conv.: 0.918585966791644
+iteration: 45. mean conv.: 0.944831280128548
+iteration: 46. mean conv.: 0.959828602035351
+iteration: 47. mean conv.: 0.978039635779325
+iteration: 48. mean conv.: 0.993304767005892
+iteration: 49. mean conv.: 0.999196572040707
+iteration: 50. mean conv.: 0.247991430101768
+iteration: 51. mean conv.: 0.642474558114622
+iteration: 52. mean conv.: 0.697107659346545
+iteration: 53. mean conv.: 0.760042849491162
+iteration: 54. mean conv.: 0.815747188002143
+iteration: 55. mean conv.: 0.857525441885378
+iteration: 56. mean conv.: 0.895822174611676
+iteration: 57. mean conv.: 0.918853776111409
+iteration: 58. mean conv.: 0.941349758971612
+iteration: 59. mean conv.: 0.955275843599357
+iteration: 60. mean conv.: 0.972415640064274
+iteration: 61. mean conv.: 0.986341724692019
+iteration: 62. mean conv.: 0.997321906802357
+iteration: 63. mean conv.: 0.999732190680236
+iteration: 64. mean conv.: 0.612212104981253
+iteration: 65. mean conv.: 0.942153186930905
+iteration: 66. mean conv.: 0.953401178361007
+iteration: 67. mean conv.: 0.97027316550616
+iteration: 68. mean conv.: 0.98393144081414
+iteration: 69. mean conv.: 0.995982860203535
+iteration: 70. mean conv.: 0.999732190680236
+iteration: 71. mean conv.: 0.990626673808249
+iteration: 72. mean conv.: 0.997054097482592
+iteration: 73. mean conv.: 0.999732190680236
+iteration: 74. mean conv.: 0.99812533476165
+iteration: 75. mean conv.: 0.999732190680236
+converged. 
+36.2
+3818 genes, 72 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0277632268203248
+iteration: 3. mean conv.: 0.0426925091671032
+iteration: 4. mean conv.: 0.0474070193818753
+iteration: 5. mean conv.: 0.0534311157674175
+iteration: 6. mean conv.: 0.0620743844944997
+iteration: 7. mean conv.: 0.072289156626506
+iteration: 8. mean conv.: 0.0872184389732844
+iteration: 9. mean conv.: 0.107386066003143
+iteration: 10. mean conv.: 0.127029858564694
+iteration: 11. mean conv.: 0.149554740701938
+iteration: 12. mean conv.: 0.179151388161341
+iteration: 13. mean conv.: 0.21634363541121
+iteration: 14. mean conv.: 0.256678889470927
+iteration: 15. mean conv.: 0.312729177579885
+iteration: 16. mean conv.: 0.374017810371922
+iteration: 17. mean conv.: 0.441592456783656
+iteration: 18. mean conv.: 0.517548454688318
+iteration: 19. mean conv.: 0.611838658983761
+iteration: 20. mean conv.: 0.704819277108434
+iteration: 21. mean conv.: 0.7744892613934
+iteration: 22. mean conv.: 0.836825563122053
+iteration: 23. mean conv.: 0.883446830801467
+iteration: 24. mean conv.: 0.913305395495024
+iteration: 25. mean conv.: 0.935568360398114
+iteration: 26. mean conv.: 0.957831325301205
+iteration: 27. mean conv.: 0.978784704033525
+iteration: 28. mean conv.: 0.995547407019382
+iteration: 29. mean conv.: 1
+iteration: 30. mean conv.: 0.113148245154531
+iteration: 31. mean conv.: 0.248297537977999
+iteration: 32. mean conv.: 0.285489785227868
+iteration: 33. mean conv.: 0.329491880565741
+iteration: 34. mean conv.: 0.371398638030382
+iteration: 35. mean conv.: 0.422472498690414
+iteration: 36. mean conv.: 0.479570455735987
+iteration: 37. mean conv.: 0.539025667888947
+iteration: 38. mean conv.: 0.596123624934521
+iteration: 39. mean conv.: 0.662650602409639
+iteration: 40. mean conv.: 0.726034573074908
+iteration: 41. mean conv.: 0.7744892613934
+iteration: 42. mean conv.: 0.822682032477737
+iteration: 43. mean conv.: 0.863279203771608
+iteration: 44. mean conv.: 0.895233106338397
+iteration: 45. mean conv.: 0.915400733368256
+iteration: 46. mean conv.: 0.931115767417496
+iteration: 47. mean conv.: 0.949449973808277
+iteration: 48. mean conv.: 0.969355683603981
+iteration: 49. mean conv.: 0.986380303823992
+iteration: 50. mean conv.: 0.99738082765846
+iteration: 51. mean conv.: 0.999738082765846
+iteration: 52. mean conv.: 0.267941330539549
+iteration: 53. mean conv.: 0.682032477737035
+iteration: 54. mean conv.: 0.734939759036145
+iteration: 55. mean conv.: 0.789680460974332
+iteration: 56. mean conv.: 0.836563645887899
+iteration: 57. mean conv.: 0.878994237820849
+iteration: 58. mean conv.: 0.906233630172865
+iteration: 59. mean conv.: 0.925353588266108
+iteration: 60. mean conv.: 0.939759036144578
+iteration: 61. mean conv.: 0.957045573598743
+iteration: 62. mean conv.: 0.973808276584599
+iteration: 63. mean conv.: 0.98821372446307
+iteration: 64. mean conv.: 0.996856993190152
+iteration: 65. mean conv.: 0.999476165531692
+iteration: 66. mean conv.: 0.639339968569932
+iteration: 67. mean conv.: 0.942640125720272
+iteration: 68. mean conv.: 0.957831325301205
+iteration: 69. mean conv.: 0.973808276584599
+iteration: 70. mean conv.: 0.987427972760608
+iteration: 71. mean conv.: 0.996856993190152
+iteration: 72. mean conv.: 0.999476165531692
+iteration: 73. mean conv.: 0.988737558931378
+iteration: 74. mean conv.: 0.998166579360922
+iteration: 75. mean conv.: 1
+iteration: 76. mean conv.: 0.998166579360922
+iteration: 77. mean conv.: 1
+converged. 
+36.3
+3937 genes, 72 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0370840741681483
+iteration: 3. mean conv.: 0.0398780797561595
+iteration: 4. mean conv.: 0.0447040894081788
+iteration: 5. mean conv.: 0.0502921005842012
+iteration: 6. mean conv.: 0.0612141224282449
+iteration: 7. mean conv.: 0.0728981457962916
+iteration: 8. mean conv.: 0.0878841757683515
+iteration: 9. mean conv.: 0.103378206756414
+iteration: 10. mean conv.: 0.120142240284481
+iteration: 11. mean conv.: 0.138938277876556
+iteration: 12. mean conv.: 0.163830327660655
+iteration: 13. mean conv.: 0.196088392176784
+iteration: 14. mean conv.: 0.229870459740919
+iteration: 15. mean conv.: 0.277876555753111
+iteration: 16. mean conv.: 0.330200660401321
+iteration: 17. mean conv.: 0.399034798069596
+iteration: 18. mean conv.: 0.475742951485903
+iteration: 19. mean conv.: 0.569215138430277
+iteration: 20. mean conv.: 0.655829311658623
+iteration: 21. mean conv.: 0.741681483362967
+iteration: 22. mean conv.: 0.817119634239268
+iteration: 23. mean conv.: 0.870967741935484
+iteration: 24. mean conv.: 0.901193802387605
+iteration: 25. mean conv.: 0.927355854711709
+iteration: 26. mean conv.: 0.947675895351791
+iteration: 27. mean conv.: 0.968249936499873
+iteration: 28. mean conv.: 0.989839979679959
+iteration: 29. mean conv.: 0.999237998475997
+iteration: 30. mean conv.: 0.114300228600457
+iteration: 31. mean conv.: 0.268224536449073
+iteration: 32. mean conv.: 0.294386588773178
+iteration: 33. mean conv.: 0.331724663449327
+iteration: 34. mean conv.: 0.363474726949454
+iteration: 35. mean conv.: 0.413766827533655
+iteration: 36. mean conv.: 0.456438912877826
+iteration: 37. mean conv.: 0.507747015494031
+iteration: 38. mean conv.: 0.557023114046228
+iteration: 39. mean conv.: 0.612649225298451
+iteration: 40. mean conv.: 0.673609347218694
+iteration: 41. mean conv.: 0.730759461518923
+iteration: 42. mean conv.: 0.780797561595123
+iteration: 43. mean conv.: 0.822961645923292
+iteration: 44. mean conv.: 0.860299720599441
+iteration: 45. mean conv.: 0.885953771907544
+iteration: 46. mean conv.: 0.906527813055626
+iteration: 47. mean conv.: 0.923037846075692
+iteration: 48. mean conv.: 0.941833883667767
+iteration: 49. mean conv.: 0.954025908051816
+iteration: 50. mean conv.: 0.970535941071882
+iteration: 51. mean conv.: 0.984505969011938
+iteration: 52. mean conv.: 0.99491998983998
+iteration: 53. mean conv.: 0.998221996443993
+iteration: 54. mean conv.: 0.999491998983998
+iteration: 55. mean conv.: 0.30505461010922
+iteration: 56. mean conv.: 0.703327406654813
+iteration: 57. mean conv.: 0.73990347980696
+iteration: 58. mean conv.: 0.78257556515113
+iteration: 59. mean conv.: 0.820421640843282
+iteration: 60. mean conv.: 0.849631699263399
+iteration: 61. mean conv.: 0.880365760731522
+iteration: 62. mean conv.: 0.898907797815596
+iteration: 63. mean conv.: 0.914401828803658
+iteration: 64. mean conv.: 0.928625857251715
+iteration: 65. mean conv.: 0.942849885699771
+iteration: 66. mean conv.: 0.954025908051816
+iteration: 67. mean conv.: 0.967995935991872
+iteration: 68. mean conv.: 0.979679959359919
+iteration: 69. mean conv.: 0.988823977647955
+iteration: 70. mean conv.: 0.996443992887986
+iteration: 71. mean conv.: 0.998983997967996
+iteration: 72. mean conv.: 0.999491998983998
+iteration: 73. mean conv.: 0.321056642113284
+iteration: 74. mean conv.: 0.934467868935738
+iteration: 75. mean conv.: 0.94259588519177
+iteration: 76. mean conv.: 0.953009906019812
+iteration: 77. mean conv.: 0.965455930911862
+iteration: 78. mean conv.: 0.977139954279909
+iteration: 79. mean conv.: 0.986029972059944
+iteration: 80. mean conv.: 0.994411988823978
+iteration: 81. mean conv.: 0.998475996951994
+iteration: 82. mean conv.: 0.998983997967996
+iteration: 83. mean conv.: 0.999491998983998
+iteration: 84. mean conv.: 0.977647955295911
+iteration: 85. mean conv.: 0.993903987807976
+iteration: 86. mean conv.: 0.998221996443993
+iteration: 87. mean conv.: 0.998983997967996
+iteration: 88. mean conv.: 0.999237998475997
+iteration: 89. mean conv.: 0.996697993395987
+iteration: 90. mean conv.: 0.999237998475997
+converged. 
+36.4
+3978 genes, 72 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0314228255404726
+iteration: 3. mean conv.: 0.0394670688788336
+iteration: 4. mean conv.: 0.0502765208647562
+iteration: 5. mean conv.: 0.0618401206636501
+iteration: 6. mean conv.: 0.0759175465057818
+iteration: 7. mean conv.: 0.0827048768225239
+iteration: 8. mean conv.: 0.0942684766214178
+iteration: 9. mean conv.: 0.112870789341378
+iteration: 10. mean conv.: 0.131724484665661
+iteration: 11. mean conv.: 0.152840623428859
+iteration: 12. mean conv.: 0.177978883861237
+iteration: 13. mean conv.: 0.209904474610357
+iteration: 14. mean conv.: 0.248868778280543
+iteration: 15. mean conv.: 0.291101055806938
+iteration: 16. mean conv.: 0.348919054801408
+iteration: 17. mean conv.: 0.414529914529915
+iteration: 18. mean conv.: 0.479638009049774
+iteration: 19. mean conv.: 0.556561085972851
+iteration: 20. mean conv.: 0.63499245852187
+iteration: 21. mean conv.: 0.720965309200603
+iteration: 22. mean conv.: 0.783308195072901
+iteration: 23. mean conv.: 0.845148315736551
+iteration: 24. mean conv.: 0.881598793363499
+iteration: 25. mean conv.: 0.907239819004525
+iteration: 26. mean conv.: 0.932378079436903
+iteration: 27. mean conv.: 0.955002513826043
+iteration: 28. mean conv.: 0.974861739567622
+iteration: 29. mean conv.: 0.992458521870287
+iteration: 30. mean conv.: 0.999497234791352
+iteration: 31. mean conv.: 0.107088989441931
+iteration: 32. mean conv.: 0.251885369532428
+iteration: 33. mean conv.: 0.282805429864253
+iteration: 34. mean conv.: 0.319507290095525
+iteration: 35. mean conv.: 0.365761689291101
+iteration: 36. mean conv.: 0.420563097033685
+iteration: 37. mean conv.: 0.479135243841126
+iteration: 38. mean conv.: 0.536701860231272
+iteration: 39. mean conv.: 0.60105580693816
+iteration: 40. mean conv.: 0.658622423328306
+iteration: 41. mean conv.: 0.714680744092509
+iteration: 42. mean conv.: 0.769482151835093
+iteration: 43. mean conv.: 0.819758672699849
+iteration: 44. mean conv.: 0.85369532428356
+iteration: 45. mean conv.: 0.887129210658622
+iteration: 46. mean conv.: 0.905982905982906
+iteration: 47. mean conv.: 0.927350427350427
+iteration: 48. mean conv.: 0.945701357466063
+iteration: 49. mean conv.: 0.964806435394671
+iteration: 50. mean conv.: 0.97938662644545
+iteration: 51. mean conv.: 0.994720965309201
+iteration: 52. mean conv.: 0.998994469582705
+iteration: 53. mean conv.: 0.999748617395676
+iteration: 54. mean conv.: 0.268225238813474
+iteration: 55. mean conv.: 0.726998491704374
+iteration: 56. mean conv.: 0.77928607340372
+iteration: 57. mean conv.: 0.827048768225239
+iteration: 58. mean conv.: 0.866264454499749
+iteration: 59. mean conv.: 0.895424836601307
+iteration: 60. mean conv.: 0.917043740573152
+iteration: 61. mean conv.: 0.936400201106083
+iteration: 62. mean conv.: 0.95148315736551
+iteration: 63. mean conv.: 0.968828557063851
+iteration: 64. mean conv.: 0.981649069884364
+iteration: 65. mean conv.: 0.994469582704877
+iteration: 66. mean conv.: 0.999245852187029
+iteration: 67. mean conv.: 0.768476621417798
+iteration: 68. mean conv.: 0.958019105077929
+iteration: 69. mean conv.: 0.973353443941679
+iteration: 70. mean conv.: 0.985419808949221
+iteration: 71. mean conv.: 0.994972347913524
+iteration: 72. mean conv.: 0.999748617395676
+iteration: 73. mean conv.: 0.993464052287582
+iteration: 74. mean conv.: 0.999748617395676
+iteration: 75. mean conv.: 0.998994469582705
+iteration: 76. mean conv.: 0.999748617395676
+converged. 
+36.5
+4174 genes, 72 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0364159080019166
+iteration: 3. mean conv.: 0.0380929563967417
+iteration: 4. mean conv.: 0.050790608528989
+iteration: 5. mean conv.: 0.0555821753713464
+iteration: 6. mean conv.: 0.0646861523718256
+iteration: 7. mean conv.: 0.0788212745567801
+iteration: 8. mean conv.: 0.0867273598466699
+iteration: 9. mean conv.: 0.105654048873982
+iteration: 10. mean conv.: 0.128653569717298
+iteration: 11. mean conv.: 0.15428845232391
+iteration: 12. mean conv.: 0.182798275035937
+iteration: 13. mean conv.: 0.214422616195496
+iteration: 14. mean conv.: 0.257546717776713
+iteration: 15. mean conv.: 0.306420699568759
+iteration: 16. mean conv.: 0.370867273598467
+iteration: 17. mean conv.: 0.441542884523239
+iteration: 18. mean conv.: 0.526353617632966
+iteration: 19. mean conv.: 0.620028749401054
+iteration: 20. mean conv.: 0.71514135122185
+iteration: 21. mean conv.: 0.795160517489219
+iteration: 22. mean conv.: 0.862002874940105
+iteration: 23. mean conv.: 0.904408241494969
+iteration: 24. mean conv.: 0.928605654048874
+iteration: 25. mean conv.: 0.954240536655486
+iteration: 26. mean conv.: 0.98083373263057
+iteration: 27. mean conv.: 0.99664590321035
+iteration: 28. mean conv.: 1
+iteration: 29. mean conv.: 0.111164350742693
+iteration: 30. mean conv.: 0.234068040249161
+iteration: 31. mean conv.: 0.261859127934835
+iteration: 32. mean conv.: 0.294920939147101
+iteration: 33. mean conv.: 0.334211787254432
+iteration: 34. mean conv.: 0.375658840440824
+iteration: 35. mean conv.: 0.428605654048874
+iteration: 36. mean conv.: 0.482271202683277
+iteration: 37. mean conv.: 0.544321993291806
+iteration: 38. mean conv.: 0.607091518926689
+iteration: 39. mean conv.: 0.674413033061811
+iteration: 40. mean conv.: 0.732390991854336
+iteration: 41. mean conv.: 0.791806420699569
+iteration: 42. mean conv.: 0.843555342597029
+iteration: 43. mean conv.: 0.878294202204121
+iteration: 44. mean conv.: 0.906324868231912
+iteration: 45. mean conv.: 0.923574508864399
+iteration: 46. mean conv.: 0.947292764734068
+iteration: 47. mean conv.: 0.969813128893148
+iteration: 48. mean conv.: 0.983948251078103
+iteration: 49. mean conv.: 0.994968854815525
+iteration: 50. mean conv.: 0.999281264973646
+iteration: 51. mean conv.: 0.288452323909919
+iteration: 52. mean conv.: 0.64302827024437
+iteration: 53. mean conv.: 0.694058457115477
+iteration: 54. mean conv.: 0.751557259223766
+iteration: 55. mean conv.: 0.796837565884044
+iteration: 56. mean conv.: 0.841638715860086
+iteration: 57. mean conv.: 0.875419262098706
+iteration: 58. mean conv.: 0.901772879731672
+iteration: 59. mean conv.: 0.918303785337805
+iteration: 60. mean conv.: 0.938907522759942
+iteration: 61. mean conv.: 0.957834211787254
+iteration: 62. mean conv.: 0.973406804024916
+iteration: 63. mean conv.: 0.986823191183517
+iteration: 64. mean conv.: 0.99544801149976
+iteration: 65. mean conv.: 0.999041686631528
+iteration: 66. mean conv.: 0.441063727839003
+iteration: 67. mean conv.: 0.925251557259224
+iteration: 68. mean conv.: 0.938907522759942
+iteration: 69. mean conv.: 0.955917585050311
+iteration: 70. mean conv.: 0.97292764734068
+iteration: 71. mean conv.: 0.983708672735985
+iteration: 72. mean conv.: 0.992333493052228
+iteration: 73. mean conv.: 0.998322951605175
+iteration: 74. mean conv.: 0.999760421657882
+iteration: 75. mean conv.: 0.979396262577863
+iteration: 76. mean conv.: 0.9932918064207
+iteration: 77. mean conv.: 0.998083373263057
+iteration: 78. mean conv.: 0.999760421657882
+converged. 
+24.1
+4155 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0317689530685921
+iteration: 3. mean conv.: 0.0452466907340554
+iteration: 4. mean conv.: 0.0459687123947052
+iteration: 5. mean conv.: 0.0567990373044525
+iteration: 6. mean conv.: 0.065222623345367
+iteration: 7. mean conv.: 0.0811070998796631
+iteration: 8. mean conv.: 0.0945848375451264
+iteration: 9. mean conv.: 0.112635379061372
+iteration: 10. mean conv.: 0.134055354993983
+iteration: 11. mean conv.: 0.15884476534296
+iteration: 12. mean conv.: 0.190132370637786
+iteration: 13. mean conv.: 0.22575210589651
+iteration: 14. mean conv.: 0.270036101083032
+iteration: 15. mean conv.: 0.324669073405536
+iteration: 16. mean conv.: 0.384356197352587
+iteration: 17. mean conv.: 0.460168471720818
+iteration: 18. mean conv.: 0.541997593261131
+iteration: 19. mean conv.: 0.631287605294826
+iteration: 20. mean conv.: 0.714801444043321
+iteration: 21. mean conv.: 0.793983152827918
+iteration: 22. mean conv.: 0.85367027677497
+iteration: 23. mean conv.: 0.896028880866426
+iteration: 24. mean conv.: 0.924909747292419
+iteration: 25. mean conv.: 0.950421179302046
+iteration: 26. mean conv.: 0.976895306859206
+iteration: 27. mean conv.: 0.995667870036101
+iteration: 28. mean conv.: 0.999759326113117
+iteration: 29. mean conv.: 0.0873646209386282
+iteration: 30. mean conv.: 0.200240673886883
+iteration: 31. mean conv.: 0.235619735258724
+iteration: 32. mean conv.: 0.276052948255114
+iteration: 33. mean conv.: 0.31913357400722
+iteration: 34. mean conv.: 0.363417569193742
+iteration: 35. mean conv.: 0.416847172081829
+iteration: 36. mean conv.: 0.476534296028881
+iteration: 37. mean conv.: 0.536462093862816
+iteration: 38. mean conv.: 0.598315282791817
+iteration: 39. mean conv.: 0.663537906137184
+iteration: 40. mean conv.: 0.722262334536703
+iteration: 41. mean conv.: 0.776413959085439
+iteration: 42. mean conv.: 0.822864019253911
+iteration: 43. mean conv.: 0.861853188929001
+iteration: 44. mean conv.: 0.893622141997593
+iteration: 45. mean conv.: 0.920336943441637
+iteration: 46. mean conv.: 0.943441636582431
+iteration: 47. mean conv.: 0.964861612515042
+iteration: 48. mean conv.: 0.983874849578821
+iteration: 49. mean conv.: 0.995427196149218
+iteration: 50. mean conv.: 0.999518652226233
+iteration: 51. mean conv.: 0.116245487364621
+iteration: 52. mean conv.: 0.577376654632972
+iteration: 53. mean conv.: 0.628399518652226
+iteration: 54. mean conv.: 0.688808664259928
+iteration: 55. mean conv.: 0.74849578820698
+iteration: 56. mean conv.: 0.795667870036101
+iteration: 57. mean conv.: 0.83971119133574
+iteration: 58. mean conv.: 0.876534296028881
+iteration: 59. mean conv.: 0.90517448856799
+iteration: 60. mean conv.: 0.930926594464501
+iteration: 61. mean conv.: 0.948736462093863
+iteration: 62. mean conv.: 0.970156438026474
+iteration: 63. mean conv.: 0.986522262334537
+iteration: 64. mean conv.: 0.995427196149218
+iteration: 65. mean conv.: 0.999518652226233
+iteration: 66. mean conv.: 0.17208182912154
+iteration: 67. mean conv.: 0.901805054151625
+iteration: 68. mean conv.: 0.923947051744886
+iteration: 69. mean conv.: 0.943200962695548
+iteration: 70. mean conv.: 0.963176895306859
+iteration: 71. mean conv.: 0.978580024067389
+iteration: 72. mean conv.: 0.991576413959085
+iteration: 73. mean conv.: 0.998796630565584
+iteration: 74. mean conv.: 0.999518652226233
+iteration: 75. mean conv.: 0.901323706377858
+iteration: 76. mean conv.: 0.990854392298436
+iteration: 77. mean conv.: 0.998074608904934
+iteration: 78. mean conv.: 0.999518652226233
+iteration: 79. mean conv.: 0.989891696750902
+iteration: 80. mean conv.: 0.999759326113117
+iteration: 81. mean conv.: 0.998796630565584
+iteration: 82. mean conv.: 0.999759326113117
+converged. 
+24.2
+3750 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0256
+iteration: 3. mean conv.: 0.0434666666666667
+iteration: 4. mean conv.: 0.056
+iteration: 5. mean conv.: 0.0573333333333333
+iteration: 6. mean conv.: 0.0733333333333333
+iteration: 7. mean conv.: 0.0925333333333333
+iteration: 8. mean conv.: 0.108533333333333
+iteration: 9. mean conv.: 0.129333333333333
+iteration: 10. mean conv.: 0.154133333333333
+iteration: 11. mean conv.: 0.175733333333333
+iteration: 12. mean conv.: 0.199733333333333
+iteration: 13. mean conv.: 0.2328
+iteration: 14. mean conv.: 0.268266666666667
+iteration: 15. mean conv.: 0.3136
+iteration: 16. mean conv.: 0.369333333333333
+iteration: 17. mean conv.: 0.429866666666667
+iteration: 18. mean conv.: 0.495466666666667
+iteration: 19. mean conv.: 0.579733333333333
+iteration: 20. mean conv.: 0.658933333333333
+iteration: 21. mean conv.: 0.7304
+iteration: 22. mean conv.: 0.798666666666667
+iteration: 23. mean conv.: 0.848533333333333
+iteration: 24. mean conv.: 0.881333333333333
+iteration: 25. mean conv.: 0.9136
+iteration: 26. mean conv.: 0.937866666666667
+iteration: 27. mean conv.: 0.963466666666667
+iteration: 28. mean conv.: 0.982133333333333
+iteration: 29. mean conv.: 0.995466666666667
+iteration: 30. mean conv.: 0.999733333333333
+iteration: 31. mean conv.: 0.0906666666666667
+iteration: 32. mean conv.: 0.264266666666667
+iteration: 33. mean conv.: 0.295466666666667
+iteration: 34. mean conv.: 0.336266666666667
+iteration: 35. mean conv.: 0.372533333333333
+iteration: 36. mean conv.: 0.419733333333333
+iteration: 37. mean conv.: 0.466666666666667
+iteration: 38. mean conv.: 0.513866666666667
+iteration: 39. mean conv.: 0.5608
+iteration: 40. mean conv.: 0.6128
+iteration: 41. mean conv.: 0.663733333333333
+iteration: 42. mean conv.: 0.717066666666667
+iteration: 43. mean conv.: 0.768
+iteration: 44. mean conv.: 0.805066666666667
+iteration: 45. mean conv.: 0.839466666666667
+iteration: 46. mean conv.: 0.872533333333333
+iteration: 47. mean conv.: 0.897066666666667
+iteration: 48. mean conv.: 0.9176
+iteration: 49. mean conv.: 0.936266666666667
+iteration: 50. mean conv.: 0.956533333333333
+iteration: 51. mean conv.: 0.973866666666667
+iteration: 52. mean conv.: 0.986133333333333
+iteration: 53. mean conv.: 0.994933333333333
+iteration: 54. mean conv.: 0.998933333333333
+iteration: 55. mean conv.: 1
+iteration: 56. mean conv.: 0.119733333333333
+iteration: 57. mean conv.: 0.719466666666667
+iteration: 58. mean conv.: 0.750666666666667
+iteration: 59. mean conv.: 0.7864
+iteration: 60. mean conv.: 0.815733333333333
+iteration: 61. mean conv.: 0.850933333333333
+iteration: 62. mean conv.: 0.875733333333333
+iteration: 63. mean conv.: 0.896533333333333
+iteration: 64. mean conv.: 0.919733333333333
+iteration: 65. mean conv.: 0.934133333333333
+iteration: 66. mean conv.: 0.949333333333333
+iteration: 67. mean conv.: 0.965866666666667
+iteration: 68. mean conv.: 0.980533333333333
+iteration: 69. mean conv.: 0.989333333333333
+iteration: 70. mean conv.: 0.995733333333333
+iteration: 71. mean conv.: 0.998666666666667
+iteration: 72. mean conv.: 0.999466666666667
+iteration: 73. mean conv.: 0.168
+iteration: 74. mean conv.: 0.9448
+iteration: 75. mean conv.: 0.957066666666667
+iteration: 76. mean conv.: 0.969066666666667
+iteration: 77. mean conv.: 0.981333333333333
+iteration: 78. mean conv.: 0.989866666666667
+iteration: 79. mean conv.: 0.996
+iteration: 80. mean conv.: 0.998933333333333
+iteration: 81. mean conv.: 0.999466666666667
+iteration: 82. mean conv.: 0.945866666666667
+iteration: 83. mean conv.: 0.9976
+iteration: 84. mean conv.: 0.999466666666667
+iteration: 85. mean conv.: 0.9928
+iteration: 86. mean conv.: 0.999466666666667
+iteration: 87. mean conv.: 0.997333333333333
+iteration: 88. mean conv.: 1
+converged. 
+24.3
+3919 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0316407246746619
+iteration: 3. mean conv.: 0.041592242919112
+iteration: 4. mean conv.: 0.047971421280939
+iteration: 5. mean conv.: 0.0553712681806583
+iteration: 6. mean conv.: 0.0737433018627201
+iteration: 7. mean conv.: 0.0854809900484818
+iteration: 8. mean conv.: 0.101556519520286
+iteration: 9. mean conv.: 0.116356213319724
+iteration: 10. mean conv.: 0.138045419749936
+iteration: 11. mean conv.: 0.163817300331717
+iteration: 12. mean conv.: 0.194437356468487
+iteration: 13. mean conv.: 0.227609083949987
+iteration: 14. mean conv.: 0.271242663944884
+iteration: 15. mean conv.: 0.323807093646338
+iteration: 16. mean conv.: 0.38275070170962
+iteration: 17. mean conv.: 0.444501148252105
+iteration: 18. mean conv.: 0.52028578719061
+iteration: 19. mean conv.: 0.605001275835672
+iteration: 20. mean conv.: 0.690227098749681
+iteration: 21. mean conv.: 0.757846389385047
+iteration: 22. mean conv.: 0.817810665986221
+iteration: 23. mean conv.: 0.872161265628987
+iteration: 24. mean conv.: 0.907884664455218
+iteration: 25. mean conv.: 0.939015054860934
+iteration: 26. mean conv.: 0.968869609594284
+iteration: 27. mean conv.: 0.987751977545292
+iteration: 28. mean conv.: 0.998724164327635
+iteration: 29. mean conv.: 1
+iteration: 30. mean conv.: 0.0913498341413626
+iteration: 31. mean conv.: 0.18142383261036
+iteration: 32. mean conv.: 0.216126562898699
+iteration: 33. mean conv.: 0.254911967338607
+iteration: 34. mean conv.: 0.306455728502169
+iteration: 35. mean conv.: 0.359785659607043
+iteration: 36. mean conv.: 0.414391426384282
+iteration: 37. mean conv.: 0.478438377137025
+iteration: 38. mean conv.: 0.546568002041337
+iteration: 39. mean conv.: 0.610870119928553
+iteration: 40. mean conv.: 0.68104108190865
+iteration: 41. mean conv.: 0.744322531257974
+iteration: 42. mean conv.: 0.792804286807859
+iteration: 43. mean conv.: 0.839499872416433
+iteration: 44. mean conv.: 0.878540443990814
+iteration: 45. mean conv.: 0.906098494513907
+iteration: 46. mean conv.: 0.931615207961215
+iteration: 47. mean conv.: 0.955090584332738
+iteration: 48. mean conv.: 0.973717785149273
+iteration: 49. mean conv.: 0.991579484562388
+iteration: 50. mean conv.: 0.997958662924215
+iteration: 51. mean conv.: 0.999234498596581
+iteration: 52. mean conv.: 0.110487369226844
+iteration: 53. mean conv.: 0.576167389640214
+iteration: 54. mean conv.: 0.648379688696096
+iteration: 55. mean conv.: 0.717019647869354
+iteration: 56. mean conv.: 0.779535595815259
+iteration: 57. mean conv.: 0.834906863995917
+iteration: 58. mean conv.: 0.879816279663179
+iteration: 59. mean conv.: 0.907629497320745
+iteration: 60. mean conv.: 0.933401377902526
+iteration: 61. mean conv.: 0.954835417198265
+iteration: 62. mean conv.: 0.971166113804542
+iteration: 63. mean conv.: 0.987751977545292
+iteration: 64. mean conv.: 0.997958662924215
+iteration: 65. mean conv.: 0.999234498596581
+iteration: 66. mean conv.: 0.251084460321511
+iteration: 67. mean conv.: 0.926001531002807
+iteration: 68. mean conv.: 0.945904567491707
+iteration: 69. mean conv.: 0.966317938249553
+iteration: 70. mean conv.: 0.981372799183465
+iteration: 71. mean conv.: 0.995406991579485
+iteration: 72. mean conv.: 0.998724164327635
+iteration: 73. mean conv.: 0.999489665731054
+iteration: 74. mean conv.: 0.953559581525899
+iteration: 75. mean conv.: 0.998213830058688
+iteration: 76. mean conv.: 0.999234498596581
+iteration: 77. mean conv.: 0.994386323041592
+iteration: 78. mean conv.: 0.999489665731054
+iteration: 79. mean conv.: 0.998213830058688
+iteration: 80. mean conv.: 0.999744832865527
+converged. 
+24.4
+3852 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0251817237798546
+iteration: 3. mean conv.: 0.0407580477673936
+iteration: 4. mean conv.: 0.0508826583592939
+iteration: 5. mean conv.: 0.0589304257528557
+iteration: 6. mean conv.: 0.0685358255451713
+iteration: 7. mean conv.: 0.0869678089304258
+iteration: 8. mean conv.: 0.103842159916926
+iteration: 9. mean conv.: 0.121495327102804
+iteration: 10. mean conv.: 0.142263759086189
+iteration: 11. mean conv.: 0.166666666666667
+iteration: 12. mean conv.: 0.193406022845275
+iteration: 13. mean conv.: 0.227673935617861
+iteration: 14. mean conv.: 0.266355140186916
+iteration: 15. mean conv.: 0.315939771547248
+iteration: 16. mean conv.: 0.365005192107996
+iteration: 17. mean conv.: 0.419522326064382
+iteration: 18. mean conv.: 0.488058151609553
+iteration: 19. mean conv.: 0.553997923156802
+iteration: 20. mean conv.: 0.627206645898235
+iteration: 21. mean conv.: 0.703530633437175
+iteration: 22. mean conv.: 0.771547248182762
+iteration: 23. mean conv.: 0.831516095534787
+iteration: 24. mean conv.: 0.873052959501558
+iteration: 25. mean conv.: 0.910955347871236
+iteration: 26. mean conv.: 0.940031152647975
+iteration: 27. mean conv.: 0.96079958463136
+iteration: 28. mean conv.: 0.9831256490135
+iteration: 29. mean conv.: 0.995846313603323
+iteration: 30. mean conv.: 0.998961578400831
+iteration: 31. mean conv.: 0.999480789200415
+iteration: 32. mean conv.: 0.0934579439252336
+iteration: 33. mean conv.: 0.218847352024922
+iteration: 34. mean conv.: 0.251038421599169
+iteration: 35. mean conv.: 0.299584631360332
+iteration: 36. mean conv.: 0.343977154724818
+iteration: 37. mean conv.: 0.389927310488058
+iteration: 38. mean conv.: 0.445742471443406
+iteration: 39. mean conv.: 0.5033748701973
+iteration: 40. mean conv.: 0.558670820353063
+iteration: 41. mean conv.: 0.628764278296989
+iteration: 42. mean conv.: 0.682242990654206
+iteration: 43. mean conv.: 0.745846313603323
+iteration: 44. mean conv.: 0.792834890965732
+iteration: 45. mean conv.: 0.831256490134995
+iteration: 46. mean conv.: 0.864226375908619
+iteration: 47. mean conv.: 0.890965732087227
+iteration: 48. mean conv.: 0.915628245067497
+iteration: 49. mean conv.: 0.932502596053998
+iteration: 50. mean conv.: 0.95404984423676
+iteration: 51. mean conv.: 0.969885773624091
+iteration: 52. mean conv.: 0.9865005192108
+iteration: 53. mean conv.: 0.995846313603323
+iteration: 54. mean conv.: 0.998442367601246
+iteration: 55. mean conv.: 0.998961578400831
+iteration: 56. mean conv.: 0.999480789200415
+iteration: 57. mean conv.: 0.107476635514019
+iteration: 58. mean conv.: 0.655763239875389
+iteration: 59. mean conv.: 0.717808930425753
+iteration: 60. mean conv.: 0.780893042575286
+iteration: 61. mean conv.: 0.825285565939772
+iteration: 62. mean conv.: 0.861889927310488
+iteration: 63. mean conv.: 0.892523364485981
+iteration: 64. mean conv.: 0.912253374870197
+iteration: 65. mean conv.: 0.933541017653167
+iteration: 66. mean conv.: 0.948598130841122
+iteration: 67. mean conv.: 0.965991692627207
+iteration: 68. mean conv.: 0.978971962616822
+iteration: 69. mean conv.: 0.991173416407061
+iteration: 70. mean conv.: 0.996884735202492
+iteration: 71. mean conv.: 0.998701973001038
+iteration: 72. mean conv.: 0.999480789200415
+iteration: 73. mean conv.: 0.228971962616822
+iteration: 74. mean conv.: 0.943665628245068
+iteration: 75. mean conv.: 0.957684319833852
+iteration: 76. mean conv.: 0.971183800623053
+iteration: 77. mean conv.: 0.983385254413292
+iteration: 78. mean conv.: 0.993509865005192
+iteration: 79. mean conv.: 0.997923156801661
+iteration: 80. mean conv.: 0.998961578400831
+iteration: 81. mean conv.: 0.999480789200415
+iteration: 82. mean conv.: 0.940809968847352
+iteration: 83. mean conv.: 0.998182762201454
+iteration: 84. mean conv.: 0.999221183800623
+iteration: 85. mean conv.: 0.994548286604361
+iteration: 86. mean conv.: 0.999740394600208
+iteration: 87. mean conv.: 0.998182762201454
+iteration: 88. mean conv.: 0.999740394600208
+converged. 
+24.5
+3870 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0250645994832041
+iteration: 3. mean conv.: 0.0439276485788114
+iteration: 4. mean conv.: 0.0542635658914729
+iteration: 5. mean conv.: 0.0617571059431525
+iteration: 6. mean conv.: 0.0744186046511628
+iteration: 7. mean conv.: 0.0870801033591731
+iteration: 8. mean conv.: 0.103875968992248
+iteration: 9. mean conv.: 0.118346253229974
+iteration: 10. mean conv.: 0.137984496124031
+iteration: 11. mean conv.: 0.161757105943152
+iteration: 12. mean conv.: 0.18733850129199
+iteration: 13. mean conv.: 0.223514211886305
+iteration: 14. mean conv.: 0.257881136950904
+iteration: 15. mean conv.: 0.304909560723514
+iteration: 16. mean conv.: 0.350904392764858
+iteration: 17. mean conv.: 0.408785529715762
+iteration: 18. mean conv.: 0.4671834625323
+iteration: 19. mean conv.: 0.529457364341085
+iteration: 20. mean conv.: 0.601291989664083
+iteration: 21. mean conv.: 0.667700258397933
+iteration: 22. mean conv.: 0.72609819121447
+iteration: 23. mean conv.: 0.791214470284238
+iteration: 24. mean conv.: 0.837467700258398
+iteration: 25. mean conv.: 0.877002583979328
+iteration: 26. mean conv.: 0.906976744186046
+iteration: 27. mean conv.: 0.928682170542636
+iteration: 28. mean conv.: 0.95297157622739
+iteration: 29. mean conv.: 0.970284237726098
+iteration: 30. mean conv.: 0.987855297157623
+iteration: 31. mean conv.: 0.997157622739018
+iteration: 32. mean conv.: 0.999483204134367
+iteration: 33. mean conv.: 0.0834625322997416
+iteration: 34. mean conv.: 0.238501291989664
+iteration: 35. mean conv.: 0.274935400516796
+iteration: 36. mean conv.: 0.317829457364341
+iteration: 37. mean conv.: 0.358397932816537
+iteration: 38. mean conv.: 0.402583979328165
+iteration: 39. mean conv.: 0.442377260981912
+iteration: 40. mean conv.: 0.489405684754522
+iteration: 41. mean conv.: 0.541343669250646
+iteration: 42. mean conv.: 0.594573643410853
+iteration: 43. mean conv.: 0.653488372093023
+iteration: 44. mean conv.: 0.702842377260982
+iteration: 45. mean conv.: 0.748578811369509
+iteration: 46. mean conv.: 0.797416020671835
+iteration: 47. mean conv.: 0.838759689922481
+iteration: 48. mean conv.: 0.872351421188631
+iteration: 49. mean conv.: 0.893798449612403
+iteration: 50. mean conv.: 0.912919896640827
+iteration: 51. mean conv.: 0.930490956072351
+iteration: 52. mean conv.: 0.947545219638243
+iteration: 53. mean conv.: 0.963049095607235
+iteration: 54. mean conv.: 0.977002583979328
+iteration: 55. mean conv.: 0.989664082687339
+iteration: 56. mean conv.: 0.996640826873385
+iteration: 57. mean conv.: 0.998708010335917
+iteration: 58. mean conv.: 0.999483204134367
+iteration: 59. mean conv.: 0.108268733850129
+iteration: 60. mean conv.: 0.653488372093023
+iteration: 61. mean conv.: 0.705684754521964
+iteration: 62. mean conv.: 0.757105943152455
+iteration: 63. mean conv.: 0.800516795865633
+iteration: 64. mean conv.: 0.848837209302326
+iteration: 65. mean conv.: 0.88062015503876
+iteration: 66. mean conv.: 0.90594315245478
+iteration: 67. mean conv.: 0.925322997416021
+iteration: 68. mean conv.: 0.941085271317829
+iteration: 69. mean conv.: 0.954005167958656
+iteration: 70. mean conv.: 0.969250645994832
+iteration: 71. mean conv.: 0.980878552971576
+iteration: 72. mean conv.: 0.989922480620155
+iteration: 73. mean conv.: 0.996899224806202
+iteration: 74. mean conv.: 0.998708010335917
+iteration: 75. mean conv.: 0.999483204134367
+iteration: 76. mean conv.: 0.195348837209302
+iteration: 77. mean conv.: 0.947286821705426
+iteration: 78. mean conv.: 0.96046511627907
+iteration: 79. mean conv.: 0.974418604651163
+iteration: 80. mean conv.: 0.984237726098191
+iteration: 81. mean conv.: 0.99328165374677
+iteration: 82. mean conv.: 0.998449612403101
+iteration: 83. mean conv.: 0.999741602067183
+iteration: 84. mean conv.: 0.955555555555556
+iteration: 85. mean conv.: 0.998708010335917
+iteration: 86. mean conv.: 0.999483204134367
+iteration: 87. mean conv.: 0.99328165374677
+iteration: 88. mean conv.: 0.999741602067183
+iteration: 89. mean conv.: 0.998449612403101
+iteration: 90. mean conv.: 1
+converged. 
+12.1
+3854 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0207576543850545
+iteration: 3. mean conv.: 0.0321743642968345
+iteration: 4. mean conv.: 0.0363258951738454
+iteration: 5. mean conv.: 0.0505967825635703
+iteration: 6. mean conv.: 0.0646081992734821
+iteration: 7. mean conv.: 0.0793980280228334
+iteration: 8. mean conv.: 0.0941878567721847
+iteration: 9. mean conv.: 0.115723923196679
+iteration: 10. mean conv.: 0.138038401660612
+iteration: 11. mean conv.: 0.168396471198755
+iteration: 12. mean conv.: 0.199532952776336
+iteration: 13. mean conv.: 0.235080435910742
+iteration: 14. mean conv.: 0.281266216917488
+iteration: 15. mean conv.: 0.32381940840685
+iteration: 16. mean conv.: 0.380643487285937
+iteration: 17. mean conv.: 0.434613388687078
+iteration: 18. mean conv.: 0.507524649714582
+iteration: 19. mean conv.: 0.577581733264141
+iteration: 20. mean conv.: 0.650752464971458
+iteration: 21. mean conv.: 0.723663725998962
+iteration: 22. mean conv.: 0.795537104307213
+iteration: 23. mean conv.: 0.854177477944992
+iteration: 24. mean conv.: 0.906590555267255
+iteration: 25. mean conv.: 0.945251686559419
+iteration: 26. mean conv.: 0.980020757654385
+iteration: 27. mean conv.: 0.993253762324857
+iteration: 28. mean conv.: 0.997924234561495
+iteration: 29. mean conv.: 0.998702646600934
+iteration: 30. mean conv.: 0.999740529320187
+iteration: 31. mean conv.: 0.0586403736377789
+iteration: 32. mean conv.: 0.157498702646601
+iteration: 33. mean conv.: 0.187856772184743
+iteration: 34. mean conv.: 0.223404255319149
+iteration: 35. mean conv.: 0.256616502335236
+iteration: 36. mean conv.: 0.300726517903477
+iteration: 37. mean conv.: 0.352880124545926
+iteration: 38. mean conv.: 0.403217436429683
+iteration: 39. mean conv.: 0.461857810067462
+iteration: 40. mean conv.: 0.522314478463934
+iteration: 41. mean conv.: 0.591593149974053
+iteration: 42. mean conv.: 0.661131292163985
+iteration: 43. mean conv.: 0.726258432797094
+iteration: 44. mean conv.: 0.791126102750389
+iteration: 45. mean conv.: 0.847690710949663
+iteration: 46. mean conv.: 0.892579138557343
+iteration: 47. mean conv.: 0.932797093928386
+iteration: 48. mean conv.: 0.964193046185781
+iteration: 49. mean conv.: 0.984431759211209
+iteration: 50. mean conv.: 0.993772703684484
+iteration: 51. mean conv.: 0.996367410482615
+iteration: 52. mean conv.: 0.998183705241308
+iteration: 53. mean conv.: 0.99922158796056
+iteration: 54. mean conv.: 0.1141670991178
+iteration: 55. mean conv.: 0.531136481577582
+iteration: 56. mean conv.: 0.591593149974053
+iteration: 57. mean conv.: 0.657239231966788
+iteration: 58. mean conv.: 0.724442138038402
+iteration: 59. mean conv.: 0.782563570316554
+iteration: 60. mean conv.: 0.842760768033212
+iteration: 61. mean conv.: 0.889465490399585
+iteration: 62. mean conv.: 0.930980799169694
+iteration: 63. mean conv.: 0.956927867151012
+iteration: 64. mean conv.: 0.980799169693825
+iteration: 65. mean conv.: 0.993772703684484
+iteration: 66. mean conv.: 0.996626881162429
+iteration: 67. mean conv.: 0.997405293201868
+iteration: 68. mean conv.: 0.998962117280747
+iteration: 69. mean conv.: 0.99922158796056
+iteration: 70. mean conv.: 0.169953295277634
+iteration: 71. mean conv.: 0.937467566165023
+iteration: 72. mean conv.: 0.958225220550078
+iteration: 73. mean conv.: 0.982355993772704
+iteration: 74. mean conv.: 0.99351323300467
+iteration: 75. mean conv.: 0.996626881162429
+iteration: 76. mean conv.: 0.997924234561495
+iteration: 77. mean conv.: 0.998443175921121
+iteration: 78. mean conv.: 0.99922158796056
+iteration: 79. mean conv.: 0.821484172288531
+iteration: 80. mean conv.: 0.997924234561495
+iteration: 81. mean conv.: 0.998183705241308
+iteration: 82. mean conv.: 0.99922158796056
+iteration: 83. mean conv.: 0.980020757654385
+iteration: 84. mean conv.: 0.999740529320187
+iteration: 85. mean conv.: 0.995588998443176
+iteration: 86. mean conv.: 0.999740529320187
+iteration: 87. mean conv.: 0.998183705241308
+iteration: 88. mean conv.: 1
+iteration: 89. mean conv.: 0.998962117280747
+iteration: 90. mean conv.: 1
+converged. 
+12.2
+4337 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0225962646991008
+iteration: 3. mean conv.: 0.0355084159557298
+iteration: 4. mean conv.: 0.0491122896011068
+iteration: 5. mean conv.: 0.0599492736914918
+iteration: 6. mean conv.: 0.067327645838137
+iteration: 7. mean conv.: 0.0777034816693567
+iteration: 8. mean conv.: 0.0989163015909615
+iteration: 9. mean conv.: 0.11874567673507
+iteration: 10. mean conv.: 0.138805626008762
+iteration: 11. mean conv.: 0.163015909614941
+iteration: 12. mean conv.: 0.194604565367766
+iteration: 13. mean conv.: 0.22965183306433
+iteration: 14. mean conv.: 0.266313119667973
+iteration: 15. mean conv.: 0.302513258012451
+iteration: 16. mean conv.: 0.342863730689417
+iteration: 17. mean conv.: 0.387595111828453
+iteration: 18. mean conv.: 0.427945584505418
+iteration: 19. mean conv.: 0.47659672584736
+iteration: 20. mean conv.: 0.527553608485128
+iteration: 21. mean conv.: 0.569518100069172
+iteration: 22. mean conv.: 0.615171777726539
+iteration: 23. mean conv.: 0.663131196679733
+iteration: 24. mean conv.: 0.703712243486281
+iteration: 25. mean conv.: 0.735070325109523
+iteration: 26. mean conv.: 0.771039889324418
+iteration: 27. mean conv.: 0.804011989854738
+iteration: 28. mean conv.: 0.834678349089232
+iteration: 29. mean conv.: 0.864422411805395
+iteration: 30. mean conv.: 0.889785566059488
+iteration: 31. mean conv.: 0.919068480516486
+iteration: 32. mean conv.: 0.944431634770579
+iteration: 33. mean conv.: 0.963108139266774
+iteration: 34. mean conv.: 0.97832603181923
+iteration: 35. mean conv.: 0.98616555222504
+iteration: 36. mean conv.: 0.991007608946276
+iteration: 37. mean conv.: 0.994005072630851
+iteration: 38. mean conv.: 0.995388517408347
+iteration: 39. mean conv.: 0.996771962185843
+iteration: 40. mean conv.: 0.997463684574591
+iteration: 41. mean conv.: 0.998385981092921
+iteration: 42. mean conv.: 0.999308277611252
+iteration: 43. mean conv.: 0.0954576896472216
+iteration: 44. mean conv.: 0.153101222042887
+iteration: 45. mean conv.: 0.197371454922758
+iteration: 46. mean conv.: 0.242794558450542
+iteration: 47. mean conv.: 0.300207516716624
+iteration: 48. mean conv.: 0.366612866036431
+iteration: 49. mean conv.: 0.422411805395435
+iteration: 50. mean conv.: 0.478210744754439
+iteration: 51. mean conv.: 0.53816001844593
+iteration: 52. mean conv.: 0.585427715010376
+iteration: 53. mean conv.: 0.628314503112751
+iteration: 54. mean conv.: 0.66635923449389
+iteration: 55. mean conv.: 0.701637076320037
+iteration: 56. mean conv.: 0.733225732072861
+iteration: 57. mean conv.: 0.75997233110445
+iteration: 58. mean conv.: 0.786027207747291
+iteration: 59. mean conv.: 0.808392898316809
+iteration: 60. mean conv.: 0.832372607793406
+iteration: 61. mean conv.: 0.852432557067097
+iteration: 62. mean conv.: 0.875028821766198
+iteration: 63. mean conv.: 0.896241641687803
+iteration: 64. mean conv.: 0.913534701406502
+iteration: 65. mean conv.: 0.93151948351395
+iteration: 66. mean conv.: 0.942125893474752
+iteration: 67. mean conv.: 0.953654599953885
+iteration: 68. mean conv.: 0.960802397970948
+iteration: 69. mean conv.: 0.965644454692184
+iteration: 70. mean conv.: 0.969103066635923
+iteration: 71. mean conv.: 0.972792252709246
+iteration: 72. mean conv.: 0.977173161171317
+iteration: 73. mean conv.: 0.981092921374222
+iteration: 74. mean conv.: 0.983629236799631
+iteration: 75. mean conv.: 0.985704403965875
+iteration: 76. mean conv.: 0.988010145261702
+iteration: 77. mean conv.: 0.989393590039198
+iteration: 78. mean conv.: 0.990315886557528
+iteration: 79. mean conv.: 0.991699331335024
+iteration: 80. mean conv.: 0.992391053723772
+iteration: 81. mean conv.: 0.992852201982938
+iteration: 82. mean conv.: 0.993543924371685
+iteration: 83. mean conv.: 0.994005072630851
+iteration: 84. mean conv.: 0.994696795019599
+iteration: 85. mean conv.: 0.994696795019599
+iteration: 86. mean conv.: 0.994927369149181
+iteration: 87. mean conv.: 0.995388517408347
+iteration: 88. mean conv.: 0.995388517408347
+iteration: 89. mean conv.: 0.995619091537929
+iteration: 90. mean conv.: 0.996080239797095
+iteration: 91. mean conv.: 0.996310813926677
+iteration: 92. mean conv.: 0.997002536315425
+iteration: 93. mean conv.: 0.997233110445008
+iteration: 94. mean conv.: 0.997694258704173
+iteration: 95. mean conv.: 0.997694258704173
+iteration: 96. mean conv.: 0.997694258704173
+iteration: 97. mean conv.: 0.997924832833756
+iteration: 98. mean conv.: 0.998155406963339
+iteration: 99. mean conv.: 0.998385981092921
+iteration: 100. mean conv.: 0.998616555222504
+iteration: 101. mean conv.: 0.998616555222504
+iteration: 102. mean conv.: 0.998847129352087
+iteration: 103. mean conv.: 0.998847129352087
+iteration: 104. mean conv.: 0.998847129352087
+iteration: 105. mean conv.: 0.999077703481669
+iteration: 106. mean conv.: 0.112520175236338
+iteration: 107. mean conv.: 0.561217431404196
+iteration: 108. mean conv.: 0.643993543924372
+iteration: 109. mean conv.: 0.718699561909154
+iteration: 110. mean conv.: 0.780493428637307
+iteration: 111. mean conv.: 0.834908923218815
+iteration: 112. mean conv.: 0.877565137191607
+iteration: 113. mean conv.: 0.911228960110676
+iteration: 114. mean conv.: 0.933133502421028
+iteration: 115. mean conv.: 0.947198524325571
+iteration: 116. mean conv.: 0.956421489508877
+iteration: 117. mean conv.: 0.961724694489278
+iteration: 118. mean conv.: 0.967489047728845
+iteration: 119. mean conv.: 0.971639382061333
+iteration: 120. mean conv.: 0.974636845745907
+iteration: 121. mean conv.: 0.979478902467143
+iteration: 122. mean conv.: 0.981323495503804
+iteration: 123. mean conv.: 0.983629236799631
+iteration: 124. mean conv.: 0.985473829836292
+iteration: 125. mean conv.: 0.988010145261702
+iteration: 126. mean conv.: 0.990315886557528
+iteration: 127. mean conv.: 0.991699331335024
+iteration: 128. mean conv.: 0.992391053723772
+iteration: 129. mean conv.: 0.993543924371685
+iteration: 130. mean conv.: 0.994235646760434
+iteration: 131. mean conv.: 0.994696795019599
+iteration: 132. mean conv.: 0.995388517408347
+iteration: 133. mean conv.: 0.995619091537929
+iteration: 134. mean conv.: 0.996310813926677
+iteration: 135. mean conv.: 0.997233110445008
+iteration: 136. mean conv.: 0.997463684574591
+iteration: 137. mean conv.: 0.997694258704173
+iteration: 138. mean conv.: 0.997694258704173
+iteration: 139. mean conv.: 0.998155406963339
+iteration: 140. mean conv.: 0.998155406963339
+iteration: 141. mean conv.: 0.998155406963339
+iteration: 142. mean conv.: 0.998616555222504
+iteration: 143. mean conv.: 0.999308277611252
+iteration: 144. mean conv.: 0.209822457920221
+iteration: 145. mean conv.: 0.984782107447544
+iteration: 146. mean conv.: 0.989163015909615
+iteration: 147. mean conv.: 0.99216047959419
+iteration: 148. mean conv.: 0.993313350242103
+iteration: 149. mean conv.: 0.995157943278764
+iteration: 150. mean conv.: 0.995619091537929
+iteration: 151. mean conv.: 0.996771962185843
+iteration: 152. mean conv.: 0.997233110445008
+iteration: 153. mean conv.: 0.997694258704173
+iteration: 154. mean conv.: 0.997924832833756
+iteration: 155. mean conv.: 0.998155406963339
+iteration: 156. mean conv.: 0.998847129352087
+iteration: 157. mean conv.: 0.999077703481669
+iteration: 158. mean conv.: 0.912842979017754
+iteration: 159. mean conv.: 0.998616555222504
+iteration: 160. mean conv.: 0.999077703481669
+iteration: 161. mean conv.: 0.994005072630851
+iteration: 162. mean conv.: 0.999769425870417
+iteration: 163. mean conv.: 0.997924832833756
+iteration: 164. mean conv.: 0.999769425870417
+converged. 
+12.3
+3771 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.015115354017502
+iteration: 3. mean conv.: 0.0291699814372845
+iteration: 4. mean conv.: 0.0334128878281623
+iteration: 5. mean conv.: 0.0487934234950941
+iteration: 6. mean conv.: 0.0612569610182975
+iteration: 7. mean conv.: 0.0708035003977725
+iteration: 8. mean conv.: 0.0891010342084328
+iteration: 9. mean conv.: 0.110315566162822
+iteration: 10. mean conv.: 0.127817555025192
+iteration: 11. mean conv.: 0.152214266772739
+iteration: 12. mean conv.: 0.177406523468576
+iteration: 13. mean conv.: 0.214001591089897
+iteration: 14. mean conv.: 0.254309201803235
+iteration: 15. mean conv.: 0.299920445505171
+iteration: 16. mean conv.: 0.347918324051976
+iteration: 17. mean conv.: 0.401485017236807
+iteration: 18. mean conv.: 0.456642800318218
+iteration: 19. mean conv.: 0.515778308141077
+iteration: 20. mean conv.: 0.576239724211085
+iteration: 21. mean conv.: 0.638822593476531
+iteration: 22. mean conv.: 0.702466189339698
+iteration: 23. mean conv.: 0.769822328294882
+iteration: 24. mean conv.: 0.834526650755768
+iteration: 25. mean conv.: 0.885706709095731
+iteration: 26. mean conv.: 0.927870591355078
+iteration: 27. mean conv.: 0.96260938743039
+iteration: 28. mean conv.: 0.984884645982498
+iteration: 29. mean conv.: 0.994696367011403
+iteration: 30. mean conv.: 0.998674091752851
+iteration: 31. mean conv.: 0.99973481835057
+iteration: 32. mean conv.: 0.0676213206046142
+iteration: 33. mean conv.: 0.164677804295943
+iteration: 34. mean conv.: 0.187483426146911
+iteration: 35. mean conv.: 0.218244497480774
+iteration: 36. mean conv.: 0.254044020153805
+iteration: 37. mean conv.: 0.308406258286927
+iteration: 38. mean conv.: 0.35932113497746
+iteration: 39. mean conv.: 0.406523468575975
+iteration: 40. mean conv.: 0.464863431450544
+iteration: 41. mean conv.: 0.530098117210289
+iteration: 42. mean conv.: 0.583929992044551
+iteration: 43. mean conv.: 0.639352956775391
+iteration: 44. mean conv.: 0.701935826040838
+iteration: 45. mean conv.: 0.762132060461416
+iteration: 46. mean conv.: 0.820472023335985
+iteration: 47. mean conv.: 0.864757358790772
+iteration: 48. mean conv.: 0.903739061256961
+iteration: 49. mean conv.: 0.932643861044816
+iteration: 50. mean conv.: 0.959692389286661
+iteration: 51. mean conv.: 0.98143728453991
+iteration: 52. mean conv.: 0.991249005568815
+iteration: 53. mean conv.: 0.995757093609122
+iteration: 54. mean conv.: 0.998408910103421
+iteration: 55. mean conv.: 0.998939273402281
+iteration: 56. mean conv.: 0.99920445505171
+iteration: 57. mean conv.: 0.127817555025192
+iteration: 58. mean conv.: 0.569610182975338
+iteration: 59. mean conv.: 0.62264651286131
+iteration: 60. mean conv.: 0.689207106868205
+iteration: 61. mean conv.: 0.747281888093344
+iteration: 62. mean conv.: 0.804030761071334
+iteration: 63. mean conv.: 0.851498276319279
+iteration: 64. mean conv.: 0.892866613630337
+iteration: 65. mean conv.: 0.92548395651021
+iteration: 66. mean conv.: 0.950411031556616
+iteration: 67. mean conv.: 0.972686290108724
+iteration: 68. mean conv.: 0.988597189074516
+iteration: 69. mean conv.: 0.993635640413683
+iteration: 70. mean conv.: 0.996552638557412
+iteration: 71. mean conv.: 0.998143728453991
+iteration: 72. mean conv.: 0.998939273402281
+iteration: 73. mean conv.: 0.99920445505171
+iteration: 74. mean conv.: 0.190665605940069
+iteration: 75. mean conv.: 0.938212675682843
+iteration: 76. mean conv.: 0.961283479183241
+iteration: 77. mean conv.: 0.98064173959162
+iteration: 78. mean conv.: 0.989657915672235
+iteration: 79. mean conv.: 0.994961548660833
+iteration: 80. mean conv.: 0.997348183505701
+iteration: 81. mean conv.: 0.998408910103421
+iteration: 82. mean conv.: 0.998939273402281
+iteration: 83. mean conv.: 0.99946963670114
+iteration: 84. mean conv.: 0.780429594272076
+iteration: 85. mean conv.: 0.997878546804561
+iteration: 86. mean conv.: 0.998408910103421
+iteration: 87. mean conv.: 0.998939273402281
+iteration: 88. mean conv.: 0.99946963670114
+iteration: 89. mean conv.: 0.974542561654734
+iteration: 90. mean conv.: 0.99946963670114
+iteration: 91. mean conv.: 0.992840095465394
+iteration: 92. mean conv.: 0.99946963670114
+iteration: 93. mean conv.: 0.997083001856272
+iteration: 94. mean conv.: 0.99973481835057
+iteration: 95. mean conv.: 0.998674091752851
+iteration: 96. mean conv.: 1
+converged. 
+12.4
+3610 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0146814404432133
+iteration: 3. mean conv.: 0.0329639889196676
+iteration: 4. mean conv.: 0.0454293628808864
+iteration: 5. mean conv.: 0.0601108033240997
+iteration: 6. mean conv.: 0.0706371191135734
+iteration: 7. mean conv.: 0.085595567867036
+iteration: 8. mean conv.: 0.10415512465374
+iteration: 9. mean conv.: 0.11606648199446
+iteration: 10. mean conv.: 0.140443213296399
+iteration: 11. mean conv.: 0.168698060941828
+iteration: 12. mean conv.: 0.202216066481994
+iteration: 13. mean conv.: 0.232686980609418
+iteration: 14. mean conv.: 0.267590027700831
+iteration: 15. mean conv.: 0.307756232686981
+iteration: 16. mean conv.: 0.349861495844875
+iteration: 17. mean conv.: 0.395013850415512
+iteration: 18. mean conv.: 0.450138504155125
+iteration: 19. mean conv.: 0.501385041551247
+iteration: 20. mean conv.: 0.558171745152355
+iteration: 21. mean conv.: 0.619667590027701
+iteration: 22. mean conv.: 0.677839335180055
+iteration: 23. mean conv.: 0.732963988919668
+iteration: 24. mean conv.: 0.781163434903047
+iteration: 25. mean conv.: 0.835457063711911
+iteration: 26. mean conv.: 0.880332409972299
+iteration: 27. mean conv.: 0.91606648199446
+iteration: 28. mean conv.: 0.950415512465374
+iteration: 29. mean conv.: 0.977562326869806
+iteration: 30. mean conv.: 0.990304709141274
+iteration: 31. mean conv.: 0.996398891966759
+iteration: 32. mean conv.: 0.998060941828255
+iteration: 33. mean conv.: 0.999722991689751
+iteration: 34. mean conv.: 0.0678670360110803
+iteration: 35. mean conv.: 0.151523545706371
+iteration: 36. mean conv.: 0.180886426592798
+iteration: 37. mean conv.: 0.210526315789474
+iteration: 38. mean conv.: 0.252631578947368
+iteration: 39. mean conv.: 0.292520775623269
+iteration: 40. mean conv.: 0.345152354570637
+iteration: 41. mean conv.: 0.390304709141274
+iteration: 42. mean conv.: 0.441274238227147
+iteration: 43. mean conv.: 0.499722991689751
+iteration: 44. mean conv.: 0.556232686980609
+iteration: 45. mean conv.: 0.617728531855956
+iteration: 46. mean conv.: 0.680609418282549
+iteration: 47. mean conv.: 0.735734072022161
+iteration: 48. mean conv.: 0.786426592797784
+iteration: 49. mean conv.: 0.831301939058172
+iteration: 50. mean conv.: 0.868421052631579
+iteration: 51. mean conv.: 0.909418282548476
+iteration: 52. mean conv.: 0.937673130193906
+iteration: 53. mean conv.: 0.962603878116344
+iteration: 54. mean conv.: 0.982548476454294
+iteration: 55. mean conv.: 0.992797783933518
+iteration: 56. mean conv.: 0.995567867036011
+iteration: 57. mean conv.: 0.996952908587258
+iteration: 58. mean conv.: 0.998337950138504
+iteration: 59. mean conv.: 0.998891966759003
+iteration: 60. mean conv.: 0.999168975069252
+iteration: 61. mean conv.: 0.111634349030471
+iteration: 62. mean conv.: 0.543490304709141
+iteration: 63. mean conv.: 0.603047091412742
+iteration: 64. mean conv.: 0.673130193905817
+iteration: 65. mean conv.: 0.734349030470914
+iteration: 66. mean conv.: 0.790027700831025
+iteration: 67. mean conv.: 0.839058171745152
+iteration: 68. mean conv.: 0.883102493074792
+iteration: 69. mean conv.: 0.922160664819945
+iteration: 70. mean conv.: 0.948199445983379
+iteration: 71. mean conv.: 0.969529085872576
+iteration: 72. mean conv.: 0.985318559556787
+iteration: 73. mean conv.: 0.994182825484765
+iteration: 74. mean conv.: 0.99584487534626
+iteration: 75. mean conv.: 0.997229916897507
+iteration: 76. mean conv.: 0.998337950138504
+iteration: 77. mean conv.: 0.998614958448753
+iteration: 78. mean conv.: 0.999168975069252
+iteration: 79. mean conv.: 0.198060941828255
+iteration: 80. mean conv.: 0.948753462603878
+iteration: 81. mean conv.: 0.966759002770083
+iteration: 82. mean conv.: 0.983379501385042
+iteration: 83. mean conv.: 0.993628808864266
+iteration: 84. mean conv.: 0.995290858725762
+iteration: 85. mean conv.: 0.997229916897507
+iteration: 86. mean conv.: 0.998337950138504
+iteration: 87. mean conv.: 0.999168975069252
+iteration: 88. mean conv.: 0.841551246537396
+iteration: 89. mean conv.: 0.997506925207756
+iteration: 90. mean conv.: 0.998060941828255
+iteration: 91. mean conv.: 0.999168975069252
+iteration: 92. mean conv.: 0.978670360110803
+iteration: 93. mean conv.: 0.999168975069252
+iteration: 94. mean conv.: 0.994459833795014
+iteration: 95. mean conv.: 0.999445983379501
+iteration: 96. mean conv.: 0.996675900277008
+iteration: 97. mean conv.: 0.999445983379501
+iteration: 98. mean conv.: 0.998614958448753
+iteration: 99. mean conv.: 0.999445983379501
+converged. 
+12.5
+3684 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0192725298588491
+iteration: 3. mean conv.: 0.0320304017372421
+iteration: 4. mean conv.: 0.0450597176981542
+iteration: 5. mean conv.: 0.0567318132464712
+iteration: 6. mean conv.: 0.0700325732899023
+iteration: 7. mean conv.: 0.0939196525515744
+iteration: 8. mean conv.: 0.111834961997828
+iteration: 9. mean conv.: 0.128121606948969
+iteration: 10. mean conv.: 0.152008686210641
+iteration: 11. mean conv.: 0.17671009771987
+iteration: 12. mean conv.: 0.200325732899023
+iteration: 13. mean conv.: 0.23914223669924
+iteration: 14. mean conv.: 0.279315960912052
+iteration: 15. mean conv.: 0.319218241042345
+iteration: 16. mean conv.: 0.362377850162866
+iteration: 17. mean conv.: 0.409880564603692
+iteration: 18. mean conv.: 0.460640608034745
+iteration: 19. mean conv.: 0.512486427795874
+iteration: 20. mean conv.: 0.570846905537459
+iteration: 21. mean conv.: 0.630564603691639
+iteration: 22. mean conv.: 0.693539630836048
+iteration: 23. mean conv.: 0.747014115092291
+iteration: 24. mean conv.: 0.79885993485342
+iteration: 25. mean conv.: 0.844191096634093
+iteration: 26. mean conv.: 0.888979370249729
+iteration: 27. mean conv.: 0.922095548317047
+iteration: 28. mean conv.: 0.952497285559175
+iteration: 29. mean conv.: 0.972312703583062
+iteration: 30. mean conv.: 0.988599348534202
+iteration: 31. mean conv.: 0.995656894679696
+iteration: 32. mean conv.: 0.997557003257329
+iteration: 33. mean conv.: 0.999185667752443
+iteration: 34. mean conv.: 0.0700325732899023
+iteration: 35. mean conv.: 0.214983713355049
+iteration: 36. mean conv.: 0.247828447339848
+iteration: 37. mean conv.: 0.273887079261672
+iteration: 38. mean conv.: 0.307817589576547
+iteration: 39. mean conv.: 0.349077090119435
+iteration: 40. mean conv.: 0.39956568946797
+iteration: 41. mean conv.: 0.444353963083605
+iteration: 42. mean conv.: 0.49457111834962
+iteration: 43. mean conv.: 0.543159609120521
+iteration: 44. mean conv.: 0.599077090119435
+iteration: 45. mean conv.: 0.649837133550489
+iteration: 46. mean conv.: 0.702497285559175
+iteration: 47. mean conv.: 0.757871878393051
+iteration: 48. mean conv.: 0.801302931596091
+iteration: 49. mean conv.: 0.83957654723127
+iteration: 50. mean conv.: 0.878935939196525
+iteration: 51. mean conv.: 0.905808903365907
+iteration: 52. mean conv.: 0.931324647122693
+iteration: 53. mean conv.: 0.955211726384365
+iteration: 54. mean conv.: 0.973669923995657
+iteration: 55. mean conv.: 0.987242128121607
+iteration: 56. mean conv.: 0.993485342019544
+iteration: 57. mean conv.: 0.997014115092291
+iteration: 58. mean conv.: 0.99728555917481
+iteration: 59. mean conv.: 0.997828447339848
+iteration: 60. mean conv.: 0.998642779587405
+iteration: 61. mean conv.: 0.998914223669924
+iteration: 62. mean conv.: 0.998914223669924
+iteration: 63. mean conv.: 0.999728555917481
+iteration: 64. mean conv.: 0.0958197611292074
+iteration: 65. mean conv.: 0.708469055374593
+iteration: 66. mean conv.: 0.743756786102063
+iteration: 67. mean conv.: 0.790173724212812
+iteration: 68. mean conv.: 0.826275787187839
+iteration: 69. mean conv.: 0.859934853420195
+iteration: 70. mean conv.: 0.889522258414767
+iteration: 71. mean conv.: 0.911237785016287
+iteration: 72. mean conv.: 0.934581976112921
+iteration: 73. mean conv.: 0.959554831704669
+iteration: 74. mean conv.: 0.97557003257329
+iteration: 75. mean conv.: 0.986156351791531
+iteration: 76. mean conv.: 0.993756786102063
+iteration: 77. mean conv.: 0.996742671009772
+iteration: 78. mean conv.: 0.997014115092291
+iteration: 79. mean conv.: 0.998371335504886
+iteration: 80. mean conv.: 0.998371335504886
+iteration: 81. mean conv.: 0.998914223669924
+iteration: 82. mean conv.: 0.999185667752443
+iteration: 83. mean conv.: 0.156351791530945
+iteration: 84. mean conv.: 0.98099891422367
+iteration: 85. mean conv.: 0.988870792616721
+iteration: 86. mean conv.: 0.994299674267101
+iteration: 87. mean conv.: 0.997014115092291
+iteration: 88. mean conv.: 0.99728555917481
+iteration: 89. mean conv.: 0.997828447339848
+iteration: 90. mean conv.: 0.998642779587405
+iteration: 91. mean conv.: 0.999185667752443
+iteration: 92. mean conv.: 0.881107491856677
+iteration: 93. mean conv.: 0.998099891422367
+iteration: 94. mean conv.: 0.998642779587405
+iteration: 95. mean conv.: 0.999185667752443
+iteration: 96. mean conv.: 0.984799131378936
+iteration: 97. mean conv.: 0.999185667752443
+iteration: 98. mean conv.: 0.995928338762215
+iteration: 99. mean conv.: 0.999185667752443
+iteration: 100. mean conv.: 0.998642779587405
+iteration: 101. mean conv.: 0.999728555917481
+iteration: 102. mean conv.: 0.998914223669924
+iteration: 103. mean conv.: 1
+converged. 
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] stats4    grid      parallel  stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] genefilter_1.56.0          edgeR_3.17.5              
+ [3] limma_3.30.8               MultiAssayExperiment_1.0.0
+ [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
+ [7] GenomeInfoDb_1.10.1        IRanges_2.8.1             
+ [9] S4Vectors_0.12.0           tidyr_0.6.0               
+[11] dplyr_0.5.0                survey_3.31-2             
+[13] survival_2.40-1            Matrix_1.2-7.1            
+[15] GEOquery_2.40.0            Biobase_2.34.0            
+[17] BiocGenerics_0.20.0        tximport_1.2.0            
+[19] reshape2_1.4.2             rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
+ [4] bitops_1.0-6         tools_3.3.1          zlibbioc_1.20.0     
+ [7] digest_0.6.11        RSQLite_1.0.0        annotate_1.52.0     
+[10] tibble_1.2           lattice_0.20-34      shiny_0.14.2        
+[13] DBI_0.5-1            httr_1.2.1           stringr_1.1.0       
+[16] locfit_1.5-9.1       shinydashboard_0.5.3 R6_2.2.0            
+[19] AnnotationDbi_1.36.0 XML_3.98-1.5         magrittr_1.5        
+[22] htmltools_0.3.5      splines_3.3.1        assertthat_0.1      
+[25] xtable_1.8-2         mime_0.5             httpuv_1.3.3        
+[28] stringi_1.1.2        RCurl_1.95-4.8      
+> 
+> proc.time()
+    user   system  elapsed 
+1509.412   54.207 1570.151 

@@ -215,3 +215,342 @@ converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1793 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 11279 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 37, 0.33% 
+LFC < 0 (down)   : 88, 0.78% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 7789, 69% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+22.5
+21950 genes, 44 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1668 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 11344 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 54, 0.48% 
+LFC < 0 (down)   : 81, 0.71% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 8434, 74% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.1
+20178 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1687 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 9293 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 24, 0.26% 
+LFC < 0 (down)   : 39, 0.42% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 7662, 82% 
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.2
+20327 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1218 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 9819 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 30, 0.31% 
+LFC < 0 (down)   : 59, 0.6% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 7692, 78% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.3
+20490 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1362 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 9837 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 24, 0.24% 
+LFC < 0 (down)   : 49, 0.5% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 8100, 82% 
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.4
+20263 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1193 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 9852 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 18, 0.18% 
+LFC < 0 (down)   : 50, 0.51% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 7202, 73% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+12.5
+20183 genes, 24 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+-- replacing outliers and refitting for 1305 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+estimating dispersions
+fitting model and testing
+
+out of 9785 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 19, 0.19% 
+LFC < 0 (down)   : 54, 0.55% 
+outliers [1]     : 0, 0% 
+low counts [2]   : 7697, 79% 
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+6.1
+17817 genes, 12 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 7854 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 9, 0.11% 
+LFC < 0 (down)   : 21, 0.27% 
+outliers [1]     : 522, 6.6% 
+low counts [2]   : 6186, 79% 
+(mean count < 4)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+6.2
+18181 genes, 12 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 7813 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 1, 0.013% 
+LFC < 0 (down)   : 15, 0.19% 
+outliers [1]     : 724, 9.3% 
+low counts [2]   : 6077, 78% 
+(mean count < 5)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+6.3
+17742 genes, 12 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 7399 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 3, 0.041% 
+LFC < 0 (down)   : 18, 0.24% 
+outliers [1]     : 773, 10% 
+low counts [2]   : 5518, 75% 
+(mean count < 4)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+6.4
+17704 genes, 12 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 8388 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 9, 0.11% 
+LFC < 0 (down)   : 27, 0.32% 
+outliers [1]     : 511, 6.1% 
+low counts [2]   : 7014, 84% 
+(mean count < 6)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+6.5
+18197 genes, 12 samples.
+DESeq2census
+converting counts to integer mode
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+
+out of 8145 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)     : 8, 0.098% 
+LFC < 0 (down)   : 12, 0.15% 
+outliers [1]     : 567, 7% 
+low counts [2]   : 6685, 82% 
+(mean count < 5)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] splines   stats4    grid      parallel  stats     graphics  grDevices
+ [8] utils     datasets  methods   base     
+
+other attached packages:
+ [1] monocle_2.2.0              DDRTree_0.1.4             
+ [3] irlba_2.1.2                VGAM_1.0-2                
+ [5] ggplot2_2.2.1              DESeq2_1.14.1             
+ [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [9] GenomicRanges_1.26.1       GenomeInfoDb_1.10.1       
+[11] IRanges_2.8.1              S4Vectors_0.12.0          
+[13] tidyr_0.6.0                dplyr_0.5.0               
+[15] survey_3.31-2              survival_2.40-1           
+[17] Matrix_1.2-7.1             GEOquery_2.40.0           
+[19] Biobase_2.34.0             BiocGenerics_0.20.0       
+[21] tximport_1.2.0             reshape2_1.4.2            
+[23] rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] httr_1.2.1             Formula_1.2-1          shiny_0.14.2          
+ [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-38           
+ [7] RSQLite_1.0.0          lattice_0.20-34        limma_3.30.8          
+[10] digest_0.6.11          RColorBrewer_1.1-2     XVector_0.14.0        
+[13] colorspace_1.3-1       fastICA_1.2-0          htmltools_0.3.5       
+[16] httpuv_1.3.3           plyr_1.8.4             XML_3.98-1.5          
+[19] pheatmap_1.0.8         qlcMatrix_0.9.5        HSMMSingleCell_0.108.0
+[22] genefilter_1.56.0      zlibbioc_1.20.0        xtable_1.8-2          
+[25] scales_0.4.1           BiocParallel_1.8.1     combinat_0.0-8        
+[28] htmlTable_1.7          tibble_1.2             annotate_1.52.0       
+[31] nnet_7.3-12            lazyeval_0.2.0         magrittr_1.5          
+[34] mime_0.5               foreign_0.8-67         shinydashboard_0.5.3  
+[37] tools_3.3.1            data.table_1.10.0      matrixStats_0.51.0    
+[40] stringr_1.1.0          munsell_0.4.3          locfit_1.5-9.1        
+[43] cluster_2.0.5          AnnotationDbi_1.36.0   RCurl_1.95-4.8        
+[46] igraph_1.0.1           bitops_1.0-6           gtable_0.2.0          
+[49] DBI_0.5-1              R6_2.2.0               gridExtra_2.2.1       
+[52] knitr_1.15.1           Hmisc_4.0-0            stringi_1.1.2         
+[55] Rcpp_0.12.8            geneplotter_1.52.0     rpart_4.1-10          
+[58] acepack_1.4.1         
+> 
+> proc.time()
+    user   system  elapsed 
+ 980.731   58.481 1427.903 

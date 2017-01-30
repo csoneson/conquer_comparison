@@ -206,5 +206,5 @@ loaded via a namespace (and not attached):
 [49] shinydashboard_0.5.3 
 > 
 > proc.time()
-   user  system elapsed 
-806.276 153.095 968.886 
+    user   system  elapsed 
+1023.326   74.544 1104.254 

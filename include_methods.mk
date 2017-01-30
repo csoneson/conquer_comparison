@@ -7,7 +7,7 @@ DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE638
 ## Data sets for which we have both original and mock results (to compare consistency)
 DSb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112
 ## Data sets to include in summary of characteristics (only mock)
-Dss := GSE45719mock GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock
+Dss := GSE74596mock GSE45719mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock
 Dssc := $(subst $(space),$(comma),$(Dss))
 
 ## All methods

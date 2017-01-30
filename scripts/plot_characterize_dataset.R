@@ -16,6 +16,7 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(lazyeval))
+suppressPackageStartupMessages(library(monocle))
 source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
 
 if (filt == "") { 
@@ -47,14 +48,30 @@ for (sz in sizes) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
     
+    cds <- newCellDataSet(L$tpm, 
+                          phenoData = new("AnnotatedDataFrame", 
+                                          data = data.frame(condition = L$condt, 
+                                                            row.names = colnames(L$tpm))))
+    censuscounts <- relative2abs(cds)
+    
+    ## Census count distributions
+    print(reshape2::melt(censuscounts) %>% dplyr::mutate(condition = L$condt[Var2]) %>%
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
+            geom_density() + scale_x_log10() + theme_bw() + 
+            xlab("Census count") + ggtitle(paste0("Census count distribution per cell, ", 
+                                                  sz, " cells per group, repl ", i)))
+    
     ## Count distributions
-    print(reshape2::melt(L$count) %>% ggplot(aes(x = value, group = Var2)) + 
+    print(reshape2::melt(L$count) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
             xlab("Count") + ggtitle(paste0("Count distribution per cell, ", 
                                            sz, " cells per group, repl ", i)))
     
     ## Gene characteristics
     avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
+    avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 
+                                 gene = rownames(censuscounts))
     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
                            fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
@@ -62,18 +79,23 @@ for (sz in sizes) {
                            fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
+    fraczerocensus <- data.frame(fraczerocensus = apply(censuscounts, 1, function(x) mean(x == 0)),
+                                 gene = rownames(censuscounts))
     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-                  list(vartpm, fraczero, avecount, avetpm))
+                  list(vartpm, fraczero, avecount, avetpm, avecensuscount, fraczerocensus))
     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
                                                      ".", sz, ".", i)
     char_gene[[paste0(sz, ".", i)]] <- df2
     
     ## Cell characteristics
     libsize <- data.frame(libsize = colSums(L$count), cell = colnames(L$count))
+    libsizecensus <- data.frame(libsizecensus = colSums(censuscounts), cell = colnames(censuscounts))
     fraczerocell <- data.frame(fraczero = colMeans(L$count == 0), cell = colnames(L$count))
+    fraczerocellcensus <- data.frame(fraczerocensus = colMeans(censuscounts == 0), 
+                                     cell = colnames(censuscounts))
     df3 <- Reduce(function(...) merge(..., by = "cell", all = TRUE),
-                  list(libsize, fraczerocell))
+                  list(libsize, fraczerocell, libsizecensus, fraczerocellcensus))
     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
                                                      ".", sz, ".", i)
     char_cells[[paste0(sz, ".", i)]] <- df3
@@ -93,30 +115,36 @@ char_cells_m <- reshape2::melt(char_cells) %>%
                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
                                                 " cells per group"))) 
 
-for (tp in c("vartpm", "avecount", "avetpm")) {
+for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 
           geom_density() + scale_x_log10() + facet_wrap(~ncells) + 
           theme_bw() + xlab(ifelse(tp == "vartpm", "Variance of TPM values per gene", 
                                    ifelse(tp == "avecount", "Average count per gene",
-                                          "Average TPM per gene"))))
+                                          ifelse(tp == "avecensuscount", "Average census count per gene",
+                                                 "Average TPM per gene")))))
 }
-for (tp in c("fraczero", "fraczerodiff")) {
+for (tp in c("fraczero", "fraczerodiff", "fraczerocensus")) {
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 
           geom_density() + facet_wrap(~ncells) + 
           theme_bw() + xlab(ifelse(tp == "fraczero", "Fraction zeros per gene", 
-                                   "Difference (between conditions) of zero fraction per gene")))
+                                   ifelse(tp == "fraczerodiff", "Difference (between conditions) of zero fraction per gene", "Fraction zeros per gene, census count"))))
 }
-for (tp in c("libsize", "fraczero")) {
+for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
   print(char_cells_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 
           geom_density() + facet_wrap(~ncells) + 
           theme_bw() + xlab(ifelse(tp == "fraczero", "Fraction zeros per cell", 
-                                   "Library size per cell")))
+                                   ifelse(tp == "libsize", "Library size per cell",
+                                          ifelse(tp == "libsizecensus", 
+                                                 "Library size per cell, census counts",
+                                                 "Fraction zeros per cell, census counts")))))
 }
 
 dev.off()
+
+sessionInfo()

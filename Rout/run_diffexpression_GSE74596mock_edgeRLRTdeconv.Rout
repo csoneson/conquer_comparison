@@ -160,7 +160,7 @@ attached base packages:
 other attached packages:
  [1] scran_1.2.0                scater_1.2.0              
  [3] ggplot2_2.2.1              BiocParallel_1.8.1        
- [5] edgeR_3.16.4               limma_3.30.2              
+ [5] edgeR_3.17.5               limma_3.30.8              
  [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
  [9] GenomicRanges_1.26.1       GenomeInfoDb_1.10.1       
 [11] IRanges_2.8.1              S4Vectors_0.12.0          
@@ -192,4 +192,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-145.878  17.089 163.500 
+185.783  21.456 208.811 

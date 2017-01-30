@@ -12,6 +12,7 @@ $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(FILT),$(foreach
 $(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach X,$(DSb),$X))) \
 $(addsuffix _orig_vs_mock.pdf, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(FILT),$(foreach X,$(DSb),$X_$Y)))) \
 figures/summary_crossds/summary_heatmaps.pdf \
+$(addsuffix .pdf, $(addprefix figures/summary_crossds/summary_heatmaps_, $(foreach Y,$(FILT),$Y))) \
 $(addsuffix .pdf, $(addprefix figures/dataset_characteristics/, $(foreach X,$(DS),$X))) \
 $(addsuffix .pdf, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y))))
 
@@ -65,7 +66,7 @@ subsets/%_subsets.rds data/%.rds
 define plotrule_characterization
 figures/dataset_characteristics/$(1)_$(2).pdf: include_methods.mk scripts/plot_characterize_dataset.R scripts/prepare_mae.R \
 subsets/$(1)_subsets.rds data/$(1).rds
-	$R "--args dataset='$(1)' config_file='config/$*.json' filt='$(2)'" scripts/plot_characterize_dataset.R Rout/plot_characterize_dataset_$(1)_$(2).Rout
+	$R "--args dataset='$(1)' config_file='config/$(1).json' filt='$(2)'" scripts/plot_characterize_dataset.R Rout/plot_characterize_dataset_$(1)_$(2).Rout
 endef
 $(foreach k,$(FILT), $(foreach i,$(DS),$(eval $(call plotrule_characterization,$(i),$(k)))))
 
@@ -87,6 +88,13 @@ $(foreach k,$(FILT), $(foreach i,$(DSb),$(eval $(call plotrule_origvsmock,$(i),$
 figures/summary_crossds/summary_heatmaps.pdf: $(addsuffix .pdf, $(addprefix figures/comparison/, $(foreach Y,$(Dss),$Y))) \
 scripts/plot_summarize_datasets.R include_methods.mk
 	$R "--args datasets='${Dssc}' filt=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets.Rout
+
+define plotrule_summary
+figures/summary_crossds/summary_heatmaps_$(1).pdf: $(addsuffix _$(1).pdf, $(addprefix figures/comparison/, $(foreach Y,$(Dss),$Y))) \
+scripts/plot_summarize_datasets.R include_methods.mk
+	$R "--args datasets='${Dssc}' filt='$(1)'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_$(1).Rout
+endef
+$(foreach k,$(FILT),$(eval $(call plotrule_summary,$(k))))
 
 
 

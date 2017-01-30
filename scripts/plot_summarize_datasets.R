@@ -9,6 +9,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(pheatmap))
 suppressPackageStartupMessages(library(ggrepel))
+suppressPackageStartupMessages(library(ggbiplot))
 
 datasets <- strsplit(datasets, ",")[[1]]
 names(datasets) <- datasets
@@ -35,7 +36,7 @@ summary_data_list <- lapply(datasets, function(ds) {
   readRDS(paste0("figures/summary_data/", ds, exts, "_summary_data.rds"))
 })
 
-pdf(paste0("figures/summary_crossds/summary_pca", exts, ".pdf"))
+pdf(paste0("figures/summary_crossds/summary_pca", exts, ".pdf"), width = 10, height = 7)
 
 ## PCA of significant gene characteristics
 lapply(c(list(datasets), as.list(datasets)), function(ds) {
@@ -43,7 +44,8 @@ lapply(c(list(datasets), as.list(datasets)), function(ds) {
     x <- lapply(summary_data_list[ds], function(m) {
       m$stats_charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
         dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
-        dplyr::select_("Var2", stat, "charac") 
+        dplyr::select_("Var2", stat, "charac")  %>%
+        dplyr::filter(charac != "fraczerodiff")
     })
     x <- do.call(rbind, x) %>% dcast(charac ~ Var2, value.var = stat)
     rownames(x) <- x$charac
@@ -58,13 +60,35 @@ lapply(c(list(datasets), as.list(datasets)), function(ds) {
                    aes(x = PC1, y = PC2, color = method, shape = dataset)) +
               geom_point(size = 3) + theme_bw() + 
               scale_color_manual(values = cols) + 
-              ggtitle(paste0(stat, ".scale=", scl)))
+              ggtitle(paste0(stat, ".scale=", scl)) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")))
+      print(ggplot(merge(annot, pca$x[, 1:2], by.x = "id", by.y = 0, all = TRUE) %>%
+                     dplyr::group_by(method, dataset) %>% 
+                     dplyr::summarize(PC1 = mean(PC1), PC2 = mean(PC2)), 
+                   aes(x = PC1, y = PC2, color = method, shape = dataset)) +
+              geom_point(size = 4) + theme_bw() + 
+              scale_color_manual(values = cols) + 
+              ggtitle(paste0(stat, ".scale=", scl)) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")))
       print(ggplot(data.frame(id = rownames(pca$rotation), pca$rotation[, 1:2]), 
                    aes(x = PC1, y = PC2, label = id)) + geom_point() + geom_text_repel() +
               geom_segment(aes(x = 0, y = 0, xend = PC1, yend = PC2), 
                            arrow = arrow(length = unit(0.03, "npc")), linetype = "dashed") + 
               theme_bw() + 
               ggtitle(paste0(stat, ".scale=", scl)))
+      print(ggbiplot(pca, scale = 0, groups = annot$method, ellipse = TRUE,
+                     ellipse.prob = 0.68, alpha = 0, var.axes = TRUE) + 
+              theme_bw() + scale_color_manual(values = cols) + 
+              ggtitle(paste0(stat, ".scale=", scl)) + 
+              geom_point(data = merge(annot, pca$x[, 1:2], by.x = "id", by.y = 0, all = TRUE) %>%
+                           dplyr::group_by(method) %>% 
+                           dplyr::summarize(PC1 = mean(PC1), PC2 = mean(PC2)),
+                         aes(x = PC1, y = PC2, col = method)) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")) + 
+              coord_equal(ratio = diff(range(pca$x[, 1]))/diff(range(pca$x[, 2]))))
       plot(pca, main = "")
     }
   }
@@ -72,7 +96,7 @@ lapply(c(list(datasets), as.list(datasets)), function(ds) {
 dev.off()
 
 pdf(paste0("figures/summary_crossds/summary_heatmaps", exts, ".pdf"),
-    width = 10, height = 3 * length(datasets))
+    width = 10, height = 4 * length(datasets))
 
 ## Heatmap of true FPRs (fraction of nominal p-values below 0.05)
 y <- lapply(summary_data_list, function(m) {
@@ -104,11 +128,15 @@ pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", main = "
 dev.off()
 
 ## Timing
-pdf(paste0("figures/summary_crossds/relative_timing", exts, ".pdf"))
+pdf(paste0("figures/summary_crossds/relative_timing", exts, ".pdf"), width = 10, height = 7)
 
 y <- lapply(summary_data_list, function(m) {
-  m$timing %>% group_by(dataset, filt, nsamples) %>%
-    dplyr::mutate(timing = timing/max(timing))
+  if (!is.null(m$timing)) {
+    m$timing %>% group_by(dataset, filt, nsamples) %>%
+      dplyr::mutate(timing = timing/max(timing))
+  } else {
+    NULL
+  }
 })
 y <- do.call(rbind, y)
 ## Boxplots
@@ -132,6 +160,29 @@ y %>% group_by(method) %>% dplyr::summarize(mean = mean(timing), sd = sd(timing)
   theme_bw() + xlab("") + ylab("Relative timing") + 
   scale_fill_manual(values = cols, name = "") + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+## Dependence on number of samples
+y2 <- lapply(summary_data_list, function(m) {
+  if (!is.null(m$timing)) {
+    m$timing
+  } else {
+    NULL
+  }
+})
+y2 <- do.call(rbind, y2)
+print(y2 %>% group_by(method, dataset, filt) %>%
+        arrange(nsamples) %>% 
+        dplyr::mutate(dt = c(0, diff(timing)),
+                      t = c(0, timing[1:(length(timing) - 1)]),
+                      ds = c(0, diff(nsamples)),
+                      s = c(0, nsamples[1:(length(nsamples) - 1)])) %>% 
+        dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
+        filter(!is.na(reltime)) %>%
+        ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
+        geom_point(position = position_jitter(width = 0.2)) + 
+        theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of cells") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
 
 dev.off()
 

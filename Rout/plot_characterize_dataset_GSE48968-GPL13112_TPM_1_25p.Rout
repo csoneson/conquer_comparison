@@ -1,0 +1,260 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> suppressPackageStartupMessages(library(pheatmap))
+> suppressPackageStartupMessages(library(ggplot2))
+> suppressPackageStartupMessages(library(ggrepel))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(iCOBRA))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> suppressPackageStartupMessages(library(UpSetR))
+> suppressPackageStartupMessages(library(lazyeval))
+> suppressPackageStartupMessages(library(monocle))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> 
+> if (filt == "") { 
++   exts <- filt
++ } else {
++   exts <- paste0("_", filt)
++ }
+> 
+> pdf(paste0("figures/dataset_characteristics/", dataset, exts, ".pdf"), width = 14, height = 9)
+> 
+> print(dataset)
+[1] "GSE48968-GPL13112"
+> print(config_file)
+[1] "config/GSE48968-GPL13112.json"
+> print(filt)
+[1] "TPM_1_25p"
+> 
+> config <- fromJSON(file = config_file)
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> sizes <- names(keep_samples)
+> char_gene <- list()
+> char_cells <- list()
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
++     
++     cds <- newCellDataSet(L$tpm, 
++                           phenoData = new("AnnotatedDataFrame", 
++                                           data = data.frame(condition = L$condt, 
++                                                             row.names = colnames(L$tpm))))
++     censuscounts <- relative2abs(cds)
++     
++     ## Census count distributions
++     print(reshape2::melt(censuscounts) %>% dplyr::mutate(condition = L$condt[Var2]) %>%
++             ggplot(aes(x = value, group = Var2, color = condition)) + 
++             geom_density() + scale_x_log10() + theme_bw() + 
++             xlab("Census count") + ggtitle(paste0("Census count distribution per cell, ", 
++                                                   sz, " cells per group, repl ", i)))
++     
++     ## Count distributions
++     print(reshape2::melt(L$count) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
++             ggplot(aes(x = value, group = Var2, color = condition)) + 
++             geom_density() + scale_x_log10() + theme_bw() + 
++             xlab("Count") + ggtitle(paste0("Count distribution per cell, ", 
++                                            sz, " cells per group, repl ", i)))
++     
++     ## Gene characteristics
++     avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
++     avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 
++                                  gene = rownames(censuscounts))
++     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
++     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
++                            fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
++                                              1, function(x) mean(x == 0)),
++                            fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
++                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
++     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
++     fraczerocensus <- data.frame(fraczerocensus = apply(censuscounts, 1, function(x) mean(x == 0)),
++                                  gene = rownames(censuscounts))
++     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
++     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
++                   list(vartpm, fraczero, avecount, avetpm, avecensuscount, fraczerocensus))
++     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
++                                                      ".", sz, ".", i)
++     char_gene[[paste0(sz, ".", i)]] <- df2
++     
++     ## Cell characteristics
++     libsize <- data.frame(libsize = colSums(L$count), cell = colnames(L$count))
++     libsizecensus <- data.frame(libsizecensus = colSums(censuscounts), cell = colnames(censuscounts))
++     fraczerocell <- data.frame(fraczero = colMeans(L$count == 0), cell = colnames(L$count))
++     fraczerocellcensus <- data.frame(fraczerocensus = colMeans(censuscounts == 0), 
++                                      cell = colnames(censuscounts))
++     df3 <- Reduce(function(...) merge(..., by = "cell", all = TRUE),
++                   list(libsize, fraczerocell, libsizecensus, fraczerocellcensus))
++     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
++                                                      ".", sz, ".", i)
++     char_cells[[paste0(sz, ".", i)]] <- df3
++   }
++ }
+95.1
+48.1
+48.2
+48.3
+48.4
+48.5
+24.1
+24.2
+24.3
+24.4
+24.5
+12.1
+12.2
+12.3
+12.4
+12.5
+There were 50 or more warnings (use warnings() to see the first 50)
+> char_gene <- Reduce(function(...) merge(..., by = "gene", all = TRUE), char_gene)
+> char_gene_m <- reshape2::melt(char_gene) %>% 
++   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
++   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
++                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
++                                                 " cells per group"))) 
+Using gene as id variables
+> 
+> char_cells <- Reduce(function(...) merge(..., by = "cell", all = TRUE), char_cells)
+> char_cells_m <- reshape2::melt(char_cells) %>% 
++   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
++   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
++                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
++                                                 " cells per group"))) 
+Using cell as id variables
+> 
+> for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
++   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
++           ggplot(aes(x = value, group = repl, col = repl)) +
++           scale_color_discrete(guide = FALSE) + 
++           geom_density() + scale_x_log10() + facet_wrap(~ncells) + 
++           theme_bw() + xlab(ifelse(tp == "vartpm", "Variance of TPM values per gene", 
++                                    ifelse(tp == "avecount", "Average count per gene",
++                                           ifelse(tp == "avecensuscount", "Average census count per gene",
++                                                  "Average TPM per gene")))))
++ }
+Warning messages:
+1: Removed 33449 rows containing non-finite values (stat_density). 
+2: Removed 33449 rows containing non-finite values (stat_density). 
+3: Removed 33449 rows containing non-finite values (stat_density). 
+4: Removed 33449 rows containing non-finite values (stat_density). 
+> for (tp in c("fraczero", "fraczerodiff", "fraczerocensus")) {
++   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
++           ggplot(aes(x = value, group = repl, col = repl)) +
++           scale_color_discrete(guide = FALSE) + 
++           geom_density() + facet_wrap(~ncells) + 
++           theme_bw() + xlab(ifelse(tp == "fraczero", "Fraction zeros per gene", 
++                                    ifelse(tp == "fraczerodiff", "Difference (between conditions) of zero fraction per gene", "Fraction zeros per gene, census count"))))
++ }
+Warning messages:
+1: Removed 33449 rows containing non-finite values (stat_density). 
+2: Removed 33449 rows containing non-finite values (stat_density). 
+3: Removed 33449 rows containing non-finite values (stat_density). 
+> for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
++   print(char_cells_m %>% dplyr::filter(mtype == tp) %>% 
++           ggplot(aes(x = value, group = repl, col = repl)) +
++           scale_color_discrete(guide = FALSE) + 
++           geom_density() + facet_wrap(~ncells) + 
++           theme_bw() + xlab(ifelse(tp == "fraczero", "Fraction zeros per cell", 
++                                    ifelse(tp == "libsize", "Library size per cell",
++                                           ifelse(tp == "libsizecensus", 
++                                                  "Library size per cell, census counts",
++                                                  "Fraction zeros per cell, census counts")))))
++ }
+Warning messages:
+1: Removed 2010 rows containing non-finite values (stat_density). 
+2: Removed 2010 rows containing non-finite values (stat_density). 
+3: Removed 2010 rows containing non-finite values (stat_density). 
+4: Removed 2010 rows containing non-finite values (stat_density). 
+> 
+> dev.off()
+null device 
+          1 
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] splines   stats4    parallel  stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] monocle_2.2.0              DDRTree_0.1.4             
+ [3] irlba_2.1.2                VGAM_1.0-2                
+ [5] Matrix_1.2-7.1             lazyeval_0.2.0            
+ [7] UpSetR_1.3.1               MultiAssayExperiment_1.0.0
+ [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
+[11] GenomeInfoDb_1.10.1        IRanges_2.8.1             
+[13] S4Vectors_0.12.0           Biobase_2.34.0            
+[15] BiocGenerics_0.20.0        rjson_0.2.15              
+[17] reshape2_1.4.2             iCOBRA_1.2.0              
+[19] tidyr_0.6.0                dplyr_0.5.0               
+[21] ggrepel_0.6.3              ggplot2_2.2.1             
+[23] pheatmap_1.0.8            
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.8            lattice_0.20-34        gtools_3.5.0          
+ [4] assertthat_0.1         digest_0.6.11          mime_0.5              
+ [7] slam_0.1-38            R6_2.2.0               plyr_1.8.4            
+[10] qlcMatrix_0.9.5        gplots_3.0.1           zlibbioc_1.20.0       
+[13] gdata_2.17.0           DT_0.2                 combinat_0.0-8        
+[16] labeling_0.3           stringr_1.1.0          htmlwidgets_0.8       
+[19] igraph_1.0.1           munsell_0.4.3          shiny_0.14.2          
+[22] httpuv_1.3.3           htmltools_0.3.5        tibble_1.2            
+[25] gridExtra_2.2.1        matrixStats_0.51.0     shinyBS_0.61          
+[28] bitops_1.0-6           grid_3.3.1             xtable_1.8-2          
+[31] gtable_0.2.0           DBI_0.5-1              magrittr_1.5          
+[34] scales_0.4.1           KernSmooth_2.23-15     stringi_1.1.2         
+[37] XVector_0.14.0         ROCR_1.0-7             limma_3.30.8          
+[40] fastICA_1.2-0          RColorBrewer_1.1-2     tools_3.3.1           
+[43] HSMMSingleCell_0.108.0 colorspace_1.3-1       cluster_2.0.5         
+[46] caTools_1.17.1         shinydashboard_0.5.3  
+> 
+> proc.time()
+   user  system elapsed 
+231.867  30.574 263.139 
