@@ -35,7 +35,7 @@ Setting LC_CTYPE failed, using "C"
 [16] "voomlimma"         "zingeRauto"        "Seurat"           
 [19] "DESeq2census"      "edgeRLRTcensus"   
 > print(dataset)
-[1] "GSE60749-GPL13112"
+[1] "GSE48968-GPL13112"
 > print(filt)
 [1] ""
 > 
@@ -94,7 +94,7 @@ Setting LC_CTYPE failed, using "C"
 +   cobras[[paste0("tp_", tp)]] <- cobra
 + }
 [1] "session_info" "timing"       "tt"           "df"          
-44880 new features and 1 new methods added to padj table
+30261 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
@@ -801,69 +801,15 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
 [1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
@@ -1102,7 +1048,7 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-44880 new features and 1 new methods added to score table
+30261 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
@@ -1740,7 +1686,7 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-44495 new features and 1 new methods added to padj table
+26504 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
@@ -2440,6 +2386,10 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
+[1] "session_info"
 [1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
@@ -2496,41 +2446,7 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-0 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-0 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
+[1] "session_info"
 [1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
@@ -2748,7 +2664,7 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-44495 new features and 1 new methods added to score table
+26504 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
@@ -3395,4 +3311,4 @@ null device
 > 
 > proc.time()
     user   system  elapsed 
-3601.579   28.135 3636.572 
+1661.993   14.016 1678.675 

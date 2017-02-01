@@ -16,7 +16,8 @@ suppressPackageStartupMessages(library(iCOBRA))
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#B17BA6", "#7BAFDE", "#F6C141", "#90C987")
+          "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
+          "#882E72", "#F7EE55")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -25,7 +26,8 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus"), exts)
+                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
+                        "DESeq2nofilt", "Seuratnofilt", "NODESnofilt"), exts)
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
@@ -112,7 +114,8 @@ rownames(truth) <- truth$gene
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
 pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
-summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = list())
+summary_data <- list()
+summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = summary_data)
 summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
 summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
 summary_data <- plot_results(cobra, colvec = cols, summary_data = summary_data)

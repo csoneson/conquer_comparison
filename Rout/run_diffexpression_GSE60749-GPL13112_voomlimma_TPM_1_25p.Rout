@@ -27,7 +27,7 @@ Setting LC_CTYPE failed, using "C"
 > print(config_file)
 [1] "config/GSE60749-GPL13112.json"
 > print(demethod)
-[1] "SCDE"
+[1] "voomlimma"
 > 
 > ## filt should be a string of the form type_value_nbr, where type is either TPM 
 > ## or count, and features will be filtered out unless they show at least a 
@@ -107,52 +107,68 @@ $nreps
 + }
 90.1
 19980 genes, 180 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 48.1
 20061 genes, 96 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 48.2
 20005 genes, 96 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 48.3
 19983 genes, 96 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 48.4
 19811 genes, 96 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 48.5
 19755 genes, 96 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 24.1
 19483 genes, 48 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 24.2
 19826 genes, 48 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 24.3
 20108 genes, 48 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 24.4
 20144 genes, 48 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 24.5
 20001 genes, 48 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 12.1
 19120 genes, 24 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 12.2
 19705 genes, 24 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 12.3
 19627 genes, 24 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 12.4
 19347 genes, 24 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 12.5
 19274 genes, 24 samples.
-scde
+voomlimma
+Removing intercept from test coefficients
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -174,45 +190,28 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] scde_1.99.1                flexmix_2.3-13            
- [3] lattice_0.20-34            MultiAssayExperiment_1.0.0
- [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
- [7] GenomeInfoDb_1.10.1        IRanges_2.8.1             
- [9] S4Vectors_0.12.0           tidyr_0.6.0               
-[11] dplyr_0.5.0                survey_3.31-2             
-[13] survival_2.40-1            Matrix_1.2-7.1            
-[15] GEOquery_2.40.0            Biobase_2.34.0            
-[17] BiocGenerics_0.20.0        tximport_1.2.0            
-[19] reshape2_1.4.2             rjson_0.2.15              
+ [1] edgeR_3.17.5               limma_3.30.8              
+ [3] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [5] GenomicRanges_1.26.1       GenomeInfoDb_1.10.1       
+ [7] IRanges_2.8.1              S4Vectors_0.12.0          
+ [9] tidyr_0.6.0                dplyr_0.5.0               
+[11] survey_3.31-2              survival_2.40-1           
+[13] Matrix_1.2-7.1             GEOquery_2.40.0           
+[15] Biobase_2.34.0             BiocGenerics_0.20.0       
+[17] tximport_1.2.0             reshape2_1.4.2            
+[19] rjson_0.2.15              
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.8               locfit_1.5-9.1           
- [3] assertthat_0.1            digest_0.6.11            
- [5] mime_0.5                  R6_2.2.0                 
- [7] plyr_1.8.4                MatrixModels_0.4-1       
- [9] httr_1.2.1                zlibbioc_1.20.0          
-[11] minqa_1.2.4               SparseM_1.74             
-[13] car_2.1-4                 nloptr_1.0.4             
-[15] splines_3.3.1             lme4_1.1-12              
-[17] BiocParallel_1.8.1        stringr_1.1.0            
-[19] RCurl_1.95-4.8            RMTstat_0.3              
-[21] distillery_1.0-2          shiny_0.14.2             
-[23] httpuv_1.3.3              extRemes_2.0-8           
-[25] mgcv_1.8-15               pcaMethods_1.66.0        
-[27] htmltools_0.3.5           nnet_7.3-12              
-[29] tibble_1.2                edgeR_3.17.5             
-[31] Lmoments_1.2-3            XML_3.98-1.5             
-[33] MASS_7.3-45               bitops_1.0-6             
-[35] nlme_3.1-128              xtable_1.8-2             
-[37] DBI_0.5-1                 magrittr_1.5             
-[39] stringi_1.1.2             XVector_0.14.0           
-[41] RcppArmadillo_0.7.600.1.0 limma_3.30.8             
-[43] brew_1.0-6                RColorBrewer_1.1-2       
-[45] tools_3.3.1               Cairo_1.5-9              
-[47] Rook_1.1-1                pbkrtest_0.4-6           
-[49] shinydashboard_0.5.3      quantreg_5.29            
-[51] modeltools_0.2-21        
+ [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
+ [4] bitops_1.0-6         tools_3.3.1          zlibbioc_1.20.0     
+ [7] digest_0.6.11        tibble_1.2           lattice_0.20-34     
+[10] shiny_0.14.2         DBI_0.5-1            httr_1.2.1          
+[13] stringr_1.1.0        locfit_1.5-9.1       shinydashboard_0.5.3
+[16] R6_2.2.0             XML_3.98-1.5         magrittr_1.5        
+[19] htmltools_0.3.5      splines_3.3.1        assertthat_0.1      
+[22] xtable_1.8-2         mime_0.5             httpuv_1.3.3        
+[25] stringi_1.1.2        RCurl_1.95-4.8      
 > 
 > proc.time()
-      user     system    elapsed 
-132322.916    476.276 132978.933 
+   user  system elapsed 
+243.908  36.072 281.348 

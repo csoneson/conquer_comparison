@@ -249,26 +249,26 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
                                     binary_truth = "status", 
                                     thrs = 0.05)
   
-  ttmp <- unique(get_nsamples(basemethods(cobrares)))
-  ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE)[-1])
-  for (m in ttmp) {
-    for (k in unique(get_repl(basemethods(cobrares)))) {
-      c2 <- colvec
-      names(c2) <- paste0(names(c2), ".", m, ".", k)
-      km <- basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m & 
-                                    get_repl(basemethods(cobrares)) == k]
-      cobraplot <- prepare_data_for_plot(cobrares, keepmethods = km, colorscheme = c2[km])
-      
-      print(plot_fdrtprcurve(cobraplot, plottype = "curve") + ggtitle("Truth defined by each method"))
-      print(plot_roc(cobraplot) + ggtitle("Truth defined by each method"))
-    }
-  }
+  # ttmp <- unique(get_nsamples(basemethods(cobrares)))
+  # ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE)[-1])
+  # for (m in ttmp) {
+  #   for (k in unique(get_repl(basemethods(cobrares)))) {
+  #     c2 <- colvec
+  #     names(c2) <- paste0(names(c2), ".", m, ".", k)
+  #     km <- basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m & 
+  #                                   get_repl(basemethods(cobrares)) == k]
+  #     cobraplot <- prepare_data_for_plot(cobrares, keepmethods = km, colorscheme = c2[km])
+  #     
+  #     print(plot_fdrtprcurve(cobraplot, plottype = "curve") + ggtitle("Truth defined by each method"))
+  #     print(plot_roc(cobraplot) + ggtitle("Truth defined by each method"))
+  #   }
+  # }
   
   ## Extract subset
-  for (m in unique(get_method(basemethods(cobrares)))) {
-    plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_method(basemethods(cobrares)) == m],
-                    type = "method", colvec = colvec)
-  }
+  # for (m in unique(get_method(basemethods(cobrares)))) {
+  #   plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_method(basemethods(cobrares)) == m],
+  #                   type = "method", colvec = colvec)
+  # }
   
   for (m in unique(get_nsamples(basemethods(cobrares)))) {
     plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
@@ -725,93 +725,93 @@ plot_results <- function(cobra, colvec, summary_data = list()) {
           geom_point(size = 5) + ggtitle("MDS_Spearman"))
   if (length(all_methods) > 1) {
     ## MDS
-    for (sz in all_sizes) {
-      for (j in all_replicates) {
-        ## A specific dataset (number of samples/replicate combination)
-        keepmethods <- intersect(paste0(all_methods, ".", sz, ".", j),
-                                 rownames(spdist))
-        if (length(keepmethods) > 0) {
-          mdssub <- cmdscale(spdist[keepmethods, keepmethods], k = 2, eig = TRUE)
-          mdssubx <- data.frame(mdssub$points)
-          colnames(mdssubx) <- c("MDS_Spearman_1", "MDS_Spearman_2")
-          mdssubx$mth <- rownames(mdssubx)
-          print(mdssubx %>% 
-                  separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
-                  ggplot(aes(x = MDS_Spearman_1, y = MDS_Spearman_2, 
-                             col = method, pch = nbr_samples)) + 
-                  geom_point(size = 10) + theme_bw() + 
-                  scale_color_manual(values = colvec, guide = FALSE) + 
-                  geom_label_repel(aes(label = method), size = 7) + 
-                  theme(legend.position = "bottom"))
-        }
-      }
-      
-      ## All replicates, given number of samples
-      keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
-                                             function(m) paste0(m, ".", all_replicates))), 
-                               rownames(spdist))
-      if (length(keepmethods) > 0) {
-        mdssub <- cmdscale(spdist[keepmethods, keepmethods], k = 2, eig = TRUE)
-        mdssubx <- data.frame(mdssub$points)
-        colnames(mdssubx) <- c("MDS_Spearman_1", "MDS_Spearman_2")
-        mdssubx$mth <- rownames(mdssubx)
-        print(mdssubx %>% 
-                separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
-                ggplot(aes(x = MDS_Spearman_1, y = MDS_Spearman_2, 
-                           col = method, pch = nbr_samples)) + 
-                geom_point(size = 5) + theme_bw() + 
-                scale_color_manual(values = colvec, guide = FALSE) + 
-                geom_label_repel(aes(label = method)) + 
-                theme(legend.position = "bottom"))
-      }
-    }
+    # for (sz in all_sizes) {
+    #   for (j in all_replicates) {
+    #     ## A specific dataset (number of samples/replicate combination)
+    #     keepmethods <- intersect(paste0(all_methods, ".", sz, ".", j),
+    #                              rownames(spdist))
+    #     if (length(keepmethods) > 0) {
+    #       mdssub <- cmdscale(spdist[keepmethods, keepmethods], k = 2, eig = TRUE)
+    #       mdssubx <- data.frame(mdssub$points)
+    #       colnames(mdssubx) <- c("MDS_Spearman_1", "MDS_Spearman_2")
+    #       mdssubx$mth <- rownames(mdssubx)
+    #       print(mdssubx %>% 
+    #               separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
+    #               ggplot(aes(x = MDS_Spearman_1, y = MDS_Spearman_2, 
+    #                          col = method, pch = nbr_samples)) + 
+    #               geom_point(size = 10) + theme_bw() + 
+    #               scale_color_manual(values = colvec, guide = FALSE) + 
+    #               geom_label_repel(aes(label = method), size = 7) + 
+    #               theme(legend.position = "bottom"))
+    #     }
+    #   }
+    #   
+    #   ## All replicates, given number of samples
+    #   keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
+    #                                          function(m) paste0(m, ".", all_replicates))), 
+    #                            rownames(spdist))
+    #   if (length(keepmethods) > 0) {
+    #     mdssub <- cmdscale(spdist[keepmethods, keepmethods], k = 2, eig = TRUE)
+    #     mdssubx <- data.frame(mdssub$points)
+    #     colnames(mdssubx) <- c("MDS_Spearman_1", "MDS_Spearman_2")
+    #     mdssubx$mth <- rownames(mdssubx)
+    #     print(mdssubx %>% 
+    #             separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
+    #             ggplot(aes(x = MDS_Spearman_1, y = MDS_Spearman_2, 
+    #                        col = method, pch = nbr_samples)) + 
+    #             geom_point(size = 5) + theme_bw() + 
+    #             scale_color_manual(values = colvec, guide = FALSE) + 
+    #             geom_label_repel(aes(label = method)) + 
+    #             theme(legend.position = "bottom"))
+    #   }
+    # }
     
     ## Hierarchical clustering and heatmap
-    for (sz in all_sizes) {
-      for (j in all_replicates) {
-        keepmethods <- intersect(paste0(all_methods, ".", sz, ".", j), 
-                                 rownames(spdist))
-        if (length(keepmethods) > 0) {
-          hcl <- hclust(d = as.dist(spdist[keepmethods, keepmethods]), method = "complete")
-          plot(hcl)
-          hclspd <- 1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order]
-          pheatmap(hclspd, 
-                   cluster_rows = FALSE, cluster_cols = FALSE, 
-                   scale = "none", main = "Spearman correlation", display_numbers = TRUE,
-                   annotation_col = data.frame(method = colnames(hclspd), 
-                                               row.names = colnames(hclspd)), 
-                   annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
-                                                                                      ".", sz, ".", j))),
-                   annotation_legend = FALSE, annotation_names_col = FALSE,
-                   annotation_row = data.frame(method = rownames(hclspd), 
-                                               row.names = rownames(hclspd)),
-                   annotation_names_row = FALSE)
-        }
-      }
-      ## All replicates
-      keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
-                                             function(m) paste0(m, ".", all_replicates))), 
-                               rownames(spdist))
-      if (length(keepmethods) > 0) {
-        hcl <- hclust(d = as.dist(spdist[keepmethods, keepmethods]), method = "complete")
-        plot(hcl)
-        hclspd <- 1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order]
-        pheatmap(hclspd, 
-                 cluster_rows = FALSE, cluster_cols = FALSE, 
-                 scale = "none", main = "Spearman correlation", display_numbers = TRUE,
-                 annotation_col = data.frame(method = colnames(hclspd), 
-                                             row.names = colnames(hclspd)), 
-                 annotation_colors = 
-                   list(method = structure(rep(colvec, each = length(all_replicates)), 
-                                           names = unlist(lapply(paste0(names(colvec), ".", sz), 
-                                                                 function(m) paste0(m, ".", 
-                                                                                    all_replicates))))),
-                 annotation_legend = FALSE, annotation_names_col = FALSE,
-                 annotation_row = data.frame(method = rownames(hclspd), 
-                                             row.names = rownames(hclspd)),
-                 annotation_names_row = FALSE)
-      }
-    }
+    # for (sz in all_sizes) {
+    #   for (j in all_replicates) {
+    #     keepmethods <- intersect(paste0(all_methods, ".", sz, ".", j), 
+    #                              rownames(spdist))
+    #     if (length(keepmethods) > 0) {
+    #       hcl <- hclust(d = as.dist(spdist[keepmethods, keepmethods]), method = "complete")
+    #       plot(hcl)
+    #       hclspd <- 1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order]
+    #       pheatmap(hclspd, 
+    #                cluster_rows = FALSE, cluster_cols = FALSE, 
+    #                scale = "none", main = "Spearman correlation", display_numbers = TRUE,
+    #                annotation_col = data.frame(method = colnames(hclspd), 
+    #                                            row.names = colnames(hclspd)), 
+    #                annotation_colors = list(method = structure(colvec, names = paste0(names(colvec),
+    #                                                                                   ".", sz, ".", j))),
+    #                annotation_legend = FALSE, annotation_names_col = FALSE,
+    #                annotation_row = data.frame(method = rownames(hclspd), 
+    #                                            row.names = rownames(hclspd)),
+    #                annotation_names_row = FALSE)
+    #     }
+    #   }
+    #   ## All replicates
+    #   keepmethods <- intersect(unlist(lapply(paste0(all_methods, ".", sz), 
+    #                                          function(m) paste0(m, ".", all_replicates))), 
+    #                            rownames(spdist))
+    #   if (length(keepmethods) > 0) {
+    #     hcl <- hclust(d = as.dist(spdist[keepmethods, keepmethods]), method = "complete")
+    #     plot(hcl)
+    #     hclspd <- 1 - spdist[keepmethods, keepmethods][hcl$order, hcl$order]
+    #     pheatmap(hclspd, 
+    #              cluster_rows = FALSE, cluster_cols = FALSE, 
+    #              scale = "none", main = "Spearman correlation", display_numbers = TRUE,
+    #              annotation_col = data.frame(method = colnames(hclspd), 
+    #                                          row.names = colnames(hclspd)), 
+    #              annotation_colors = 
+    #                list(method = structure(rep(colvec, each = length(all_replicates)), 
+    #                                        names = unlist(lapply(paste0(names(colvec), ".", sz), 
+    #                                                              function(m) paste0(m, ".", 
+    #                                                                                 all_replicates))))),
+    #              annotation_legend = FALSE, annotation_names_col = FALSE,
+    #              annotation_row = data.frame(method = rownames(hclspd), 
+    #                                          row.names = rownames(hclspd)),
+    #              annotation_names_row = FALSE)
+    #   }
+    # }
     
     ## UpSet plots
     for (sz in all_sizes) {
@@ -834,73 +834,73 @@ plot_results <- function(cobra, colvec, summary_data = list()) {
     }
     
     ## Include attribute plot    
-    for (sz in all_sizes) {
-      for (j in all_replicates) {
-        c2 <- colvec
-        names(c2) <- paste0(names(c2), ".", sz, ".", j)
-        km <- paste0(all_methods, ".", sz, ".", j)
-        cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
-                                     colorscheme = c2[km], incloverall = FALSE)
-        if (ncol(overlap(cpl)) > 0) {
-          overlap_table <- overlap(cpl)
-          m <- min(which(colSums(overlap_table) > 0))
-          if (is.finite(m)) 
-            overlap_table <- overlap_table[, c(m, setdiff(1:ncol(overlap_table), m))]
-          m <- max(which(colSums(overlap_table) > 0))
-          if (is.finite(m))
-            overlap_table <- overlap_table[, c(setdiff(1:ncol(overlap_table), m), m)]
-          plotorder <- colnames(overlap_table)[order(colSums(overlap_table), 
-                                                     seq(1:ncol(overlap_table)),
-                                                     decreasing = "true")]
-          nsets <- ncol(overlap_table)
-          nintersects <- 25
-          sets.bar.color <- plotcolors(cpl)[plotorder]
-          overlap_table$fraczero <- truth(cobratmp)[match(rownames(overlap_table), 
-                                                          rownames(truth(cobratmp))), 
-                                                 paste0("fraczero.", sz, ".", j)]
-          upset(overlap_table, nsets = nsets, nintersects = nintersects, 
-                sets.bar.color = sets.bar.color, 
-                order.by = "freq", decreasing = TRUE, boxplot.summary = "fraczero",
-                set.metadata = list(data = data.frame(sets = km, 
-                                                      mth = km,
-                                                      row.names = km),
-                                    plots = list(list(type = "matrix_rows", 
-                                                      column = "mth", 
-                                                      colors = c2[km], alpha = 0.25))))
-        }
-      }
-    }
+    # for (sz in all_sizes) {
+    #   for (j in all_replicates) {
+    #     c2 <- colvec
+    #     names(c2) <- paste0(names(c2), ".", sz, ".", j)
+    #     km <- paste0(all_methods, ".", sz, ".", j)
+    #     cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
+    #                                  colorscheme = c2[km], incloverall = FALSE)
+    #     if (ncol(overlap(cpl)) > 0) {
+    #       overlap_table <- overlap(cpl)
+    #       m <- min(which(colSums(overlap_table) > 0))
+    #       if (is.finite(m)) 
+    #         overlap_table <- overlap_table[, c(m, setdiff(1:ncol(overlap_table), m))]
+    #       m <- max(which(colSums(overlap_table) > 0))
+    #       if (is.finite(m))
+    #         overlap_table <- overlap_table[, c(setdiff(1:ncol(overlap_table), m), m)]
+    #       plotorder <- colnames(overlap_table)[order(colSums(overlap_table), 
+    #                                                  seq(1:ncol(overlap_table)),
+    #                                                  decreasing = "true")]
+    #       nsets <- ncol(overlap_table)
+    #       nintersects <- 25
+    #       sets.bar.color <- plotcolors(cpl)[plotorder]
+    #       overlap_table$fraczero <- truth(cobratmp)[match(rownames(overlap_table), 
+    #                                                       rownames(truth(cobratmp))), 
+    #                                              paste0("fraczero.", sz, ".", j)]
+    #       upset(overlap_table, nsets = nsets, nintersects = nintersects, 
+    #             sets.bar.color = sets.bar.color, 
+    #             order.by = "freq", decreasing = TRUE, boxplot.summary = "fraczero",
+    #             set.metadata = list(data = data.frame(sets = km, 
+    #                                                   mth = km,
+    #                                                   row.names = km),
+    #                                 plots = list(list(type = "matrix_rows", 
+    #                                                   column = "mth", 
+    #                                                   colors = c2[km], alpha = 0.25))))
+    #     }
+    #   }
+    # }
     
-    for (sz in all_sizes) {
-      for (j in all_replicates) {
-        c2 <- colvec
-        names(c2) <- paste0(names(c2), ".", sz, ".", j)
-        km <- intersect(paste0(all_methods, ".", sz, ".", j), basemethods(cobraperf))
-        cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
-                                     colorscheme = c2[km], incloverall = FALSE)
-        if (ncol(overlap(cpl)) > 0) {
-          for (k in all_methods) {
-            tmp_cp <- as(cpl, "COBRAPerformance")
-            tryCatch({
-              overlap(tmp_cp) <- overlap(tmp_cp)[overlap(tmp_cp)[, paste0(k, ".", sz, ".", j)] == 0 & 
-                                                   rowSums(overlap(tmp_cp)) > 0, ]
-              km <- intersect(paste0(setdiff(all_methods, k), ".", sz, ".", j), basemethods(cobraperf))
-              cpl1 <- prepare_data_for_plot(tmp_cp, keepmethods = km, 
-                                            colorscheme = c2[km], incloverall = FALSE)
-              plot_upset_with_reordering(cpl1, nintersects = 25, 
-                                         mainbar.y.label = paste0("Intersection Size (only genes ", 
-                                                                  "not called DE by ", k, ")"), 
-                                         set.metadata = list(data = data.frame(sets = km, 
-                                                                               mth = km,
-                                                                               row.names = km),
-                                                             plots = list(list(type = "matrix_rows", 
-                                                                               column = "mth", 
-                                                                               colors = c2[km], alpha = 0.25))))}, 
-              error = function(e) message(paste0("No overlap data for ", k, ".", sz, ".", j)))
-          }
-        }
-      }
-    }
+    # for (sz in all_sizes) {
+    #   for (j in all_replicates) {
+    #     c2 <- colvec
+    #     names(c2) <- paste0(names(c2), ".", sz, ".", j)
+    #     km <- intersect(paste0(all_methods, ".", sz, ".", j), basemethods(cobraperf))
+    #     cpl <- prepare_data_for_plot(cobraperf, keepmethods = km, 
+    #                                  colorscheme = c2[km], incloverall = FALSE)
+    #     if (ncol(overlap(cpl)) > 0) {
+    #       for (k in all_methods) {
+    #         tmp_cp <- as(cpl, "COBRAPerformance")
+    #         tryCatch({
+    #           overlap(tmp_cp) <- overlap(tmp_cp)[overlap(tmp_cp)[, paste0(k, ".", sz, ".", j)] == 0 & 
+    #                                                rowSums(overlap(tmp_cp)) > 0, ]
+    #           km <- intersect(paste0(setdiff(all_methods, k), ".", sz, ".", j), basemethods(cobraperf))
+    #           cpl1 <- prepare_data_for_plot(tmp_cp, keepmethods = km, 
+    #                                         colorscheme = c2[km], incloverall = FALSE)
+    #           plot_upset_with_reordering(cpl1, nintersects = 25, 
+    #                                      mainbar.y.label = paste0("Intersection Size (only genes ", 
+    #                                                               "not called DE by ", k, ")"), 
+    #                                      set.metadata = list(data = data.frame(sets = km, 
+    #                                                                            mth = km,
+    #                                                                            row.names = km),
+    #                                                          plots = list(list(type = "matrix_rows", 
+    #                                                                            column = "mth", 
+    #                                                                            colors = c2[km], alpha = 0.25))))}, 
+    #           error = function(e) message(paste0("No overlap data for ", k, ".", sz, ".", j)))
+    #       }
+    #     }
+    #   }
+    # }
   }
   if (length(all_sizes) > 1) {
     for (mth in all_methods) {

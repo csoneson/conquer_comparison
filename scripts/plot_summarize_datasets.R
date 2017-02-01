@@ -10,6 +10,7 @@ suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(pheatmap))
 suppressPackageStartupMessages(library(ggrepel))
 suppressPackageStartupMessages(library(ggbiplot))
+suppressPackageStartupMessages(library(RColorBrewer))
 
 datasets <- strsplit(datasets, ",")[[1]]
 names(datasets) <- datasets
@@ -20,7 +21,8 @@ print(filt)
 cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#B17BA6", "#7BAFDE", "#F6C141", "#90C987")
+          "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
+          "#882E72", "#F7EE55")
 if (filt == "") { 
   exts <- filt
 } else {
@@ -29,7 +31,8 @@ if (filt == "") {
 names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                         "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                         "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus"), exts)
+                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
+                        "DESeq2nofilt", "Seuratnofilt", "NODESnofilt"), exts)
 
 
 summary_data_list <- lapply(datasets, function(ds) {
@@ -43,6 +46,7 @@ lapply(c(list(datasets), as.list(datasets)), function(ds) {
   for (stat in c("tstat", "mediandiff")) {
     x <- lapply(summary_data_list[ds], function(m) {
       m$stats_charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
+        dplyr::filter_(paste0("is.finite(", stat, ")")) %>% 
         dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
         dplyr::select_("Var2", stat, "charac")  %>%
         dplyr::filter(charac != "fraczerodiff")
@@ -50,6 +54,7 @@ lapply(c(list(datasets), as.list(datasets)), function(ds) {
     x <- do.call(rbind, x) %>% dcast(charac ~ Var2, value.var = stat)
     rownames(x) <- x$charac
     x$charac <- NULL
+    x[is.na(x)] <- 0
     
     for (scl in c(TRUE, FALSE)) {
       pca <- prcomp(t(x), scale. = scl)
@@ -102,7 +107,6 @@ pdf(paste0("figures/summary_crossds/summary_heatmaps", exts, ".pdf"),
 y <- lapply(summary_data_list, function(m) {
   m$fracpbelow0.05 %>% 
     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
-    #dplyr::arrange(as.numeric(as.character(n_samples))) %>%
     dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
     dplyr::select(method, dataset, FPR)
 })
@@ -120,7 +124,8 @@ annotation_row = data.frame(id = rownames(y)) %>%
 rownames(annotation_row) <- annotation_row$id
 
 pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", main = "True FPR",
-         display_numbers = TRUE, 
+         display_numbers = TRUE, colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
+         breaks = seq(0, 0.6, length.out = 101), 
          annotation_row = dplyr::select(annotation_row, n_samples, dataset), show_rownames = FALSE,
          annotation_col = data.frame(method = colnames(y), row.names = colnames(y)),
          annotation_colors = list(method = structure(cols, names = names(cols))[colnames(y)]),
