@@ -132,6 +132,26 @@ pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", main = "
          annotation_names_col = FALSE)
 dev.off()
 
+pdf(paste0("figures/summary_crossds/summary_performance", exts, ".pdf"),
+    width = 10, height = 7)
+y <- lapply(summary_data_list, function(m) {
+  m$fracpbelow0.05 %>% 
+    tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.")# %>%
+    #dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
+    #dplyr::select(method, dataset, FPR)
+})
+y <- do.call(rbind, y) %>%
+  dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples))))))
+print(ggplot(y, aes(x = method, y = FPR, color = method)) + 
+        geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = 0) + 
+        geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
+        theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+dev.off()
+
 ## Timing
 pdf(paste0("figures/summary_crossds/relative_timing", exts, ".pdf"), width = 10, height = 7)
 

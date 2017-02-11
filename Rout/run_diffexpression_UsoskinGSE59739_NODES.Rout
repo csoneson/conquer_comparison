@@ -769,5 +769,5 @@ loaded via a namespace (and not attached):
 [22] httpuv_1.3.3         stringi_1.1.2        RCurl_1.95-4.8      
 > 
 > proc.time()
-    user   system  elapsed 
-1004.467  166.467 1241.108 
+   user  system elapsed 
+773.201  35.965 812.137 

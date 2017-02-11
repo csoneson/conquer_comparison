@@ -312,5 +312,5 @@ loaded via a namespace (and not attached):
 [85] caret_6.0-73         ROCR_1.0-7          
 > 
 > proc.time()
-    user   system  elapsed 
-2958.176   22.355 2988.529 
+   user  system elapsed 
+ 97.628  16.046 115.545 

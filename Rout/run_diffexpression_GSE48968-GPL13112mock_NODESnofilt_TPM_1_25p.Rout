@@ -1,0 +1,676 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/GSE48968-GPL13112mock.json"
+> print(demethod)
+[1] "NODESnofilt"
+> 
+> ## filt should be a string of the form type_value_nbr, where type is either TPM 
+> ## or count, and features will be filtered out unless they show at least a 
+> ## "type" of "value" in at least "nbr" samples (if nbr is a single number) or at
+> ## least nbr % of the samples (if nbr ends with p). For now, both value and nbr
+> ## need to be integers (no periods in the name).
+> print(filt)
+[1] "TPM_1_25p"
+> (exts <- ifelse(filt == "", "", paste0("_", filt)))
+[1] "_TPM_1_25p"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE48968-GPL13112mock.rds"
+
+$subfile
+[1] "subsets/GSE48968-GPL13112mock_subsets.rds"
+
+$resfilebase
+[1] "results/GSE48968-GPL13112mock"
+
+$figfilebase
+[1] "figures/diffexpression/GSE48968-GPL13112mock"
+
+$groupid
+[1] "source_name_ch1"
+
+$keepgroups
+[1] "BMDC (1h LPS Stimulation)"
+
+$seed
+[1] 42
+
+$sizes
+[1] 48 24 12  6
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+48.1
+9255 genes, 96 samples.
+NODES
+Loading required package: preprocessCore
+Dimensions of supplied expression matrix:
+Genes=9255; Cells=96
+
+Dimensions of supplied processed matrix:
+Genes=9255; Cells=96
+
+Loading required package: MetaDE
+Loading required package: impute
+Loading required package: combinat
+
+Attaching package: 'combinat'
+
+The following object is masked from 'package:utils':
+
+    combn
+
+Loading required package: tools
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 18.729 0.133 18.9 
+24.1
+9192 genes, 48 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=9192; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=9192; Cells=48
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 17.794 0.464 18.287 
+24.2
+8972 genes, 48 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8972; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=8972; Cells=48
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.918 0.049 16.993 
+24.3
+9224 genes, 48 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=9224; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=9224; Cells=48
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 17.388 1.827 19.55 
+24.4
+9242 genes, 48 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=9242; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=9242; Cells=48
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.958 0.4 17.386 
+24.5
+9102 genes, 48 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=9102; Cells=48
+
+Dimensions of supplied processed matrix:
+Genes=9102; Cells=48
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.579 0.024 16.63 
+12.1
+8743 genes, 24 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8743; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=8743; Cells=24
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 15.72 0.017 15.761 
+12.2
+8366 genes, 24 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8366; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=8366; Cells=24
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.119 0.136 16.28 
+12.3
+8809 genes, 24 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8809; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=8809; Cells=24
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 17.958 1.071 19.055 
+12.4
+8826 genes, 24 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8826; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=8826; Cells=24
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.956 0.766 17.755 
+12.5
+8235 genes, 24 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8235; Cells=24
+
+Dimensions of supplied processed matrix:
+Genes=8235; Cells=24
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 14.482 0.052 14.558 
+6.1
+7680 genes, 12 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=7680; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=7680; Cells=12
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 13.529 0.268 13.82 
+6.2
+8209 genes, 12 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8209; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=8209; Cells=12
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 14.247 0.012 14.283 
+6.3
+7863 genes, 12 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=7863; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=7863; Cells=12
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 13.937 0.024 13.982 
+6.4
+8091 genes, 12 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8091; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=8091; Cells=12
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 15.251 1.018 16.296 
+6.5
+8785 genes, 12 samples.
+NODES
+Dimensions of supplied expression matrix:
+Genes=8785; Cells=12
+
+Dimensions of supplied processed matrix:
+Genes=8785; Cells=12
+
+[1] "Randomization run = 1"
+[1] "Randomization run = 2"
+[1] "Randomization run = 3"
+[1] "Randomization run = 4"
+[1] "Randomization run = 5"
+[1] "Randomization run = 6"
+[1] "Randomization run = 7"
+[1] "Randomization run = 8"
+[1] "Randomization run = 9"
+[1] "Randomization run = 10"
+[1] "Randomization run = 11"
+[1] "Randomization run = 12"
+[1] "Randomization run = 13"
+[1] "Randomization run = 14"
+[1] "Randomization run = 15"
+[1] "Randomization run = 16"
+[1] "Randomization run = 17"
+[1] "Randomization run = 18"
+[1] "Randomization run = 19"
+[1] "Randomization run = 20"
+
+Smoothing the noise density...
+Timing stopped at: 16.094 0.515 16.643 
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] tools     stats4    grid      parallel  stats     graphics  grDevices
+ [8] utils     datasets  methods   base     
+
+other attached packages:
+ [1] MetaDE_1.0.5               combinat_0.0-8            
+ [3] impute_1.48.0              preprocessCore_1.36.0     
+ [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.0
+ [7] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
+ [9] GenomeInfoDb_1.10.1        IRanges_2.8.1             
+[11] S4Vectors_0.12.0           tidyr_0.6.0               
+[13] dplyr_0.5.0                survey_3.31-2             
+[15] survival_2.40-1            Matrix_1.2-7.1            
+[17] GEOquery_2.40.0            Biobase_2.34.0            
+[19] BiocGenerics_0.20.0        tximport_1.2.0            
+[21] reshape2_1.4.2             rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
+ [4] bitops_1.0-6         zlibbioc_1.20.0      digest_0.6.11       
+ [7] tibble_1.2           lattice_0.20-34      shiny_0.14.2        
+[10] DBI_0.5-1            httr_1.2.1           stringr_1.1.0       
+[13] shinydashboard_0.5.3 R6_2.2.0             XML_3.98-1.5        
+[16] magrittr_1.5         htmltools_0.3.5      splines_3.3.1       
+[19] assertthat_0.1       xtable_1.8-2         mime_0.5            
+[22] httpuv_1.3.3         stringi_1.1.2        RCurl_1.95-4.8      
+> 
+> proc.time()
+   user  system elapsed 
+359.322  34.602 395.518 
