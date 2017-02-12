@@ -26,9 +26,12 @@ Setting LC_CTYPE failed, using "C"
 > 
 > suppressPackageStartupMessages(library(pheatmap))
 > suppressPackageStartupMessages(library(ggplot2))
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
 > suppressPackageStartupMessages(library(ggrepel))
 > suppressPackageStartupMessages(library(dplyr))
 > suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(forcats))
 > suppressPackageStartupMessages(library(iCOBRA))
 > suppressPackageStartupMessages(library(reshape2))
 > suppressPackageStartupMessages(library(rjson))
@@ -145,13 +148,23 @@ There were 44 warnings (use warnings() to see them)
 +                                                 " cells per group"))) 
 Using gene as id variables
 > 
+> char_gene_s <- char_gene_m %>% tidyr::spread(key = mtype, value = value) %>%
++   dplyr::mutate(replicate = paste0(ncells, ", repl ", repl)) %>%
++   dplyr::arrange(ncells, as.numeric(repl))
+> 
 > char_cells <- Reduce(function(...) merge(..., by = "cell", all = TRUE), char_cells)
 > char_cells_m <- reshape2::melt(char_cells) %>% 
 +   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
 +   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
 +                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
-+                                                 " cells per group"))) 
++                                                 " cells per group")))
 Using cell as id variables
+>                                                 
+> print(ggplot(char_gene_s, aes(x = avecount, y = fraczero)) + geom_point(size = 0.3) +
++         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
++         xlab("Average count per gene") + ylab("Fraction zeros per gene"))
+Warning message:
+Removed 62666 rows containing missing values (geom_point). 
 > 
 > for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
 +   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
@@ -220,36 +233,36 @@ attached base packages:
 
 other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
- [3] irlba_2.1.2                VGAM_1.0-2                
- [5] Matrix_1.2-7.1             lazyeval_0.2.0            
- [7] UpSetR_1.3.1               MultiAssayExperiment_1.0.0
- [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
-[11] GenomeInfoDb_1.10.1        IRanges_2.8.1             
-[13] S4Vectors_0.12.0           Biobase_2.34.0            
+ [3] irlba_2.1.2                VGAM_1.0-3                
+ [5] Matrix_1.2-8               lazyeval_0.2.0            
+ [7] UpSetR_1.3.2               MultiAssayExperiment_1.0.0
+ [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+[11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+[13] S4Vectors_0.12.1           Biobase_2.34.0            
 [15] BiocGenerics_0.20.0        rjson_0.2.15              
 [17] reshape2_1.4.2             iCOBRA_1.2.0              
-[19] tidyr_0.6.0                dplyr_0.5.0               
-[21] ggrepel_0.6.3              ggplot2_2.2.1             
-[23] pheatmap_1.0.8            
+[19] forcats_0.2.0              tidyr_0.6.1               
+[21] dplyr_0.5.0                ggrepel_0.6.5             
+[23] ggplot2_2.2.1              pheatmap_1.0.8            
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.8            lattice_0.20-34        gtools_3.5.0          
- [4] assertthat_0.1         digest_0.6.11          mime_0.5              
+ [1] Rcpp_0.12.9            lattice_0.20-34        gtools_3.5.0          
+ [4] assertthat_0.1         digest_0.6.12          mime_0.5              
  [7] slam_0.1-38            R6_2.2.0               plyr_1.8.4            
 [10] qlcMatrix_0.9.5        gplots_3.0.1           zlibbioc_1.20.0       
-[13] gdata_2.17.0           DT_0.2                 combinat_0.0-8        
+[13] gdata_2.17.0           combinat_0.0-8         DT_0.2                
 [16] labeling_0.3           stringr_1.1.0          htmlwidgets_0.8       
-[19] igraph_1.0.1           munsell_0.4.3          shiny_0.14.2          
-[22] httpuv_1.3.3           htmltools_0.3.5        tibble_1.2            
-[25] gridExtra_2.2.1        matrixStats_0.51.0     shinyBS_0.61          
-[28] bitops_1.0-6           grid_3.3.1             xtable_1.8-2          
-[31] gtable_0.2.0           DBI_0.5-1              magrittr_1.5          
-[34] scales_0.4.1           KernSmooth_2.23-15     stringi_1.1.2         
-[37] XVector_0.14.0         ROCR_1.0-7             limma_3.30.8          
-[40] fastICA_1.2-0          RColorBrewer_1.1-2     tools_3.3.1           
-[43] HSMMSingleCell_0.108.0 colorspace_1.3-1       cluster_2.0.5         
-[46] caTools_1.17.1         shinydashboard_0.5.3  
+[19] igraph_1.0.1           RCurl_1.95-4.8         munsell_0.4.3         
+[22] shiny_1.0.0            httpuv_1.3.3           htmltools_0.3.5       
+[25] tibble_1.2             gridExtra_2.2.1        matrixStats_0.51.0    
+[28] shinyBS_0.61           bitops_1.0-6           grid_3.3.1            
+[31] xtable_1.8-2           gtable_0.2.0           DBI_0.5-1             
+[34] magrittr_1.5           scales_0.4.1           KernSmooth_2.23-15    
+[37] stringi_1.1.2          XVector_0.14.0         ROCR_1.0-7            
+[40] limma_3.30.8           fastICA_1.2-0          RColorBrewer_1.1-2    
+[43] tools_3.3.1            HSMMSingleCell_0.108.0 colorspace_1.3-2      
+[46] cluster_2.0.5          caTools_1.17.1         shinydashboard_0.5.3  
 > 
 > proc.time()
    user  system elapsed 
-213.584  11.363 226.050 
+232.268 422.085 690.110 

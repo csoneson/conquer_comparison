@@ -8,6 +8,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(ggrepel))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(forcats))
 suppressPackageStartupMessages(library(iCOBRA))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(rjson))
@@ -108,12 +109,20 @@ char_gene_m <- reshape2::melt(char_gene) %>%
                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
                                                 " cells per group"))) 
 
+char_gene_s <- char_gene_m %>% tidyr::spread(key = mtype, value = value) %>%
+  dplyr::mutate(replicate = paste0(ncells, ", repl ", repl)) %>%
+  dplyr::arrange(ncells, as.numeric(repl))
+
 char_cells <- Reduce(function(...) merge(..., by = "cell", all = TRUE), char_cells)
 char_cells_m <- reshape2::melt(char_cells) %>% 
   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
-                                                " cells per group"))) 
+                                                " cells per group")))
+                                                
+print(ggplot(char_gene_s, aes(x = avecount, y = fraczero)) + geom_point(size = 0.3) +
+        theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
+        xlab("Average count per gene") + ylab("Fraction zeros per gene"))
 
 for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
