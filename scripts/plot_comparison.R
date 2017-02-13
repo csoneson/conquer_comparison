@@ -76,6 +76,7 @@ imposed_condition <- subsets$out_condition
 
 sizes <- names(keep_samples)
 truth <- list()
+tested <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
@@ -94,9 +95,32 @@ for (sz in sizes) {
     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
                                                      ".", sz, ".", i)
     truth[[paste0(sz, ".", i)]] <- df2
+    
+    df3 <- data.frame(gene = df2$gene, tested = TRUE)
+    colnames(df3)[colnames(df3) != "gene"] <- paste0(colnames(df3)[colnames(df3) != "gene"],
+                                                     ".", sz, ".", i)
+    tested[[paste0(sz, ".", i)]] <- df3
   }
 }
 truth <- Reduce(function(...) merge(..., by = "gene", all = TRUE), truth)
+tested <- Reduce(function(...) merge(..., by = "gene", all = TRUE), tested)
+
+padjm <- reshape2::melt(as.matrix(padj(cobra)), value.name = "padj",
+                        varnames = c("gene", "method")) %>%
+  tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
+truthm <- reshape2::melt(truth) %>% 
+  tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.")
+testedm <- reshape2::melt(tested, id.vars = "gene") %>%
+  tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.") %>%
+  dplyr::rename(tested = value) %>%
+  dplyr::select(-measurement)
+summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, testedm)) %>%
+                       dplyr::mutate(dataset = dataset, filt = filt) %>%
+                       mutate(value = ifelse(measurement %in% c("vartpm", "avecount"), 
+                                             log2(value), value)) %>% 
+                       mutate(measurement = ifelse(measurement %in% c("vartpm", "avecount"), 
+                                                   paste0("log2_", measurement), measurement)) %>%
+                       dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
 
 ## Define "truth" for each method as the genes that are differentially 
 ## expressed with the largest sample size
@@ -114,7 +138,7 @@ rownames(truth) <- truth$gene
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
 pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
-summary_data <- list()
+#summary_data <- list()
 summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = summary_data)
 summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
 summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
