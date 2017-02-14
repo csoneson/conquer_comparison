@@ -39,6 +39,25 @@ summary_data_list <- lapply(datasets, function(ds) {
   readRDS(paste0("figures/summary_data/", ds, exts, "_summary_data.rds"))
 })
 
+pdf(paste0("figures/summary_crossds/summary_fracNA", exts, ".pdf"), width = 10, height = 7)
+tmp_data <- lapply(summary_data_list, function(L) {
+  L$all_data %>% filter(measurement == "fraczero") %>%
+    dplyr::group_by(dataset, method, ncells, repl) %>%
+    dplyr::summarize(fracNA = length(intersect(which(is.na(padj)), 
+                                               which(tested == TRUE)))/length(which(tested == TRUE)))
+})
+tmp_data <- do.call(rbind, tmp_data) %>% ungroup() %>% 
+  dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells))))))
+
+print(ggplot(tmp_data, aes(x = method, y = fracNA, color = method, shape = ncells)) + 
+        geom_point(size = 2) + 
+        theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
+        scale_color_manual(values = cols, name = "") + 
+        facet_wrap(~dataset) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+
+dev.off()
+
 pdf(paste0("figures/summary_crossds/summary_pca", exts, ".pdf"), width = 10, height = 7)
 
 ## PCA of significant gene characteristics

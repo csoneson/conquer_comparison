@@ -38,9 +38,10 @@ for (tp in c("", "mock")) {
   cobra <- NULL
   timings <- list()
   for (rf in resfiles) {
+    print(rf)
     rf <- readRDS(rf)
     for (nm in names(rf)) {
-      print(names(rf[[nm]]))
+      print(paste0(nm, ":", paste(names(rf[[nm]]), collapse = ", ")))
       timings[[nm]] <- rf[[nm]]$timing
       df <- rf[[nm]]$df
       if ("pval" %in% colnames(df)) {
@@ -67,5 +68,15 @@ for (tp in c("", "mock")) {
 }
 
 pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
-compare_orig_mock(cobras, colvec = cols)
+summary_data <- compare_orig_mock(cobras, colvec = cols, summary_data = list())
 dev.off()
+
+summary_data$spearman$dataset <- dataset
+summary_data$spearman$filt <- filt
+summary_data$jaccard$dataset <- dataset
+summary_data$jaccard$filt <- filt
+
+saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts,
+                                    "_summary_data_orig_vs_mock.rds"))
+
+sessionInfo()

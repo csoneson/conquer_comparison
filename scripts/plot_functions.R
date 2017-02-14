@@ -423,6 +423,8 @@ compare_orig_mock <- function(cobras, colvec, summary_data = list()) {
   })
   spm <- do.call(rbind, spearmans)
   
+  summary_data$spearman <- spm
+  
   for (nbrsamples in unique(intersect(subset(spm, tp == "original")$nbr_samples1,
                                       subset(spm, tp == "mock")$nbr_samples1))) {
     print(spm %>% dplyr::filter(nbr_samples1 == nbrsamples & nbr_samples2 == nbrsamples) %>%
@@ -469,6 +471,8 @@ compare_orig_mock <- function(cobras, colvec, summary_data = list()) {
         dplyr::mutate(tp = replace(tp, tp == "tp_", "original"))
     })
     jaccm <- do.call(rbind, jaccards)
+    
+    summary_data[[paste0("jaccard_adjp", adjpthr)]] <- jaccm
     
     for (nbrsamples in unique(intersect(subset(jaccm, tp == "original")$nbr_samples1,
                                         subset(jaccm, tp == "mock")$nbr_samples1))) {
