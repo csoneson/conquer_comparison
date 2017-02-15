@@ -44,6 +44,7 @@ imposed_condition <- subsets$out_condition
 sizes <- names(keep_samples)
 char_gene <- list()
 char_cells <- list()
+char_ds <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
@@ -100,8 +101,16 @@ for (sz in sizes) {
     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
                                                      ".", sz, ".", i)
     char_cells[[paste0(sz, ".", i)]] <- df3
+    
+    char_ds[[paste0(sz, ".", i)]] <- c(n_genes = nrow(L$count))
   }
 }
+
+char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w$n_genes),
+                        stringsAsFactors = FALSE)
+print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes)) + geom_bar(stat = "identity") + 
+        theme_bw() + xlab("Data set") + ylab("Number of genes"))
+
 char_gene <- Reduce(function(...) merge(..., by = "gene", all = TRUE), char_gene)
 char_gene_m <- reshape2::melt(char_gene) %>% 
   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%

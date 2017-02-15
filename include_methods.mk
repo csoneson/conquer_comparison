@@ -4,8 +4,11 @@ space := $(empty) $(empty)
 
 ## All data sets
 DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 UsoskinGSE59739 GSE60749-GPL13112 GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock
+DSc := $(subst $(space),$(comma),$(DS))
 ## Data sets for which we have both original and mock results (to compare consistency)
-DSb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112
+Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112
+Dsbc := $(subst $(space),$(comma),$(Dsb))
+
 ## Data sets to include in summary of characteristics (only mock)
 Dss := GSE74596mock GSE45719mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock
 Dssc := $(subst $(space),$(comma),$(Dss))

@@ -3,6 +3,18 @@ for (i in 1:length(args)) {
   eval(parse(text = args[[i]]))
 }
 
+suppressPackageStartupMessages(library(iCOBRA))
+suppressPackageStartupMessages(library(rjson))
+suppressPackageStartupMessages(library(SummarizedExperiment))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+
+get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
+get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
+get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
+
 demethods <- strsplit(demethods, ",")[[1]]
 
 print(demethods)
@@ -10,24 +22,11 @@ print(dataset)
 print(config_file)
 print(filt)
 
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_functions.R")
-suppressPackageStartupMessages(library(iCOBRA))
-
-cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
-          "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
-          "#882E72", "#F7EE55")
 if (filt == "") { 
   exts <- filt
 } else {
   exts <- paste0("_", filt)
 }
-names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
-                        "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
-                        "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
-                        "DESeq2nofilt", "Seuratnofilt", "NODESnofilt"), exts)
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
@@ -60,9 +59,6 @@ for (rf in resfiles) {
 }
 
 cobra <- calculate_adjp(cobra)
-
-# pval(cobra)[is.na(pval(cobra))] <- 1
-# padj(cobra)[is.na(padj(cobra))] <- 1
 
 ## Add gene characteristics to the COBRA object
 config <- fromJSON(file = config_file)
@@ -137,25 +133,6 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
-#summary_data <- list()
-summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_results(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_ks(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_truefpr(cobra, colvec = cols, summary_data = summary_data)
-summary_data <- plot_timing(timings, colvec = cols, summary_data = summary_data)
-dev.off()
-
-## Save summary data
-summary_data$stats_charac$dataset <- dataset
-summary_data$stats_charac$filt <- filt
-summary_data$fracpbelow0.05$dataset <- dataset
-summary_data$fracpbelow0.05$filt <- filt
-summary_data$timing$dataset <- dataset
-summary_data$timing$filt <- filt
-
-saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts, "_summary_data.rds"))
-
-sessionInfo()
+saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, ".rds"))
+saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
+saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))

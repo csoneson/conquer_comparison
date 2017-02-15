@@ -3,36 +3,20 @@ for (i in 1:length(args)) {
   eval(parse(text = args[[i]]))
 }
 
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(tidyr))
-suppressPackageStartupMessages(library(ggplot2))
-suppressPackageStartupMessages(library(reshape2))
-suppressPackageStartupMessages(library(pheatmap))
-suppressPackageStartupMessages(library(ggrepel))
-suppressPackageStartupMessages(library(ggbiplot))
-suppressPackageStartupMessages(library(RColorBrewer))
-
 datasets <- strsplit(datasets, ",")[[1]]
 names(datasets) <- datasets
 
 print(datasets)
 print(filt)
 
-cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
-          "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
-          "#882E72", "#F7EE55")
+source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+
 if (filt == "") { 
   exts <- filt
 } else {
   exts <- paste0("_", filt)
 }
-names(cols) <- paste0(c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
-                        "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
-                        "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
-                        "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
-                        "DESeq2nofilt", "Seuratnofilt", "NODESnofilt"), exts)
+names(cols) <- paste0(names(cols), exts)
 
 
 summary_data_list <- lapply(datasets, function(ds) {
@@ -49,49 +33,54 @@ ttest <- function(x, y) {
   }, error = function(e) NA)
 }
 
+pdf(paste0("figures/summary_crossds/summary_orig_vs_mock", exts, ".pdf"), width = 10, height = 7)
+
 ## T-statistic of Spearman correlations and Jaccard coefficients between original and mock
-nbr_keep <- unique(intersect(subset(jaccm, tp == "original")$nbr_samples1,
-                             subset(jaccm, tp == "mock")$nbr_samples1))
-spearm %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
-  dplyr::filter(nbr_samples1 == nbr_samples2) %>%
-  dplyr::group_by(dataset, nbr_samples1, method1) %>% 
-  dplyr::summarize(tstat = ttest(tp, value)) %>%
-  ggplot(aes(x = method1, y = tstat, col = method1, shape = dataset)) + 
-  geom_boxplot(outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  theme_bw() + xlab("") + ylab("t-statistic, Spearman correlation (original - mock)") + 
-  scale_color_manual(values = cols, name = "") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+nbr_keep <- unique(intersect(subset(jaccm0.05, tp == "original")$nbr_samples1,
+                             subset(jaccm0.05, tp == "mock")$nbr_samples1))
+print(spearm %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
+        dplyr::filter(nbr_samples1 == nbr_samples2) %>%
+        dplyr::group_by(dataset, nbr_samples1, method1) %>% 
+        dplyr::summarize(tstat = ttest(tp, value)) %>% 
+        ggplot(aes(x = method1, y = tstat, col = method1)) + 
+        geom_boxplot(outlier.size = 0) +
+        geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
+        theme_bw() + xlab("") + ylab("t-statistic, Spearman correlation (original - mock)") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
 
-jaccm0.05 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
-  dplyr::filter(nbr_samples1 == nbr_samples2) %>%
-  dplyr::group_by(dataset, nbr_samples1, method1) %>% 
-  dplyr::summarize(tstat = ttest(tp, value)) %>%
-  ggplot(aes(x = method1, y = tstat, col = method1, shape = dataset)) + 
-  geom_boxplot(outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.05 (original - mock)") + 
-  scale_color_manual(values = cols, name = "") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+print(jaccm0.05 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
+        dplyr::filter(nbr_samples1 == nbr_samples2) %>%
+        dplyr::group_by(dataset, nbr_samples1, method1) %>% 
+        dplyr::summarize(tstat = ttest(tp, value)) %>%
+        ggplot(aes(x = method1, y = tstat, col = method1)) + 
+        geom_boxplot(outlier.size = 0) +
+        geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
+        theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.05 (original - mock)") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+      
+print(jaccm0.1 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
+        dplyr::filter(nbr_samples1 == nbr_samples2) %>%
+        dplyr::group_by(dataset, nbr_samples1, method1) %>% 
+        dplyr::summarize(tstat = ttest(tp, value)) %>%
+        ggplot(aes(x = method1, y = tstat, col = method1)) + 
+        geom_boxplot(outlier.size = 0) +
+        geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
+        theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.1 (original - mock)") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
 
-jaccm0.1 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
-  dplyr::filter(nbr_samples1 == nbr_samples2) %>%
-  dplyr::group_by(dataset, nbr_samples1, method1) %>% 
-  dplyr::summarize(tstat = ttest(tp, value)) %>%
-  ggplot(aes(x = method1, y = tstat, col = method1, shape = dataset)) + 
-  geom_boxplot(outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.1 (original - mock)") + 
-  scale_color_manual(values = cols, name = "") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+print(jaccm0.2 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
+        dplyr::filter(nbr_samples1 == nbr_samples2) %>%
+        dplyr::group_by(dataset, nbr_samples1, method1) %>% 
+        dplyr::summarize(tstat = ttest(tp, value)) %>%
+        ggplot(aes(x = method1, y = tstat, col = method1)) + 
+        geom_boxplot(outlier.size = 0) +
+        geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
+        theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.2 (original - mock)") + 
+        scale_color_manual(values = cols, name = "") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
 
-jaccm0.2 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% nbr_keep) %>%
-  dplyr::filter(nbr_samples1 == nbr_samples2) %>%
-  dplyr::group_by(dataset, nbr_samples1, method1) %>% 
-  dplyr::summarize(tstat = ttest(tp, value)) %>%
-  ggplot(aes(x = method1, y = tstat, col = method1, shape = dataset)) + 
-  geom_boxplot(outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2)) +
-  theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.2 (original - mock)") + 
-  scale_color_manual(values = cols, name = "") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+dev.off()
+

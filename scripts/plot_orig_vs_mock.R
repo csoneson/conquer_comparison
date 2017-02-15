@@ -68,13 +68,17 @@ for (tp in c("", "mock")) {
 }
 
 pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
-summary_data <- compare_orig_mock(cobras, colvec = cols, summary_data = list())
+summary_data <- plot_compare_orig_mock(cobras, colvec = cols, summary_data = list())
 dev.off()
 
 summary_data$spearman$dataset <- dataset
 summary_data$spearman$filt <- filt
-summary_data$jaccard$dataset <- dataset
-summary_data$jaccard$filt <- filt
+summary_data$jaccard_adjp0.05$dataset <- dataset
+summary_data$jaccard_adjp0.05$filt <- filt
+summary_data$jaccard_adjp0.1$dataset <- dataset
+summary_data$jaccard_adjp0.1$filt <- filt
+summary_data$jaccard_adjp0.2$dataset <- dataset
+summary_data$jaccard_adjp0.2$filt <- filt
 
 saveRDS(summary_data, file = paste0("figures/summary_data/", dataset, exts,
                                     "_summary_data_orig_vs_mock.rds"))

@@ -43,6 +43,8 @@ Setting LC_CTYPE failed, using "C"
 [1] "TPM_1_25p"
 > 
 > source("/home/Shared/data/seq/conquer/comparison/scripts/plot_functions.R")
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
 > suppressPackageStartupMessages(library(iCOBRA))
 > 
 > cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
@@ -1987,6 +1989,7 @@ Setting LC_CTYPE failed, using "C"
 > 
 > sizes <- names(keep_samples)
 > truth <- list()
+> tested <- list()
 > for (sz in sizes) {
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
@@ -2005,6 +2008,11 @@ Setting LC_CTYPE failed, using "C"
 +     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
 +                                                      ".", sz, ".", i)
 +     truth[[paste0(sz, ".", i)]] <- df2
++     
++     df3 <- data.frame(gene = df2$gene, tested = TRUE)
++     colnames(df3)[colnames(df3) != "gene"] <- paste0(colnames(df3)[colnames(df3) != "gene"],
++                                                      ".", sz, ".", i)
++     tested[[paste0(sz, ".", i)]] <- df3
 +   }
 + }
 47.1
@@ -2024,6 +2032,30 @@ Setting LC_CTYPE failed, using "C"
 6.4
 6.5
 > truth <- Reduce(function(...) merge(..., by = "gene", all = TRUE), truth)
+> tested <- Reduce(function(...) merge(..., by = "gene", all = TRUE), tested)
+> 
+> padjm <- reshape2::melt(as.matrix(padj(cobra)), value.name = "padj",
++                         varnames = c("gene", "method")) %>%
++   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
+> truthm <- reshape2::melt(truth) %>% 
++   tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.")
+Using gene as id variables
+> testedm <- reshape2::melt(tested, id.vars = "gene") %>%
++   tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.") %>%
++   dplyr::rename(tested = value) %>%
++   dplyr::select(-measurement)
+> summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, testedm)) %>%
++                        dplyr::mutate(dataset = dataset, filt = filt) %>%
++                        mutate(value = ifelse(measurement %in% c("vartpm", "avecount"), 
++                                              log2(value), value)) %>% 
++                        mutate(measurement = ifelse(measurement %in% c("vartpm", "avecount"), 
++                                                    paste0("log2_", measurement), measurement)) %>%
++                        dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
+Joining, by = c("gene", "ncells", "repl")
+Joining, by = c("gene", "ncells", "repl")
+Warning message:
+In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
+  joining factors with different levels, coercing to character vector
 > 
 > ## Define "truth" for each method as the genes that are differentially 
 > ## expressed with the largest sample size
@@ -2042,7 +2074,7 @@ Setting LC_CTYPE failed, using "C"
 29107 new features and 135 new annotations added to truth table
 > 
 > pdf(paste0("figures/comparison/", dataset, exts, ".pdf"), width = 14, height = 9)
-> summary_data <- list()
+> #summary_data <- list()
 > summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = summary_data)
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
@@ -2169,32 +2201,32 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] lazyeval_0.2.0             UpSetR_1.3.1              
+ [1] lazyeval_0.2.0             UpSetR_1.3.2              
  [3] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
- [5] GenomicRanges_1.26.1       GenomeInfoDb_1.10.1       
- [7] IRanges_2.8.1              S4Vectors_0.12.0          
+ [5] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
+ [7] IRanges_2.8.1              S4Vectors_0.12.1          
  [9] Biobase_2.34.0             BiocGenerics_0.20.0       
 [11] rjson_0.2.15               reshape2_1.4.2            
-[13] iCOBRA_1.2.0               tidyr_0.6.0               
-[15] dplyr_0.5.0                ggrepel_0.6.3             
+[13] iCOBRA_1.2.0               tidyr_0.6.1               
+[15] dplyr_0.5.0                ggrepel_0.6.5             
 [17] ggplot2_2.2.1              pheatmap_1.0.8            
 
 loaded via a namespace (and not attached):
- [1] gtools_3.5.0         lattice_0.20-34      colorspace_1.3-1    
+ [1] gtools_3.5.0         lattice_0.20-34      colorspace_1.3-2    
  [4] htmltools_0.3.5      DBI_0.5-1            RColorBrewer_1.1-2  
  [7] plyr_1.8.4           stringr_1.1.0        zlibbioc_1.20.0     
 [10] munsell_0.4.3        gtable_0.2.0         caTools_1.17.1      
 [13] htmlwidgets_0.8      labeling_0.3         httpuv_1.3.3        
-[16] Rcpp_0.12.8          KernSmooth_2.23-15   xtable_1.8-2        
+[16] Rcpp_0.12.9          KernSmooth_2.23-15   xtable_1.8-2        
 [19] ROCR_1.0-7           scales_0.4.1         DT_0.2              
 [22] gdata_2.17.0         limma_3.30.8         XVector_0.14.0      
 [25] mime_0.5             gplots_3.0.1         gridExtra_2.2.1     
-[28] digest_0.6.11        stringi_1.1.2        shiny_0.14.2        
+[28] digest_0.6.12        stringi_1.1.2        shiny_1.0.0         
 [31] grid_3.3.1           tools_3.3.1          bitops_1.0-6        
-[34] magrittr_1.5         tibble_1.2           Matrix_1.2-7.1      
-[37] shinyBS_0.61         shinydashboard_0.5.3 assertthat_0.1      
-[40] R6_2.2.0            
+[34] magrittr_1.5         RCurl_1.95-4.8       tibble_1.2          
+[37] Matrix_1.2-8         shinyBS_0.61         shinydashboard_0.5.3
+[40] assertthat_0.1       R6_2.2.0            
 > 
 > proc.time()
     user   system  elapsed 
-7138.307  191.664 7352.047 
+8009.746  286.544 8343.542 
