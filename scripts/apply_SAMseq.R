@@ -10,7 +10,7 @@ run_SAMseq <- function(L) {
                           nperms = 100, nresamp = 20, fdr.output = 1)
     SAMseq.result.table <- rbind(SAMseq.test$siggenes.table$genes.up,
                                  SAMseq.test$siggenes.table$genes.lo)
-    SAMseq.FDR <- rep(1, nrow(L$count))
+    SAMseq.FDR <- rep(NA, nrow(L$count))
     SAMseq.FDR[match(SAMseq.result.table[, 1], rownames(L$count))] <- 
       as.numeric(SAMseq.result.table[, 5])/100
   })

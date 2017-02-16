@@ -95,3 +95,6 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
 > summary_data <- plot_compare_orig_mock(cobras, colvec = cols, summary_data = list())
+
+There were 50 or more warnings (use warnings() to see the first 50)
+Execution halted

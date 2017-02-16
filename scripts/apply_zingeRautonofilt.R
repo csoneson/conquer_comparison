@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(genefilter)) #for filtering functions
 
-run_zingeRauto <- function(L) {
+run_zingeRautonofilt <- function(L) {
   message("zingeRauto")
   session_info <- sessionInfo()
   timing <- system.time({
@@ -19,15 +19,12 @@ run_zingeRauto <- function(L) {
     lrt <- glmLRTOld(fit, test = "F")
     ## independent filtering from DESeq2
     pval <- lrt$table$PValue
-    baseMean <- unname(rowMeans(sweep(dge$counts, 2, dge$samples$norm.factors, FUN = "*")))
-    hlp <- pvalueAdjustment_kvdb(baseMean = baseMean, pValue = pval)
-    padj <- hlp$padj
     tt <- topTags(lrt, n = Inf)    
   })
   
   plotBCV(dge)
   hist(tt$table$PValue, 50)
-  hist(padj, 50)
+  hist(tt$table$FDR, 50)
   limma::plotMDS(dge, col = as.numeric(as.factor(L$condt)), pch = 19)
   plotSmear(lrt)
   #weights for zero counts to check if zero-inflation was identified
@@ -36,9 +33,8 @@ run_zingeRauto <- function(L) {
   
   list(session_info = session_info,
        timing = timing,
-       tt = tt, #this does however not contain the good adjusted p-values, these are in padj
+       tt = tt, 
        df = data.frame(pval = lrt$table$PValue,
-                       padj = padj,
                        row.names = rownames(lrt)))
 }
 
@@ -162,7 +158,7 @@ zeroWeightsLibSizeDispFast <- function(counts, design, initialWeightAt0 = TRUE,
   #	Effective residual degrees of freedom after adjusting for exact zeros
   #	Gordon Smyth and Aaron Lun
   #	Created 6 Jan 2014.  Last modified 2 Sep 2014
-
+  
   nlib <- ncol(zero)
   ncoef <- ncol(design)
   nzero <- as.integer(rowSums(zero))
@@ -348,7 +344,7 @@ glmLRTOld <- function(glmfit, coef = ncol(glmfit$design), contrast = NULL, test 
   #	Tagwise likelihood ratio tests for DGEGLM
   #	Gordon Smyth, Davis McCarthy and Yunshun Chen.
   #	Created 1 July 2010.  Last modified 22 Nov 2013.
-
+  
   #	Check glmfit
   if (!is(glmfit, "DGEGLM")) {
     if (is(glmfit, "DGEList") && is(coef, "DGEGLM")) {
@@ -454,56 +450,5 @@ glmLRTOld <- function(glmfit, coef = ncol(glmfit$design), contrast = NULL, test 
   glmfit$df.test <- df.test
   new("DGELRT", unclass(glmfit))
 }
-
-
-### independent filtering from DESeq2, slightly adapted
-pvalueAdjustment_kvdb <- function(baseMean, filter, pValue,
-                                  theta, alpha = 0.05, pAdjustMethod = "BH") {
-  # perform independent filtering
-  if (missing(filter)) {
-    filter <- baseMean
-  }
-  if (missing(theta)) {
-    lowerQuantile <- mean(filter == 0)
-    if (lowerQuantile < .95) upperQuantile <- .95 else upperQuantile <- 1
-    theta <- seq(lowerQuantile, upperQuantile, length = 50)
-  }
-  
-  # do filtering using genefilter
-  stopifnot(length(theta) > 1)
-  filtPadj <- filtered_p(filter = filter, test = pValue,
-                         theta = theta, method = pAdjustMethod) 
-  numRej  <- colSums(filtPadj < alpha, na.rm = TRUE)
-  # prevent over-aggressive filtering when all genes are null,
-  # by requiring the max number of rejections is above a fitted curve.
-  # If the max number of rejection is not greater than 10, then don't
-  # perform independent filtering at all.
-  lo.fit <- lowess(numRej ~ theta, f = 1/5)
-  if (max(numRej) <= 10) {
-    j <- 1
-  } else { 
-    residual <- if (all(numRej == 0)) {
-      0
-    } else {
-      numRej[numRej > 0] - lo.fit$y[numRej > 0]
-    }
-    thresh <- max(lo.fit$y) - sqrt(mean(residual^2))
-    j <- if (any(numRej > thresh)) {
-      which(numRej > thresh)[1]
-    } else {
-      1  
-    }
-  }
-  padj <- filtPadj[, j, drop = TRUE]
-  cutoffs <- quantile(filter, theta)
-  filterThreshold <- cutoffs[j]
-  filterNumRej <- data.frame(theta = theta, numRej = numRej)
-  filterTheta <- theta[j]
-  
-  return(list(padj = padj, filterThreshold = filterThreshold, 
-              filterTheta = filterTheta, filterNumRej = filterNumRej, 
-              lo.fit = lo.fit, alpha = alpha))
-}
-
 
 

@@ -15,7 +15,7 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
            error = function(e) NULL)
 }
 
-plot_results <- function(cobra, colvec, summary_data = list()) {
+plot_consistency <- function(cobra, colvec, summary_data = list()) {
   cobratmp <- cobra
   pval(cobratmp)[is.na(pval(cobratmp))] <- 1
   padj(cobratmp)[is.na(padj(cobratmp))] <- 1

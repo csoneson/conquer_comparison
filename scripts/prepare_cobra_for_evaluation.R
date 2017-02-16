@@ -34,8 +34,8 @@ if (filt == "") {
 file.exists(resfiles)
 cobra <- NULL
 timings <- list()
-for (rf in resfiles) {
-  rf <- readRDS(rf)
+for (rfn in resfiles) {
+  rf <- readRDS(rfn)
   for (nm in names(rf)) {
     print(names(rf[[nm]]))
     timings[[nm]] <- rf[[nm]]$timing

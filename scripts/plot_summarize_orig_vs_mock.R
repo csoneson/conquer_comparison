@@ -20,7 +20,7 @@ names(cols) <- paste0(names(cols), exts)
 
 
 summary_data_list <- lapply(datasets, function(ds) {
-  readRDS(paste0("figures/summary_data/", ds, exts, "_summary_data_orig_vs_mock.rds"))
+  readRDS(paste0("figures/orig_vs_mock/", ds, exts, "v_summary_data.rds"))
 })
 jaccm0.05 <- do.call(rbind, lapply(summary_data_list, function(x) x$jaccard_adjp0.05))
 jaccm0.1 <- do.call(rbind, lapply(summary_data_list, function(x) x$jaccard_adjp0.1))

@@ -5,7 +5,7 @@ R := R_LIBS=/home/Shared/Rlib/release-3.4-lib/ /usr/local/R/R-3.3.1/bin/R CMD BA
 include include_methods.mk
 
 ## Plot types
-PLOTTYPE := ks timing truefpr results_characterization results results_relativetruth results_relativetruth_all
+PLOTTYPE := ks timing truefpr results_characterization consistency results_relativetruth results_relativetruth_all
 SUMMARYTYPE := truefpr pca timing fracNA
 
 .PHONY: all
