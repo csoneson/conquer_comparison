@@ -70,6 +70,7 @@ package 'ggplot2' was built under R version 3.3.2
 > sizes <- names(keep_samples)
 > char_gene <- list()
 > char_cells <- list()
+> char_ds <- list()
 > for (sz in sizes) {
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
@@ -126,6 +127,8 @@ package 'ggplot2' was built under R version 3.3.2
 +     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
 +                                                      ".", sz, ".", i)
 +     char_cells[[paste0(sz, ".", i)]] <- df3
++     
++     char_ds[[paste0(sz, ".", i)]] <- c(n_genes = nrow(L$count))
 +   }
 + }
 26.1
@@ -140,6 +143,19 @@ package 'ggplot2' was built under R version 3.3.2
 6.4
 6.5
 There were 44 warnings (use warnings() to see them)
+> 
+> char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w["n_genes"]),
++                         stringsAsFactors = FALSE) %>%
++   tidyr::separate(ds, into = c("n_cells", "repl"), sep = "\\.", remove = FALSE) %>%
++   dplyr::mutate(n_cells = as.numeric(n_cells)) %>%
++   dplyr::mutate(repl = as.numeric(repl)) %>%
++   dplyr::arrange(n_cells, repl) %>%
++   dplyr::mutate(ds = factor(ds, levels = ds)) %>%
++   dplyr::mutate(n_cells = factor(n_cells, levels = unique(n_cells)))
+> print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
++         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
++         scale_fill_discrete(name = "Number of cells"))
+> 
 > char_gene <- Reduce(function(...) merge(..., by = "gene", all = TRUE), char_gene)
 > char_gene_m <- reshape2::melt(char_gene) %>% 
 +   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
@@ -265,4 +281,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-232.268 422.085 690.110 
+260.884 403.108 681.702 

@@ -15,31 +15,6 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
            error = function(e) NULL)
 }
 
-#' Help function to plot FPR and TPR for a subset of methods (defined either by
-#' method or sample size)
-#' 
-plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
-  cobraplot <- 
-    prepare_data_for_plot(cobrares, keepmethods = keepmethods, colorscheme = colvec)
-  
-  ## Modify method column so that all replicates with the same number of samples have the same name
-  tpr(cobraplot) <- tpr(cobraplot) %>% 
-    dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-  fpr(cobraplot) <- fpr(cobraplot) %>% 
-    dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
-  if (type == "method") {
-    tmpvec <- colvec[1:length(unique(tpr(cobraplot)$method))]
-    names(tmpvec) <- unique(tpr(cobraplot)$method)
-  } else if (type == "number") {
-    tmpvec <- colvec[sapply(strsplit(unique(tpr(cobraplot)$method), "\\."), .subset, 1)]
-    names(tmpvec) <- paste0(names(tmpvec), ".", nsamp)
-  }
-  plotcolors(cobraplot) <- tmpvec
-  print(plot_fpr(cobraplot, xaxisrange = c(0, min(1.1*max(fpr(cobrares)$FPR), 1))) + 
-          ggtitle("Truth defined by each method"))
-  print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
-}
-
 plot_results <- function(cobra, colvec, summary_data = list()) {
   cobratmp <- cobra
   pval(cobratmp)[is.na(pval(cobratmp))] <- 1

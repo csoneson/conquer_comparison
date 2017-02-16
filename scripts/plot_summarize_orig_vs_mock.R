@@ -84,3 +84,7 @@ print(jaccm0.2 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% 
 
 dev.off()
 
+saveRDS(NULL, paste0("figures/summary_crossds/summary_orig_vs_mock", exts, ".rds"))
+
+sessionInfo()
+

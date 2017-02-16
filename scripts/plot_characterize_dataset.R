@@ -106,10 +106,17 @@ for (sz in sizes) {
   }
 }
 
-char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w$n_genes),
-                        stringsAsFactors = FALSE)
-print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes)) + geom_bar(stat = "identity") + 
-        theme_bw() + xlab("Data set") + ylab("Number of genes"))
+char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w["n_genes"]),
+                        stringsAsFactors = FALSE) %>%
+  tidyr::separate(ds, into = c("n_cells", "repl"), sep = "\\.", remove = FALSE) %>%
+  dplyr::mutate(n_cells = as.numeric(n_cells)) %>%
+  dplyr::mutate(repl = as.numeric(repl)) %>%
+  dplyr::arrange(n_cells, repl) %>%
+  dplyr::mutate(ds = factor(ds, levels = ds)) %>%
+  dplyr::mutate(n_cells = factor(n_cells, levels = unique(n_cells)))
+print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
+        theme_bw() + xlab("Data set") + ylab("Number of genes") + 
+        scale_fill_discrete(name = "Number of cells"))
 
 char_gene <- Reduce(function(...) merge(..., by = "gene", all = TRUE), char_gene)
 char_gene_m <- reshape2::melt(char_gene) %>% 

@@ -1,0 +1,97 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> demethods <- strsplit(demethods, ",")[[1]]
+> 
+> print(demethods)
+ [1] "edgeRLRT"          "SAMseq"            "Wilcoxon"         
+ [4] "zingeR"            "edgeRQLF"          "NODES"            
+ [7] "NODESnofilt"       "BPSC"              "DESeq2"           
+[10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
+[13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
+[16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
+[19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
+[22] "DESeq2census"      "edgeRLRTcensus"   
+> print(dataset)
+[1] "GSE45719"
+> print(filt)
+[1] "TPM_1_25p"
+> 
+> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
+> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_compare_orig_mock.R")
+> 
+> cobras <- list()
+> 
+> if (filt == "") { 
++   exts <- filt
++ } else {
++   exts <- paste0("_", filt)
++ }
+> names(cols) <- paste0(names(cols), exts)
+> 
+> for (tp in c("", "mock")) {
++   cobras[[paste0("tp_", tp)]] <- readRDS(paste0("figures/cobra_data/", dataset, tp, exts, "_cobra.rds"))
++   # 
++   # ## Create iCOBRA object from the result files for the different methods
++   # (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
++   #                     dataset, tp, "_", demethods, exts, ".rds"))
++   # file.exists(resfiles)
++   # cobra <- NULL
++   # timings <- list()
++   # for (rf in resfiles) {
++   #   print(rf)
++   #   rf <- readRDS(rf)
++   #   for (nm in names(rf)) {
++   #     print(paste0(nm, ":", paste(names(rf[[nm]]), collapse = ", ")))
++   #     timings[[nm]] <- rf[[nm]]$timing
++   #     df <- rf[[nm]]$df
++   #     if ("pval" %in% colnames(df)) {
++   #       cobra <- COBRAData(pval = setNames(data.frame(mt = df$pval,
++   #                                                     row.names = rownames(df)), nm),
++   #                          object_to_extend = cobra)
++   #     }
++   #     if ("padj" %in% colnames(df)) {
++   #       cobra <- COBRAData(padj = setNames(data.frame(mt = df$padj,
++   #                                                     row.names = rownames(df)), nm),
++   #                          object_to_extend = cobra)
++   #     }
++   #     if ("score" %in% colnames(df)) {
++   #       cobra <- COBRAData(score = setNames(data.frame(mt = df$score,
++   #                                                      row.names = rownames(df)), nm),
++   #                          object_to_extend = cobra)
++   #     }
++   #   }
++   # }
++   # 
++   # cobra <- calculate_adjp(cobra)
++   # 
++   # cobras[[paste0("tp_", tp)]] <- cobra
++ }
+> 
+> pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
+> summary_data <- plot_compare_orig_mock(cobras, colvec = cols, summary_data = list())

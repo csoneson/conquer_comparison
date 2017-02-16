@@ -132,7 +132,7 @@ names(cols) <- paste0(names(cols), exts)
 # 
 # cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, ".rds"))
+cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 
 pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 14, height = 9)
