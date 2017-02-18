@@ -20,7 +20,10 @@ $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FI
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach X,$(Dsb),$X))) \
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(FILT),$(foreach X,$(Dsb),$X_$Y)))) \
 figures/summary_crossds/summary_orig_vs_mock.rds \
-$(addsuffix _orig_vs_mock.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$Y)))
+$(addsuffix .rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y)))
+
+diffexp: $(addsuffix .rds, $(addprefix results/, $(foreach k,$(MT),$(foreach X,$(DS),$X_$k)))) \
+$(addsuffix .rds, $(addprefix results/, $(foreach Y,$(FILT),$(foreach k,$(MT),$(foreach X,$(DS),$X_$k_$Y)))))
 
 ## Make sure no intermediate files are deleted
 .SECONDARY:
@@ -128,7 +131,7 @@ figures/summary_crossds/summary_timing.rds: $(addsuffix _summary_data.rds, $(add
 scripts/plot_summarize_datasets.R scripts/summarize_timing.R
 	$R "--args datasets='${Dssc}' filt='' summarytype='timing'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing.Rout
 
-figures/summary_crossds/summary_fracNA.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y))) \
+figures/summary_crossds/summary_fracNA.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
 	$R "--args datasets='${Dssc}' filt='' summarytype='fracNA'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA.Rout
 
@@ -154,7 +157,7 @@ endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_timing,$(k))))
 
 define summaryrule_fracna
-figures/summary_crossds/summary_fracNA_$(1).rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y_$(1)))) \
+figures/summary_crossds/summary_fracNA_$(1).rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y_$(1)))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
 	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='fracNA' summarytype='fracNA'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_$(1).Rout
 endef
@@ -167,7 +170,7 @@ scripts/plot_summarize_orig_vs_mock.R
 	$R "--args datasets='${Dsbc}' filt=''" scripts/plot_summarize_orig_vs_mock.R Rout/plot_summarize_orig_vs_mock.Rout
 
 define plotrule_summary_origvsmock
-figures/summary_crossds/summary_$(1)_orig_vs_mock.rds: $(addsuffix _$(1)_orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(Dsb),$Y))) \
+figures/summary_crossds/summary_orig_vs_mock_$(1).rds: $(addsuffix _$(1)_orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(Dsb),$Y))) \
 scripts/plot_summarize_orig_vs_mock.R
 	$R "--args datasets='${Dsbc}' filt='$(1)'" scripts/plot_summarize_orig_vs_mock.R Rout/plot_summarize_$(1)_orig_vs_mock.Rout
 endef

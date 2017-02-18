@@ -1,7 +1,7 @@
 summarize_timing <- function(figdir, datasets, exts) {
   
   ## ------------------------------- Timing ----------------------------------- ##
-  pdf(paste0(figdir, "/relative_timing", exts, ".pdf"), width = 10, height = 7)
+  pdf(paste0(figdir, "/summary_timing", exts, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/timing/", ds, exts, 
                    "_timing_summary_data.rds"))

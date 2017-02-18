@@ -26,9 +26,9 @@ cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
           "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
           "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
-          "#882E72", "#F7EE55")
+          "#882E72", "#F7EE55", "forestgreen")
 names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                  "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                  "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
                  "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
-                 "DESeq2nofilt", "Seuratnofilt", "NODESnofilt")
+                 "DESeq2nofilt", "Seuratnofilt", "NODESnofilt", "zingeRautonofilt")

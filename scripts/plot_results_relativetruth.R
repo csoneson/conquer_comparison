@@ -54,7 +54,7 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
   cobrarel <- COBRAData(padj = vals, truth = truth)
   
   cobrares <- calculate_performance(cobrarel, onlyshared = TRUE, 
-                                    aspects = c("tpr", "fpr", "fdrtprcurve", "roc"), 
+                                    aspects = c("tpr", "fpr", "fdrtprcurve"), 
                                     binary_truth = "status", 
                                     thrs = 0.05)
   
@@ -69,7 +69,6 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
   #     cobraplot <- prepare_data_for_plot(cobrares, keepmethods = km, colorscheme = c2[km])
   #     
   #     print(plot_fdrtprcurve(cobraplot, plottype = "curve") + ggtitle("Truth defined by each method"))
-  #     print(plot_roc(cobraplot) + ggtitle("Truth defined by each method"))
   #   }
   # }
   

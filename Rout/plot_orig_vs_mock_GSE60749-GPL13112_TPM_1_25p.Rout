@@ -34,7 +34,7 @@ Setting LC_CTYPE failed, using "C"
 [13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
 [16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
 [19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
-[22] "DESeq2census"      "edgeRLRTcensus"   
+[22] "DESeq2census"      "edgeRLRTcensus"    "zingeRautonofilt" 
 > print(dataset)
 [1] "GSE60749-GPL13112"
 > print(filt)
@@ -165,4 +165,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-2280.646   39.285 2327.670 
+2698.319  171.127 2880.762 

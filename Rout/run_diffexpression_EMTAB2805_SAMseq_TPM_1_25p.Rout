@@ -209,7 +209,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 4343
+Number of thresholds chosen (all possible thresholds) = 4327
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 48.1
@@ -317,7 +317,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3034
+Number of thresholds chosen (all possible thresholds) = 3121
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 48.2
@@ -425,7 +425,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3193
+Number of thresholds chosen (all possible thresholds) = 3076
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 48.3
@@ -533,7 +533,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3678
+Number of thresholds chosen (all possible thresholds) = 3403
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 48.4
@@ -641,7 +641,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3741
+Number of thresholds chosen (all possible thresholds) = 3642
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 48.5
@@ -749,7 +749,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 3090
+Number of thresholds chosen (all possible thresholds) = 2922
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.1
@@ -857,7 +857,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1271
+Number of thresholds chosen (all possible thresholds) = 1304
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.2
@@ -965,7 +965,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2222
+Number of thresholds chosen (all possible thresholds) = 2191
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.3
@@ -1073,7 +1073,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 2369
+Number of thresholds chosen (all possible thresholds) = 2416
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.4
@@ -1181,7 +1181,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1738
+Number of thresholds chosen (all possible thresholds) = 1731
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 24.5
@@ -1289,7 +1289,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 1629
+Number of thresholds chosen (all possible thresholds) = 1620
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.1
@@ -1397,7 +1397,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 553
+Number of thresholds chosen (all possible thresholds) = 564
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.2
@@ -1505,7 +1505,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 844
+Number of thresholds chosen (all possible thresholds) = 796
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.3
@@ -1613,7 +1613,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 604
+Number of thresholds chosen (all possible thresholds) = 646
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.4
@@ -1721,7 +1721,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 653
+Number of thresholds chosen (all possible thresholds) = 641
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.5
@@ -1829,7 +1829,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 812
+Number of thresholds chosen (all possible thresholds) = 801
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 Warning message:
@@ -1857,20 +1857,20 @@ attached base packages:
 other attached packages:
  [1] samr_2.0                   matrixStats_0.51.0        
  [3] impute_1.48.0              MultiAssayExperiment_1.0.0
- [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
- [7] GenomeInfoDb_1.10.1        IRanges_2.8.1             
- [9] S4Vectors_0.12.0           tidyr_0.6.0               
+ [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+ [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+ [9] S4Vectors_0.12.1           tidyr_0.6.1               
 [11] dplyr_0.5.0                survey_3.31-2             
-[13] survival_2.40-1            Matrix_1.2-7.1            
+[13] survival_2.40-1            Matrix_1.2-8              
 [15] GEOquery_2.40.0            Biobase_2.34.0            
 [17] BiocGenerics_0.20.0        tximport_1.2.0            
 [19] reshape2_1.4.2             rjson_0.2.15              
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
+ [1] Rcpp_0.12.9          plyr_1.8.4           XVector_0.14.0      
  [4] bitops_1.0-6         tools_3.3.1          zlibbioc_1.20.0     
- [7] digest_0.6.11        tibble_1.2           lattice_0.20-34     
-[10] shiny_0.14.2         DBI_0.5-1            httr_1.2.1          
+ [7] digest_0.6.12        tibble_1.2           lattice_0.20-34     
+[10] shiny_1.0.0          DBI_0.5-1            httr_1.2.1          
 [13] stringr_1.1.0        shinydashboard_0.5.3 R6_2.2.0            
 [16] XML_3.98-1.5         magrittr_1.5         htmltools_0.3.5     
 [19] splines_3.3.1        assertthat_0.1       xtable_1.8-2        
@@ -1879,4 +1879,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1249.804  171.120 1448.443 
+1119.723  281.882 1424.502 

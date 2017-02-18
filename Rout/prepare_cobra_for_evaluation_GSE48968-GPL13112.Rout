@@ -46,7 +46,7 @@ Setting LC_CTYPE failed, using "C"
 [13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
 [16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
 [19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
-[22] "DESeq2census"      "edgeRLRTcensus"   
+[22] "DESeq2census"      "edgeRLRTcensus"    "zingeRautonofilt" 
 > print(dataset)
 [1] "GSE48968-GPL13112"
 > print(config_file)
@@ -86,13 +86,14 @@ Setting LC_CTYPE failed, using "C"
 [21] "/home/Shared/data/seq/conquer/comparison/results/GSE48968-GPL13112_Seuratnofilt.rds"     
 [22] "/home/Shared/data/seq/conquer/comparison/results/GSE48968-GPL13112_DESeq2census.rds"     
 [23] "/home/Shared/data/seq/conquer/comparison/results/GSE48968-GPL13112_edgeRLRTcensus.rds"   
+[24] "/home/Shared/data/seq/conquer/comparison/results/GSE48968-GPL13112_zingeRautonofilt.rds" 
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 > cobra <- NULL
 > timings <- list()
-> for (rf in resfiles) {
-+   rf <- readRDS(rf)
+> for (rfn in resfiles) {
++   rf <- readRDS(rfn)
 +   for (nm in names(rf)) {
 +     print(names(rf[[nm]]))
 +     timings[[nm]] <- rf[[nm]]$timing
@@ -1914,6 +1915,54 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 > 
 > cobra <- calculate_adjp(cobra)
 > 
@@ -2011,12 +2060,12 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-30261 new features and 135 new annotations added to truth table
+30261 new features and 136 new annotations added to truth table
 > 
-> saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, ".rds"))
+> saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
     user   system  elapsed 
- 852.982  257.214 1161.263 
+ 868.529  348.838 1329.401 

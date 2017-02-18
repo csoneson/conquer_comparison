@@ -35,130 +35,15 @@ Setting LC_CTYPE failed, using "C"
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
 > source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/plot_", plottype, ".R"))
-> # 
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_results.R")
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_results_relativetruth.R")
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_results_relativetruth_all.R")
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_timing.R")
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_truefpr.R")
-> # # source("/home/Shared/data/seq/conquer/comparison/scripts/plot_results_characterization.R")
-> # 
+> 
 > if (filt == "") {
 +   exts <- filt
 + } else {
 +   exts <- paste0("_", filt)
 + }
 > names(cols) <- paste0(names(cols), exts)
-> # 
-> # ## Create iCOBRA object from the result files for the different methods
-> # (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
-> #                     dataset, "_", demethods, exts, ".rds"))
-> # file.exists(resfiles)
-> # cobra <- NULL
-> # timings <- list()
-> # for (rf in resfiles) {
-> #   rf <- readRDS(rf)
-> #   for (nm in names(rf)) {
-> #     print(names(rf[[nm]]))
-> #     timings[[nm]] <- rf[[nm]]$timing
-> #     df <- rf[[nm]]$df
-> #     if ("pval" %in% colnames(df)) {
-> #       cobra <- COBRAData(pval = setNames(data.frame(mt = df$pval,
-> #                                                     row.names = rownames(df)), nm),
-> #                          object_to_extend = cobra)
-> #     }
-> #     if ("padj" %in% colnames(df)) {
-> #       cobra <- COBRAData(padj = setNames(data.frame(mt = df$padj,
-> #                                                     row.names = rownames(df)), nm),
-> #                          object_to_extend = cobra)
-> #     }
-> #     if ("score" %in% colnames(df)) {
-> #       cobra <- COBRAData(score = setNames(data.frame(mt = df$score,
-> #                                                      row.names = rownames(df)), nm),
-> #                          object_to_extend = cobra)
-> #     }
-> #   }
-> # }
-> # 
-> # cobra <- calculate_adjp(cobra)
-> # 
-> # # pval(cobra)[is.na(pval(cobra))] <- 1
-> # # padj(cobra)[is.na(padj(cobra))] <- 1
-> # 
-> # ## Add gene characteristics to the COBRA object
-> # config <- fromJSON(file = config_file)
-> # mae <- readRDS(config$mae)
-> # groupid <- config$groupid
-> # mae <- clean_mae(mae = mae, groupid = groupid)
-> # 
-> # subsets <- readRDS(config$subfile)
-> # keep_samples <- subsets$keep_samples
-> # imposed_condition <- subsets$out_condition
-> # 
-> # sizes <- names(keep_samples)
-> # truth <- list()
-> # tested <- list()
-> # for (sz in sizes) {
-> #   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
-> #     message(sz, ".", i)
-> #     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-> #     avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
-> #     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
-> #     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
-> #                            fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
-> #                                              1, function(x) mean(x == 0)),
-> #                            fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
-> #                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
-> #     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
-> #     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
-> #     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-> #                   list(vartpm, fraczero, avecount, avetpm))
-> #     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
-> #                                                      ".", sz, ".", i)
-> #     truth[[paste0(sz, ".", i)]] <- df2
-> #     
-> #     df3 <- data.frame(gene = df2$gene, tested = TRUE)
-> #     colnames(df3)[colnames(df3) != "gene"] <- paste0(colnames(df3)[colnames(df3) != "gene"],
-> #                                                      ".", sz, ".", i)
-> #     tested[[paste0(sz, ".", i)]] <- df3
-> #   }
-> # }
-> # truth <- Reduce(function(...) merge(..., by = "gene", all = TRUE), truth)
-> # tested <- Reduce(function(...) merge(..., by = "gene", all = TRUE), tested)
-> # 
-> # padjm <- reshape2::melt(as.matrix(padj(cobra)), value.name = "padj",
-> #                         varnames = c("gene", "method")) %>%
-> #   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-> # truthm <- reshape2::melt(truth) %>% 
-> #   tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.")
-> # testedm <- reshape2::melt(tested, id.vars = "gene") %>%
-> #   tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.") %>%
-> #   dplyr::rename(tested = value) %>%
-> #   dplyr::select(-measurement)
-> # summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, testedm)) %>%
-> #                        dplyr::mutate(dataset = dataset, filt = filt) %>%
-> #                        mutate(value = ifelse(measurement %in% c("vartpm", "avecount"), 
-> #                                              log2(value), value)) %>% 
-> #                        mutate(measurement = ifelse(measurement %in% c("vartpm", "avecount"), 
-> #                                                    paste0("log2_", measurement), measurement)) %>%
-> #                        dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
-> # 
-> # ## Define "truth" for each method as the genes that are differentially 
-> # ## expressed with the largest sample size
-> # tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
-> #                      max(as.numeric(as.character(get_nsamples(colnames(padj(cobra))))))]
-> # colnames(tmp) <- paste0(get_method(colnames(tmp)), ".truth")
-> # tmp <- (tmp <= 0.05)
-> # mode(tmp) <- "numeric"
-> # tmp <- tmp[match(truth$gene, rownames(tmp)), ]
-> # tmp[is.na(tmp)] <- 0
-> # 
-> # truth <- merge(truth, tmp, by.x = "gene", by.y = 0, all = TRUE)
-> # rownames(truth) <- truth$gene
-> # 
-> # cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 > 
-> cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, ".rds"))
+> cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > 
 > pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 14, height = 9)
@@ -170,21 +55,14 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 22 will be used
+  too many colors supplied, only the first 23 will be used
 2: Removed 5 rows containing missing values (geom_point). 
 3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 87 random colors will be added
+  too few colors provided, 91 random colors will be added
 4: Removed 25 rows containing missing values (geom_point). 
 5: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 87 random colors will be added
+  too few colors provided, 91 random colors will be added
 6: Removed 25 rows containing missing values (geom_point). 
-> # summary_data <- plot_results_relativetruth(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_results_relativetruth_all(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_results_characterization(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_results(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_ks(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_truefpr(cobra, colvec = cols, summary_data = summary_data)
-> # summary_data <- plot_timing(timings, colvec = cols, summary_data = summary_data)
 > dev.off()
 null device 
           1 
@@ -194,13 +72,6 @@ null device
 +   L$filt <- filt
 +   L
 + })
-> # ## Save summary data
-> # summary_data$stats_charac$dataset <- dataset
-> # summary_data$stats_charac$filt <- filt
-> # summary_data$fracpbelow0.05$dataset <- dataset
-> # summary_data$fracpbelow0.05$filt <- filt
-> # summary_data$timing$dataset <- dataset
-> # summary_data$timing$filt <- filt
 > 
 > saveRDS(summary_data, file = paste0("figures/", plottype, "/", dataset, 
 +                                     exts, "_", plottype, "_summary_data.rds"))
@@ -251,5 +122,5 @@ loaded via a namespace (and not attached):
 [37] R6_2.2.0            
 > 
 > proc.time()
-   user  system elapsed 
-737.164  67.789 806.693 
+    user   system  elapsed 
+ 652.370  202.576 1153.132 

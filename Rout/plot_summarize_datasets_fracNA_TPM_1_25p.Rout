@@ -30,8 +30,8 @@ Setting LC_CTYPE failed, using "C"
 > print(datasets)
            GSE74596mock            GSE45719mock           EMTAB2805mock 
          "GSE74596mock"          "GSE45719mock"         "EMTAB2805mock" 
-  GSE60749-GPL13112mock   GSE48968-GPL13112mock 
-"GSE60749-GPL13112mock" "GSE48968-GPL13112mock" 
+  GSE60749-GPL13112mock   GSE48968-GPL13112mock     UsoskinGSE59739mock 
+"GSE60749-GPL13112mock" "GSE48968-GPL13112mock"   "UsoskinGSE59739mock" 
 > print(filt)
 [1] "TPM_1_25p"
 > print(summarytype)
@@ -101,5 +101,5 @@ loaded via a namespace (and not attached):
 > 
 > 
 > proc.time()
-   user  system elapsed 
-592.833 262.889 940.788 
+    user   system  elapsed 
+ 610.392  481.532 1172.487 

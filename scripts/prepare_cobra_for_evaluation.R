@@ -133,6 +133,6 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, ".rds"))
+saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))

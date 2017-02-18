@@ -285,5 +285,5 @@ loaded via a namespace (and not attached):
 [46] cluster_2.0.5          caTools_1.17.1         shinydashboard_0.5.3  
 > 
 > proc.time()
-    user   system  elapsed 
- 645.822  376.486 1046.813 
+   user  system elapsed 
+533.350  36.358 576.859 

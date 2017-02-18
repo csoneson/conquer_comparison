@@ -953,27 +953,27 @@ attached base packages:
 other attached packages:
  [1] genefilter_1.56.0          edgeR_3.17.5              
  [3] limma_3.30.8               MultiAssayExperiment_1.0.0
- [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
- [7] GenomeInfoDb_1.10.1        IRanges_2.8.1             
- [9] S4Vectors_0.12.0           tidyr_0.6.0               
+ [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+ [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+ [9] S4Vectors_0.12.1           tidyr_0.6.1               
 [11] dplyr_0.5.0                survey_3.31-2             
-[13] survival_2.40-1            Matrix_1.2-7.1            
+[13] survival_2.40-1            Matrix_1.2-8              
 [15] GEOquery_2.40.0            Biobase_2.34.0            
 [17] BiocGenerics_0.20.0        tximport_1.2.0            
 [19] reshape2_1.4.2             rjson_0.2.15              
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
+ [1] Rcpp_0.12.9          plyr_1.8.4           XVector_0.14.0      
  [4] bitops_1.0-6         tools_3.3.1          zlibbioc_1.20.0     
- [7] digest_0.6.11        RSQLite_1.0.0        annotate_1.52.0     
-[10] tibble_1.2           lattice_0.20-34      shiny_0.14.2        
-[13] DBI_0.5-1            httr_1.2.1           stringr_1.1.0       
-[16] locfit_1.5-9.1       shinydashboard_0.5.3 R6_2.2.0            
-[19] AnnotationDbi_1.36.0 XML_3.98-1.5         magrittr_1.5        
-[22] htmltools_0.3.5      splines_3.3.1        assertthat_0.1      
-[25] xtable_1.8-2         mime_0.5             httpuv_1.3.3        
-[28] stringi_1.1.2        RCurl_1.95-4.8      
+ [7] digest_0.6.12        memoise_1.0.0        RSQLite_1.1-2       
+[10] annotate_1.52.1      tibble_1.2           lattice_0.20-34     
+[13] shiny_1.0.0          DBI_0.5-1            httr_1.2.1          
+[16] stringr_1.1.0        locfit_1.5-9.1       shinydashboard_0.5.3
+[19] R6_2.2.0             AnnotationDbi_1.36.2 XML_3.98-1.5        
+[22] magrittr_1.5         htmltools_0.3.5      splines_3.3.1       
+[25] assertthat_0.1       xtable_1.8-2         mime_0.5            
+[28] httpuv_1.3.3         stringi_1.1.2        RCurl_1.95-4.8      
 > 
 > proc.time()
     user   system  elapsed 
-2366.490   80.408 2451.074 
+2525.454  294.368 2896.570 
