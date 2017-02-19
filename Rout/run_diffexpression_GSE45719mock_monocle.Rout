@@ -133,3 +133,62 @@ monocle
 6.3
 22756 genes, 12 samples.
 monocle
+6.4
+22999 genes, 12 samples.
+monocle
+6.5
+23088 genes, 12 samples.
+monocle
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] splines   stats4    grid      parallel  stats     graphics  grDevices
+ [8] utils     datasets  methods   base     
+
+other attached packages:
+ [1] edgeR_3.17.5               limma_3.30.8              
+ [3] monocle_2.2.0              DDRTree_0.1.4             
+ [5] irlba_2.1.2                VGAM_1.0-3                
+ [7] ggplot2_2.2.1              MultiAssayExperiment_1.0.0
+ [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+[11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+[13] S4Vectors_0.12.1           tidyr_0.6.1               
+[15] dplyr_0.5.0                survey_3.31-2             
+[17] survival_2.40-1            Matrix_1.2-8              
+[19] GEOquery_2.40.0            Biobase_2.34.0            
+[21] BiocGenerics_0.20.0        tximport_1.2.0            
+[23] reshape2_1.4.2             rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9            locfit_1.5-9.1         lattice_0.20-34       
+ [4] assertthat_0.1         digest_0.6.12          mime_0.5              
+ [7] slam_0.1-38            R6_2.2.0               plyr_1.8.4            
+[10] qlcMatrix_0.9.5        httr_1.2.1             zlibbioc_1.20.0       
+[13] lazyeval_0.2.0         combinat_0.0-8         stringr_1.1.0         
+[16] igraph_1.0.1           pheatmap_1.0.8         RCurl_1.95-4.8        
+[19] munsell_0.4.3          shiny_1.0.0            httpuv_1.3.3          
+[22] htmltools_0.3.5        tibble_1.2             matrixStats_0.51.0    
+[25] XML_3.98-1.5           bitops_1.0-6           xtable_1.8-2          
+[28] gtable_0.2.0           DBI_0.5-1              magrittr_1.5          
+[31] scales_0.4.1           stringi_1.1.2          XVector_0.14.0        
+[34] fastICA_1.2-0          RColorBrewer_1.1-2     tools_3.3.1           
+[37] HSMMSingleCell_0.108.0 colorspace_1.3-2       cluster_2.0.5         
+[40] shinydashboard_0.5.3  
+> 
+> proc.time()
+     user    system   elapsed 
+12110.897   389.238 12630.314 

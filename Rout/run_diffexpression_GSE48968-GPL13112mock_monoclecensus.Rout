@@ -1,0 +1,176 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/GSE48968-GPL13112mock.json"
+> print(demethod)
+[1] "monoclecensus"
+> 
+> ## filt should be a string of the form type_value_nbr, where type is either TPM 
+> ## or count, and features will be filtered out unless they show at least a 
+> ## "type" of "value" in at least "nbr" samples (if nbr is a single number) or at
+> ## least nbr % of the samples (if nbr ends with p). For now, both value and nbr
+> ## need to be integers (no periods in the name).
+> print(filt)
+[1] ""
+> (exts <- ifelse(filt == "", "", paste0("_", filt)))
+[1] ""
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE48968-GPL13112mock.rds"
+
+$subfile
+[1] "subsets/GSE48968-GPL13112mock_subsets.rds"
+
+$resfilebase
+[1] "results/GSE48968-GPL13112mock"
+
+$figfilebase
+[1] "figures/diffexpression/GSE48968-GPL13112mock"
+
+$groupid
+[1] "source_name_ch1"
+
+$keepgroups
+[1] "BMDC (1h LPS Stimulation)"
+
+$seed
+[1] 42
+
+$sizes
+[1] 48 24 12  6
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+48.1
+26504 genes, 96 samples.
+monoclecensus
+Removing 231 outliers
+24.1
+23923 genes, 48 samples.
+monoclecensus
+Removing 228 outliers
+24.2
+23890 genes, 48 samples.
+monoclecensus
+Removing 241 outliers
+24.3
+24137 genes, 48 samples.
+monoclecensus
+Removing 256 outliers
+24.4
+24058 genes, 48 samples.
+monoclecensus
+Removing 217 outliers
+24.5
+23860 genes, 48 samples.
+monoclecensus
+Removing 232 outliers
+12.1
+21633 genes, 24 samples.
+monoclecensus
+Removing 225 outliers
+12.2
+21162 genes, 24 samples.
+monoclecensus
+Removing 209 outliers
+12.3
+21499 genes, 24 samples.
+monoclecensus
+Removing 203 outliers
+12.4
+21517 genes, 24 samples.
+monoclecensus
+Removing 236 outliers
+12.5
+21057 genes, 24 samples.
+monoclecensus
+Removing 185 outliers
+6.1
+18551 genes, 12 samples.
+monoclecensus
+Removing 143 outliers
+6.2
+19141 genes, 12 samples.
+monoclecensus
+Removing 138 outliers
+6.3
+18567 genes, 12 samples.
+monoclecensus
+Removing 126 outliers
+6.4
+18976 genes, 12 samples.
+monoclecensus
+Removing 140 outliers
+6.5
+19886 genes, 12 samples.
+monoclecensus
+Removing 156 outliers
+
+There were 21 warnings (use warnings() to see them)
+Timing stopped at: 122.814 5.923 131.55 
+Execution halted
