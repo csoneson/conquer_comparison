@@ -8,7 +8,7 @@ summarize_timing <- function(figdir, datasets, exts) {
   })
   y <- lapply(summary_data_list, function(m) {
     if (!is.null(m$timing)) {
-      m$timing %>% group_by(dataset, filt, nsamples) %>%
+      m$timing %>% group_by(dataset, filt, ncells) %>%
         dplyr::mutate(timing = timing/max(timing))
     } else {
       NULL
@@ -47,11 +47,11 @@ summarize_timing <- function(figdir, datasets, exts) {
   })
   y2 <- do.call(rbind, y2)
   print(y2 %>% group_by(method, dataset, filt) %>%
-          arrange(nsamples) %>% 
+          arrange(ncells) %>% 
           dplyr::mutate(dt = c(0, diff(timing)),
                         t = c(0, timing[1:(length(timing) - 1)]),
-                        ds = c(0, diff(nsamples)),
-                        s = c(0, nsamples[1:(length(nsamples) - 1)])) %>% 
+                        ds = c(0, diff(ncells)),
+                        s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
           dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
           filter(!is.na(reltime)) %>%
           ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
@@ -61,11 +61,11 @@ summarize_timing <- function(figdir, datasets, exts) {
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
   
   print(y2 %>% group_by(method, dataset, filt) %>%
-          arrange(nsamples) %>% 
+          arrange(ncells) %>% 
           dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
                         t = c(0, timing[1:(length(timing) - 1)]),
-                        ds = c(0, nsamples[2:(length(nsamples))]),
-                        s = c(0, nsamples[1:(length(nsamples) - 1)])) %>% 
+                        ds = c(0, ncells[2:(length(ncells))]),
+                        s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
           dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
           filter(!is.na(reltime)) %>%
           ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
@@ -74,7 +74,51 @@ summarize_timing <- function(figdir, datasets, exts) {
           scale_color_manual(values = cols, name = "") + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
   
-  dev.off()
+  ## Dependence on number of genes
+  ngenes <- lapply(datasets, function(ds) {
+    readRDS(paste0("figures/cobra_data/", ds, exts, 
+                   "_ngenes.rds"))
+  })
+  ngenes <- do.call(rbind, ngenes) %>% group_by(dataset, filt, ncells) %>%
+    summarize(ngenes = median(ngenes)) %>% 
+    mutate(ncells = as.numeric(ncells))
+  y3 <- inner_join(y2, ngenes)
   
+  ns <- y3 %>% filter(method == y3$method[1]) %>% group_by(ncells) %>% tally()
+  ns_keep <- ns$ncells[ns$n > 1]
+  
+  y3 %>% filter(ncells %in% ns_keep) %>% group_by(method, ncells, filt) %>%
+    arrange(ngenes) %>%
+    dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
+                  t = c(0, timing[1:(length(timing) - 1)]),
+                  dg = c(0, ngenes[2:(length(ngenes))]),
+                  g = c(0, ngenes[1:(length(ngenes)) - 1])) %>%
+    dplyr::mutate(reltime = (dt/t)/(dg/g)) %>%
+    filter(!is.na(reltime)) %>%
+    ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
+    geom_point(position = position_jitter(width = 0.2)) + 
+    theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of genes") + 
+    scale_color_manual(values = cols, name = "") + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+  
+  ## 2d heatmap
+  ngenes <- lapply(datasets, function(ds) {
+    readRDS(paste0("figures/cobra_data/", ds, exts, 
+                   "_ngenes.rds"))
+  })
+  ngenes <- do.call(rbind, ngenes) %>% ungroup() %>% mutate(ncells = as.numeric(ncells)) %>%
+    mutate(repl = as.numeric(repl))
+  y4 <- lapply(summary_data_list, function(m) {
+   m$timing_full
+  })
+  y4 <- do.call(rbind, y4) %>% mutate(repl = as.numeric(repl))
+  y4 <- inner_join(y4, ngenes)
+  for (m in unique(y4$method)) {
+    scatterplot3d(subset(y4, method == m)$ncells, 
+                  subset(y4, method == m)$ngenes, 
+                  subset(y4, method == m)$timing, type = "h", pch = 19)
+  }
+  
+  dev.off()
   
 }

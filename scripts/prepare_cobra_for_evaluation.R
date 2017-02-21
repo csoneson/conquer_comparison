@@ -118,6 +118,11 @@ summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, test
                                                    paste0("log2_", measurement), measurement)) %>%
                        dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
 
+## Generate data frame with number of genes per data set
+ngn <- summary_data$all_data %>% filter(measurement == "fraczero") %>% 
+  filter(method == summary_data$all_data$method[1])
+ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
+
 ## Define "truth" for each method as the genes that are differentially 
 ## expressed with the largest sample size
 tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
@@ -133,6 +138,7 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
+saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
