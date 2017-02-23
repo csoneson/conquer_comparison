@@ -119,8 +119,9 @@ summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, test
                        dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
 
 ## Generate data frame with number of genes per data set
-ngn <- summary_data$all_data %>% filter(measurement == "fraczero") %>% 
-  filter(method == summary_data$all_data$method[1])
+mk <- summary_data$all_data$method[1]
+ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
+  dplyr::filter(method == mk)
 ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
 
 ## Define "truth" for each method as the genes that are differentially 

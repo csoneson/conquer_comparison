@@ -2264,7 +2264,9 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
   joining factors with different levels, coercing to character vector
 > 
 > ## Generate data frame with number of genes per data set
-> ngn <- summary_data$all_data %>% filter(measurement == "fraczero") %>% filter(method == "edgeRLRT")
+> mk <- summary_data$all_data$method[1]
+> ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
++   dplyr::filter(method == mk)
 > ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
 > 
 > ## Define "truth" for each method as the genes that are differentially 
@@ -2290,4 +2292,4 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > 
 > proc.time()
    user  system elapsed 
-645.940 112.792 832.090 
+590.885  28.164 667.808 

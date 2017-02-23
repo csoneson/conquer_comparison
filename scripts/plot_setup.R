@@ -9,10 +9,13 @@ suppressPackageStartupMessages(library(rjson))
 suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(akima))
 suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(lazyeval))
 suppressPackageStartupMessages(library(ggbiplot))
 suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(scatterplot3d))
+suppressPackageStartupMessages(library(pheatmap))
 source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
 
 #' Convenience functions to extract the first, second and third part of each of

@@ -55,17 +55,13 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 21 will be used
-2: Removed 1 rows containing missing values (geom_point). 
+  too many colors supplied, only the first 22 will be used
+2: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
+  too few colors provided, 84 random colors will be added
 3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 81 random colors will be added
-4: Removed 5 rows containing missing values (geom_point). 
-5: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 81 random colors will be added
-6: Removed 5 rows containing missing values (geom_point). 
-7: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 81 random colors will be added
-8: Removed 5 rows containing missing values (geom_point). 
+  too few colors provided, 84 random colors will be added
+4: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
+  too few colors provided, 84 random colors will be added
 > dev.off()
 null device 
           1 
@@ -126,4 +122,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-411.527 113.295 674.890 
+448.445  16.383 465.970 

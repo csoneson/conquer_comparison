@@ -57,7 +57,15 @@ geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
-There were 50 or more warnings (use warnings() to see the first 50)
+Warning messages:
+1: In min(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to min; returning Inf
+2: In max(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to max; returning -Inf
+3: In min(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to min; returning Inf
+4: In max(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to max; returning -Inf
 > dev.off()
 null device 
           1 
@@ -118,4 +126,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-715.729  12.094 731.683 
+780.612  11.656 794.953 

@@ -53,7 +53,6 @@ package 'ggplot2' was built under R version 3.3.2
 + } else {
 +   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, summary_data = summary_data)
 + }
-There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -114,4 +113,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-3776.437  209.663 4008.299 
+4465.205   57.316 4532.256 

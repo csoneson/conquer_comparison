@@ -91,7 +91,13 @@ geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
-There were 50 or more warnings (use warnings() to see the first 50)
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+There were 42 warnings (use warnings() to see them)
 > dev.off()
 null device 
           1 
@@ -151,5 +157,5 @@ loaded via a namespace (and not attached):
 [37] R6_2.2.0            
 > 
 > proc.time()
-    user   system  elapsed 
- 944.979   38.641 1001.427 
+   user  system elapsed 
+946.578   6.849 955.230 

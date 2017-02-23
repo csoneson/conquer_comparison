@@ -1614,7 +1614,9 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
   joining factors with different levels, coercing to character vector
 > 
 > ## Generate data frame with number of genes per data set
-> ngn <- summary_data$all_data %>% filter(measurement == "fraczero") %>% filter(method == "edgeRLRT")
+> mk <- summary_data$all_data$method[1]
+> ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
++   dplyr::filter(method == mk)
 > ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
 > 
 > ## Define "truth" for each method as the genes that are differentially 
@@ -1639,5 +1641,5 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
-    user   system  elapsed 
- 569.302  409.533 1124.026 
+   user  system elapsed 
+462.441  26.604 496.720 

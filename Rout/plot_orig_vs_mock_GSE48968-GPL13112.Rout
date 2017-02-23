@@ -32,9 +32,10 @@ Setting LC_CTYPE failed, using "C"
  [7] "NODESnofilt"       "BPSC"              "DESeq2"           
 [10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
 [13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
-[16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
-[19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
-[22] "DESeq2census"      "edgeRLRTcensus"    "zingeRautonofilt" 
+[16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
+[19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
+[22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
+[25] "monocle"           "D3E"              
 > print(dataset)
 [1] "GSE48968-GPL13112"
 > print(filt)
@@ -165,4 +166,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1915.553   28.222 1969.193 
+2823.497   82.149 2912.700 

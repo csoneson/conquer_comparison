@@ -32,9 +32,10 @@ Setting LC_CTYPE failed, using "C"
  [7] "NODESnofilt"       "BPSC"              "DESeq2"           
 [10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
 [13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
-[16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
-[19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
-[22] "DESeq2census"      "edgeRLRTcensus"    "zingeRautonofilt" 
+[16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
+[19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
+[22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
+[25] "monocle"           "D3E"              
 > print(dataset)
 [1] "EMTAB2805"
 > print(filt)
@@ -95,7 +96,6 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
 > summary_data <- plot_compare_orig_mock(cobras, colvec = cols, summary_data = list())
-There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -165,4 +165,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-2287.530   89.596 2393.417 
+3162.477   80.448 3250.959 

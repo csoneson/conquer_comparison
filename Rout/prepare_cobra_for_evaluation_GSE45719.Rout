@@ -47,7 +47,7 @@ Setting LC_CTYPE failed, using "C"
 [16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
 [19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
 [22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
-[25] "monocle"          
+[25] "monocle"           "D3E"              
 > print(dataset)
 [1] "GSE45719"
 > print(config_file)
@@ -89,9 +89,10 @@ Setting LC_CTYPE failed, using "C"
 [23] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_zingeRautonofilt.rds" 
 [24] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_monoclecensus.rds"    
 [25] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_monocle.rds"          
+[26] "/home/Shared/data/seq/conquer/comparison/results/GSE45719_D3E.rds"              
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 > cobra <- NULL
 > timings <- list()
 > for (rfn in resfiles) {
@@ -2099,6 +2100,86 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
 > 
 > cobra <- calculate_adjp(cobra)
 > 
@@ -2182,6 +2263,12 @@ Warning message:
 In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
   joining factors with different levels, coercing to character vector
 > 
+> ## Generate data frame with number of genes per data set
+> mk <- summary_data$all_data$method[1]
+> ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
++   dplyr::filter(method == mk)
+> ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
+> 
 > ## Define "truth" for each method as the genes that are differentially 
 > ## expressed with the largest sample size
 > tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
@@ -2196,12 +2283,13 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-32257 new features and 137 new annotations added to truth table
+32257 new features and 138 new annotations added to truth table
 > 
+> saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 > saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
     user   system  elapsed 
- 818.877  369.492 1269.336 
+ 765.820  150.613 1001.029 

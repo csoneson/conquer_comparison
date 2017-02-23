@@ -66,13 +66,6 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   colnames(mdsjaccx) <- c("MDS_Jaccard_1", "MDS_Jaccard_2")
   mdsjaccx$mth <- rownames(mdsjaccx)
   
-  ## Only methods actually detecting something
-  jacc2 <- jacc[-which(rownames(jacc) %in% nosignif), -which(colnames(jacc) %in% nosignif)]
-  mdsjacc2 <- cmdscale(1 - jacc2, k = 2, eig = TRUE)
-  mdsjaccx2 <- data.frame(mdsjacc2$points)
-  colnames(mdsjaccx2) <- c("MDS_Jaccard_1", "MDS_Jaccard_2")
-  mdsjaccx2$mth <- rownames(mdsjaccx2)
-  
   ## ---------------------- Spearman correlations --------------------------- ##
   tmpmt <- pval(cobratmp)
   if (!(all(colnames(iCOBRA::score(cobratmp)) %in% colnames(tmpmt)))) {
@@ -87,9 +80,6 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
     rownames(tmpmt) <- tmpmt$Row.names
     tmpmt$Row.names <- NULL
   }
-  # for (i in 1:ncol(tmpmt)) {
-  #   tmpmt[which(is.na(tmpmt[, i])), i] <- max(tmpmt[which(!is.na(tmpmt[, i])), i])
-  # }
   tmpmt <- as.matrix(tmpmt)
   spdist <- 1 - cor(tmpmt, use = "pairwise.complete.obs", method = "spearman")
   spdist[is.na(spdist)] <- 2
@@ -106,15 +96,6 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   all_sizes <- as.numeric(unique(tmpinfo$nbr_samples))
   all_replicates <- as.numeric(unique(tmpinfo$replicate))
   max_nreps <- max(as.numeric(tmpinfo$replicate))
-  
-  ## Only methods detecting anything
-  tmpinfo2 <- data.frame(mth = mdsjaccx2$mth) %>% 
-    tidyr::separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.")
-  
-  all_methods2 <- unique(tmpinfo2$method)
-  all_sizes2 <- as.numeric(unique(tmpinfo2$nbr_samples))
-  all_replicates2 <- as.numeric(unique(tmpinfo2$replicate))
-  max_nreps2 <- max(as.numeric(tmpinfo2$replicate))
   
   ## ------------------ Number of detections shared between methods --------- ##
   nshared <- lapply(structure(all_sizes, names = all_sizes), function(i) {
@@ -236,15 +217,7 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
                    eigenvalue = mdsjacc$eig) %>% 
           ggplot(aes(x = dimension, y = eigenvalue)) + geom_line() + 
           geom_point(size = 5) + ggtitle("MDS_Jaccard"))
-  print(mdsjaccx2 %>% 
-          separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
-          ggplot(aes(x = MDS_Jaccard_1, y = MDS_Jaccard_2, col = method, pch = nbr_samples)) + 
-          geom_point(size = 5) + theme_bw() + scale_color_manual(values = colvec))
-  print(data.frame(dimension = 1:length(mdsjacc2$eig),
-                   eigenvalue = mdsjacc2$eig) %>% 
-          ggplot(aes(x = dimension, y = eigenvalue)) + geom_line() + 
-          geom_point(size = 5) + ggtitle("MDS_Jaccard"))
-  
+
   print(mdsspx %>% 
           separate(mth, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>% 
           ggplot(aes(x = MDS_Spearman_1, y = MDS_Spearman_2, col = method, pch = nbr_samples)) + 

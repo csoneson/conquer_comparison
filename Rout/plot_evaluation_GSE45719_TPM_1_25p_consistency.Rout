@@ -53,7 +53,11 @@ package 'ggplot2' was built under R version 3.3.2
 + } else {
 +   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, summary_data = summary_data)
 + }
-There were 50 or more warnings (use warnings() to see the first 50)
+Warning messages:
+1: In min(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to min; returning Inf
+2: In max(which(colSums(overlap(cobraplot)) > 0)) :
+  no non-missing arguments to max; returning -Inf
 > dev.off()
 null device 
           1 
@@ -113,5 +117,5 @@ loaded via a namespace (and not attached):
 [37] R6_2.2.0            
 > 
 > proc.time()
-   user  system elapsed 
-913.483  30.444 948.458 
+    user   system  elapsed 
+1009.008   14.446 1027.101 

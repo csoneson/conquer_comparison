@@ -51,8 +51,20 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
 +                                        datasets = datasets, exts = exts)
+
+Attaching package: 'akima'
+
+The following object is masked from 'package:lazyeval':
+
+    interp
+
+Joining, by = c("ncells", "dataset", "filt")
+Joining, by = c("ncells", "repl", "dataset", "filt")
 null device 
           1 
+Warning messages:
+1: Removed 75 rows containing non-finite values (stat_boxplot). 
+2: Removed 75 rows containing missing values (geom_point). 
 > saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, ".rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -72,34 +84,40 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] RColorBrewer_1.1-2         ggbiplot_0.55             
- [3] scales_0.4.1               plyr_1.8.4                
- [5] lazyeval_0.2.0             UpSetR_1.3.2              
- [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
- [9] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
-[11] IRanges_2.8.1              S4Vectors_0.12.1          
-[13] Biobase_2.34.0             BiocGenerics_0.20.0       
-[15] rjson_0.2.15               reshape2_1.4.2            
-[17] iCOBRA_1.2.0               tidyr_0.6.1               
-[19] dplyr_0.5.0                ggrepel_0.6.5             
-[21] ggplot2_2.2.1              pheatmap_1.0.8            
+ [1] akima_0.6-2                scatterplot3d_0.3-38      
+ [3] RColorBrewer_1.1-2         ggbiplot_0.55             
+ [5] scales_0.4.1               plyr_1.8.4                
+ [7] lazyeval_0.2.0             UpSetR_1.3.2              
+ [9] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+[11] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
+[13] IRanges_2.8.1              S4Vectors_0.12.1          
+[15] Biobase_2.34.0             BiocGenerics_0.20.0       
+[17] rjson_0.2.15               reshape2_1.4.2            
+[19] iCOBRA_1.2.0               tidyr_0.6.1               
+[21] dplyr_0.5.0                ggrepel_0.6.5             
+[23] ggplot2_2.2.1              pheatmap_1.0.8            
 
 loaded via a namespace (and not attached):
- [1] gtools_3.5.0         lattice_0.20-34      colorspace_1.3-2    
- [4] htmltools_0.3.5      DBI_0.5-1            stringr_1.1.0       
- [7] zlibbioc_1.20.0      munsell_0.4.3        gtable_0.2.0        
-[10] caTools_1.17.1       htmlwidgets_0.8      labeling_0.3        
-[13] httpuv_1.3.3         Rcpp_0.12.9          KernSmooth_2.23-15  
-[16] xtable_1.8-2         ROCR_1.0-7           DT_0.2              
-[19] gdata_2.17.0         limma_3.30.8         XVector_0.14.0      
-[22] mime_0.5             gplots_3.0.1         gridExtra_2.2.1     
-[25] digest_0.6.12        stringi_1.1.2        shiny_1.0.0         
-[28] tools_3.3.1          bitops_1.0-6         magrittr_1.5        
-[31] RCurl_1.95-4.8       tibble_1.2           Matrix_1.2-8        
-[34] shinyBS_0.61         shinydashboard_0.5.3 assertthat_0.1      
-[37] R6_2.2.0            
+ [1] splines_3.3.1        gtools_3.5.0         Formula_1.2-1       
+ [4] shiny_1.0.0          assertthat_0.1       sp_1.2-4            
+ [7] latticeExtra_0.6-28  backports_1.0.5      lattice_0.20-34     
+[10] limma_3.30.8         digest_0.6.12        XVector_0.14.0      
+[13] checkmate_1.8.2      colorspace_1.3-2     htmltools_0.3.5     
+[16] httpuv_1.3.3         Matrix_1.2-8         zlibbioc_1.20.0     
+[19] xtable_1.8-2         gdata_2.17.0         tibble_1.2          
+[22] htmlTable_1.9        DT_0.2               ROCR_1.0-7          
+[25] nnet_7.3-12          survival_2.40-1      magrittr_1.5        
+[28] mime_0.5             gplots_3.0.1         foreign_0.8-67      
+[31] shinydashboard_0.5.3 data.table_1.10.4    tools_3.3.1         
+[34] stringr_1.1.0        munsell_0.4.3        cluster_2.0.5       
+[37] caTools_1.17.1       RCurl_1.95-4.8       htmlwidgets_0.8     
+[40] bitops_1.0-6         shinyBS_0.61         base64enc_0.1-3     
+[43] labeling_0.3         gtable_0.2.0         DBI_0.5-1           
+[46] R6_2.2.0             gridExtra_2.2.1      knitr_1.15.1        
+[49] Hmisc_4.0-2          KernSmooth_2.23-15   stringi_1.1.2       
+[52] Rcpp_0.12.9          rpart_4.1-10         acepack_1.4.1       
 > 
 > 
 > proc.time()
    user  system elapsed 
- 16.336   1.009  17.514 
+ 39.769   2.133  46.435 

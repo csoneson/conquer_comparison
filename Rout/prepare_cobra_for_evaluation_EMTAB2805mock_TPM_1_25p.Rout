@@ -44,9 +44,10 @@ Setting LC_CTYPE failed, using "C"
  [7] "NODESnofilt"       "BPSC"              "DESeq2"           
 [10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
 [13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
-[16] "monocle"           "edgeRLRTrobust"    "voomlimma"        
-[19] "zingeRauto"        "Seurat"            "Seuratnofilt"     
-[22] "DESeq2census"      "edgeRLRTcensus"    "zingeRautonofilt" 
+[16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
+[19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
+[22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
+[25] "monocle"           "D3E"              
 > print(dataset)
 [1] "EMTAB2805mock"
 > print(config_file)
@@ -78,18 +79,20 @@ Setting LC_CTYPE failed, using "C"
 [13] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_MASTcountsDetRate_TPM_1_25p.rds"
 [14] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_MASTtpm_TPM_1_25p.rds"          
 [15] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_SCDE_TPM_1_25p.rds"             
-[16] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_monocle_TPM_1_25p.rds"          
-[17] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_edgeRLRTrobust_TPM_1_25p.rds"   
-[18] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_voomlimma_TPM_1_25p.rds"        
-[19] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_zingeRauto_TPM_1_25p.rds"       
-[20] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_Seurat_TPM_1_25p.rds"           
-[21] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_Seuratnofilt_TPM_1_25p.rds"     
-[22] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_DESeq2census_TPM_1_25p.rds"     
-[23] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_edgeRLRTcensus_TPM_1_25p.rds"   
-[24] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_zingeRautonofilt_TPM_1_25p.rds" 
+[16] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_edgeRLRTrobust_TPM_1_25p.rds"   
+[17] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_voomlimma_TPM_1_25p.rds"        
+[18] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_zingeRauto_TPM_1_25p.rds"       
+[19] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_Seurat_TPM_1_25p.rds"           
+[20] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_Seuratnofilt_TPM_1_25p.rds"     
+[21] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_DESeq2census_TPM_1_25p.rds"     
+[22] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_edgeRLRTcensus_TPM_1_25p.rds"   
+[23] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_zingeRautonofilt_TPM_1_25p.rds" 
+[24] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_monoclecensus_TPM_1_25p.rds"    
+[25] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_monocle_TPM_1_25p.rds"          
+[26] "/home/Shared/data/seq/conquer/comparison/results/EMTAB2805mock_D3E_TPM_1_25p.rds"              
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 > cobra <- NULL
 > timings <- list()
 > for (rfn in resfiles) {
@@ -1329,82 +1332,82 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 146 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
@@ -1569,82 +1572,82 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
@@ -1805,10 +1808,138 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
@@ -1889,133 +2020,165 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 > 
 > cobra <- calculate_adjp(cobra)
@@ -2100,6 +2263,12 @@ Warning message:
 In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
   joining factors with different levels, coercing to character vector
 > 
+> ## Generate data frame with number of genes per data set
+> mk <- summary_data$all_data$method[1]
+> ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
++   dplyr::filter(method == mk)
+> ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
+> 
 > ## Define "truth" for each method as the genes that are differentially 
 > ## expressed with the largest sample size
 > tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
@@ -2114,12 +2283,13 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-14147 new features and 136 new annotations added to truth table
+14147 new features and 138 new annotations added to truth table
 > 
+> saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 > saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
    user  system elapsed 
-411.859 390.977 980.914 
+417.531 118.940 550.651 
