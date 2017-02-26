@@ -8,6 +8,7 @@ names(datasets) <- datasets
 
 print(datasets)
 print(filt)
+print(dtpext)
 print(summarytype)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
@@ -21,7 +22,8 @@ if (filt == "") {
 names(cols) <- paste0(names(cols), exts)
 
 get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
-                                       datasets = datasets, exts = exts)
-saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, ".rds"))
+                                       datasets = datasets, exts = exts, 
+                                       dtpext = dtpext)
+saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
 sessionInfo()
 

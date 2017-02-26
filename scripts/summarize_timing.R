@@ -1,6 +1,6 @@
-summarize_timing <- function(figdir, datasets, exts) {
+summarize_timing <- function(figdir, datasets, exts, dtpext) {
   ## ------------------------------- Timing ----------------------------------- ##
-  pdf(paste0(figdir, "/summary_timing", exts, ".pdf"), width = 10, height = 7)
+  pdf(paste0(figdir, "/summary_timing", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/timing/", ds, exts, 
                    "_timing_summary_data.rds"))
@@ -86,21 +86,23 @@ summarize_timing <- function(figdir, datasets, exts) {
   ns <- y3 %>% filter(method == y3$method[1]) %>% group_by(ncells) %>% tally()
   ns_keep <- ns$ncells[ns$n > 1]
   
-  print(y3 %>% filter(ncells %in% ns_keep) %>% group_by(method, ncells, filt) %>%
-          dplyr::arrange(ngenes) %>%
-          dplyr::filter(length(timing) > 1) %>%
-          dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
-                        t = c(0, timing[1:(length(timing) - 1)]),
-                        dg = c(0, ngenes[2:(length(ngenes))]),
-                        g = c(0, ngenes[1:(length(ngenes)) - 1])) %>%
-          dplyr::mutate(reltime = (dt/t)/(dg/g)) %>%
-          filter(!is.na(reltime)) %>%
-          ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
-          geom_point(position = position_jitter(width = 0.2)) + 
-          theme_bw() + xlab("") + 
-          ylab("Relative change in time per relative increase in number of genes") + 
-          scale_color_manual(values = cols, name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+  if (length(ns_keep) > 0) {
+    print(y3 %>% filter(ncells %in% ns_keep) %>% group_by(method, ncells, filt) %>%
+            dplyr::arrange(ngenes) %>%
+            dplyr::filter(length(timing) > 1) %>%
+            dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
+                          t = c(0, timing[1:(length(timing) - 1)]),
+                          dg = c(0, ngenes[2:(length(ngenes))]),
+                          g = c(0, ngenes[1:(length(ngenes)) - 1])) %>%
+            dplyr::mutate(reltime = (dt/t)/(dg/g)) %>%
+            filter(!is.na(reltime)) %>%
+            ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = 0) + 
+            geom_point(position = position_jitter(width = 0.2)) + 
+            theme_bw() + xlab("") + 
+            ylab("Relative change in time per relative increase in number of genes") + 
+            scale_color_manual(values = cols, name = "") + 
+            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
+  }
   
   ## 2d heatmap
   ngenes <- lapply(datasets, function(ds) {

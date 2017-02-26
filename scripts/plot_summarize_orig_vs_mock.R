@@ -8,6 +8,7 @@ names(datasets) <- datasets
 
 print(datasets)
 print(filt)
+print(dtpext)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 
@@ -33,7 +34,8 @@ ttest <- function(x, y) {
   }, error = function(e) NA)
 }
 
-pdf(paste0("figures/summary_crossds/summary_orig_vs_mock", exts, ".pdf"), width = 10, height = 7)
+pdf(paste0("figures/summary_crossds/summary_orig_vs_mock", exts, dtpext, ".pdf"), 
+    width = 10, height = 7)
 
 ## T-statistic of Spearman correlations and Jaccard coefficients between original and mock
 nbr_keep <- unique(intersect(subset(jaccm0.05, tp == "original")$nbr_samples1,
@@ -84,7 +86,7 @@ print(jaccm0.2 %>% dplyr::filter(nbr_samples1 %in% nbr_keep & nbr_samples2 %in% 
 
 dev.off()
 
-saveRDS(NULL, paste0("figures/summary_crossds/summary_orig_vs_mock", exts, ".rds"))
+saveRDS(NULL, paste0("figures/summary_crossds/summary_orig_vs_mock", exts, dtpext, ".rds"))
 
 sessionInfo()
 

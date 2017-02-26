@@ -1,0 +1,527 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(config_file)
+[1] "config/EGEUV1.json"
+> print(demethod)
+[1] "zingeRauto"
+> 
+> ## filt should be a string of the form type_value_nbr, where type is either TPM 
+> ## or count, and features will be filtered out unless they show at least a 
+> ## "type" of "value" in at least "nbr" samples (if nbr is a single number) or at
+> ## least nbr % of the samples (if nbr ends with p). For now, both value and nbr
+> ## need to be integers (no periods in the name).
+> print(filt)
+[1] "TPM_1_25p"
+> (exts <- ifelse(filt == "", "", paste0("_", filt)))
+[1] "_TPM_1_25p"
+> 
+> suppressPackageStartupMessages(library(rjson))
+> suppressPackageStartupMessages(library(reshape2))
+> suppressPackageStartupMessages(library(tximport))
+> suppressPackageStartupMessages(library(GEOquery))
+> suppressPackageStartupMessages(library(survey))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(Biobase))
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/EGEUV1.rds"
+
+$subfile
+[1] "subsets/EGEUV1_subsets.rds"
+
+$resfilebase
+[1] "results/EGEUV1"
+
+$figfilebase
+[1] "figures/diffexpression/EGEUV1"
+
+$groupid
+[1] "center"     "population"
+
+$keepgroups
+[1] "University of Geneva.CEU" "University of Geneva.YRI"
+
+$seed
+[1] 42
+
+$sizes
+[1] 87 48 24 12
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+87.1
+18021 genes, 174 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0487209366849786
+iteration: 3. mean conv.: 0.28156040175351
+iteration: 4. mean conv.: 0.969369069419011
+iteration: 5. mean conv.: 0.980911159203152
+iteration: 6. mean conv.: 0.98806947450197
+iteration: 7. mean conv.: 0.992064813273403
+iteration: 8. mean conv.: 0.995893679596027
+iteration: 9. mean conv.: 0.998612729593252
+iteration: 10. mean conv.: 0.999611564286111
+iteration: 11. mean conv.: 0.987570057155541
+iteration: 12. mean conv.: 0.996337606126186
+iteration: 13. mean conv.: 0.998668220409522
+iteration: 14. mean conv.: 0.99977803673492
+iteration: 15. mean conv.: 0.998501747960712
+iteration: 16. mean conv.: 0.998335275511903
+iteration: 17. mean conv.: 0.999611564286111
+converged. 
+48.1
+18063 genes, 96 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0447876875380612
+iteration: 3. mean conv.: 0.307091845208437
+iteration: 4. mean conv.: 0.972928085035708
+iteration: 5. mean conv.: 0.983889719315728
+iteration: 6. mean conv.: 0.990090239716548
+iteration: 7. mean conv.: 0.99324586170625
+iteration: 8. mean conv.: 0.995349609699385
+iteration: 9. mean conv.: 0.997564081271107
+iteration: 10. mean conv.: 0.999391020317777
+iteration: 11. mean conv.: 0.955433759619111
+iteration: 12. mean conv.: 0.994187012124232
+iteration: 13. mean conv.: 0.996733654431711
+iteration: 14. mean conv.: 0.999114211371312
+iteration: 15. mean conv.: 0.997564081271107
+iteration: 16. mean conv.: 0.997674804849693
+iteration: 17. mean conv.: 0.999114211371312
+iteration: 18. mean conv.: 0.998560593478381
+iteration: 19. mean conv.: 0.998837402424846
+iteration: 20. mean conv.: 1
+converged. 
+48.2
+18103 genes, 96 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0442468099210076
+iteration: 3. mean conv.: 0.372148262718886
+iteration: 4. mean conv.: 0.975639396785063
+iteration: 5. mean conv.: 0.98491962658123
+iteration: 6. mean conv.: 0.991106446445341
+iteration: 7. mean conv.: 0.993978898525106
+iteration: 8. mean conv.: 0.995801800806496
+iteration: 9. mean conv.: 0.998066618792465
+iteration: 10. mean conv.: 0.999613323758493
+iteration: 11. mean conv.: 0.952935977462299
+iteration: 12. mean conv.: 0.994476053692758
+iteration: 13. mean conv.: 0.996906590067945
+iteration: 14. mean conv.: 0.998784731812407
+iteration: 15. mean conv.: 1
+iteration: 16. mean conv.: 0.997458984698669
+iteration: 17. mean conv.: 0.997845660940176
+iteration: 18. mean conv.: 0.999226647516986
+iteration: 19. mean conv.: 0.998784731812407
+iteration: 20. mean conv.: 0.998895210738552
+iteration: 21. mean conv.: 1
+converged. 
+48.3
+17940 genes, 96 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0457079152731327
+iteration: 3. mean conv.: 0.396822742474916
+iteration: 4. mean conv.: 0.977146042363434
+iteration: 5. mean conv.: 0.986677814938684
+iteration: 6. mean conv.: 0.992140468227425
+iteration: 7. mean conv.: 0.994481605351171
+iteration: 8. mean conv.: 0.995986622073579
+iteration: 9. mean conv.: 0.998383500557414
+iteration: 10. mean conv.: 0.999609810479376
+iteration: 11. mean conv.: 0.956298773690078
+iteration: 12. mean conv.: 0.995317725752508
+iteration: 13. mean conv.: 0.99726867335563
+iteration: 14. mean conv.: 0.998829431438127
+iteration: 15. mean conv.: 1
+iteration: 16. mean conv.: 0.997714604236343
+iteration: 17. mean conv.: 0.996934225195095
+iteration: 18. mean conv.: 0.998494983277592
+iteration: 19. mean conv.: 1
+iteration: 20. mean conv.: 0.998439241917503
+iteration: 21. mean conv.: 0.998160535117057
+iteration: 22. mean conv.: 0.999609810479376
+converged. 
+48.4
+17960 genes, 96 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0471603563474388
+iteration: 3. mean conv.: 0.321881959910913
+iteration: 4. mean conv.: 0.9728285077951
+iteration: 5. mean conv.: 0.984576837416481
+iteration: 6. mean conv.: 0.990256124721604
+iteration: 7. mean conv.: 0.993708240534521
+iteration: 8. mean conv.: 0.995768374164811
+iteration: 9. mean conv.: 0.997884187082405
+iteration: 10. mean conv.: 0.998830734966592
+iteration: 11. mean conv.: 0.999944320712695
+iteration: 12. mean conv.: 0.955623608017817
+iteration: 13. mean conv.: 0.996547884187082
+iteration: 14. mean conv.: 0.998496659242762
+iteration: 15. mean conv.: 0.999331848552338
+iteration: 16. mean conv.: 0.998051224944321
+iteration: 17. mean conv.: 0.998329621380846
+iteration: 18. mean conv.: 0.999276169265033
+converged. 
+48.5
+17803 genes, 96 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0460596528674942
+iteration: 3. mean conv.: 0.372296803909453
+iteration: 4. mean conv.: 0.975959108015503
+iteration: 5. mean conv.: 0.985002527663877
+iteration: 6. mean conv.: 0.990788069426501
+iteration: 7. mean conv.: 0.993933606695501
+iteration: 8. mean conv.: 0.995899567488626
+iteration: 9. mean conv.: 0.998595742290625
+iteration: 10. mean conv.: 0.99988765938325
+iteration: 11. mean conv.: 0.954951412683256
+iteration: 12. mean conv.: 0.994832331629501
+iteration: 13. mean conv.: 0.997697017356625
+iteration: 14. mean conv.: 0.999606807841375
+iteration: 15. mean conv.: 0.997697017356625
+iteration: 16. mean conv.: 0.997135314272875
+iteration: 17. mean conv.: 0.999494467224625
+iteration: 18. mean conv.: 0.998820423524125
+iteration: 19. mean conv.: 0.998483401673875
+iteration: 20. mean conv.: 0.99966297814975
+converged. 
+24.1
+17945 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0405126776260797
+iteration: 3. mean conv.: 0.294288102535525
+iteration: 4. mean conv.: 0.975034828643076
+iteration: 5. mean conv.: 0.986179994427417
+iteration: 6. mean conv.: 0.991418222346057
+iteration: 7. mean conv.: 0.994427417107829
+iteration: 8. mean conv.: 0.996210643633324
+iteration: 9. mean conv.: 0.997993870158819
+iteration: 10. mean conv.: 0.998662580105879
+iteration: 11. mean conv.: 0.99966564502647
+iteration: 12. mean conv.: 0.884424630816383
+iteration: 13. mean conv.: 0.994315965449986
+iteration: 14. mean conv.: 0.995987740317637
+iteration: 15. mean conv.: 0.99804959598774
+iteration: 16. mean conv.: 0.999888548342157
+iteration: 17. mean conv.: 0.996154917804402
+iteration: 18. mean conv.: 0.996600724435776
+iteration: 19. mean conv.: 0.998774031763722
+iteration: 20. mean conv.: 1
+iteration: 21. mean conv.: 0.99804959598774
+iteration: 22. mean conv.: 0.998551128448036
+iteration: 23. mean conv.: 1
+converged. 
+24.2
+18135 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0367245657568238
+iteration: 3. mean conv.: 0.304273504273504
+iteration: 4. mean conv.: 0.977557209815274
+iteration: 5. mean conv.: 0.988199614006066
+iteration: 6. mean conv.: 0.992445547284257
+iteration: 7. mean conv.: 0.995533498759305
+iteration: 8. mean conv.: 0.996746622553074
+iteration: 9. mean conv.: 0.997849462365591
+iteration: 10. mean conv.: 0.998676592224979
+iteration: 11. mean conv.: 0.999724290046871
+iteration: 12. mean conv.: 0.884973807554453
+iteration: 13. mean conv.: 0.996691480562448
+iteration: 14. mean conv.: 0.997684036393714
+iteration: 15. mean conv.: 0.999724290046871
+iteration: 16. mean conv.: 0.99746346843121
+iteration: 17. mean conv.: 0.997794320374966
+iteration: 18. mean conv.: 0.999669148056245
+iteration: 19. mean conv.: 0.998621450234353
+iteration: 20. mean conv.: 0.999228012131238
+converged. 
+24.3
+17710 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0438170525127047
+iteration: 3. mean conv.: 0.537267080745342
+iteration: 4. mean conv.: 0.978994918125353
+iteration: 5. mean conv.: 0.987408243929983
+iteration: 6. mean conv.: 0.992377188029362
+iteration: 7. mean conv.: 0.994805194805195
+iteration: 8. mean conv.: 0.996329757199322
+iteration: 9. mean conv.: 0.99768492377188
+iteration: 10. mean conv.: 0.998644833427442
+iteration: 11. mean conv.: 0.999604743083004
+iteration: 12. mean conv.: 0.895990965556183
+iteration: 13. mean conv.: 0.994522868435912
+iteration: 14. mean conv.: 0.996216826651609
+iteration: 15. mean conv.: 0.99768492377188
+iteration: 16. mean conv.: 0.999096555618295
+iteration: 17. mean conv.: 0.996555618294749
+iteration: 18. mean conv.: 0.996216826651609
+iteration: 19. mean conv.: 0.997797854319593
+iteration: 20. mean conv.: 0.999491812535291
+iteration: 21. mean conv.: 0.998080180688876
+iteration: 22. mean conv.: 0.998306041784303
+iteration: 23. mean conv.: 0.999774138904574
+converged. 
+24.4
+17753 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0426406804483749
+iteration: 3. mean conv.: 0.510392609699769
+iteration: 4. mean conv.: 0.981749563454064
+iteration: 5. mean conv.: 0.990818453219174
+iteration: 6. mean conv.: 0.993578550104208
+iteration: 7. mean conv.: 0.995944347434236
+iteration: 8. mean conv.: 0.99740888863854
+iteration: 9. mean conv.: 0.998591787303554
+iteration: 10. mean conv.: 0.999042415366417
+iteration: 11. mean conv.: 0.896524531065172
+iteration: 12. mean conv.: 0.997127246099251
+iteration: 13. mean conv.: 0.997803188193545
+iteration: 14. mean conv.: 0.999098743874275
+iteration: 15. mean conv.: 0.997521545654256
+iteration: 16. mean conv.: 0.997634202669971
+iteration: 17. mean conv.: 0.998648115811412
+iteration: 18. mean conv.: 0.999436714921422
+iteration: 19. mean conv.: 0.998535458795696
+iteration: 20. mean conv.: 0.998535458795696
+iteration: 21. mean conv.: 0.999267729397848
+converged. 
+24.5
+17945 genes, 48 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0354973530231262
+iteration: 3. mean conv.: 0.366787405962664
+iteration: 4. mean conv.: 0.979437169127891
+iteration: 5. mean conv.: 0.989579269991641
+iteration: 6. mean conv.: 0.994594594594595
+iteration: 7. mean conv.: 0.996099191975481
+iteration: 8. mean conv.: 0.99738088604068
+iteration: 9. mean conv.: 0.998272499303427
+iteration: 10. mean conv.: 0.999832822513235
+iteration: 11. mean conv.: 0.896962942323767
+iteration: 12. mean conv.: 0.99704653106715
+iteration: 13. mean conv.: 0.997882418500975
+iteration: 14. mean conv.: 0.999944274171078
+iteration: 15. mean conv.: 0.997603789356367
+iteration: 16. mean conv.: 0.997993870158819
+iteration: 17. mean conv.: 0.999888548342157
+iteration: 18. mean conv.: 0.998941209250488
+iteration: 19. mean conv.: 0.999387015881861
+converged. 
+12.1
+18151 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0315685086221145
+iteration: 3. mean conv.: 0.358162084733623
+iteration: 4. mean conv.: 0.983692358547738
+iteration: 5. mean conv.: 0.993003140322847
+iteration: 6. mean conv.: 0.996529116853066
+iteration: 7. mean conv.: 0.998732852184453
+iteration: 8. mean conv.: 0.999118505867445
+iteration: 9. mean conv.: 0.854553468128478
+iteration: 10. mean conv.: 0.999889813233431
+converged. 
+12.2
+17679 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0319588212002941
+iteration: 3. mean conv.: 0.725719780530573
+iteration: 4. mean conv.: 0.98885683579388
+iteration: 5. mean conv.: 0.994965778607387
+iteration: 6. mean conv.: 0.997228350019797
+iteration: 7. mean conv.: 0.998359635726003
+iteration: 8. mean conv.: 0.998981842864415
+iteration: 9. mean conv.: 0.999208100005656
+iteration: 10. mean conv.: 0.87137281520448
+iteration: 11. mean conv.: 0.99785055715821
+iteration: 12. mean conv.: 0.998472764296623
+iteration: 13. mean conv.: 0.998925278579105
+iteration: 14. mean conv.: 0.999886871429379
+iteration: 15. mean conv.: 0.998189942870072
+iteration: 16. mean conv.: 0.998359635726003
+iteration: 17. mean conv.: 0.998642457152554
+iteration: 18. mean conv.: 0.99994343571469
+converged. 
+12.3
+17157 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0354957160342717
+iteration: 3. mean conv.: 0.656525033514018
+iteration: 4. mean conv.: 0.985078976511045
+iteration: 5. mean conv.: 0.991198927551437
+iteration: 6. mean conv.: 0.995045753919683
+iteration: 7. mean conv.: 0.99702745235181
+iteration: 8. mean conv.: 0.997726875327855
+iteration: 9. mean conv.: 0.998426298303899
+iteration: 10. mean conv.: 0.998892580287929
+iteration: 11. mean conv.: 0.99906743603194
+iteration: 12. mean conv.: 0.872471877367838
+iteration: 13. mean conv.: 0.99749373433584
+iteration: 14. mean conv.: 0.998076586815877
+iteration: 15. mean conv.: 0.998426298303899
+iteration: 16. mean conv.: 0.99906743603194
+iteration: 17. mean conv.: 0.997668590079851
+iteration: 18. mean conv.: 0.998018301567873
+iteration: 19. mean conv.: 0.998426298303899
+iteration: 20. mean conv.: 0.999125721279944
+iteration: 21. mean conv.: 0.997960016319869
+iteration: 22. mean conv.: 0.998309727807892
+iteration: 23. mean conv.: 0.998426298303899
+iteration: 24. mean conv.: 0.999592003263974
+iteration: 25. mean conv.: 0.998834295039925
+iteration: 26. mean conv.: 0.998426298303899
+iteration: 27. mean conv.: 0.998950865535933
+iteration: 28. mean conv.: 1
+converged. 
+12.4
+18235 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.0343844255552509
+iteration: 3. mean conv.: 0.35113792157938
+iteration: 4. mean conv.: 0.984041678091582
+iteration: 5. mean conv.: 0.993583767480121
+iteration: 6. mean conv.: 0.996599945160406
+iteration: 7. mean conv.: 0.997916095420894
+iteration: 8. mean conv.: 0.998629010145325
+iteration: 9. mean conv.: 0.998848368522073
+iteration: 10. mean conv.: 0.999341924869756
+iteration: 11. mean conv.: 0.858404167809158
+iteration: 12. mean conv.: 0.998958047710447
+iteration: 13. mean conv.: 0.999177406087195
+converged. 
+12.5
+18144 genes, 24 samples.
+zingeRauto
+iteration: 1. mean conv.: 0
+iteration: 2. mean conv.: 0.031305114638448
+iteration: 3. mean conv.: 0.441247795414462
+iteration: 4. mean conv.: 0.988095238095238
+iteration: 5. mean conv.: 0.994819223985891
+iteration: 6. mean conv.: 0.997354497354497
+iteration: 7. mean conv.: 0.998787477954145
+iteration: 8. mean conv.: 0.999007936507937
+iteration: 9. mean conv.: 0.85460758377425
+iteration: 10. mean conv.: 0.997740299823633
+iteration: 11. mean conv.: 0.998732363315697
+iteration: 12. mean conv.: 0.999007936507937
+iteration: 13. mean conv.: 0.998126102292769
+iteration: 14. mean conv.: 0.998787477954145
+iteration: 15. mean conv.: 0.998897707231041
+iteration: 16. mean conv.: 1
+converged. 
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] stats4    grid      parallel  stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] genefilter_1.56.0          edgeR_3.17.5              
+ [3] limma_3.30.8               MultiAssayExperiment_1.0.0
+ [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+ [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+ [9] S4Vectors_0.12.1           tidyr_0.6.1               
+[11] dplyr_0.5.0                survey_3.31-2             
+[13] survival_2.40-1            Matrix_1.2-8              
+[15] GEOquery_2.40.0            Biobase_2.34.0            
+[17] BiocGenerics_0.20.0        tximport_1.2.0            
+[19] reshape2_1.4.2             rjson_0.2.15              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9          plyr_1.8.4           XVector_0.14.0      
+ [4] bitops_1.0-6         tools_3.3.1          zlibbioc_1.20.0     
+ [7] digest_0.6.12        memoise_1.0.0        RSQLite_1.1-2       
+[10] annotate_1.52.1      tibble_1.2           lattice_0.20-34     
+[13] shiny_1.0.0          DBI_0.5-1            httr_1.2.1          
+[16] stringr_1.1.0        locfit_1.5-9.1       shinydashboard_0.5.3
+[19] R6_2.2.0             AnnotationDbi_1.36.2 XML_3.98-1.5        
+[22] magrittr_1.5         htmltools_0.3.5      splines_3.3.1       
+[25] assertthat_0.1       xtable_1.8-2         mime_0.5            
+[28] httpuv_1.3.3         stringi_1.1.2        RCurl_1.95-4.8      
+> 
+> proc.time()
+    user   system  elapsed 
+3811.372  605.591 4465.752 

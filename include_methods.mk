@@ -20,3 +20,10 @@ MTc := $(subst $(space),$(comma),$(MT))
 ## All filterings
 FILT := TPM_1_25p
 FILTc := $(subst $(space),$(comma),$(FILT))
+
+## Bulk RNA-seq data sets
+DSbulk := EGEUV1 EGEUV1mock
+MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt DESeq2 DESeq2nofilt edgeRLRTdeconv edgeRLRTrobust voomlimma zingeRauto
+MTcbulk := $(subst $(space),$(comma),$(MTbulk))
+DSbulkb := EGEUV1
+Dssbulk := EGEUV1mock

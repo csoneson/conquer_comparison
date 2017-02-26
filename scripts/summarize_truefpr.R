@@ -1,6 +1,6 @@
-summarize_truefpr <- function(figdir, datasets, exts) {
+summarize_truefpr <- function(figdir, datasets, exts, dtpext) {
   ## ---------------------------------- True FPR ------------------------------ ##
-  pdf(paste0(figdir, "/summary_heatmaps", exts, ".pdf"),
+  pdf(paste0(figdir, "/summary_heatmaps", exts, dtpext, ".pdf"),
       width = 10, height = 4 * length(datasets))
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/truefpr/", ds, exts, "_truefpr_summary_data.rds"))
@@ -35,7 +35,7 @@ summarize_truefpr <- function(figdir, datasets, exts) {
   dev.off()
   
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_performance", exts, ".pdf"),
+  pdf(paste0(figdir, "/summary_performance", exts, dtpext, ".pdf"),
       width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/truefpr/", ds, exts, 
