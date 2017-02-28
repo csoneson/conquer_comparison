@@ -1,4 +1,4 @@
-summarize_pca <- function(figdir, datasets, exts, dtpext) {
+summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## ---------------------------------- PCA ----------------------------------- ##
   pdf(paste0(figdir, "/summary_pca", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {

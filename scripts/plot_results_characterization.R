@@ -69,7 +69,7 @@ plot_results_characterization <- function(cobra, colvec, summary_data = list()) 
                                                                       "variance(TPM))")))) + 
               xlab("Number of methods calling gene significant"))
     }
-    for (y in c("fraczero", "fraczerodiff")) {
+    for (y in c("fraczero", "fraczerodiff", "cvtpm")) {
       ## Populate summary_data with t-statistic between significant and non-significant genes
       summary_data$stats_charac <- 
         rbind(summary_data$stats_charac, 
@@ -91,7 +91,7 @@ plot_results_characterization <- function(cobra, colvec, summary_data = list()) 
               stat_summary(fun.data = function(x) {return(c(y = max(df2[, y]), label = length(x)))}, 
                            geom = "text", alpha = 1, size = 2, vjust = -1, 
                            position = position_dodge(width = 0.75)) + 
-              ylab(ifelse(y == "fraczero", "Zero fraction", "Difference in zero fraction")))
+              ylab(ifelse(y == "fraczero", "Zero fraction", ifelse(y == "cvtpm", "coefficient of variation (TPM)", "Difference in zero fraction"))))
       print(ggplot(df2, aes_string(x = y, fill = "Var2", alpha = "sign")) + 
               geom_density() + theme_bw() + scale_fill_manual(values = col_reorder, name = "") + 
               scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
@@ -103,7 +103,7 @@ plot_results_characterization <- function(cobra, colvec, summary_data = list()) 
       print(ggplot(tth, aes_string(x = "nbr_methods", y = y, 
                                    group = "nbr_methods")) + 
               geom_boxplot() + theme_bw() + ylab(ifelse(y == "fraczero", "Zero fraction", 
-                                                        "Difference in zero fraction")) + 
+                                                        ifelse(y == "cvtpm", "coefficient of variation (TPM)", "Difference in zero fraction"))) + 
               xlab("Number of methods calling gene significant"))
     }
   }

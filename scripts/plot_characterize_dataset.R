@@ -75,6 +75,7 @@ for (sz in sizes) {
     avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 
                                  gene = rownames(censuscounts))
     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
+    cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
                            fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
                                              1, function(x) mean(x == 0)),
@@ -85,7 +86,7 @@ for (sz in sizes) {
                                  gene = rownames(censuscounts))
     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-                  list(vartpm, fraczero, avecount, avetpm, avecensuscount, fraczerocensus))
+                  list(vartpm, fraczero, avecount, avetpm, avecensuscount, fraczerocensus, cvtpm))
     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
                                                      ".", sz, ".", i)
     char_gene[[paste0(sz, ".", i)]] <- df2
@@ -150,13 +151,13 @@ for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
                                           ifelse(tp == "avecensuscount", "Average census count per gene",
                                                  "Average TPM per gene")))))
 }
-for (tp in c("fraczero", "fraczerodiff", "fraczerocensus")) {
+for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm")) {
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 
           geom_density() + facet_wrap(~ncells) + 
           theme_bw() + xlab(ifelse(tp == "fraczero", "Fraction zeros per gene", 
-                                   ifelse(tp == "fraczerodiff", "Difference (between conditions) of zero fraction per gene", "Fraction zeros per gene, census count"))))
+                                   ifelse(tp == "fraczerodiff", "Difference (between conditions) of zero fraction per gene", ifelse(tp == "cvtpm", "coefficient of variation(TPM)", "Fraction zeros per gene, census count")))))
 }
 for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
   print(char_cells_m %>% dplyr::filter(mtype == tp) %>% 

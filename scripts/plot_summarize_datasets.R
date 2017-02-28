@@ -23,7 +23,7 @@ names(cols) <- paste0(names(cols), exts)
 
 get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
                                        datasets = datasets, exts = exts, 
-                                       dtpext = dtpext)
+                                       dtpext = dtpext, cols = cols)
 saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
 sessionInfo()
 

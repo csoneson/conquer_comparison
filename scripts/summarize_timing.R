@@ -1,4 +1,4 @@
-summarize_timing <- function(figdir, datasets, exts, dtpext) {
+summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## ------------------------------- Timing ----------------------------------- ##
   pdf(paste0(figdir, "/summary_timing", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {

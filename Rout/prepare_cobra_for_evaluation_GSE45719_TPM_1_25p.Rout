@@ -2292,4 +2292,4 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > 
 > proc.time()
    user  system elapsed 
-402.923  26.318 474.011 
+442.641 286.990 763.488 

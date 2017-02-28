@@ -86,8 +86,9 @@ for (sz in sizes) {
                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
+    cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-                  list(vartpm, fraczero, avecount, avetpm))
+                  list(vartpm, fraczero, avecount, avetpm, cvtpm))
     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
                                                      ".", sz, ".", i)
     truth[[paste0(sz, ".", i)]] <- df2

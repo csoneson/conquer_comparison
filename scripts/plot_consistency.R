@@ -20,6 +20,35 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   pval(cobratmp)[is.na(pval(cobratmp))] <- 1
   padj(cobratmp)[is.na(padj(cobratmp))] <- 1
   
+  ## Concordance plots
+  pconc <- pval(cobratmp)
+  for (i in colnames(pconc)) {
+    pconc[, i] <- order(pconc[, i])
+  }
+  allm <- unique(get_method(colnames(pconc)))
+  concvals <- do.call(rbind, lapply(allm, function(mth) {
+    tmp <- pconc[, which(get_method(colnames(pconc)) == mth)]
+    concval <- data.frame(t(sapply(1:1000, function(i) {
+      p1 <- sum(table(unlist(tmp[1:i, ])) == ncol(tmp))
+      p0.5 <- sum(table(unlist(tmp[1:i, ])) >= 0.5*ncol(tmp))
+      c(k = i, p1 = p1, p0.5 = p0.5)
+    })), stringsAsFactors = FALSE)
+    concval$method <- mth
+    concval
+  }))
+  print(ggplot(concvals, aes(x = k, y = p1, group = method, color = method)) + 
+          geom_line() + scale_color_manual(values = colvec) + 
+          theme_bw())
+  print(ggplot(concvals, aes(x = k, y = p0.5, group = method, color = method)) + 
+          geom_line() + scale_color_manual(values = colvec) + 
+          theme_bw())
+  summary_data$concordance_fullds <- concval
+  
+  conc_auc <- concvals %>% dplyr::group_by(method) %>% 
+    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0)), 
+                     auc0.5 = caTools::trapz(c(k, k[length(k)]), c(p0.5, 0)))
+  summary_data$concordance_auc <- conc_auc
+  
   cobraperf <- calculate_performance(cobratmp, aspects = "overlap", 
                                      type_venn = "adjp", thr_venn = 0.05)
   overlap(cobraperf) <- overlap(cobraperf)[, order(colnames(overlap(cobraperf)))]

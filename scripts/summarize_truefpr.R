@@ -1,4 +1,4 @@
-summarize_truefpr <- function(figdir, datasets, exts, dtpext) {
+summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## ---------------------------------- True FPR ------------------------------ ##
   pdf(paste0(figdir, "/summary_heatmaps", exts, dtpext, ".pdf"),
       width = 10, height = 4 * length(datasets))
@@ -57,5 +57,24 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext) {
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
           guides(color = guide_legend(ncol = 2, title = ""),
                  shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  
+  ## P-value distributions
+  for (ds in datasets) {
+    cbr <- readRDS(paste0("figures/cobra_data/", ds, exts, "_cobra.rds"))
+    pv <- pval(cbr)
+    tmp <- reshape2::melt(pv) %>% 
+      tidyr::separate(variable, into = c("method", "ncells", "repl"), sep = "\\.") %>%
+      dplyr::mutate(ncells.repl = paste0(ncells, ".", repl))
+    for (i in unique(tmp$ncells.repl)) {
+      print(tmp %>% subset(ncells.repl == i) %>% 
+              ggplot(aes(x = value, fill = method)) + geom_histogram() + 
+              facet_wrap(~method, scales = "free_y") + 
+              theme_bw() + xlab("p-value") + ylab("") + 
+              theme(axis.text.y = element_blank(),
+                    axis.ticks.y = element_blank()) + 
+              scale_fill_manual(values = cols, name = "", guide = FALSE) + 
+              ggtitle(paste0(ds, ".", i)))
+    }
+  }
   dev.off()
 }
