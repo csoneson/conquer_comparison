@@ -21,6 +21,9 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   padj(cobratmp)[is.na(padj(cobratmp))] <- 1
   
   ## Concordance plots
+  maxrank <- 1000
+  
+  ## All sample sizes, all replicates
   pconc <- pval(cobratmp)
   for (i in colnames(pconc)) {
     pconc[, i] <- order(pconc[, i])
@@ -28,7 +31,7 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   allm <- unique(get_method(colnames(pconc)))
   concvals <- do.call(rbind, lapply(allm, function(mth) {
     tmp <- pconc[, which(get_method(colnames(pconc)) == mth)]
-    concval <- data.frame(t(sapply(1:1000, function(i) {
+    concval <- data.frame(t(sapply(1:maxrank, function(i) {
       p1 <- sum(table(unlist(tmp[1:i, ])) == ncol(tmp))
       p0.5 <- sum(table(unlist(tmp[1:i, ])) >= 0.5*ncol(tmp))
       c(k = i, p1 = p1, p0.5 = p0.5)
@@ -42,13 +45,121 @@ plot_consistency <- function(cobra, colvec, summary_data = list()) {
   print(ggplot(concvals, aes(x = k, y = p0.5, group = method, color = method)) + 
           geom_line() + scale_color_manual(values = colvec) + 
           theme_bw())
-  summary_data$concordance_fullds <- concval
+  summary_data$concordance_fullds <- rbind(summary_data$concordance_fullds, concvals)
   
   conc_auc <- concvals %>% dplyr::group_by(method) %>% 
-    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0)), 
-                     auc0.5 = caTools::trapz(c(k, k[length(k)]), c(p0.5, 0)))
-  summary_data$concordance_auc <- conc_auc
+    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0))/(maxrank^2/2), 
+                     auc0.5 = caTools::trapz(c(k, k[length(k)]), c(p0.5, 0))/(maxrank^2/2))
+  summary_data$concordance_fullds_auc <- rbind(summary_data$concordance_fullds_auc, conc_auc)
   
+  ## Per sample size
+  allss <- unique(get_nsamples(colnames(pconc)))
+  concvals_ss <- do.call(rbind, lapply(allm, function(mth) {
+    do.call(rbind, lapply(allss, function(i) {
+      tmp <- pconc[, intersect(which(get_method(colnames(pconc)) == mth),
+                               which(get_nsamples(colnames(pconc)) == i)), drop = FALSE]
+      if (ncol(tmp) > 1) {
+        concval <- data.frame(t(sapply(1:maxrank, function(i) {
+          p1 <- sum(table(unlist(tmp[1:i, ])) == ncol(tmp))
+          p0.5 <- sum(table(unlist(tmp[1:i, ])) >= 0.5*ncol(tmp))
+          c(k = i, p1 = p1, p0.5 = p0.5)
+        })), stringsAsFactors = FALSE)
+        concval$method <- mth
+        concval$ncells <- i
+        concval
+      } else {
+        NULL
+      }
+    }))
+  }))
+  concvals_ss$ncells <- factor(concvals_ss$ncells,
+                               levels = sort(unique(as.numeric(as.character(concvals_ss$ncells)))))
+  print(ggplot(concvals_ss, aes(x = k, y = p1, group = method, color = method)) + 
+          geom_line() + scale_color_manual(values = colvec, name = "") + 
+          theme_bw() + facet_wrap(~ncells) + theme(legend.position = "bottom"))
+  print(ggplot(concvals_ss, aes(x = k, y = p0.5, group = method, color = method)) + 
+          geom_line() + scale_color_manual(values = colvec, name = "") + 
+          theme_bw() + facet_wrap(~ncells) + theme(legend.position = "bottom"))
+  summary_data$concordance_byncells <- rbind(summary_data$concordance_byncells, concvals_ss)
+  
+  conc_auc_ss <- concvals_ss %>% dplyr::group_by(method, ncells) %>% 
+    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0))/(maxrank^2/2), 
+                     auc0.5 = caTools::trapz(c(k, k[length(k)]), c(p0.5, 0))/(maxrank^2/2))
+  summary_data$concordance_byncells_auc <- 
+    rbind(summary_data$concordance_byncells_auc, conc_auc_ss)
+  
+  ## Pairwise, within sample size
+  concvals_pairwise <- do.call(rbind, lapply(allm, function(mth) {
+    do.call(rbind, lapply(allss, function(i) {
+      tmp <- pconc[, intersect(which(get_method(colnames(pconc)) == mth),
+                               which(get_nsamples(colnames(pconc)) == i)), drop = FALSE]
+      if (ncol(tmp) > 1) {
+        concval <- NULL
+        for (j1 in 1:(ncol(tmp) - 1)) {
+          for (j2 in (j1 + 1):(ncol(tmp))) {
+            cv <- data.frame(t(sapply(1:maxrank, function(i) {
+              p1 <- sum(table(unlist(tmp[1:i, c(j1, j2)])) == 2)
+              c(k = i, p1 = p1)
+            })), stringsAsFactors = FALSE)
+            cv$ncells1 <- i
+            cv$ncells2 <- i
+            cv$replicate1 <- get_repl(colnames(tmp))[j1]
+            cv$replicate2 <- get_repl(colnames(tmp))[j2]
+            concval <- rbind(concval, cv)
+          }
+        }
+        concval$method <- mth
+        concval
+      } else {
+        NULL
+      }
+    }))
+  }))
+  summary_data$concordance_pairwise <- rbind(summary_data$concordance_pairwise, concvals_pairwise)
+  
+  conc_auc_pw <- concvals_pairwise %>% 
+    dplyr::group_by(method, ncells1, ncells2, replicate1, replicate2) %>% 
+    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0))/(maxrank^2/2))
+  summary_data$concordance_pairwise_auc <- 
+    rbind(summary_data$concordance_pairwise_auc, conc_auc_pw)
+  
+  ## Between pairs of methods, within sample size/replicate
+  allrepl <- unique(get_repl(colnames(pconc)))
+  concvals_btwmth <- do.call(rbind, lapply(allss, function(ss) {
+    do.call(rbind, lapply(allrepl, function(i) {
+      tmp <- pconc[, intersect(which(get_repl(colnames(pconc)) == i),
+                               which(get_nsamples(colnames(pconc)) == ss)), drop = FALSE]
+      if (ncol(tmp) > 1) {
+        concval <- NULL
+        for (j1 in 1:(ncol(tmp) - 1)) {
+          for (j2 in (j1 + 1):(ncol(tmp))) {
+            cv <- data.frame(t(sapply(1:maxrank, function(i) {
+              p1 <- sum(table(unlist(tmp[1:i, c(j1, j2)])) == 2)
+              c(k = i, p1 = p1)
+            })), stringsAsFactors = FALSE)
+            cv$method1 <- get_method(colnames(tmp))[j1]
+            cv$method2 <- get_method(colnames(tmp))[j2]
+            concval <- rbind(concval, cv)
+          }
+        }
+        concval$ncells <- ss
+        concval$repl <- i
+        concval
+      } else {
+        NULL
+      }
+    }))
+  }))
+  summary_data$concordance_betweenmethods <- 
+    rbind(summary_data$concordance_betweenmethods, concvals_btwmth)
+  
+  conc_auc_btwmth <- concvals_btwmth %>% 
+    dplyr::group_by(method1, method2, ncells, repl) %>% 
+    dplyr::summarize(auc1 = caTools::trapz(c(k, k[length(k)]), c(p1, 0))/(maxrank^2/2))
+  summary_data$concordance_betweenmethods_auc <- 
+    rbind(summary_data$concordance_betweenmethods_auc, conc_auc_btwmth)
+  
+  ## Overlaps
   cobraperf <- calculate_performance(cobratmp, aspects = "overlap", 
                                      type_venn = "adjp", thr_venn = 0.05)
   overlap(cobraperf) <- overlap(cobraperf)[, order(colnames(overlap(cobraperf)))]

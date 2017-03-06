@@ -53,14 +53,14 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext)
++                                        dtpext = dtpext, cols = cols)
 Joining, by = c("ncells", "dataset", "filt")
 Joining, by = c("ncells", "repl", "dataset", "filt")
 null device 
           1 
 Warning messages:
-1: Removed 75 rows containing non-finite values (stat_boxplot). 
-2: Removed 75 rows containing missing values (geom_point). 
+1: Removed 78 rows containing non-finite values (stat_boxplot). 
+2: Removed 78 rows containing missing values (geom_point). 
 > saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -116,4 +116,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 40.024   2.621  45.823 
+ 42.582   2.948  46.001 

@@ -27,15 +27,13 @@ Setting LC_CTYPE failed, using "C"
 > demethods <- strsplit(demethods, ",")[[1]]
 > 
 > print(demethods)
- [1] "edgeRLRT"          "SAMseq"            "Wilcoxon"         
- [4] "zingeR"            "edgeRQLF"          "NODES"            
- [7] "NODESnofilt"       "BPSC"              "DESeq2"           
-[10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
-[13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
-[16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
-[19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
-[22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
-[25] "monocle"           "D3E"              
+ [1] "edgeRLRT"         "SAMseq"           "Wilcoxon"         "zingeR"          
+ [5] "edgeRQLF"         "NODES"            "NODESnofilt"      "BPSC"            
+ [9] "DESeq2"           "DESeq2nofilt"     "edgeRLRTdeconv"   "MASTcpm"         
+[13] "MASTcpmDetRate"   "MASTtpm"          "MASTtpmDetRate"   "SCDE"            
+[17] "edgeRLRTrobust"   "voomlimma"        "zingeRauto"       "Seurat"          
+[21] "Seuratnofilt"     "DESeq2census"     "edgeRLRTcensus"   "zingeRautonofilt"
+[25] "monoclecensus"    "monocle"          "D3E"             
 > print(dataset)
 [1] "GSE45719"
 > print(filt)
@@ -167,4 +165,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1194.391   15.439 1230.331 
+ 990.528   28.581 1022.935 

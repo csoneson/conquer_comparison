@@ -19,6 +19,9 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
   rownames(y) <- y$dataset
   y$dataset <- NULL
   
+  ## Remove extension from method name
+  colnames(y) <- gsub(exts, "", colnames(y))
+  
   annotation_row = data.frame(id = rownames(y)) %>% 
     tidyr::separate(id, c("dataset", "filt", "n_samples", "repl"), sep = "\\.", remove = FALSE) %>%
     dplyr::mutate(n_samples = factor(n_samples, 
@@ -30,7 +33,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
            breaks = seq(0, 0.6, length.out = 101), 
            annotation_row = dplyr::select(annotation_row, n_samples, dataset), show_rownames = FALSE,
            annotation_col = data.frame(method = colnames(y), row.names = colnames(y)),
-           annotation_colors = list(method = structure(cols, names = names(cols))[colnames(y)]),
+           annotation_colors = list(method = structure(cols, names = gsub(exts, "", names(cols)))[colnames(y)]),
            annotation_names_col = FALSE)
   dev.off()
   
@@ -49,12 +52,18 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
   })
   y <- do.call(rbind, y) %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples))))))
+  
+  ## Remove extension from method name
+  y$method <- gsub(exts, "", y$method)
+  
   print(ggplot(y, aes(x = method, y = FPR, color = method)) + 
-          geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = 0) + 
+          geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
           geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
           theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
-          scale_color_manual(values = cols, name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                axis.text.y = element_text(size = 12),
+                axis.title.y = element_text(size = 13)) + 
           guides(color = guide_legend(ncol = 2, title = ""),
                  shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
   
@@ -65,6 +74,9 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
     tmp <- reshape2::melt(pv) %>% 
       tidyr::separate(variable, into = c("method", "ncells", "repl"), sep = "\\.") %>%
       dplyr::mutate(ncells.repl = paste0(ncells, ".", repl))
+    ## Remove extension from method name
+    tmp$method <- gsub(exts, "", tmp$method)
+    
     for (i in unique(tmp$ncells.repl)) {
       print(tmp %>% subset(ncells.repl == i) %>% 
               ggplot(aes(x = value, fill = method)) + geom_histogram() + 
@@ -72,7 +84,8 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
               theme_bw() + xlab("p-value") + ylab("") + 
               theme(axis.text.y = element_blank(),
                     axis.ticks.y = element_blank()) + 
-              scale_fill_manual(values = cols, name = "", guide = FALSE) + 
+              scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
+                                name = "", guide = FALSE) + 
               ggtitle(paste0(ds, ".", i)))
     }
   }

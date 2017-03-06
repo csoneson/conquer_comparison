@@ -51,7 +51,7 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext)
++                                        dtpext = dtpext, cols = cols)
 Joining, by = c("ncells", "dataset", "filt")
 Joining, by = c("ncells", "repl", "dataset", "filt")
 null device 
@@ -114,4 +114,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 23.166   1.694  26.112 
+ 21.755   1.124  23.173 

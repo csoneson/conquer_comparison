@@ -152,32 +152,32 @@ $(foreach k,$(FILT), $(foreach i,$(DSbulk),$(eval $(call plotrule_characterizati
 ## ------------------------------------------------------------------------------------ ##
 define origvsmockrule
 figures/orig_vs_mock/$(1)_orig_vs_mock_summary_data.rds: $(addsuffix .rds, $(addprefix results/$(1)_, $(foreach Y,$(MT),$Y))) \
-$(addsuffix .rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MT),$Y))) \
-scripts/plot_orig_vs_mock.R 
+$(addsuffix .rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MT),$Y))) include_methods.mk scripts/plot_setup.R \
+scripts/plot_orig_vs_mock.R scripts/plot_compare_orig_mock.R
 	$R "--args demethods='${MTc}' dataset='$(1)' filt=''" scripts/plot_orig_vs_mock.R Rout/plot_orig_vs_mock_$(1).Rout
 endef
 $(foreach i,$(Dsb),$(eval $(call origvsmockrule,$(i))))
 
 define origvsmockrulebulk
 figures/orig_vs_mock/$(1)_orig_vs_mock_summary_data.rds: $(addsuffix .rds, $(addprefix results/$(1)_, $(foreach Y,$(MTbulk),$Y))) \
-$(addsuffix .rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MTbulk),$Y))) \
-scripts/plot_orig_vs_mock.R 
+$(addsuffix .rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MTbulk),$Y))) include_methods.mk scripts/plot_setup.R  \
+scripts/plot_orig_vs_mock.R scripts/plot_compare_orig_mock.R
 	$R "--args demethods='${MTcbulk}' dataset='$(1)' filt=''" scripts/plot_orig_vs_mock.R Rout/plot_orig_vs_mock_$(1).Rout
 endef
 $(foreach i,$(DSbulkb),$(eval $(call origvsmockrulebulk,$(i))))
 
 define origvsmockrule_filt
 figures/orig_vs_mock/$(1)_$(2)_orig_vs_mock_summary_data.rds: $(addsuffix _$(2).rds, $(addprefix results/$(1)_, $(foreach Y,$(MT),$Y))) \
-$(addsuffix _$(2).rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MT),$Y))) \
-scripts/plot_orig_vs_mock.R 
+$(addsuffix _$(2).rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MT),$Y))) include_methods.mk scripts/plot_setup.R  \
+scripts/plot_orig_vs_mock.R scripts/plot_compare_orig_mock.R 
 	$R "--args demethods='${MTc}' dataset='$(1)' filt='$(2)'" scripts/plot_orig_vs_mock.R Rout/plot_orig_vs_mock_$(1)_$(2).Rout
 endef
 $(foreach k,$(FILT), $(foreach i,$(Dsb),$(eval $(call origvsmockrule_filt,$(i),$(k)))))
 
 define origvsmockrulebulk_filt
 figures/orig_vs_mock/$(1)_$(2)_orig_vs_mock_summary_data.rds: $(addsuffix _$(2).rds, $(addprefix results/$(1)_, $(foreach Y,$(MTbulk),$Y))) \
-$(addsuffix _$(2).rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MTbulk),$Y))) \
-scripts/plot_orig_vs_mock.R 
+$(addsuffix _$(2).rds, $(addprefix results/$(1)mock_, $(foreach Y,$(MTbulk),$Y))) include_methods.mk scripts/plot_setup.R  \
+scripts/plot_orig_vs_mock.R scripts/plot_compare_orig_mock.R 
 	$R "--args demethods='${MTcbulk}' dataset='$(1)' filt='$(2)'" scripts/plot_orig_vs_mock.R Rout/plot_orig_vs_mock_$(1)_$(2).Rout
 endef
 $(foreach k,$(FILT), $(foreach i,$(DSbulkb),$(eval $(call origvsmockrulebulk_filt,$(i),$(k)))))

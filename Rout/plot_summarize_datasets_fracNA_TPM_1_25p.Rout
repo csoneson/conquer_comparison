@@ -53,7 +53,7 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext)
++                                        dtpext = dtpext, cols = cols)
 null device 
           1 
 > saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
@@ -105,5 +105,5 @@ loaded via a namespace (and not attached):
 > 
 > 
 > proc.time()
-    user   system  elapsed 
- 568.597  476.936 1221.740 
+   user  system elapsed 
+751.878  83.635 878.662 

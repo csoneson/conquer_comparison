@@ -113,5 +113,5 @@ loaded via a namespace (and not attached):
 [37] R6_2.2.0            
 > 
 > proc.time()
-    user   system  elapsed 
- 937.057   81.208 1021.896 
+   user  system elapsed 
+815.393   4.786 822.723 

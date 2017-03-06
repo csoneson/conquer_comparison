@@ -58,13 +58,13 @@ Warning messages:
   too many colors supplied, only the first 11 will be used
 2: Removed 2 rows containing missing values (geom_point). 
 3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 29 random colors will be added
+  too few colors provided, 28 random colors will be added
 4: Removed 10 rows containing missing values (geom_point). 
 5: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 29 random colors will be added
+  too few colors provided, 28 random colors will be added
 6: Removed 10 rows containing missing values (geom_point). 
 7: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 29 random colors will be added
+  too few colors provided, 28 random colors will be added
 8: Removed 10 rows containing missing values (geom_point). 
 > dev.off()
 null device 
@@ -127,4 +127,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-229.297  22.452 253.615 
+144.719   2.251 147.342 

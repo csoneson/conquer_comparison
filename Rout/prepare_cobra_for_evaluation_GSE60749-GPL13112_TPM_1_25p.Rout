@@ -39,15 +39,13 @@ Setting LC_CTYPE failed, using "C"
 > demethods <- strsplit(demethods, ",")[[1]]
 > 
 > print(demethods)
- [1] "edgeRLRT"          "SAMseq"            "Wilcoxon"         
- [4] "zingeR"            "edgeRQLF"          "NODES"            
- [7] "NODESnofilt"       "BPSC"              "DESeq2"           
-[10] "DESeq2nofilt"      "edgeRLRTdeconv"    "MASTcounts"       
-[13] "MASTcountsDetRate" "MASTtpm"           "SCDE"             
-[16] "edgeRLRTrobust"    "voomlimma"         "zingeRauto"       
-[19] "Seurat"            "Seuratnofilt"      "DESeq2census"     
-[22] "edgeRLRTcensus"    "zingeRautonofilt"  "monoclecensus"    
-[25] "monocle"           "D3E"              
+ [1] "edgeRLRT"         "SAMseq"           "Wilcoxon"         "zingeR"          
+ [5] "edgeRQLF"         "NODES"            "NODESnofilt"      "BPSC"            
+ [9] "DESeq2"           "DESeq2nofilt"     "edgeRLRTdeconv"   "MASTcpm"         
+[13] "MASTcpmDetRate"   "MASTtpm"          "MASTtpmDetRate"   "SCDE"            
+[17] "edgeRLRTrobust"   "voomlimma"        "zingeRauto"       "Seurat"          
+[21] "Seuratnofilt"     "DESeq2census"     "edgeRLRTcensus"   "zingeRautonofilt"
+[25] "monoclecensus"    "monocle"          "D3E"             
 > print(dataset)
 [1] "GSE60749-GPL13112"
 > print(config_file)
@@ -64,35 +62,36 @@ Setting LC_CTYPE failed, using "C"
 > ## Create iCOBRA object from the result files for the different methods
 > (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
 +                     dataset, "_", demethods, exts, ".rds"))
- [1] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRT_TPM_1_25p.rds"         
- [2] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_SAMseq_TPM_1_25p.rds"           
- [3] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Wilcoxon_TPM_1_25p.rds"         
- [4] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeR_TPM_1_25p.rds"           
- [5] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRQLF_TPM_1_25p.rds"         
- [6] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_NODES_TPM_1_25p.rds"            
- [7] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_NODESnofilt_TPM_1_25p.rds"      
- [8] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_BPSC_TPM_1_25p.rds"             
- [9] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2_TPM_1_25p.rds"           
-[10] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2nofilt_TPM_1_25p.rds"     
-[11] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTdeconv_TPM_1_25p.rds"   
-[12] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTcounts_TPM_1_25p.rds"       
-[13] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTcountsDetRate_TPM_1_25p.rds"
-[14] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTtpm_TPM_1_25p.rds"          
-[15] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_SCDE_TPM_1_25p.rds"             
-[16] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTrobust_TPM_1_25p.rds"   
-[17] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_voomlimma_TPM_1_25p.rds"        
-[18] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeRauto_TPM_1_25p.rds"       
-[19] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Seurat_TPM_1_25p.rds"           
-[20] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Seuratnofilt_TPM_1_25p.rds"     
-[21] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2census_TPM_1_25p.rds"     
-[22] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTcensus_TPM_1_25p.rds"   
-[23] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeRautonofilt_TPM_1_25p.rds" 
-[24] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_monoclecensus_TPM_1_25p.rds"    
-[25] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_monocle_TPM_1_25p.rds"          
-[26] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_D3E_TPM_1_25p.rds"              
+ [1] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRT_TPM_1_25p.rds"        
+ [2] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_SAMseq_TPM_1_25p.rds"          
+ [3] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Wilcoxon_TPM_1_25p.rds"        
+ [4] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeR_TPM_1_25p.rds"          
+ [5] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRQLF_TPM_1_25p.rds"        
+ [6] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_NODES_TPM_1_25p.rds"           
+ [7] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_NODESnofilt_TPM_1_25p.rds"     
+ [8] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_BPSC_TPM_1_25p.rds"            
+ [9] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2_TPM_1_25p.rds"          
+[10] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2nofilt_TPM_1_25p.rds"    
+[11] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTdeconv_TPM_1_25p.rds"  
+[12] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTcpm_TPM_1_25p.rds"         
+[13] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTcpmDetRate_TPM_1_25p.rds"  
+[14] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTtpm_TPM_1_25p.rds"         
+[15] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_MASTtpmDetRate_TPM_1_25p.rds"  
+[16] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_SCDE_TPM_1_25p.rds"            
+[17] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTrobust_TPM_1_25p.rds"  
+[18] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_voomlimma_TPM_1_25p.rds"       
+[19] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeRauto_TPM_1_25p.rds"      
+[20] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Seurat_TPM_1_25p.rds"          
+[21] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_Seuratnofilt_TPM_1_25p.rds"    
+[22] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_DESeq2census_TPM_1_25p.rds"    
+[23] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_edgeRLRTcensus_TPM_1_25p.rds"  
+[24] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_zingeRautonofilt_TPM_1_25p.rds"
+[25] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_monoclecensus_TPM_1_25p.rds"   
+[26] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_monocle_TPM_1_25p.rds"         
+[27] "/home/Shared/data/seq/conquer/comparison/results/GSE60749-GPL13112_D3E_TPM_1_25p.rds"             
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 > cobra <- NULL
 > timings <- list()
 > for (rfn in resfiles) {
@@ -1252,6 +1251,70 @@ Setting LC_CTYPE failed, using "C"
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
@@ -2209,8 +2272,9 @@ Setting LC_CTYPE failed, using "C"
 +                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
 +     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
 +     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
++     cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
 +     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-+                   list(vartpm, fraczero, avecount, avetpm))
++                   list(vartpm, fraczero, avecount, avetpm, cvtpm))
 +     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
 +                                                      ".", sz, ".", i)
 +     truth[[paste0(sz, ".", i)]] <- df2
@@ -2283,7 +2347,7 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-23994 new features and 138 new annotations added to truth table
+23994 new features and 155 new annotations added to truth table
 > 
 > saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 > saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
@@ -2291,5 +2355,5 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
-    user   system  elapsed 
- 688.739  307.908 1054.569 
+   user  system elapsed 
+811.985 128.333 974.871 

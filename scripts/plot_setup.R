@@ -25,14 +25,17 @@ get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
-cols <- c("#488d00", "#6400a6", "#8bff58", "#ff5cd5", "#9CC0AD",
-          "#ab0022", "#a3c6ff", "#e6a900", "#a996ff", "#401600",
-          "#ff6d9b", "#017671", "cyan", "red", "blue", "orange",
-          "#777777", "#7BAFDE", "#F6C141", "#90C987", "#1965B0",
-          "#882E72", "#F7EE55", "forestgreen", "pink", "gray")
+cols <- c("#488d00", "black", "#8bff58", "#ff5cd5", "#9CC0AD",
+          "#ab0022", "#7c9e58", "#e6a900", "#ff516e", "#364922",
+          "#db0a4c", "#017671", "cyan", "#6d6de8", "blue",
+          "#a5a5e5", "#777777", "#6400a6", "#f2c6cf", "#afeda6", 
+          "#af5d6d", "#bf8bb2", "#F7EE55", "gray", 
+          "pink", "#7BAFDE", "#42425b")
+# "#1965B0",  "#F6C141" "#a3c6ff", "red", "orange", "",  "#a996ff"
 names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                  "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
-                 "voomlimma", "Wilcoxon", "BPSC", "MASTcounts", "MASTcountsDetRate", 
+                 "voomlimma", "Wilcoxon", "BPSC", "MASTcpm", "MASTcpmDetRate", 
                  "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
                  "DESeq2nofilt", "Seuratnofilt", "NODESnofilt", "zingeRautonofilt",
-                 "monoclecensus", "D3E")
+                 "monoclecensus", "D3E", "MASTtpmDetRate")
+

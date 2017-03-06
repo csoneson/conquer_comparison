@@ -1227,8 +1227,9 @@ Setting LC_CTYPE failed, using "C"
 +                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
 +     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
 +     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
++     cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
 +     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-+                   list(vartpm, fraczero, avecount, avetpm))
++                   list(vartpm, fraczero, avecount, avetpm, cvtpm))
 +     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
 +                                                      ".", sz, ".", i)
 +     truth[[paste0(sz, ".", i)]] <- df2
@@ -1302,7 +1303,7 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 0 new features and 0 new methods added to score table
-19763 new features and 124 new annotations added to truth table
+19763 new features and 140 new annotations added to truth table
 > 
 > saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 > saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
@@ -1310,5 +1311,5 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
-   user  system elapsed 
-404.202  58.373 551.166 
+    user   system  elapsed 
+ 523.586  579.591 1184.196 
