@@ -23,13 +23,16 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
   print(plot_fpr(cobraplot, xaxisrange = c(0, min(1.1*max(fpr(cobrares)$FPR), 1))) + 
           ggtitle("Truth defined by each method"))
   print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
+  
+  return(list(fpr = fpr(cobraplot)[, c("thr", "basemethod", "FPR")], 
+              tpr = tpr(cobraplot)[, c("thr", "basemethod", "TPR")]))
 }
 
 
 #' Plot performance using each method's results with the largest sample size as
 #' truth
 #' 
-plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
+plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data = list()) {
   ## Generate a new cobradata object where the truth of each method is 
   ## considered to be the results obtained with the largest sample size.
   cobratmp <- cobra
@@ -54,7 +57,7 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
   cobrarel <- COBRAData(padj = vals, truth = truth)
   
   cobrares <- calculate_performance(cobrarel, onlyshared = TRUE, 
-                                    aspects = c("tpr", "fpr", "fdrtprcurve"), 
+                                    aspects = c("tpr", "fpr"), 
                                     binary_truth = "status", 
                                     thrs = 0.05)
   
@@ -79,8 +82,11 @@ plot_results_relativetruth <- function(cobra, colvec, summary_data = list()) {
   # }
   
   for (m in unique(get_nsamples(basemethods(cobrares)))) {
-    plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
-                    type = "number", colvec = colvec, nsamp = m)
+    res <- plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
+                           type = "number", colvec = colvec, nsamp = m)
+    
+    summary_data$fpr_relative <- rbind(summary_data$fpr_relative, res$fpr)
+    summary_data$tpr_relative <- rbind(summary_data$tpr_relative, res$tpr)
   }
   return(invisible(summary_data))
 }

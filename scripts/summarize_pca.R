@@ -40,10 +40,25 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
                          shape = guide_legend(ncol = 2, title = "")))
           print(ggplot(merge(annot, pca$x[, cpas], by.x = "id", by.y = 0, all = TRUE) %>%
                          dplyr::group_by(method, dataset) %>% 
-                         dplyr::summarize(PC1 = mean(PC1), PC2 = mean(PC2)), 
-                       aes_string(x = paste0("PC", cpas[1]), y = paste0("PC", cpas[2]), 
+                         dplyr::summarize_(PCx = paste0("mean(PC", cpas[1], ")"), 
+                                           PCy = paste0("mean(PC", cpas[2], ")")), 
+                       aes_string(x = paste0("PCx"), y = paste0("PCy"), 
                                   color = "method", shape = "dataset")) +
                   geom_point(size = 4) + theme_bw() + 
+                  xlab(paste0("PC", cpas[1])) + ylab(paste0("PC", cpas[2])) + 
+                  scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+                  ggtitle(paste0(stat, ".scale=", scl)) + 
+                  guides(color = guide_legend(ncol = 2, title = ""),
+                         shape = guide_legend(ncol = 2, title = "")))
+          print(ggplot(merge(annot, pca$x[, cpas], by.x = "id", by.y = 0, all = TRUE) %>%
+                         dplyr::group_by(method, dataset) %>% 
+                         dplyr::summarize_(PCx = paste0("mean(PC", cpas[1], ")"), 
+                                           PCy = paste0("mean(PC", cpas[2], ")")), 
+                       aes_string(x = paste0("PCx"), y = paste0("PCy"), 
+                                  color = "method", shape = "dataset",
+                                  label = "method")) +
+                  geom_point(size = 4) + theme_bw() + geom_text_repel() + 
+                  xlab(paste0("PC", cpas[1])) + ylab(paste0("PC", cpas[2])) + 
                   scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
                   ggtitle(paste0(stat, ".scale=", scl)) + 
                   guides(color = guide_legend(ncol = 2, title = ""),
@@ -83,6 +98,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
           dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
           dplyr::select_("Var2", stat, "charac")  %>%
           dplyr::filter(charac != "fraczerodiff") %>%
+          dplyr::filter(charac != "log2_avecount") %>%
           dplyr::group_by(charac) %>%
           dplyr::mutate_(newy = interp(~scale(x, scale = FALSE), x = as.name(stat))) %>%
           dplyr::select(Var2, newy, charac)
@@ -106,17 +122,33 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
                                   color = "method", shape = "dataset")) +
                   geom_point(size = 3) + theme_bw() + 
                   scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-                  ggtitle(paste0(stat, ".scale=", scl)) + 
+                  ggtitle(paste0(stat, ".scale=", scl, ", after scaling within each data set")) + 
                   guides(color = guide_legend(ncol = 2, title = ""),
                          shape = guide_legend(ncol = 2, title = "")))
           print(ggplot(merge(annot, pca$x[, cpas], by.x = "id", by.y = 0, all = TRUE) %>%
                          dplyr::group_by(method, dataset) %>% 
-                         dplyr::summarize(PC1 = mean(PC1), PC2 = mean(PC2)), 
-                       aes_string(x = paste0("PC", cpas[1]), y = paste0("PC", cpas[2]), 
+                         dplyr::summarize_(PCx = paste0("mean(PC", cpas[1], ")"), 
+                                           PCy = paste0("mean(PC", cpas[2], ")")), 
+                       aes_string(x = paste0("PCx"), y = paste0("PCy"), 
                                   color = "method", shape = "dataset")) +
                   geom_point(size = 4) + theme_bw() + 
+                  xlab(paste0("PC", cpas[1])) + ylab(paste0("PC", cpas[2])) + 
                   scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-                  ggtitle(paste0(stat, ".scale=", scl)) + 
+                  ggtitle(paste0(stat, ".scale=", scl, ", after scaling within each data set")) + 
+                  guides(color = guide_legend(ncol = 2, title = ""),
+                         shape = guide_legend(ncol = 2, title = "")))
+          print(ggplot(merge(annot, pca$x[, cpas], by.x = "id", by.y = 0, all = TRUE) %>%
+                         dplyr::group_by(method, dataset) %>% 
+                         dplyr::summarize_(PCx = paste0("mean(PC", cpas[1], ")"), 
+                                           PCy = paste0("mean(PC", cpas[2], ")")), 
+                       aes_string(x = paste0("PCx"), y = paste0("PCy"), 
+                                  color = "method", shape = "dataset", 
+                                  label = "method")) +
+                  geom_point(size = 4) + theme_bw() + 
+                  geom_text_repel() + 
+                  xlab(paste0("PC", cpas[1])) + ylab(paste0("PC", cpas[2])) + 
+                  scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+                  ggtitle(paste0(stat, ".scale=", scl, ", after scaling within each data set")) + 
                   guides(color = guide_legend(ncol = 2, title = ""),
                          shape = guide_legend(ncol = 2, title = "")))
           print(ggplot(data.frame(id = rownames(pca$rotation), pca$rotation[, cpas]), 
@@ -126,12 +158,12 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
                                           xend = paste0("PC", cpas[1]), yend = paste0("PC", cpas[2])), 
                                arrow = arrow(length = unit(0.03, "npc")), linetype = "dashed") + 
                   theme_bw() + 
-                  ggtitle(paste0(stat, ".scale=", scl)))
+                  ggtitle(paste0(stat, ".scale=", scl, ", after scaling within each data set")))
           print(ggbiplot(pca, scale = 0, groups = annot$method, ellipse = TRUE,
                          ellipse.prob = 0.68, alpha = 0, var.axes = TRUE, choices = cpas) + 
                   theme_bw() + 
                   scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-                  ggtitle(paste0(stat, ".scale=", scl)) + 
+                  ggtitle(paste0(stat, ".scale=", scl, ", after scaling within each data set")) + 
                   geom_point(data = merge(annot, pca$x[, cpas], by.x = "id", by.y = 0, all = TRUE) %>%
                                dplyr::group_by(method) %>% 
                                dplyr::summarize_(PCx = paste0("mean(PC", cpas[1], ")"), 

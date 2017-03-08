@@ -46,22 +46,22 @@ package 'ggplot2' was built under R version 3.3.2
 > cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > 
-> pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 14, height = 9)
+> pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 16, height = 9)
 > summary_data <- list()
 > if (plottype != "timing") {
-+   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, summary_data = summary_data)
++   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
-+   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, summary_data = summary_data)
++   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 11 will be used
+  too few colors provided, 28 random colors will be added
 2: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
   too few colors provided, 28 random colors will be added
 3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
   too few colors provided, 28 random colors will be added
 4: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 28 random colors will be added
+  too many colors supplied, only the first 11 will be used
 > dev.off()
 null device 
           1 
@@ -123,4 +123,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-277.176   6.162 284.095 
+118.889   6.696 126.131 

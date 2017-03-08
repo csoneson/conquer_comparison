@@ -54,10 +54,14 @@ nbr_keep <- unique(intersect(subset(jaccm0.05, tp == "original")$nbr_samples1,
                              subset(jaccm0.05, tp == "mock")$nbr_samples1))
 ## Remove extension from method name
 conc_pairwise$method <- gsub(exts, "", conc_pairwise$method)
-spearm$method <- gsub(exts, "", spearm$method)
-jaccm0.05$method <- gsub(exts, "", jaccm0.05$method)
-jaccm0.1$method <- gsub(exts, "", jaccm0.1$method)
-jaccm0.2$method <- gsub(exts, "", jaccm0.2$method)
+spearm$method1 <- gsub(exts, "", spearm$method1)
+jaccm0.05$method1 <- gsub(exts, "", jaccm0.05$method1)
+jaccm0.1$method1 <- gsub(exts, "", jaccm0.1$method1)
+jaccm0.2$method1 <- gsub(exts, "", jaccm0.2$method1)
+spearm$method2 <- gsub(exts, "", spearm$method2)
+jaccm0.05$method2 <- gsub(exts, "", jaccm0.05$method2)
+jaccm0.1$method2 <- gsub(exts, "", jaccm0.1$method2)
+jaccm0.2$method2 <- gsub(exts, "", jaccm0.2$method2)
 
 print(conc_pairwise %>% as.data.frame() %>%
         dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%

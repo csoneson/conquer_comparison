@@ -81,6 +81,16 @@ package 'ggplot2' was built under R version 3.3.2
 > ## T-statistic of Spearman correlations and Jaccard coefficients between original and mock
 > nbr_keep <- unique(intersect(subset(jaccm0.05, tp == "original")$nbr_samples1,
 +                              subset(jaccm0.05, tp == "mock")$nbr_samples1))
+> ## Remove extension from method name
+> conc_pairwise$method <- gsub(exts, "", conc_pairwise$method)
+> spearm$method1 <- gsub(exts, "", spearm$method1)
+> jaccm0.05$method1 <- gsub(exts, "", jaccm0.05$method1)
+> jaccm0.1$method1 <- gsub(exts, "", jaccm0.1$method1)
+> jaccm0.2$method1 <- gsub(exts, "", jaccm0.2$method1)
+> spearm$method2 <- gsub(exts, "", spearm$method2)
+> jaccm0.05$method2 <- gsub(exts, "", jaccm0.05$method2)
+> jaccm0.1$method2 <- gsub(exts, "", jaccm0.1$method2)
+> jaccm0.2$method2 <- gsub(exts, "", jaccm0.2$method2)
 > 
 > print(conc_pairwise %>% as.data.frame() %>%
 +         dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
@@ -88,11 +98,14 @@ package 'ggplot2' was built under R version 3.3.2
 +         dplyr::group_by(dataset, ncells1, method) %>% 
 +         dplyr::summarize(tstat = ttest(tp, auc1)) %>% 
 +         ggplot(aes(x = method, y = tstat, col = method)) + 
-+         geom_boxplot(outlier.size = 0) +
++         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
 +         theme_bw() + xlab("") + ylab("t-statistic, area under concordance curve (original - mock)") + 
-+         scale_color_manual(values = cols, name = "") + 
-+         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") +
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 Warning messages:
 1: Removed 133 rows containing non-finite values (stat_boxplot). 
 2: Removed 133 rows containing missing values (geom_point). 
@@ -102,11 +115,14 @@ Warning messages:
 +         dplyr::group_by(dataset, nbr_samples1, method1) %>% 
 +         dplyr::summarize(tstat = ttest(tp, value)) %>% 
 +         ggplot(aes(x = method1, y = tstat, col = method1)) + 
-+         geom_boxplot(outlier.size = 0) +
++         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
 +         theme_bw() + xlab("") + ylab("t-statistic, Spearman correlation (original - mock)") + 
-+         scale_color_manual(values = cols, name = "") + 
-+         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") + 
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 Warning messages:
 1: Removed 151 rows containing non-finite values (stat_boxplot). 
 2: Removed 151 rows containing missing values (geom_point). 
@@ -116,11 +132,14 @@ Warning messages:
 +         dplyr::group_by(dataset, nbr_samples1, method1) %>% 
 +         dplyr::summarize(tstat = ttest(tp, value)) %>%
 +         ggplot(aes(x = method1, y = tstat, col = method1)) + 
-+         geom_boxplot(outlier.size = 0) +
++         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
 +         theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.05 (original - mock)") + 
-+         scale_color_manual(values = cols, name = "") + 
-+         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") +
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 Warning messages:
 1: Removed 160 rows containing non-finite values (stat_boxplot). 
 2: Removed 160 rows containing missing values (geom_point). 
@@ -130,11 +149,14 @@ Warning messages:
 +         dplyr::group_by(dataset, nbr_samples1, method1) %>% 
 +         dplyr::summarize(tstat = ttest(tp, value)) %>%
 +         ggplot(aes(x = method1, y = tstat, col = method1)) + 
-+         geom_boxplot(outlier.size = 0) +
++         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
 +         theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.1 (original - mock)") + 
-+         scale_color_manual(values = cols, name = "") + 
-+         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") +
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 Warning messages:
 1: Removed 157 rows containing non-finite values (stat_boxplot). 
 2: Removed 157 rows containing missing values (geom_point). 
@@ -144,11 +166,14 @@ Warning messages:
 +         dplyr::group_by(dataset, nbr_samples1, method1) %>% 
 +         dplyr::summarize(tstat = ttest(tp, value)) %>%
 +         ggplot(aes(x = method1, y = tstat, col = method1)) + 
-+         geom_boxplot(outlier.size = 0) +
++         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
 +         theme_bw() + xlab("") + ylab("t-statistic, Jaccard index, adjp = 0.2 (original - mock)") + 
-+         scale_color_manual(values = cols, name = "") + 
-+         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") +
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 Warning messages:
 1: Removed 154 rows containing non-finite values (stat_boxplot). 
 2: Removed 154 rows containing missing values (geom_point). 
@@ -208,4 +233,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-130.403  61.494 212.195 
+133.137  26.386 160.454 

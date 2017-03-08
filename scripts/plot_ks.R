@@ -3,7 +3,7 @@ source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 #' Plot p-value and statistic for Kolmogorov-Smirnov test for uniformity of
 #' p-values
 #' 
-plot_ks <- function(cobra, colvec, summary_data = list()) {
+plot_ks <- function(cobra, colvec, exts = exts, summary_data = list()) {
   ## For each method with p-values, calculate p-value from K-S test for uniformity
   pvs <- pval(cobra)
   ksp <- apply(pvs, 2, function(x) ks.test(x = x[!is.na(x)], y = punif, min = 0, max = 1)$p.value)

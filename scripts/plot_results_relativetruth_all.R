@@ -4,7 +4,7 @@ source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 #' size as the truth. All performances (FDR, FPR, TPR) are calculated using each
 #' of the methods' results as truth and represented in matrix form
 #' 
-plot_results_relativetruth_all <- function(cobra, colvec, summary_data = list()) {
+plot_results_relativetruth_all <- function(cobra, colvec, exts = exts, summary_data = list()) {
   fdr_all <- list()
   fpr_all <- list()
   tpr_all <- list()

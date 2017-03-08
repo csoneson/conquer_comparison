@@ -46,12 +46,12 @@ package 'ggplot2' was built under R version 3.3.2
 > cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 > timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
 > 
-> pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 14, height = 9)
+> pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 16, height = 9)
 > summary_data <- list()
 > if (plottype != "timing") {
-+   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, summary_data = summary_data)
++   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
-+   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, summary_data = summary_data)
++   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
@@ -132,5 +132,5 @@ loaded via a namespace (and not attached):
 [37] assertthat_0.1       R6_2.2.0            
 > 
 > proc.time()
-     user    system   elapsed 
-14473.631   112.956 14631.160 
+    user   system  elapsed 
+14671.03   163.53 14861.48 

@@ -6,7 +6,7 @@ include include_methods.mk
 
 ## Plot types
 PLOTTYPE := ks timing truefpr results_characterization consistency results_relativetruth results_relativetruth_all
-SUMMARYTYPE := truefpr pca timing fracNA
+SUMMARYTYPE := truefpr pca timing fracNA crossmethod_consistency relfprtpr
 
 .PHONY: all
 
@@ -182,7 +182,7 @@ scripts/plot_orig_vs_mock.R scripts/plot_compare_orig_mock.R
 endef
 $(foreach k,$(FILT), $(foreach i,$(DSbulkb),$(eval $(call origvsmockrulebulk_filt,$(i),$(k)))))
 
-## ---------------------- Summary plots, across mock data sets ------------------------ ##
+## ------------------ Summary plots, mostly across mock data sets --------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 figures/summary_crossds/summary_truefpr.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),truefpr/$Y_truefpr))) \
 scripts/plot_summarize_datasets.R scripts/summarize_truefpr.R
@@ -195,6 +195,14 @@ scripts/plot_summarize_datasets.R scripts/summarize_pca.R
 figures/summary_crossds/summary_timing.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),timing/$Y_timing))) \
 scripts/plot_summarize_datasets.R scripts/summarize_timing.R
 	$R "--args datasets='${Dssc}' filt='' summarytype='timing' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing.Rout
+
+figures/summary_crossds/summary_crossmethod_consistency.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsb),consistency/$Y_consistency))) \
+scripts/plot_summarize_datasets.R scripts/summarize_crossmethod_consistency.R
+	$R "--args datasets='${Dsbc}' filt='' summarytype='crossmethod_consistency' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_crossmethod_consistency.Rout
+
+figures/summary_crossds/summary_relfprtpr.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsb),results_relativetruth/$Y_results_relativetruth))) \
+scripts/plot_summarize_datasets.R scripts/summarize_relfprtpr.R
+	$R "--args datasets='${Dsbc}' filt='' summarytype='relfprtpr' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_relfprtpr.Rout
 
 figures/summary_crossds/summary_fracNA.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
@@ -210,21 +218,35 @@ $(foreach k,$(FILT),$(eval $(call summaryrule_truefpr,$(k))))
 define summaryrule_pca
 figures/summary_crossds/summary_pca_$(1).rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),results_characterization/$Y_$(1)_results_characterization))) \
 scripts/plot_summarize_datasets.R scripts/summarize_pca.R
-	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='pca' summarytype='pca' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_pca_$(1).Rout
+	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='pca' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_pca_$(1).Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_pca,$(k))))
 
 define summaryrule_timing
 figures/summary_crossds/summary_timing_$(1).rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dss),timing/$Y_$(1)_timing))) \
 scripts/plot_summarize_datasets.R scripts/summarize_timing.R
-	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='timing' summarytype='timing' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing_$(1).Rout
+	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='timing' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing_$(1).Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_timing,$(k))))
+
+define summaryrule_crossmethod_consistency
+figures/summary_crossds/summary_crossmethod_consistency_$(1).rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsb),consistency/$Y_$(1)_consistency))) \
+scripts/plot_summarize_datasets.R scripts/summarize_crossmethod_consistency.R
+	$R "--args datasets='${Dsbc}' filt='$(1)' summarytype='crossmethod_consistency' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_crossmethod_consistency_$(1).Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_crossmethod_consistency,$(k))))
+
+define summaryrule_relfprtpr
+figures/summary_crossds/summary_relfprtpr_$(1).rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsb),results_relativetruth/$Y_$(1)_results_relativetruth))) \
+scripts/plot_summarize_datasets.R scripts/summarize_relfprtpr.R
+	$R "--args datasets='${Dsbc}' filt='$(1)' summarytype='relfprtpr' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_relfprtpr_$(1).Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_relfprtpr,$(k))))
 
 define summaryrule_fracna
 figures/summary_crossds/summary_fracNA_$(1).rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dss),cobra_data/$Y_$(1)))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
-	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='fracNA' summarytype='fracNA' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_$(1).Rout
+	$R "--args datasets='${Dssc}' filt='$(1)' summarytype='fracNA' dtpext=''" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_$(1).Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_fracna,$(k))))
 
@@ -242,6 +264,14 @@ figures/summary_crossds/summary_timing_bulk.rds: $(addsuffix _summary_data.rds, 
 scripts/plot_summarize_datasets.R scripts/summarize_timing.R
 	$R "--args datasets='${Dssbulk}' filt='' summarytype='timing' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing_bulk.Rout
 
+figures/summary_crossds/summary_crossmethod_consistency_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(DSbulkb),consistency/$Y_consistency))) \
+scripts/plot_summarize_datasets.R scripts/summarize_crossmethod_consistency.R
+	$R "--args datasets='${DSbulkb}' filt='' summarytype='crossmethod_consistency' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_crossmethod_consistency_bulk.Rout
+
+figures/summary_crossds/summary_relfprtpr_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(DSbulkb),results_relativetruth/$Y_results_relativetruth))) \
+scripts/plot_summarize_datasets.R scripts/summarize_relfprtpr.R
+	$R "--args datasets='${DSbulkb}' filt='' summarytype='relfprtpr' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_relfprtpr_bulk.Rout
+
 figures/summary_crossds/summary_fracNA_bulk.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dssbulk),cobra_data/$Y))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
 	$R "--args datasets='${Dssbulk}' filt='' summarytype='fracNA' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_bulk.Rout
@@ -256,21 +286,35 @@ $(foreach k,$(FILT),$(eval $(call summaryrule_truefpr_bulk,$(k))))
 define summaryrule_pca_bulk
 figures/summary_crossds/summary_pca_$(1)_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dssbulk),results_characterization/$Y_$(1)_results_characterization))) \
 scripts/plot_summarize_datasets.R scripts/summarize_pca.R
-	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='pca' summarytype='pca' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_pca_$(1)_bulk.Rout
+	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='pca' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_pca_$(1)_bulk.Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_pca_bulk,$(k))))
 
 define summaryrule_timing_bulk
 figures/summary_crossds/summary_timing_$(1)_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dssbulk),timing/$Y_$(1)_timing))) \
 scripts/plot_summarize_datasets.R scripts/summarize_timing.R
-	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='timing' summarytype='timing' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing_$(1)_bulk.Rout
+	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='timing' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_timing_$(1)_bulk.Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_timing_bulk,$(k))))
+
+define summaryrule_crossmethod_consistency_bulk
+figures/summary_crossds/summary_crossmethod_consistency_$(1)_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(DSbulkb),consistency/$Y_$(1)_consistency))) \
+scripts/plot_summarize_datasets.R scripts/summarize_crossmethod_consistency.R
+	$R "--args datasets='${DSbulkb}' filt='$(1)' summarytype='crossmethod_consistency' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_crossmethod_consistency_$(1)_bulk.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_crossmethod_consistency_bulk,$(k))))
+
+define summaryrule_relfprtpr_bulk
+figures/summary_crossds/summary_relfprtpr_$(1)_bulk.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(DSbulkb),results_relativetruth/$Y_$(1)_results_relativetruth))) \
+scripts/plot_summarize_datasets.R scripts/summarize_relfprtpr.R
+	$R "--args datasets='${DSbulkb}' filt='$(1)' summarytype='relfprtpr' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_relfprtpr_$(1)_bulk.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_relfprtpr_bulk,$(k))))
 
 define summaryrule_fracna_bulk
 figures/summary_crossds/summary_fracNA_$(1)_bulk.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dssbulk),cobra_data/$Y_$(1)))) \
 scripts/plot_summarize_datasets.R scripts/summarize_fracNA.R
-	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='fracNA' summarytype='fracNA' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_$(1)_bulk.Rout
+	$R "--args datasets='${Dssbulk}' filt='$(1)' summarytype='fracNA' dtpext='_bulk'" scripts/plot_summarize_datasets.R Rout/plot_summarize_datasets_fracNA_$(1)_bulk.Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_fracna_bulk,$(k))))
 
