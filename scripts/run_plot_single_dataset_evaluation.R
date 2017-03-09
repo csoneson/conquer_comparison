@@ -8,7 +8,7 @@ print(filt)
 print(plottype)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/plot_", plottype, ".R"))
+source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/plot_single_dataset_", plottype, ".R"))
 
 if (filt == "") {
   exts <- filt

@@ -1,0 +1,71 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(dataset)
+[1] "GSE74596"
+> print(filt)
+[1] "TPM_1_25p"
+> print(plottype)
+[1] "results_characterization"
+> 
+> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
+> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/plot_single_dataset_", plottype, ".R"))
+> 
+> if (filt == "") {
++   exts <- filt
++ } else {
++   exts <- paste0("_", filt)
++ }
+> names(cols) <- paste0(names(cols), exts)
+> 
+> cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
+> timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
+> 
+> pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), width = 16, height = 9)
+> summary_data <- list()
+> if (plottype != "timing") {
++   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
++ } else {
++   summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, exts = exts, summary_data = summary_data)
++ }
+44.1
+22.1
+22.2
+22.3
+22.4
+22.5
+12.1
+12.2
+12.3
+12.4
+12.5
+6.1
+6.2
+
+There were 50 or more warnings (use warnings() to see the first 50)
+Execution halted

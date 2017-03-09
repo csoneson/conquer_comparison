@@ -57,6 +57,8 @@ package 'ggplot2' was built under R version 3.3.2
 [1] "config/UsoskinGSE59739.json"
 > print(filt)
 [1] ""
+> print(cell_cycle_file)
+[1] "data/cell_cycle_geneids.rds"
 > 
 > config <- fromJSON(file = config_file)
 > mae <- readRDS(config$mae)
@@ -66,6 +68,13 @@ package 'ggplot2' was built under R version 3.3.2
 > subsets <- readRDS(config$subfile)
 > keep_samples <- subsets$keep_samples
 > imposed_condition <- subsets$out_condition
+> 
+> cell_cycle_file <- readRDS(cell_cycle_file)
+> if (!is.null(metadata(mae)$index)) {
++   cell_cycle_ids <- cell_cycle_file[[gsub("\\.cdna.*", "", metadata(mae)$index)]]
++ } else {
++   cell_cycle_ids <- cell_cycle_file[[gsub(" ", "_", metadata(mae)$organism)]]
++ }
 > 
 > sizes <- names(keep_samples)
 > char_gene <- list()
@@ -130,6 +139,28 @@ package 'ggplot2' was built under R version 3.3.2
 +     char_cells[[paste0(sz, ".", i)]] <- df3
 +     
 +     char_ds[[paste0(sz, ".", i)]] <- c(n_genes = nrow(L$count))
++     
++     ## Plot expression of cell cycle genes
++     if (!is.null(cell_cycle_ids)) {
++       tpm_cell_cycle <- L$tpm[match(cell_cycle_ids, rownames(L$tpm)), ]
++       tpm_cell_cycle <- tpm_cell_cycle[!is.na(rownames(tpm_cell_cycle)), ]
++       tpm_cell_cycle_m <- reshape2::melt(tpm_cell_cycle)
++       tpm_cell_cycle_m$condition <- L$condt[match(tpm_cell_cycle_m$Var2, names(L$condt))]
++       tpm_cell_cycle_m$Var2 <- factor(tpm_cell_cycle_m$Var2, levels = names(sort(L$condt)))
++       nr <- nrow(tpm_cell_cycle)
++       vargroup <- data.frame(gene = unique(tpm_cell_cycle_m$Var1), group = rep(1:25, ceiling(nr/25))[1:nr])
++       tpm_cell_cycle_m$plot_group <- vargroup$group[match(tpm_cell_cycle_m$Var1, vargroup$gene)]
++       tpm_cell_cycle_m <- tpm_cell_cycle_m %>% dplyr::group_by(plot_group) %>% 
++         dplyr::mutate(plot_color = paste0("p", as.numeric(as.factor(Var1))))
++       print(ggplot(tpm_cell_cycle_m, aes(x = Var2, y = value + 1)) + 
++               geom_line(aes(group = Var1, color = plot_color)) + geom_point(aes(shape = condition)) + 
++               guides(color = FALSE) + scale_y_log10() + 
++               ggtitle(paste0("Cell cycle-associated genes, ", sz, " cells per group, repl ", i)) + 
++               scale_shape_discrete(name = "") + xlab("Cell") + ylab("TPM + 1") + 
++               facet_wrap(~plot_group, scales = "free_y") + theme_bw() + 
++               theme(legend.position = "bottom", 
++                     axis.text.x = element_blank()))
++     }
 +   }
 + }
 58.1
@@ -237,6 +268,8 @@ Warning messages:
 null device 
           1 
 > 
+> saveRDS(NULL, paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
+> 
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -288,4 +321,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-206.487  33.260 242.187 
+202.315  28.562 232.079 

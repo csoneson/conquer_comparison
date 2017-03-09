@@ -43,6 +43,6 @@ generse <- SummarizedExperiment(assays = list(TPM = rpms,
 ## Generate MultiAssayExperiment
 mae <- MultiAssayExperiment(experiments = list(gene = generse),
                             pData = droplevels(sample_annot))
-mae@metadata <- list(organism = "Homo sapiens")
+mae@metadata <- list(organism = "Mus musculus")
 
 saveRDS(mae, file = paste0("data/UsoskinGSE59739.rds"))

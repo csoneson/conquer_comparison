@@ -31,6 +31,9 @@ Setting LC_CTYPE failed, using "C"
 > suppressPackageStartupMessages(library(dplyr))
 > suppressPackageStartupMessages(library(tidyr))
 > source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+> source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
 > 
 > get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 > get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
@@ -2071,23 +2074,12 @@ Setting LC_CTYPE failed, using "C"
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-+     avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
-+     avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
-+     fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
-+                            fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
-+                                              1, function(x) mean(x == 0)),
-+                            fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
-+                                              1, function(x) mean(x == 0)), gene = rownames(L$count))
-+     fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
-+     vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
-+     cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
-+     df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-+                   list(vartpm, fraczero, avecount, avetpm, cvtpm))
++     chars <- calculate_gene_characteristics(L)
++     df2 <- chars$characs
 +     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
 +                                                      ".", sz, ".", i)
 +     truth[[paste0(sz, ".", i)]] <- df2
-+     
-+     df3 <- data.frame(gene = df2$gene, tested = TRUE)
++     df3 <- chars$tested
 +     colnames(df3)[colnames(df3) != "gene"] <- paste0(colnames(df3)[colnames(df3) != "gene"],
 +                                                      ".", sz, ".", i)
 +     tested[[paste0(sz, ".", i)]] <- df3
@@ -2155,7 +2147,7 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-5281 new features and 152 new annotations added to truth table
+5281 new features and 184 new annotations added to truth table
 > 
 > saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
 > saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
@@ -2163,5 +2155,5 @@ In inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y) :
 > saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
 > 
 > proc.time()
-   user  system elapsed 
-168.592  16.105 196.838 
+    user   system  elapsed 
+ 237.728  797.109 1084.975 

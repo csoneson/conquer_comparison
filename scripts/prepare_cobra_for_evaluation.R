@@ -10,6 +10,7 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
 
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
@@ -72,58 +73,19 @@ imposed_condition <- subsets$out_condition
 
 sizes <- names(keep_samples)
 truth <- list()
-tested <- list()
+#tested <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-    avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
-    avetpm <- data.frame(avetpm = apply(L$tpm, 1, mean), gene = rownames(L$tpm))
-    fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
-                           fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
-                                             1, function(x) mean(x == 0)),
-                           fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
-                                             1, function(x) mean(x == 0)), gene = rownames(L$count))
-    fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
-    vartpm <- data.frame(vartpm = apply(L$tpm, 1, var), gene = rownames(L$tpm))
-    cvtpm <- data.frame(cvtpm = apply(L$tpm, 1, sd)/apply(L$tpm, 1, mean), gene = rownames(L$tpm))
-    df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-                  list(vartpm, fraczero, avecount, avetpm, cvtpm))
+    chars <- calculate_gene_characteristics(L)
+    df2 <- chars$characs
     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
                                                      ".", sz, ".", i)
     truth[[paste0(sz, ".", i)]] <- df2
-    
-    df3 <- data.frame(gene = df2$gene, tested = TRUE)
-    colnames(df3)[colnames(df3) != "gene"] <- paste0(colnames(df3)[colnames(df3) != "gene"],
-                                                     ".", sz, ".", i)
-    tested[[paste0(sz, ".", i)]] <- df3
   }
 }
 truth <- Reduce(function(...) merge(..., by = "gene", all = TRUE), truth)
-tested <- Reduce(function(...) merge(..., by = "gene", all = TRUE), tested)
-
-padjm <- reshape2::melt(as.matrix(padj(cobra)), value.name = "padj",
-                        varnames = c("gene", "method")) %>%
-  tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-truthm <- reshape2::melt(truth) %>% 
-  tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.")
-testedm <- reshape2::melt(tested, id.vars = "gene") %>%
-  tidyr::separate(variable, into = c("measurement", "ncells", "repl"), sep = "\\.") %>%
-  dplyr::rename(tested = value) %>%
-  dplyr::select(-measurement)
-summary_data <- list(all_data = dplyr::inner_join(padjm, inner_join(truthm, testedm)) %>%
-                       dplyr::mutate(dataset = dataset, filt = filt) %>%
-                       mutate(value = ifelse(measurement %in% c("vartpm", "avecount"), 
-                                             log2(value), value)) %>% 
-                       mutate(measurement = ifelse(measurement %in% c("vartpm", "avecount"), 
-                                                   paste0("log2_", measurement), measurement)) %>%
-                       dplyr::mutate(tested = ifelse(tested == TRUE, TRUE, FALSE)))
-
-## Generate data frame with number of genes per data set
-mk <- summary_data$all_data$method[1]
-ngn <- summary_data$all_data %>% dplyr::filter(measurement == "fraczero") %>% 
-  dplyr::filter(method == mk)
-ngn <- ngn %>% group_by(dataset, filt, ncells, repl) %>% summarize(ngenes = sum(tested, na.rm = TRUE))
 
 ## Define "truth" for each method as the genes that are differentially 
 ## expressed with the largest sample size
@@ -140,7 +102,21 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-saveRDS(ngn, file = paste0("figures/cobra_data/", dataset, exts, "_ngenes.rds"))
+## Make data frame with number of significant, non-significant and NA calls for each method
+cobraperf <- calculate_performance(cobra, aspects = "fpr", 
+                                   binary_truth = paste0(demethods[1], ".truth"), thrs = 0.05)
+sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
+  dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
+  dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
+  tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
+tested <- data.frame(nbr_tested = colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
+tested$dataset <- rownames(tested)
+tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
+nbr_called <- inner_join(sign_0.05, tested) %>% dplyr::select(-type)
+nbr_called$dataset <- dataset
+nbr_called$filt <- filt
+nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
+
 saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
-saveRDS(summary_data, file = paste0("figures/cobra_data/", dataset, exts, "_summary_data.rds"))
+saveRDS(nbr_called, file = paste0("figures/cobra_data/", dataset, exts, "_nbr_called.rds"))

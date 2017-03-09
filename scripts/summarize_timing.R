@@ -99,10 +99,10 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## Dependence on number of genes
   ngenes <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/cobra_data/", ds, exts, 
-                   "_ngenes.rds"))
+                   "_nbr_called.rds"))
   })
   ngenes <- do.call(rbind, ngenes) %>% group_by(dataset, filt, ncells) %>%
-    dplyr::summarize(ngenes = median(ngenes)) %>% 
+    dplyr::summarize(ngenes = median(nbr_tested)) %>% 
     mutate(ncells = as.numeric(ncells))
   y3 <- inner_join(y2, ngenes)
   
@@ -132,10 +132,10 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## 2d heatmap
   ngenes <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/cobra_data/", ds, exts, 
-                   "_ngenes.rds"))
+                   "_nbr_called.rds"))
   })
   ngenes <- do.call(rbind, ngenes) %>% ungroup() %>% mutate(ncells = as.numeric(ncells)) %>%
-    mutate(repl = as.numeric(repl))
+    mutate(repl = as.numeric(repl)) %>% dplyr::rename(ngenes = nbr_tested)
   y4 <- lapply(summary_data_list, function(m) {
    m$timing_full
   })

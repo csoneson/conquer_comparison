@@ -2,17 +2,12 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ## -------------------------- Fraction NAs ---------------------------------- ##
   pdf(paste0(figdir, "/summary_fracNA", exts, dtpext, ".pdf"), width = 14, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, exts, "_summary_data.rds"))
+    readRDS(paste0("figures/cobra_data/", ds, exts, "_nbr_called.rds"))
   })
-  tmp_data <- lapply(summary_data_list, function(L) {
-    L$all_data %>% filter(measurement == "fraczero") %>%
-      dplyr::group_by(dataset, method, ncells, repl) %>%
-      dplyr::summarize(fracNA = length(intersect(which(is.na(padj)), 
-                                                 which(tested == TRUE)))/length(which(tested == TRUE)))
-  })
-  tmp_data <- do.call(rbind, tmp_data) %>% ungroup() %>% 
+  tmp_data <- do.call(rbind, summary_data_list) %>% 
+    dplyr::mutate(fracNA = nbr_NA/nbr_tested) %>%
     dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells))))))
-  
+
   ## Remove extension from method name
   tmp_data$method <- gsub(exts, "", tmp_data$method)
   

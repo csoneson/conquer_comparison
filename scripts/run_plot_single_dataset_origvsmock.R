@@ -10,7 +10,7 @@ print(dataset)
 print(filt)
 
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_compare_orig_mock.R")
+source("/home/Shared/data/seq/conquer/comparison/scripts/plot_single_dataset_origvsmock.R")
 
 cobras <- list()
 

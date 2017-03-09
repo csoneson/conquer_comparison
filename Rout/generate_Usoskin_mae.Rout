@@ -107,10 +107,10 @@ Welcome to Bioconductor
 > ## Generate MultiAssayExperiment
 > mae <- MultiAssayExperiment(experiments = list(gene = generse),
 +                             pData = droplevels(sample_annot))
-> mae@metadata <- list(organism = "Homo sapiens")
+> mae@metadata <- list(organism = "Mus musculus")
 > 
 > saveRDS(mae, file = paste0("data/UsoskinGSE59739.rds"))
 > 
 > proc.time()
    user  system elapsed 
- 34.606   5.617  40.353 
+ 33.979   2.365  36.954 

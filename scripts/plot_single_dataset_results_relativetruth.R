@@ -24,6 +24,16 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
           ggtitle("Truth defined by each method"))
   print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
   
+  print(ggplot(tpr(cobraplot), aes(x = DIFF, y = TPR, color = method)) + 
+          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Relative TPR") + scale_color_manual(values = tmpvec))
+  print(ggplot(fpr(cobraplot), aes(x = DIFF, y = FPR, color = method)) + 
+          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Relative FPR") + scale_color_manual(values = tmpvec))
+  print(ggplot(fpr(cobraplot), aes(x = DIFF, y = NBR, color = method)) + 
+          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Number of significant genes") + scale_color_manual(values = tmpvec))
+  
   return(list(fpr = fpr(cobraplot)[, c("thr", "basemethod", "FPR")], 
               tpr = tpr(cobraplot)[, c("thr", "basemethod", "TPR")]))
 }
