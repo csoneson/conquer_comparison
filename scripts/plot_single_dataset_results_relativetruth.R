@@ -71,28 +71,9 @@ plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data 
                                     binary_truth = "status", 
                                     thrs = 0.05)
   
-  # ttmp <- unique(get_nsamples(basemethods(cobrares)))
-  # ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE)[-1])
-  # for (m in ttmp) {
-  #   for (k in unique(get_repl(basemethods(cobrares)))) {
-  #     c2 <- colvec
-  #     names(c2) <- paste0(names(c2), ".", m, ".", k)
-  #     km <- basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m & 
-  #                                   get_repl(basemethods(cobrares)) == k]
-  #     cobraplot <- prepare_data_for_plot(cobrares, keepmethods = km, colorscheme = c2[km])
-  #     
-  #     print(plot_fdrtprcurve(cobraplot, plottype = "curve") + ggtitle("Truth defined by each method"))
-  #   }
-  # }
-  
-  ## Extract subset
-  # for (m in unique(get_method(basemethods(cobrares)))) {
-  #   plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_method(basemethods(cobrares)) == m],
-  #                   type = "method", colvec = colvec)
-  # }
-  
   for (m in unique(get_nsamples(basemethods(cobrares)))) {
-    res <- plot_res_subset(cobrares, keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
+    res <- plot_res_subset(cobrares, 
+                           keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
                            type = "number", colvec = colvec, nsamp = m)
     
     summary_data$fpr_relative <- rbind(summary_data$fpr_relative, res$fpr)

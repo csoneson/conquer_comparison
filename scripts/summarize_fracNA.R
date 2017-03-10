@@ -1,5 +1,4 @@
 summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
-  ## -------------------------- Fraction NAs ---------------------------------- ##
   pdf(paste0(figdir, "/summary_fracNA", exts, dtpext, ".pdf"), width = 14, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/cobra_data/", ds, exts, "_nbr_called.rds"))

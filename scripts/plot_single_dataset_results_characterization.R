@@ -1,8 +1,5 @@
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 
-#' Plot distribution of gene characteristics for significant/non-significant
-#' genes found with each method
-#' 
 plot_results_characterization <- function(cobra, colvec, exts, summary_data = list()) {
   sizes_nsamples <- gsub("avetpm.", "", grep("avetpm.", colnames(truth(cobra)), value = TRUE))
   for (szi in sizes_nsamples) {
@@ -18,8 +15,9 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     tmp1 <- rowSums(padjs[match(rownames(tth), rownames(padjs)), ] <= 0.05)
     tth$nbr_methods <- tmp1[match(rownames(tth), names(tmp1))]
     
-    df2 <- merge(melt(as.matrix(padjs)), tth, by.x = "Var1", by.y = 0, all = TRUE)
-    df2 <- subset(df2, rowSums(is.na(df2)) == 0)
+    df2 <- dplyr::full_join(melt(as.matrix(padjs)), cbind(Var1 = rownames(tth), tth), 
+                            by = "Var1")
+    df2 <- subset(df2, rowSums(is.na(df2 %>% dplyr::select(-avecensuscount, -fraczerocensus))) == 0)
     df2$sign <- df2$value <= 0.05
     
     df2$Var3 <- gsub(exts, "", gsub(paste0(".", szi), "", df2$Var2))
@@ -31,7 +29,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
       summary_data$stats_charac <- 
         rbind(summary_data$stats_charac, 
               df2 %>% dplyr::mutate_(newy = interp(~log2(x), x = as.name(y))) %>%
-                group_by(Var2) %>% 
+                dplyr::group_by(Var2) %>% 
                 dplyr::summarise(
                   tstat = tryCatch(t.test(newy[sign], newy[!sign])$statistic, error = function(e) NA),
                   mediandiff = tryCatch(median(newy[sign]) - median(newy[!sign]), error = function(e) NA)) %>%

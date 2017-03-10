@@ -59,6 +59,10 @@ for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
+    # if (as.numeric(sz) == max(as.numeric(sizes))) {
+    #   ## Save condition information for all cells
+    #   cell_group <- L$condt
+    # }
     
     ## Gene characteristics
     chars <- calculate_gene_characteristics(L, do.plot = TRUE, 
@@ -71,6 +75,7 @@ for (sz in sizes) {
     ## Cell characteristics
     cellchars <- calculate_cell_characteristics(L)
     df3 <- cellchars$characs
+    df3$condition <- L$condt[match(df3$cell, names(L$condt))]
     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
                                                      ".", sz, ".", i)
     char_cells[[paste0(sz, ".", i)]] <- df3
@@ -113,7 +118,7 @@ print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(
         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
         scale_fill_discrete(name = "Number of cells"))
 
-char_gene <- Reduce(function(...) merge(..., by = "gene", all = TRUE), char_gene)
+char_gene <- Reduce(function(...) dplyr::full_join(..., by = "gene"), char_gene)
 char_gene_m <- reshape2::melt(char_gene) %>% 
   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
@@ -124,12 +129,22 @@ char_gene_s <- char_gene_m %>% tidyr::spread(key = mtype, value = value) %>%
   dplyr::mutate(replicate = paste0(ncells, ", repl ", repl)) %>%
   dplyr::arrange(ncells, as.numeric(repl))
 
-char_cells <- Reduce(function(...) merge(..., by = "cell", all = TRUE), char_cells)
-char_cells_m <- reshape2::melt(char_cells) %>% 
+char_cells <- Reduce(function(...) dplyr::full_join(..., by = "cell"), char_cells)
+char_cells_m <- reshape2::melt(char_cells[, !(colnames(char_cells) %in% 
+                                                grep("condition", colnames(char_cells), value = TRUE))]) %>% 
   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
                                                 " cells per group")))
+char_cells_cond <- reshape2::melt(char_cells[, colnames(char_cells) %in% 
+                                               c("cell", grep("condition", colnames(char_cells), value = TRUE))],
+                                  id.vars = "cell") %>%
+  tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
+  dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
+                                levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
+                                                " cells per group"))) %>%
+  dplyr::rename(condition = value) %>% dplyr::select(-mtype)
+char_cells_m <- dplyr::full_join(char_cells_m, char_cells_cond, by = c("cell", "ncells", "repl"))
                                                 
 print(ggplot(char_gene_s, aes(x = avecount, y = fraczero)) + geom_point(size = 0.3) +
         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
@@ -170,6 +185,20 @@ for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
           scale_color_discrete(guide = FALSE) + 
           geom_density() + facet_wrap(~ncells) + 
           theme_bw() + xlab(nn))
+  print(char_cells_m %>% dplyr::filter(mtype == tp) %>%
+          dplyr::filter(!is.na(value)) %>%
+          ggplot(aes(x = condition, y = value)) + geom_boxplot(outlier.size = -1) +
+          geom_point(position = position_jitter(width = 0.2)) + 
+          theme_bw() + xlab("") + ylab(nn) + 
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
+          facet_wrap(~interaction(ncells, repl)))
+  print(char_cells_m %>% dplyr::filter(mtype == tp) %>%
+          dplyr::filter(!is.na(value)) %>%
+          ggplot(aes(x = cell, y = value, fill = condition)) + geom_bar(stat = "identity") +
+          theme_bw() + xlab("Cell") + ylab(nn) + 
+          theme(axis.text.x = element_blank(),
+                legend.position = "bottom") + 
+          facet_wrap(~interaction(ncells, repl)))
 }
 
 dev.off()

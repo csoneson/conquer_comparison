@@ -104,7 +104,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   ngenes <- do.call(rbind, ngenes) %>% group_by(dataset, filt, ncells) %>%
     dplyr::summarize(ngenes = median(nbr_tested)) %>% 
     mutate(ncells = as.numeric(ncells))
-  y3 <- inner_join(y2, ngenes)
+  y3 <- dplyr::full_join(y2, ngenes)
   
   ns <- y3 %>% filter(method == y3$method[1]) %>% group_by(ncells) %>% tally()
   ns_keep <- ns$ncells[ns$n > 1]
@@ -140,7 +140,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
    m$timing_full
   })
   y4 <- do.call(rbind, y4) %>% mutate(repl = as.numeric(repl))
-  y4 <- inner_join(y4, ngenes)
+  y4 <- dplyr::full_join(y4, ngenes)
   ## Remove extension from method name
   y4$method <- gsub(exts, "", y4$method)
   

@@ -1,8 +1,5 @@
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 
-#' Calculate and plot "true FPR" (fraction of genes with nominal p<0.05 in null
-#' situation)
-#' 
 plot_truefpr <- function(cobra, colvec, exts = exts, summary_data = list()) {
   pvs <- pval(cobra)
   fpr <- apply(pvs, 2, function(x) length(which(x < 0.05))/length(x[!is.na(x)]))

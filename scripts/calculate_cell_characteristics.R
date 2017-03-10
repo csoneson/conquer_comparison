@@ -12,7 +12,7 @@ calculate_cell_characteristics <- function(L) {
   fraczerocell <- data.frame(fraczero = colMeans(L$count == 0), cell = colnames(L$count))
   fraczerocellcensus <- data.frame(fraczerocensus = colMeans(censuscounts == 0), 
                                    cell = colnames(censuscounts))
-  df3 <- Reduce(function(...) merge(..., by = "cell", all = TRUE),
+  df3 <- Reduce(function(...) dplyr::full_join(..., by = "cell"),
                 list(libsize, fraczerocell, libsizecensus, fraczerocellcensus))
   
   list(characs = df3)

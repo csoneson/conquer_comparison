@@ -35,12 +35,16 @@ if (filt == "") {
 file.exists(resfiles)
 cobra <- NULL
 timings <- list()
-for (rfn in resfiles) {
+for (rfn in resfiles) {   ## for each DE method
   rf <- readRDS(rfn)
-  for (nm in names(rf)) {
+  for (nm in names(rf)) {   ## for each data set instance
     print(names(rf[[nm]]))
+    
+    ## Get stored timing information and results
     timings[[nm]] <- rf[[nm]]$timing
     df <- rf[[nm]]$df
+    
+    ## Add to iCOBRA object
     if ("pval" %in% colnames(df)) {
       cobra <- COBRAData(pval = setNames(data.frame(mt = df$pval,
                                                     row.names = rownames(df)), nm),
@@ -73,9 +77,8 @@ imposed_condition <- subsets$out_condition
 
 sizes <- names(keep_samples)
 truth <- list()
-#tested <- list()
-for (sz in sizes) {
-  for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
+for (sz in sizes) {   ## for each sample size
+  for (i in 1:nrow(keep_samples[[as.character(sz)]])) {   ## for each replicate
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
     chars <- calculate_gene_characteristics(L)
@@ -85,7 +88,7 @@ for (sz in sizes) {
     truth[[paste0(sz, ".", i)]] <- df2
   }
 }
-truth <- Reduce(function(...) merge(..., by = "gene", all = TRUE), truth)
+truth <- Reduce(function(...) dplyr::full_join(..., by = "gene"), truth)
 
 ## Define "truth" for each method as the genes that are differentially 
 ## expressed with the largest sample size
@@ -97,14 +100,16 @@ mode(tmp) <- "numeric"
 tmp <- tmp[match(truth$gene, rownames(tmp)), ]
 tmp[is.na(tmp)] <- 0
 
-truth <- merge(truth, tmp, by.x = "gene", by.y = 0, all = TRUE)
+truth <- dplyr::full_join(truth, 
+                          data.frame(tmp, stringsAsFactors=FALSE) %>% dplyr::mutate(gene = rownames(tmp)), 
+                          by = "gene")
 rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
 ## Make data frame with number of significant, non-significant and NA calls for each method
 cobraperf <- calculate_performance(cobra, aspects = "fpr", 
-                                   binary_truth = paste0(demethods[1], ".truth"), thrs = 0.05)
+                                   binary_truth = paste0(demethods[1], exts, ".truth"), thrs = 0.05)
 sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
   dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
   dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
@@ -112,7 +117,7 @@ sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
 tested <- data.frame(nbr_tested = colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
 tested$dataset <- rownames(tested)
 tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
-nbr_called <- inner_join(sign_0.05, tested) %>% dplyr::select(-type)
+nbr_called <- dplyr::full_join(sign_0.05, tested) %>% dplyr::select(-type)
 nbr_called$dataset <- dataset
 nbr_called$filt <- filt
 nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
