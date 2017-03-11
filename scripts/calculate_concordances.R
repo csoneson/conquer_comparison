@@ -62,12 +62,14 @@ concvals <- do.call(rbind, lapply(all_methods, function(mth) {
   concval$method <- mth
   concval
 }))
-summary_data$concordance_fullds <- rbind(summary_data$concordance_fullds, concvals)
+summary_data$concordance_fullds <- rbind(summary_data$concordance_fullds, 
+                                         concvals %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc <- concvals %>% dplyr::group_by(method) %>% 
   dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
-summary_data$concordance_fullds_auc <- rbind(summary_data$concordance_fullds_auc, conc_auc)
+summary_data$concordance_fullds_auc <- rbind(summary_data$concordance_fullds_auc, 
+                                             conc_auc %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 ## Across all instances with a given sample size, for the same method
 concvals_ss <- do.call(rbind, lapply(all_methods, function(mth) {
@@ -88,13 +90,15 @@ concvals_ss <- do.call(rbind, lapply(all_methods, function(mth) {
 }))
 concvals_ss$ncells <- factor(concvals_ss$ncells,
                              levels = sort(unique(as.numeric(as.character(concvals_ss$ncells)))))
-summary_data$concordance_byncells <- rbind(summary_data$concordance_byncells, concvals_ss)
+summary_data$concordance_byncells <- rbind(summary_data$concordance_byncells, 
+                                           concvals_ss %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc_ss <- concvals_ss %>% dplyr::group_by(method, ncells) %>% 
   dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_byncells_auc <- 
-  rbind(summary_data$concordance_byncells_auc, conc_auc_ss)
+  rbind(summary_data$concordance_byncells_auc, 
+        conc_auc_ss %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 ## Between pairwise instances with a given sample size, for the same method
 concvals_pairwise <- do.call(rbind, lapply(all_methods, function(mth) {
@@ -120,14 +124,16 @@ concvals_pairwise <- do.call(rbind, lapply(all_methods, function(mth) {
     }
   }))
 }))
-summary_data$concordance_pairwise <- rbind(summary_data$concordance_pairwise, concvals_pairwise)
+summary_data$concordance_pairwise <- rbind(summary_data$concordance_pairwise, 
+                                           concvals_pairwise %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc_pw <- concvals_pairwise %>% 
   dplyr::group_by(method, ncells1, ncells2, replicate1, replicate2) %>% 
   dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_pairwise_auc <- 
-  rbind(summary_data$concordance_pairwise_auc, conc_auc_pw)
+  rbind(summary_data$concordance_pairwise_auc, 
+        conc_auc_pw %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 ## Between pairs of methods, for a given data set instance (fixed sample size, replicate)
 concvals_btwmth <- do.call(rbind, lapply(all_nsamples, function(ss) {
@@ -153,14 +159,16 @@ concvals_btwmth <- do.call(rbind, lapply(all_nsamples, function(ss) {
   }))
 }))
 summary_data$concordance_betweenmethods <- 
-  rbind(summary_data$concordance_betweenmethods, concvals_btwmth)
+  rbind(summary_data$concordance_betweenmethods, 
+        concvals_btwmth %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc_btwmth <- concvals_btwmth %>% 
   dplyr::group_by(method1, method2, ncells, repl) %>% 
   dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_betweenmethods_auc <- 
-  rbind(summary_data$concordance_betweenmethods_auc, conc_auc_btwmth)
+  rbind(summary_data$concordance_betweenmethods_auc, 
+        conc_auc_btwmth %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 saveRDS(summary_data, file = paste0("figures/consistency/", dataset, exts, "_concordances.rds"))
 

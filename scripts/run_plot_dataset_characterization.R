@@ -203,6 +203,14 @@ for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
 
 dev.off()
 
-saveRDS(NULL, paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
+saveRDS(lapply(list(char_cells_m = char_cells_m, 
+                    char_gene_m = char_gene_m,
+                    char_ds_m = char_ds_m),
+               function(L) {
+                 L$dataset <- dataset
+                 L$filt <- filt
+                 L
+               }), 
+        paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
 
 sessionInfo()

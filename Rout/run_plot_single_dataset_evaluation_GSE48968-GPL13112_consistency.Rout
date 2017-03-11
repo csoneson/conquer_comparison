@@ -63,25 +63,9 @@ package 'ggplot2' was built under R version 3.3.2
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
-Warning messages:
-1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-2: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-4: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-5: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-6: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-7: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-8: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
-9: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 25 will be used
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
+There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -143,4 +127,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-265.705  12.161 280.468 
+299.407   5.812 306.272 

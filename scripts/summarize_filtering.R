@@ -17,11 +17,40 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols) {
     dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells))))))
   
   print(ggplot(L, aes(x = dataset, y = retain)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+          geom_point(position = position_jitter(width = 0.2), aes(color = ncells)) + 
           theme_bw() + xlab("") + ylab("Retained fraction after filtering") + 
-          scale_shape_discrete(name = "Number of cells") + 
-          guides(shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+          guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
                 axis.text.y = element_text(size = 12),
                 axis.title.y = element_text(size = 13)))
+  
+  ## Plot library size vs fraction zeros across all data sets
+  summary_data_list <- lapply(datasets, function(ds) {
+    readRDS(paste0("figures/dataset_characteristics/", ds, ".rds"))
+  })
+  L <- do.call(rbind, lapply(summary_data_list, function(x) x$char_cells_m %>% 
+                               dplyr::filter(mtype %in% c("libsize", "fraczero")) %>%
+                               dplyr::mutate(cell = paste0(dataset, ".", cell, ".", ncells, ".", repl)) %>%
+                               dplyr::select(cell, mtype, value) %>%
+                               tidyr::spread(key = mtype, value = value) %>%
+                               tidyr::separate(cell, into = c("dataset", "cell", "ncells", "repl"), sep = "\\.")))
+  L <- L %>% dplyr::mutate(ncells = factor(ncells, 
+                                           levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", 
+                                                                                                    "", ncells))))), 
+                                                           " cells per group")))
+  print(ggplot(L, aes(x = libsize, y = fraczero, color = dataset, shape = ncells)) + 
+          geom_point() + theme_bw() + xlab("Library size") + ylab("Fraction zeros") + 
+          scale_shape_manual(values = 1:length(unique(L$ncells)), name = "") + 
+          scale_color_discrete(name = "") + 
+          theme(axis.text = element_text(size = 12), 
+                axis.title = element_text(size = 13)))
+  
+  print(ggplot(L, aes(x = libsize, y = fraczero, color = dataset, shape = ncells)) + 
+          geom_point() + theme_bw() + xlab("Library size") + ylab("Fraction zeros") + 
+          scale_shape_manual(values = 1:length(unique(L$ncells)), name = "") + 
+          scale_color_discrete(name = "") + 
+          scale_x_log10() + 
+          theme(axis.text = element_text(size = 12), 
+                axis.title = element_text(size = 13)))
+  
 }

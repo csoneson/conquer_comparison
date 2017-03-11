@@ -1,4 +1,4 @@
-plot_pca <- function(x, title_ext = "") {
+plot_pca <- function(x, title_ext = "", stat) {
   for (scl in c(TRUE)) {
     pca <- prcomp(t(x), scale. = scl)
     annot <- data.frame(id = colnames(x), stringsAsFactors = FALSE) %>%
@@ -93,7 +93,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
       x$charac <- NULL
       x[is.na(x)] <- 0
       
-      plot_pca(x, title_ext = "")
+      plot_pca(x, title_ext = "", stat = stat)
     }
   })
   
@@ -116,7 +116,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
       x$charac <- NULL
       x[is.na(x)] <- 0
       
-      plot_pca(x, title_ext = ", after scaling within each data set")
+      plot_pca(x, title_ext = ", after scaling within each data set", stat = stat)
      }
   })
   dev.off()

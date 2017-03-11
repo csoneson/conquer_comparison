@@ -63,15 +63,9 @@ package 'ggplot2' was built under R version 3.3.2
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
-Warning messages:
-1: In min(which(colSums(overlap(cobraplot)) > 0)) :
-  no non-missing arguments to min; returning Inf
-2: In max(which(colSums(overlap(cobraplot)) > 0)) :
-  no non-missing arguments to max; returning -Inf
-3: In min(which(colSums(overlap(cobraplot)) > 0)) :
-  no non-missing arguments to min; returning Inf
-4: In max(which(colSums(overlap(cobraplot)) > 0)) :
-  no non-missing arguments to max; returning -Inf
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
+There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -133,4 +127,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-262.473   5.654 269.522 
+312.393   4.817 318.131 

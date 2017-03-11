@@ -63,6 +63,8 @@ package 'ggplot2' was built under R version 3.3.2
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
 geom_path: Each group consists of only one observation. Do you need to adjust
@@ -97,7 +99,7 @@ geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
-There were 28 warnings (use warnings() to see them)
+There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -159,4 +161,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-113.172   1.734 115.348 
+179.608   2.492 182.694 

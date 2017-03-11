@@ -25,14 +25,20 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
   print(plot_tpr(cobraplot) + ggtitle("Truth defined by each method"))
   
   print(ggplot(tpr(cobraplot), aes(x = DIFF, y = TPR, color = method)) + 
-          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
-          ylab("Relative TPR") + scale_color_manual(values = tmpvec))
+          geom_point(size = 5) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Relative TPR") + scale_color_manual(values = tmpvec) + 
+          theme(axis.text = element_text(size = 12),
+                axis.title = element_text(size = 13)))
   print(ggplot(fpr(cobraplot), aes(x = DIFF, y = FPR, color = method)) + 
-          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
-          ylab("Relative FPR") + scale_color_manual(values = tmpvec))
+          geom_point(size = 5) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Relative FPR") + scale_color_manual(values = tmpvec) + 
+          theme(axis.text = element_text(size = 12),
+                axis.title = element_text(size = 13)))
   print(ggplot(fpr(cobraplot), aes(x = DIFF, y = NBR, color = method)) + 
-          geom_point(size = 3) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
-          ylab("Number of significant genes") + scale_color_manual(values = tmpvec))
+          geom_point(size = 5) + theme_bw() + xlab("Number of DE genes with maximal sample size") + 
+          ylab("Number of significant genes") + scale_color_manual(values = tmpvec) + 
+          theme(axis.text = element_text(size = 12),
+                axis.title = element_text(size = 13)))
   
   return(list(fpr = fpr(cobraplot)[, c("thr", "basemethod", "FPR")], 
               tpr = tpr(cobraplot)[, c("thr", "basemethod", "TPR")]))

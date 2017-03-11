@@ -86,10 +86,10 @@ package 'ggplot2' was built under R version 3.3.2
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-+     if (as.numeric(sz) == max(as.numeric(sizes))) {
-+       ## Save condition information for all cells
-+       cell_group <- L$condt
-+     }
++     # if (as.numeric(sz) == max(as.numeric(sizes))) {
++     #   ## Save condition information for all cells
++     #   cell_group <- L$condt
++     # }
 +     
 +     ## Gene characteristics
 +     chars <- calculate_gene_characteristics(L, do.plot = TRUE, 
@@ -102,6 +102,7 @@ package 'ggplot2' was built under R version 3.3.2
 +     ## Cell characteristics
 +     cellchars <- calculate_cell_characteristics(L)
 +     df3 <- cellchars$characs
++     df3$condition <- L$condt[match(df3$cell, names(L$condt))]
 +     colnames(df3)[colnames(df3) != "cell"] <- paste0(colnames(df3)[colnames(df3) != "cell"],
 +                                                      ".", sz, ".", i)
 +     char_cells[[paste0(sz, ".", i)]] <- df3
@@ -176,12 +177,22 @@ Using gene, tested.58.1, tested.36.1, tested.36.2, tested.36.3, tested.36.4, tes
 > 
 > char_cells <- Reduce(function(...) dplyr::full_join(..., by = "cell"), char_cells)
 There were 15 warnings (use warnings() to see them)
-> char_cells_m <- reshape2::melt(char_cells) %>% 
+> char_cells_m <- reshape2::melt(char_cells[, !(colnames(char_cells) %in% 
++                                                 grep("condition", colnames(char_cells), value = TRUE))]) %>% 
 +   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
 +   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
 +                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
 +                                                 " cells per group")))
 Using cell as id variables
+> char_cells_cond <- reshape2::melt(char_cells[, colnames(char_cells) %in% 
++                                                c("cell", grep("condition", colnames(char_cells), value = TRUE))],
++                                   id.vars = "cell") %>%
++   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
++   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
++                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
++                                                 " cells per group"))) %>%
++   dplyr::rename(condition = value) %>% dplyr::select(-mtype)
+> char_cells_m <- dplyr::full_join(char_cells_m, char_cells_cond, by = c("cell", "ncells", "repl"))
 >                                                 
 > print(ggplot(char_gene_s, aes(x = avecount, y = fraczero)) + geom_point(size = 0.3) +
 +         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
@@ -235,28 +246,39 @@ Warning messages:
 +           geom_density() + facet_wrap(~ncells) + 
 +           theme_bw() + xlab(nn))
 +   print(char_cells_m %>% dplyr::filter(mtype == tp) %>%
-+           dplyr::mutate(condition = cell_group[match(cell, names(cell_group))]) %>%
++           dplyr::filter(!is.na(value)) %>%
 +           ggplot(aes(x = condition, y = value)) + geom_boxplot(outlier.size = -1) +
 +           geom_point(position = position_jitter(width = 0.2)) + 
 +           theme_bw() + xlab("") + ylab(nn) + 
 +           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 
 +           facet_wrap(~interaction(ncells, repl)))
 +   print(char_cells_m %>% dplyr::filter(mtype == tp) %>%
-+           dplyr::mutate(condition = cell_group[match(cell, names(cell_group))]) %>%
-+           dplyr::mutate(cell = factor(cell, levels = names(sort(cell_group)))) %>%
++           dplyr::filter(!is.na(value)) %>%
 +           ggplot(aes(x = cell, y = value, fill = condition)) + geom_bar(stat = "identity") +
 +           theme_bw() + xlab("Cell") + ylab(nn) + 
 +           theme(axis.text.x = element_blank(),
 +                 legend.position = "bottom") + 
 +           facet_wrap(~interaction(ncells, repl)))
 + }
-There were 16 warnings (use warnings() to see them)
+Warning messages:
+1: Removed 1020 rows containing non-finite values (stat_density). 
+2: Removed 1020 rows containing non-finite values (stat_density). 
+3: Removed 1434 rows containing non-finite values (stat_density). 
+4: Removed 1434 rows containing non-finite values (stat_density). 
 > 
 > dev.off()
 null device 
           1 
 > 
-> saveRDS(NULL, paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
+> saveRDS(lapply(list(char_cells_m = char_cells_m, 
++                     char_gene_m = char_gene_m,
++                     char_ds_m = char_ds_m),
++                function(L) {
++                  L$dataset <- dataset
++                  L$filt <- filt
++                  L
++                }), 
++         paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
 > 
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -309,4 +331,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-291.846   6.110 298.726 
+324.971   8.725 334.800 

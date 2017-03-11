@@ -63,6 +63,9 @@ package 'ggplot2' was built under R version 3.3.2
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
+There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
           1 
@@ -124,4 +127,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-309.175   7.195 318.012 
+398.608   6.795 406.384 

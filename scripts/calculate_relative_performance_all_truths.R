@@ -6,6 +6,7 @@ for (i in 1:length(args)) {
 suppressPackageStartupMessages(library(iCOBRA))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(reshape2))
 
 print(dataset)
 print(filt)
