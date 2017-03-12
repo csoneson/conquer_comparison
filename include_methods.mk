@@ -3,10 +3,10 @@ empty :=
 space := $(empty) $(empty)
 
 ## All data sets
-DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 GSE60749-GPL13112 GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock UsoskinGSE59739 UsoskinGSE59739mock 
+DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 GSE60749-GPL13112 GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock UsoskinGSE59739 UsoskinGSE59739mock GSE45719sim123 GSE45719sim123mock
 DSc := $(subst $(space),$(comma),$(DS))
 ## Data sets for which we have both original and mock results (to compare consistency)
-Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739
+Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739 GSE45719sim123
 Dsbc := $(subst $(space),$(comma),$(Dsb))
 
 ## Data sets to include in summary of characteristics (only mock)
@@ -27,3 +27,9 @@ MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt DESeq2 DESeq2nofil
 MTcbulk := $(subst $(space),$(comma),$(MTbulk))
 DSbulkb := EGEUV1
 Dssbulk := EGEUV1mock
+
+## Data sets to simulate from
+DSforsim := GSE45719 GSE74596 GSE48968-GPL13112
+
+## Simulated data sets
+DSsim := GSE45719sim123

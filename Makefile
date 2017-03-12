@@ -95,6 +95,21 @@ endef
 $(foreach j,$(DS),$(eval $(call configrule,$(j))))
 $(foreach j,$(DSbulk),$(eval $(call configrule,$(j))))
 
+## --------------------------------- Simulate data ------------------------------------ ##
+## ------------------------------------------------------------------------------------ ##
+define simrule
+data/$(1)sim$(2).rds: scripts/simulate_data.R data/$(1).rds config/$(1).json software/zingeR/R/simulation.R
+	$R "--args dataset='$(1)' config_file='config/$(1).json' nDE=1000 seed=$(2)" scripts/simulate_data.R Rout/simulate_data_$(1)_$(2).Rout
+endef
+$(foreach j,$(DSforsim),$(eval $(call simrule,$(j),123)))
+
+define simrulemock
+data/$(1)sim$(2)mock.rds: data/$(1)sim$(2).rds
+	scp data/$(1)sim$(2).rds data/$(1)sim$(2)mock.rds
+endef
+$(foreach j,$(DSforsim),$(eval $(call simrulemock,$(j),123)))
+
+
 ## --------------------------- Extract sample subsets --------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define subsetrule
