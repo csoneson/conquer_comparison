@@ -76,15 +76,19 @@ generse <- SummarizedExperiment(assays = list(TPM = sim_TPM,
 ## Generate MultiAssayExperiment
 mae <- MultiAssayExperiment(experiments = list(gene = generse),
                             pData = data.frame(group = as.character(sim_group),
-                                               row.names = colnames(sim_counts),
-                                               stringsAsFactors = FALSE))
+                                               sample = colnames(sim_counts), 
+                                               row.names = colnames(sim_counts)))
 
 truth <- rep(0, nrow(sim_counts))
 truth[DEind] <- 1
+foldchange <- rep(1, nrow(sim_counts))
+foldchange[DEind] <- sim_foldchange
 truth <- data.frame(status = truth, dispersion = sim_dispersion, 
-                    propzero = sim_propzero, foldchange = sim_foldchange, 
+                    propzero = sim_propzero, foldchange = foldchange, 
                     stringsAsFactors = FALSE)
 rownames(truth) <- rownames(sim_counts)
 
-saveRDS(mae, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", id, "sim", seed, ".rds"))
-saveRDS(truth, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", id, "sim", seed, "_truth.rds"))
+saveRDS(mae, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
+                           dataset, "sim", seed, ".rds"))
+saveRDS(truth, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
+                             dataset, "sim", seed, "_truth.rds"))

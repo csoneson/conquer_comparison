@@ -23,8 +23,10 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     df2$Var3 <- gsub(exts, "", gsub(paste0(".", szi), "", df2$Var2))
     names(colvec) <- gsub(exts, "", names(colvec))
     for (y in c("avetpm", "avecount", "vartpm")) {
-      nn <- ifelse(y == "avetpm", "average TPM", 
-                   ifelse(y == "avecount", "average count", "variance(TPM)"))
+      nn <- switch(y,
+                   avetpm = "average TPM",
+                   avecount = "average count",
+                   vartpm = "variance(TPM)")
       ## Populate summary_data with t-statistic between significant and non-significant genes
       summary_data$stats_charac <- 
         rbind(summary_data$stats_charac, 

@@ -1,0 +1,165 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> print(dataset)
+[1] "GSE45719"
+> print(config_file)
+[1] "config/GSE45719.json"
+> print(nDE)
+[1] 1000
+> print(seed)
+[1] 123
+> 
+> set.seed(seed)
+> 
+> source("/home/Shared/data/seq/conquer/comparison/software/zingeR/R/methods.R")
+> source("/home/Shared/data/seq/conquer/comparison/software/zingeR/R/simulation.R")
+> 
+> suppressPackageStartupMessages(library(SummarizedExperiment))
+> suppressPackageStartupMessages(library(MultiAssayExperiment))
+> suppressPackageStartupMessages(library(edgeR))
+> suppressPackageStartupMessages(library(gamlss))
+> suppressPackageStartupMessages(library(gamlss.tr))
+> suppressPackageStartupMessages(library(rjson))
+> gamlss.tr::gen.trun(par = 0, family = "NBI", name = "ZeroTruncated",
++                     type = "left", varying = FALSE)
+A truncated family of distributions from NBI has been generated 
+ and saved under the names:  
+ dNBIZeroTruncated pNBIZeroTruncated qNBIZeroTruncated rNBIZeroTruncated NBIZeroTruncated 
+The type of truncation is left 
+ and the truncation parameter is 0  
+> 
+> config <- fromJSON(file = config_file)
+> 
+> print(config)
+$mae
+[1] "data/GSE45719.rds"
+
+$subfile
+[1] "subsets/GSE45719_subsets.rds"
+
+$resfilebase
+[1] "results/GSE45719"
+
+$figfilebase
+[1] "figures/diffexpression/GSE45719"
+
+$groupid
+[1] "source_name_ch1"
+
+$keepgroups
+[1] "16-cell stage blastomere"                       
+[2] "Mid blastocyst cell (92-94h post-fertilization)"
+
+$seed
+[1] 42
+
+$sizes
+[1] 50 24 12  6
+
+$nreps
+[1] 1 5 5 5
+
+> 
+> mae <- readRDS(config$mae)
+> pdata <- Biobase::pData(mae)
+> 
+> groupid <- config$groupid
+> keepgroups <- config$keepgroups
+> if (length(groupid) > 1) {
++   pdata[, paste(groupid, collapse = ".")] <- 
++     as.character(interaction(as.data.frame(pdata[, groupid])))
++   groupid <- paste(groupid, collapse = ".")
++ }
+> 
+> counts <- assays(experiments(mae)[["gene"]])[["count_lstpm"]]
+> stopifnot(all(colnames(counts) == rownames(pdata)))
+> 
+> keep <- which(pdata[, groupid] %in% keepgroups)
+> length(keep)
+[1] 110
+> counts <- round(counts[, keep])
+> counts <- counts[rowSums(counts > 0) > 1, ]
+> group <- as.character(pdata[keep, groupid])
+> 
+> params <- getDatasetZTNB(counts = counts, design = model.matrix(~group))
+> DEind <- sample(1:nrow(counts), nDE, replace = FALSE)
+> fcSim <- (2 + rexp(length(DEind), rate = 1/2)) #fold changes
+> 
+> sim <- NBsimSingleCell(dataset = counts, group = factor(group), nTags = nrow(counts), ind = DEind, 
++                        params = params, foldDiff = fcSim, lib.size = colSums(counts), verbose = TRUE)
+Preparing dataset.
+
+Sampling.
+
+Calculating differential expression.
+
+Simulating data.
+
+> 
+> sim_counts <- sim$counts
+> colnames(sim_counts) <- paste0("s", 1:ncol(sim_counts))
+> sim_group <- sim$group
+> sim_foldchange <- sim$foldDiff
+> sim_indDE <- sim$indDE
+> sim_propzero <- sim$propZeroGene
+> sim_dispersion <- sim$Dispersion[, 1]
+> 
+> 
+> ## Get TPMs from counts. Ideally, we would like to do:
+> ## newMat <- sim_counts/rowMeans(avetxlength)
+> ## sim_TPM <- t(t(newMat) / colSums(newMat)) * 1e6
+> ## However, we don't know which row in the simulated data is obtained from 
+> ## which row in the original data, so we approximate the TPMs by just 
+> ## scaling the (length-scaled TPM) counts to sum to 1e6
+> sim_TPM <- t(t(sim_counts)/colSums(sim_counts)) * 1e6
+> 
+> generse <- SummarizedExperiment(assays = list(TPM = sim_TPM,
++                                               count_lstpm = sim_counts))
+> 
+> ## Generate MultiAssayExperiment
+> mae <- MultiAssayExperiment(experiments = list(gene = generse),
++                             pData = data.frame(group = as.character(sim_group),
++                                                sample = colnames(sim_counts), 
++                                                row.names = colnames(sim_counts)))
+> 
+> truth <- rep(0, nrow(sim_counts))
+> truth[DEind] <- 1
+> foldchange <- rep(1, nrow(sim_counts))
+> foldchange[DEind] <- sim_foldchange
+> truth <- data.frame(status = truth, dispersion = sim_dispersion, 
++                     propzero = sim_propzero, foldchange = foldchange, 
++                     stringsAsFactors = FALSE)
+> rownames(truth) <- rownames(sim_counts)
+> 
+> saveRDS(mae, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
++                            dataset, "sim", seed, ".rds"))
+> saveRDS(truth, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
++                              dataset, "sim", seed, "_truth.rds"))
+> 
+> proc.time()
+    user   system  elapsed 
+6448.373   17.262 6473.614 

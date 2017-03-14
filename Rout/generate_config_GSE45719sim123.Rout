@@ -1,0 +1,40 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> suppressPackageStartupMessages(library(rjson))
+> 
+> ## Generate configuration file
+> L <- list(mae = "data/GSE45719sim123.rds", 
++           subfile = "subsets/GSE45719sim123_subsets.rds",
++           resfilebase = "results/GSE45719sim123",
++           figfilebase = "figures/diffexpression/GSE45719sim123", 
++           truthfile = "data/GSE45719sim123_truth.rds",
++           groupid = "group", 
++           keepgroups = c("16-cell stage blastomere",
++                          "Mid blastocyst cell (92-94h post-fertilization)"), 
++           seed = 42, 
++           sizes = c(50, 24, 12, 6), 
++           nreps = c(1, 5, 5, 5))
+> write(toJSON(L), file = "config/GSE45719sim123.json")
+> 
+> proc.time()
+   user  system elapsed 
+  0.188   0.041   0.215 

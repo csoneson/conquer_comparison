@@ -47,8 +47,10 @@ imposed_condition <- subsets$out_condition
 cell_cycle_file <- readRDS(cell_cycle_file)
 if (!is.null(metadata(mae)$index)) {
   cell_cycle_ids <- cell_cycle_file[[gsub("\\.cdna.*", "", metadata(mae)$index)]]
-} else {
+} else if (!is.null(metadata(mae)$organism)) {
   cell_cycle_ids <- cell_cycle_file[[gsub(" ", "_", metadata(mae)$organism)]]
+} else {
+  cell_cycle_ids <- NULL
 }
 
 sizes <- names(keep_samples)
@@ -59,11 +61,7 @@ for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-    # if (as.numeric(sz) == max(as.numeric(sizes))) {
-    #   ## Save condition information for all cells
-    #   cell_group <- L$condt
-    # }
-    
+
     ## Gene characteristics
     chars <- calculate_gene_characteristics(L, do.plot = TRUE, 
                                             title.ext = paste0(", ", sz, " cells per group, repl ", i))
@@ -137,7 +135,8 @@ char_cells_m <- reshape2::melt(char_cells[, !(colnames(char_cells) %in%
                                 levels = paste0(as.character(sort(as.numeric(unique(ncells)))),
                                                 " cells per group")))
 char_cells_cond <- reshape2::melt(char_cells[, colnames(char_cells) %in% 
-                                               c("cell", grep("condition", colnames(char_cells), value = TRUE))],
+                                               c("cell", grep("condition", 
+                                                              colnames(char_cells), value = TRUE))],
                                   id.vars = "cell") %>%
   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 

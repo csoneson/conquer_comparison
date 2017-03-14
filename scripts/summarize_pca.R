@@ -1,3 +1,7 @@
+do_scale <- function(x) {
+  (x - mean(x))/sd(x)
+}
+
 plot_pca <- function(x, title_ext = "", stat) {
   for (scl in c(TRUE)) {
     pca <- prcomp(t(x), scale. = scl)
@@ -88,7 +92,54 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
           dplyr::filter(charac != "fraczerodiff") %>%
           dplyr::filter(charac != "log2_avecount")
       })
-      x <- do.call(rbind, x) %>% dcast(charac ~ Var2, value.var = stat)
+      ## Visualize summary statistics for each characteristic
+      x <- do.call(rbind, x)
+      statname <- switch(stat,
+                         tstat = "t-statistic comparing significant and non-significant genes",
+                         mediandiff = "median difference between significant and non-significant genes")
+      charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
+                    log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
+      x %>% tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+        dplyr::mutate(charac = charname[charac]) %>%
+        ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
+        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+        facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = ""))
+      
+      x %>% tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+        dplyr::mutate(charac = charname[charac]) %>%
+        ggplot(aes_string(x = "charac", y = stat, color = "method", shape = "dataset")) + 
+        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+        facet_wrap(~method, scales = "fixed") + xlab("") + ylab(statname) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = ""))
+      
+      x %>% dplyr::group_by(charac) %>% 
+        dplyr::mutate_(stat = paste0("(", stat, "-mean(", stat, "))/sd(", stat, ")")) %>% 
+        dplyr::ungroup() %>% as.data.frame() %>%
+        tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+        dplyr::mutate(charac = charname[charac]) %>%
+        ggplot(aes_string(x = "charac", y = "stat", color = "method", shape = "dataset")) + 
+        geom_hline(yintercept = 0) + 
+        geom_point() + theme_bw() + facet_wrap(~method, scales = "fixed") + 
+        xlab("") + ylab(paste0(statname, ",\ncentered and scaled across all instances)")) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = ""))
+      
+      x <- x %>% dcast(charac ~ Var2, value.var = stat)
       rownames(x) <- x$charac
       x$charac <- NULL
       x[is.na(x)] <- 0
@@ -115,6 +166,16 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
       rownames(x) <- x$charac
       x$charac <- NULL
       x[is.na(x)] <- 0
+      
+      ## Summarize in heatmap
+      v <- t(x)
+      annot <- data.frame(id = rownames(v), row.names = rownames(v), stringsAsFactors = FALSE) %>% 
+        tidyr::separate(id, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+        dplyr::select(-repl, -filt)
+      pheatmap(v, annotation_row = annot, show_rownames = FALSE, 
+               labels_col = charname, annotation_colors = list(method = cols))
+      pheatmap(v, cluster_rows = FALSE, annotation_row = annot, show_rownames = FALSE, 
+               labels_col = charname, annotation_colors = list(method = cols))
       
       plot_pca(x, title_ext = ", after scaling within each data set", stat = stat)
      }

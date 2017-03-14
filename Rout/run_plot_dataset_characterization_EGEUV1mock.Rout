@@ -74,8 +74,10 @@ package 'ggplot2' was built under R version 3.3.2
 > cell_cycle_file <- readRDS(cell_cycle_file)
 > if (!is.null(metadata(mae)$index)) {
 +   cell_cycle_ids <- cell_cycle_file[[gsub("\\.cdna.*", "", metadata(mae)$index)]]
-+ } else {
++ } else if (!is.null(metadata(mae)$organism)) {
 +   cell_cycle_ids <- cell_cycle_file[[gsub(" ", "_", metadata(mae)$organism)]]
++ } else {
++   cell_cycle_ids <- NULL
 + }
 > 
 > sizes <- names(keep_samples)
@@ -86,11 +88,7 @@ package 'ggplot2' was built under R version 3.3.2
 +   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
-+     # if (as.numeric(sz) == max(as.numeric(sizes))) {
-+     #   ## Save condition information for all cells
-+     #   cell_group <- L$condt
-+     # }
-+     
++ 
 +     ## Gene characteristics
 +     chars <- calculate_gene_characteristics(L, do.plot = TRUE, 
 +                                             title.ext = paste0(", ", sz, " cells per group, repl ", i))
@@ -185,7 +183,8 @@ There were 15 warnings (use warnings() to see them)
 +                                                 " cells per group")))
 Using cell as id variables
 > char_cells_cond <- reshape2::melt(char_cells[, colnames(char_cells) %in% 
-+                                                c("cell", grep("condition", colnames(char_cells), value = TRUE))],
++                                                c("cell", grep("condition", 
++                                                               colnames(char_cells), value = TRUE))],
 +                                   id.vars = "cell") %>%
 +   tidyr::separate(variable, into = c("mtype", "ncells", "repl"), sep = "\\.") %>%
 +   dplyr::mutate(ncells = factor(paste0(ncells, " cells per group"), 
@@ -331,4 +330,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-855.660  44.319 903.355 
+833.462  43.358 878.674 
