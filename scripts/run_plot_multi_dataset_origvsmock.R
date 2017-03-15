@@ -38,11 +38,14 @@ nbr_keep <- unique(intersect(subset(concs, tp == "original")$ncells1,
 ## Remove extension from method name
 concs$method <- gsub(exts, "", concs$method)
 
-print(concs %>% as.data.frame() %>%
-        dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-        dplyr::filter(ncells1 == ncells2) %>%
-        dplyr::group_by(dataset, ncells1, method) %>% 
-        dplyr::summarize(tstat = ttest(tp, auc)) %>% 
+concsum <- concs %>% as.data.frame() %>%
+  dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
+  dplyr::filter(ncells1 == ncells2) %>%
+  dplyr::group_by(dataset, ncells1, method) %>% 
+  dplyr::summarize(tstat = ttest(tp, auc),
+                   mediandiff = median(auc[tp == "original"]) - median(auc[tp == "mock"]))
+
+print(concsum %>% 
         ggplot(aes(x = method, y = tstat, col = method)) + 
         geom_boxplot(outlier.size = -1) +
         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
@@ -53,6 +56,17 @@ print(concs %>% as.data.frame() %>%
               axis.text.y = element_text(size = 12),
               axis.title.y = element_text(size = 13)))
 
+print(concsum %>% 
+        ggplot(aes(x = method, y = mediandiff, col = method)) + 
+        geom_boxplot(outlier.size = -1) +
+        geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
+        theme_bw() + xlab("") + 
+        ylab("difference between median area under concordance curve (original - mock)") + 
+        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+        scale_shape_discrete(name = "") +
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)))
 
 dev.off()
 

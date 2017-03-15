@@ -47,8 +47,6 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
   y <- lapply(summary_data_list, function(m) {
     m$fracpbelow0.05 %>% 
       tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.")# %>%
-    #dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
-    #dplyr::select(method, dataset, FPR)
   })
   y <- do.call(rbind, y) %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples))))))

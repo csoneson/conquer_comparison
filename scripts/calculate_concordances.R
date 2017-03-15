@@ -45,8 +45,16 @@ summary_data <- list()
 maxrank <- 1000
 minfrac <- 1
 
-## Order each column in increasing order
 pconc <- pval(cobratmp)
+## For methods not returning p-values, use adjusted p-values
+addm <- setdiff(colnames(padj(cobratmp)), colnames(pconc))
+if (length(addm) > 0) {
+  pconc <- dplyr::full_join(data.frame(gene = rownames(pconc), pconc),
+                            data.frame(gene = rownames(padj(cobratmp)), padj(cobratmp)[, addm]))
+  rownames(pconc) <- pconc$gene
+  pconc$gene <- NULL
+}
+## Find ordering of each column
 for (i in colnames(pconc)) {
   pconc[, i] <- order(pconc[, i])
 }
@@ -62,14 +70,16 @@ concvals <- do.call(rbind, lapply(all_methods, function(mth) {
   concval$method <- mth
   concval
 }))
-summary_data$concordance_fullds <- rbind(summary_data$concordance_fullds, 
-                                         concvals %>% dplyr::mutate(dataset = dataset, filt = filt))
+summary_data$concordance_fullds <- 
+  rbind(summary_data$concordance_fullds, 
+        concvals %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc <- concvals %>% dplyr::group_by(method) %>% 
-  dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
+  dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
-summary_data$concordance_fullds_auc <- rbind(summary_data$concordance_fullds_auc, 
-                                             conc_auc %>% dplyr::mutate(dataset = dataset, filt = filt))
+summary_data$concordance_fullds_auc <- 
+  rbind(summary_data$concordance_fullds_auc, 
+        conc_auc %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 ## Across all instances with a given sample size, for the same method
 concvals_ss <- do.call(rbind, lapply(all_methods, function(mth) {
@@ -90,11 +100,12 @@ concvals_ss <- do.call(rbind, lapply(all_methods, function(mth) {
 }))
 concvals_ss$ncells <- factor(concvals_ss$ncells,
                              levels = sort(unique(as.numeric(as.character(concvals_ss$ncells)))))
-summary_data$concordance_byncells <- rbind(summary_data$concordance_byncells, 
-                                           concvals_ss %>% dplyr::mutate(dataset = dataset, filt = filt))
+summary_data$concordance_byncells <- 
+  rbind(summary_data$concordance_byncells, 
+        concvals_ss %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc_ss <- concvals_ss %>% dplyr::group_by(method, ncells) %>% 
-  dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
+  dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_byncells_auc <- 
   rbind(summary_data$concordance_byncells_auc, 
@@ -112,8 +123,8 @@ concvals_pairwise <- do.call(rbind, lapply(all_methods, function(mth) {
           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank, frac = minfrac)
           cv$ncells1 <- i
           cv$ncells2 <- i
-          cv$replicate1 <- get_repl(colnames(tmp))[j1]
-          cv$replicate2 <- get_repl(colnames(tmp))[j2]
+          cv$replicate1 <- get_repl(colnames(tmp)[j1])
+          cv$replicate2 <- get_repl(colnames(tmp)[j2])
           concval <- rbind(concval, cv)
         }
       }
@@ -124,12 +135,13 @@ concvals_pairwise <- do.call(rbind, lapply(all_methods, function(mth) {
     }
   }))
 }))
-summary_data$concordance_pairwise <- rbind(summary_data$concordance_pairwise, 
-                                           concvals_pairwise %>% dplyr::mutate(dataset = dataset, filt = filt))
+summary_data$concordance_pairwise <- 
+  rbind(summary_data$concordance_pairwise, 
+        concvals_pairwise %>% dplyr::mutate(dataset = dataset, filt = filt))
 
 conc_auc_pw <- concvals_pairwise %>% 
   dplyr::group_by(method, ncells1, ncells2, replicate1, replicate2) %>% 
-  dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
+  dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_pairwise_auc <- 
   rbind(summary_data$concordance_pairwise_auc, 
@@ -145,8 +157,8 @@ concvals_btwmth <- do.call(rbind, lapply(all_nsamples, function(ss) {
       for (j1 in 1:(ncol(tmp) - 1)) {
         for (j2 in (j1 + 1):(ncol(tmp))) {
           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank, frac = minfrac)
-          cv$method1 <- get_method(colnames(tmp))[j1]
-          cv$method2 <- get_method(colnames(tmp))[j2]
+          cv$method1 <- get_method(colnames(tmp)[j1])
+          cv$method2 <- get_method(colnames(tmp)[j2])
           concval <- rbind(concval, cv)
         }
       }
@@ -164,7 +176,7 @@ summary_data$concordance_betweenmethods <-
 
 conc_auc_btwmth <- concvals_btwmth %>% 
   dplyr::group_by(method1, method2, ncells, repl) %>% 
-  dplyr::summarize(auc = caTools::trapz(c(k, k[length(k)]), c(p, 0))/(maxrank^2/2)) %>%
+  dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
   dplyr::mutate(frac = minfrac)
 summary_data$concordance_betweenmethods_auc <- 
   rbind(summary_data$concordance_betweenmethods_auc, 

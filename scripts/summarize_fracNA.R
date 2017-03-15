@@ -15,7 +15,6 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
           geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
           theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
           scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          scale_shape_discrete(name = "Number of cells") + 
           facet_wrap(~dataset) + 
           guides(color = guide_legend(ncol = 2, title = ""),
                  shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
@@ -30,7 +29,6 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
           geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
           theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
           scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          scale_shape_discrete(name = "Number of cells") + 
           guides(color = guide_legend(ncol = 2, title = ""),
                  shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),

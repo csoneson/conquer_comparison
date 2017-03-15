@@ -141,7 +141,6 @@ package 'ggplot2' was built under R version 3.3.2
 6.3
 6.4
 6.5
-There were 44 warnings (use warnings() to see them)
 > 
 > char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w["n_genes"]),
 +                         stringsAsFactors = FALSE) %>%
@@ -153,7 +152,11 @@ There were 44 warnings (use warnings() to see them)
 +   dplyr::mutate(n_cells = factor(n_cells, levels = unique(n_cells)))
 > print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
 +         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
-+         scale_fill_discrete(name = "Number of cells"))
++         scale_fill_discrete(name = "Number of cells") + 
++         stat_summary(fun.data = function(x) {return(c(y = x,
++                                                       label = x))}, 
++                      geom = "text", alpha = 1, size = 2, vjust = -1, 
++                      position = position_dodge(width = 0.75)))
 > 
 > char_gene <- Reduce(function(...) dplyr::full_join(..., by = "gene"), char_gene)
 Warning messages:
@@ -251,9 +254,10 @@ Warning messages:
 2: Removed 23197 rows containing non-finite values (stat_density). 
 3: Removed 23197 rows containing non-finite values (stat_density). 
 4: Removed 23197 rows containing non-finite values (stat_density). 
-> for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm")) {
+> for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround")) {
 +   nn <- switch(tp, 
 +                fraczero = "Fraction zeros per gene",
++                fraczeroround = "Fraction zeros per gene after rounding",
 +                fraczerodiff = "Difference (between conditions) of zero fraction per gene",
 +                cvtpm = "Coefficient of variation (TPM)",
 +                fraczerocensus = "Fraction zeros per gene, census counts")
@@ -268,9 +272,11 @@ Warning messages:
 2: Removed 23197 rows containing non-finite values (stat_density). 
 3: Removed 23197 rows containing non-finite values (stat_density). 
 4: Removed 23197 rows containing non-finite values (stat_density). 
-> for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
+5: Removed 23197 rows containing non-finite values (stat_density). 
+> for (tp in c("libsize", "fraczero", "fraczeroround", "libsizecensus", "fraczerocensus")) {
 +   nn <- switch(tp,
 +                fraczero = "Fraction zeros per cell",
++                fraczeroround = "Fraction zeros per cell after rounding",
 +                libsize = "Library size per cell",
 +                libsizecensus = "Library size per cell, census counts",
 +                fraczerocensus = "Fraction zeros per cell, census counts")
@@ -299,6 +305,7 @@ Warning messages:
 2: Removed 300 rows containing non-finite values (stat_density). 
 3: Removed 300 rows containing non-finite values (stat_density). 
 4: Removed 300 rows containing non-finite values (stat_density). 
+5: Removed 300 rows containing non-finite values (stat_density). 
 > 
 > dev.off()
 null device 
@@ -365,4 +372,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-235.652   4.745 240.910 
+291.169   4.430 296.301 

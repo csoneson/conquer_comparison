@@ -11,16 +11,22 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   ## Plot
   if (do.plot) {
     ## Census count distributions
-    print(reshape2::melt(censuscounts) %>% dplyr::mutate(condition = L$condt[Var2]) %>%
+    print(reshape2::melt(censuscounts + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>%
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
-            xlab("Census count") + ggtitle(paste0("Census count distribution per cell", title.ext)))
+            xlab("Census count + 1") + ggtitle(paste0("Census count distribution per cell", title.ext)))
     
     ## Count distributions
-    print(reshape2::melt(L$count) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
+    print(reshape2::melt(L$count + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
-            xlab("Count") + ggtitle(paste0("Count distribution per cell", title.ext)))
+            xlab("Count + 1") + ggtitle(paste0("Count distribution per cell", title.ext)))
+    
+    ## Count distributions, after rounding
+    print(reshape2::melt(round(L$count) + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
+            geom_density() + scale_x_log10() + theme_bw() + 
+            xlab("Count + 1, rounded") + ggtitle(paste0("Count distribution per cell", title.ext)))
   }
   
   avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 
@@ -36,6 +42,7 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   
   ## Fraction zeros
   fraczero <- data.frame(fraczero = apply(L$count, 1, function(x) mean(x == 0)),
+                         fraczeroround = apply(round(L$count), 1, function(x) mean(x == 0)), 
                          fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
                                            1, function(x) mean(x == 0)),
                          fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 

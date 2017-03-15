@@ -73,9 +73,12 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
                     axis.title = element_text(size = 13)) + 
               ggtitle(paste0(ifelse(exts == "", "", paste0(gsub("^_", "", exts), ", ")), szi)))
     }
-    for (y in c("fraczero", "fraczerodiff", "cvtpm")) {
-      nn <- ifelse(y == "fraczero", "Zero fraction", 
-                   ifelse(y == "cvtpm", "coefficient of variation (TPM)", "Difference in zero fraction"))
+    for (y in c("fraczero", "fraczeroround", "fraczerodiff", "cvtpm")) {
+      nn <- switch(y, 
+                   fraczero = "Fraction zeros",
+                   fraczeroround = "Fraction zeros after rounding",
+                   fraczerodiff = "Difference in fraction zeros between conditions",
+                   cvtpm = "coefficient of variation (TPM)")
       ## Populate summary_data with t-statistic between significant and non-significant genes
       summary_data$stats_charac <- 
         rbind(summary_data$stats_charac, 

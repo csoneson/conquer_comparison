@@ -114,7 +114,11 @@ char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(
   dplyr::mutate(n_cells = factor(n_cells, levels = unique(n_cells)))
 print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
-        scale_fill_discrete(name = "Number of cells"))
+        scale_fill_discrete(name = "Number of cells") + 
+        stat_summary(fun.data = function(x) {return(c(y = x,
+                                                      label = x))}, 
+                     geom = "text", alpha = 1, size = 2, vjust = -1, 
+                     position = position_dodge(width = 0.75)))
 
 char_gene <- Reduce(function(...) dplyr::full_join(..., by = "gene"), char_gene)
 char_gene_m <- reshape2::melt(char_gene) %>% 
@@ -161,9 +165,10 @@ for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
           geom_density() + scale_x_log10() + facet_wrap(~ncells) + 
           theme_bw() + xlab(nn))
 }
-for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm")) {
+for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround")) {
   nn <- switch(tp, 
                fraczero = "Fraction zeros per gene",
+               fraczeroround = "Fraction zeros per gene after rounding",
                fraczerodiff = "Difference (between conditions) of zero fraction per gene",
                cvtpm = "Coefficient of variation (TPM)",
                fraczerocensus = "Fraction zeros per gene, census counts")
@@ -173,9 +178,10 @@ for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm")) {
           geom_density() + facet_wrap(~ncells) + 
           theme_bw() + xlab(nn))
 }
-for (tp in c("libsize", "fraczero", "libsizecensus", "fraczerocensus")) {
+for (tp in c("libsize", "fraczero", "fraczeroround", "libsizecensus", "fraczerocensus")) {
   nn <- switch(tp,
                fraczero = "Fraction zeros per cell",
+               fraczeroround = "Fraction zeros per cell after rounding",
                libsize = "Library size per cell",
                libsizecensus = "Library size per cell, census counts",
                fraczerocensus = "Fraction zeros per cell, census counts")

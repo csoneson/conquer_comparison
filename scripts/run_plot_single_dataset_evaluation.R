@@ -22,7 +22,8 @@ pdf(paste0("figures/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), wid
 summary_data <- list()
 if (plottype == "timing") {
   timings <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
-  summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols, exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols,
+                                                 exts = exts, summary_data = summary_data)
 } else if (plottype == "consistency") {
   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
   concordances <- readRDS(paste0("figures/consistency/", dataset, exts, "_concordances.rds"))
@@ -30,7 +31,8 @@ if (plottype == "timing") {
                                                  colvec = cols, exts = exts, summary_data = summary_data)
 } else if (plottype == "results_relativetruth_all") {
   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
-  relperf_alltruths <- readRDS(paste0("figures/results_relativetruth_all/", dataset, exts, "_relative_performance.rds"))
+  relperf_alltruths <- readRDS(paste0("figures/results_relativetruth_all/", 
+                                      dataset, exts, "_relative_performance.rds"))
   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
                                                  colvec = cols, exts = exts, summary_data = summary_data)
 } else {

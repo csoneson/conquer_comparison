@@ -16,24 +16,32 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
            error = function(e) NULL)
 }
 
-
 plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = list()) {
   ## ------------------------- Concordance plots ---------------------------- ##
-  print(ggplot(concordances$concordance_fullds, aes(x = k, y = p, group = method, color = method)) +
-          geom_line() + scale_color_manual(values = colvec, name = "") +
+  print(ggplot(concordances$concordance_fullds %>% 
+                 dplyr::mutate(method = gsub(exts, "", method)), 
+               aes(x = k, y = p, group = method, color = method)) +
+          geom_line() + 
+          scale_color_manual(values = structure(colvec, names = gsub(exts, "", names(colvec))), name = "") +
           theme_bw() + xlab("Number of top-ranked genes") + 
-          ylab("Fraction shared between all all instances") + 
+          ylab("Fraction shared between all instances") + 
           theme(axis.text = element_text(size = 12),
                 axis.title = element_text(size = 13)))
 
-  print(ggplot(concordances$concordance_byncells, aes(x = k, y = p, group = method, color = method)) +
-          geom_line() + scale_color_manual(values = colvec, name = "") +
+  print(ggplot(concordances$concordance_byncells %>%
+                 dplyr::mutate(method = gsub(exts, "", method)), 
+               aes(x = k, y = p, group = method, color = method)) +
+          geom_line() + 
+          scale_color_manual(values = structure(colvec, names = gsub(exts, "", names(colvec))), name = "") +
           theme_bw() + facet_wrap(~ncells) + theme(legend.position = "bottom") + 
           xlab("Number of top-ranked genes") + ylab("Fraction shared between all instances") + 
           theme(axis.text = element_text(size = 12),
                 axis.title = element_text(size = 13)))
 
-  help_function_crossmethod_concordance(concordances$concordance_betweenmethods_auc)
+  help_function_crossmethod_concordance(concordances$concordance_betweenmethods_auc %>%
+                                          dplyr::ungroup() %>%
+                                          dplyr::mutate(method1 = gsub(exts, "", method1),
+                                                        method2 = gsub(exts, "", method2)))
   
   ## ------------------------------ Overlaps -------------------------------- ##
   cobratmp <- cobra

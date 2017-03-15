@@ -31,7 +31,6 @@ cols <- c("#488d00", "black", "#8bff58", "#ff5cd5", "#9CC0AD",
           "#a5a5e5", "#777777", "#6400a6", "#f2c6cf", "#afeda6", 
           "#af5d6d", "#bf8bb2", "#F7EE55", "gray", 
           "pink", "#7BAFDE", "#42425b")
-# "#1965B0",  "#F6C141" "#a3c6ff", "red", "orange", "",  "#a996ff"
 names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
                  "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
                  "voomlimma", "Wilcoxon", "BPSC", "MASTcpm", "MASTcpmDetRate", 

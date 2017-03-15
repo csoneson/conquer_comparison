@@ -37,7 +37,7 @@ cobra <- NULL
 timings <- list()
 for (rfn in resfiles) {   ## for each DE method
   rf <- readRDS(rfn)
-  for (nm in names(rf)) {   ## for each data set instance
+  for (nm in names(rf)) {   ## for each data set instance (nm = method.ncells.repl)
     print(names(rf[[nm]]))
     
     ## Get stored timing information and results

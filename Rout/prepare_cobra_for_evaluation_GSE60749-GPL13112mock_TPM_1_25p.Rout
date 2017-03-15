@@ -99,7 +99,7 @@ package 'ggplot2' was built under R version 3.3.2
 > timings <- list()
 > for (rfn in resfiles) {   ## for each DE method
 +   rf <- readRDS(rfn)
-+   for (nm in names(rf)) {   ## for each data set instance
++   for (nm in names(rf)) {   ## for each data set instance (nm = method.ncells.repl)
 +     print(names(rf[[nm]]))
 +     
 +     ## Get stored timing information and results
@@ -2311,7 +2311,7 @@ There were 15 warnings (use warnings() to see them)
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-29107 new features and 203 new annotations added to truth table
+29107 new features and 219 new annotations added to truth table
 > 
 > ## Make data frame with number of significant, non-significant and NA calls for each method
 > cobraperf <- calculate_performance(cobra, aspects = "fpr", 
@@ -2334,5 +2334,5 @@ Joining, by = c("ncells", "repl")
 > saveRDS(nbr_called, file = paste0("figures/cobra_data/", dataset, exts, "_nbr_called.rds"))
 > 
 > proc.time()
-   user  system elapsed 
-484.556  31.317 517.535 
+    user   system  elapsed 
+ 718.206  238.955 1006.485 
