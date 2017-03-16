@@ -32,8 +32,8 @@ if (length(groupid) > 1) {
 ## Keep only two groups
 if (is.null(keepgroups)) 
   keepgroups <- levels(factor(pdata[, groupid]))[1:2]
-keepsamples <- rownames(pdata[pdata[, groupid] %in% keepgroups, ])
-pdata <- droplevels(pdata[match(keepsamples, rownames(pdata)), ])
+keepsamples <- rownames(pdata[pdata[, groupid] %in% keepgroups, , drop = FALSE])
+pdata <- droplevels(pdata[match(keepsamples, rownames(pdata)), , drop = FALSE])
 
 condt <- as.character(pdata[, groupid])
 names(condt) <- rownames(pdata)

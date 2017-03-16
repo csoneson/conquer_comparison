@@ -15,18 +15,32 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
             xlab("Census count + 1") + ggtitle(paste0("Census count distribution per cell", title.ext)))
+    print(reshape2::melt(censuscounts) %>% dplyr::mutate(condition = L$condt[Var2]) %>%
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
+            geom_density() + scale_x_log10() + theme_bw() + 
+            xlab("Census count, zeros excluded") + 
+            ggtitle(paste0("Census count distribution per cell", title.ext)))
     
     ## Count distributions
     print(reshape2::melt(L$count + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
             xlab("Count + 1") + ggtitle(paste0("Count distribution per cell", title.ext)))
+    print(reshape2::melt(L$count) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
+            geom_density() + scale_x_log10() + theme_bw() + 
+            xlab("Count, zeros excluded") + ggtitle(paste0("Count distribution per cell", title.ext)))
     
     ## Count distributions, after rounding
     print(reshape2::melt(round(L$count) + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
             xlab("Count + 1, rounded") + ggtitle(paste0("Count distribution per cell", title.ext)))
+    print(reshape2::melt(round(L$count)) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
+            ggplot(aes(x = value, group = Var2, color = condition)) + 
+            geom_density() + scale_x_log10() + theme_bw() + 
+            xlab("Count, rounded, zeros excluded") +
+            ggtitle(paste0("Count distribution per cell", title.ext)))
   }
   
   avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 

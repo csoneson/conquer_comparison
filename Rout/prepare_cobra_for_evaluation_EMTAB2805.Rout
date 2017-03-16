@@ -2334,5 +2334,5 @@ Joining, by = c("ncells", "repl")
 > saveRDS(nbr_called, file = paste0("figures/cobra_data/", dataset, exts, "_nbr_called.rds"))
 > 
 > proc.time()
-   user  system elapsed 
-645.857  85.086 737.363 
+    user   system  elapsed 
+ 760.164  353.884 1387.870 

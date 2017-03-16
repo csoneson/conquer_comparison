@@ -35,4 +35,4 @@ Setting LC_CTYPE failed, using "C"
 > 
 > proc.time()
    user  system elapsed 
-  0.189   0.039   0.207 
+  0.170   0.038   0.192 

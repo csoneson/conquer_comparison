@@ -65,11 +65,14 @@ package 'ggplot2' was built under R version 3.3.2
 > ## Remove extension from method name
 > concs$method <- gsub(exts, "", concs$method)
 > 
-> print(concs %>% as.data.frame() %>%
-+         dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-+         dplyr::filter(ncells1 == ncells2) %>%
-+         dplyr::group_by(dataset, ncells1, method) %>% 
-+         dplyr::summarize(tstat = ttest(tp, auc)) %>% 
+> concsum <- concs %>% as.data.frame() %>%
++   dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
++   dplyr::filter(ncells1 == ncells2) %>%
++   dplyr::group_by(dataset, ncells1, method) %>% 
++   dplyr::summarize(tstat = ttest(tp, auc),
++                    mediandiff = median(auc[tp == "original"]) - median(auc[tp == "mock"]))
+> 
+> print(concsum %>% 
 +         ggplot(aes(x = method, y = tstat, col = method)) + 
 +         geom_boxplot(outlier.size = -1) +
 +         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
@@ -80,6 +83,17 @@ package 'ggplot2' was built under R version 3.3.2
 +               axis.text.y = element_text(size = 12),
 +               axis.title.y = element_text(size = 13)))
 > 
+> print(concsum %>% 
++         ggplot(aes(x = method, y = mediandiff, col = method)) + 
++         geom_boxplot(outlier.size = -1) +
++         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) +
++         theme_bw() + xlab("") + 
++         ylab("difference between median area under concordance curve (original - mock)") + 
++         scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
++         scale_shape_discrete(name = "") +
++         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
++               axis.text.y = element_text(size = 12),
++               axis.title.y = element_text(size = 13)))
 > 
 > dev.off()
 null device 
@@ -109,7 +123,7 @@ other attached packages:
  [3] ggbiplot_0.55              scales_0.4.1              
  [5] plyr_1.8.4                 lazyeval_0.2.0            
  [7] UpSetR_1.3.2               akima_0.6-2               
- [9] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [9] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
 [11] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [13] IRanges_2.8.1              S4Vectors_0.12.1          
 [15] Biobase_2.34.0             BiocGenerics_0.20.0       
@@ -125,7 +139,7 @@ loaded via a namespace (and not attached):
 [10] gtable_0.2.0         caTools_1.17.1       htmlwidgets_0.8     
 [13] labeling_0.3         httpuv_1.3.3         Rcpp_0.12.9         
 [16] KernSmooth_2.23-15   xtable_1.8-2         ROCR_1.0-7          
-[19] DT_0.2               gdata_2.17.0         limma_3.30.8        
+[19] DT_0.2               gdata_2.17.0         limma_3.30.13       
 [22] XVector_0.14.0       mime_0.5             gplots_3.0.1        
 [25] gridExtra_2.2.1      digest_0.6.12        stringi_1.1.2       
 [28] shiny_1.0.0          tools_3.3.1          bitops_1.0-6        
@@ -136,4 +150,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-  8.073   0.499   8.639 
+ 10.216   0.462  10.713 

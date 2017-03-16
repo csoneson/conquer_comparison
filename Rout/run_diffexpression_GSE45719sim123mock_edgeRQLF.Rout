@@ -105,39 +105,38 @@ $nreps
 +   }
 + }
 24.1
-27318 genes, 48 samples.
+27041 genes, 48 samples.
 edgeRQLF
 12.1
-25913 genes, 24 samples.
+25912 genes, 24 samples.
 edgeRQLF
 12.2
-25878 genes, 24 samples.
+25978 genes, 24 samples.
 edgeRQLF
 12.3
-25953 genes, 24 samples.
+25988 genes, 24 samples.
 edgeRQLF
 12.4
-25903 genes, 24 samples.
+26049 genes, 24 samples.
 edgeRQLF
 12.5
-25867 genes, 24 samples.
+26020 genes, 24 samples.
 edgeRQLF
 6.1
-24073 genes, 12 samples.
+24493 genes, 12 samples.
 edgeRQLF
 6.2
-24121 genes, 12 samples.
+24426 genes, 12 samples.
 edgeRQLF
 6.3
-24102 genes, 12 samples.
+24470 genes, 12 samples.
 edgeRQLF
 6.4
-24104 genes, 12 samples.
+24154 genes, 12 samples.
 edgeRQLF
 6.5
-24069 genes, 12 samples.
+24271 genes, 12 samples.
 edgeRQLF
-There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -159,12 +158,12 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] edgeR_3.17.5               limma_3.30.8              
- [3] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [1] edgeR_3.17.5               limma_3.30.13             
+ [3] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
  [5] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
  [7] IRanges_2.8.1              S4Vectors_0.12.1          
  [9] tidyr_0.6.1                dplyr_0.5.0               
-[11] survey_3.31-2              survival_2.40-1           
+[11] survey_3.31-5              survival_2.40-1           
 [13] Matrix_1.2-8               GEOquery_2.40.0           
 [15] Biobase_2.34.0             BiocGenerics_0.20.0       
 [17] tximport_1.2.0             reshape2_1.4.2            
@@ -183,4 +182,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-213.909   8.580 222.986 
+222.476  54.200 287.160 

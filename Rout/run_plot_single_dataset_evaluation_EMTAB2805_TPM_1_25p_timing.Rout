@@ -100,7 +100,7 @@ other attached packages:
  [3] ggbiplot_0.55              scales_0.4.1              
  [5] plyr_1.8.4                 lazyeval_0.2.0            
  [7] UpSetR_1.3.2               akima_0.6-2               
- [9] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [9] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
 [11] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [13] IRanges_2.8.1              S4Vectors_0.12.1          
 [15] Biobase_2.34.0             BiocGenerics_0.20.0       
@@ -116,7 +116,7 @@ loaded via a namespace (and not attached):
 [10] gtable_0.2.0         caTools_1.17.1       htmlwidgets_0.8     
 [13] labeling_0.3         httpuv_1.3.3         Rcpp_0.12.9         
 [16] KernSmooth_2.23-15   xtable_1.8-2         ROCR_1.0-7          
-[19] DT_0.2               gdata_2.17.0         limma_3.30.8        
+[19] DT_0.2               gdata_2.17.0         limma_3.30.13       
 [22] XVector_0.14.0       mime_0.5             gplots_3.0.1        
 [25] gridExtra_2.2.1      digest_0.6.12        stringi_1.1.2       
 [28] shiny_1.0.0          tools_3.3.1          bitops_1.0-6        
@@ -126,4 +126,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-  8.069   0.581   8.779 
+  9.279   0.751  10.050 

@@ -75,6 +75,9 @@ plot_pca <- function(x, title_ext = "", stat) {
 }
 
 summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
+  charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
+                log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
+  
   ## ---------------------------------- PCA ----------------------------------- ##
   pdf(paste0(figdir, "/summary_pca", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
@@ -97,8 +100,6 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
       statname <- switch(stat,
                          tstat = "t-statistic comparing significant and non-significant genes",
                          mediandiff = "median difference between significant and non-significant genes")
-      charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
-                    log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
       x %>% tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
         dplyr::mutate(charac = charname[charac]) %>%
         ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 

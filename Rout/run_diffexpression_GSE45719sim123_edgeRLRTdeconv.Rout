@@ -111,52 +111,52 @@ $nreps
 +   }
 + }
 50.1
-28270 genes, 100 samples.
+28030 genes, 100 samples.
 edgeRdeconv
 24.1
-27325 genes, 48 samples.
+27426 genes, 48 samples.
 edgeRdeconv
 24.2
-27252 genes, 48 samples.
+27430 genes, 48 samples.
 edgeRdeconv
 24.3
-27334 genes, 48 samples.
+27419 genes, 48 samples.
 edgeRdeconv
 24.4
-27285 genes, 48 samples.
+27431 genes, 48 samples.
 edgeRdeconv
 24.5
-27305 genes, 48 samples.
+27389 genes, 48 samples.
 edgeRdeconv
 12.1
-25913 genes, 24 samples.
+26354 genes, 24 samples.
 edgeRdeconv
 12.2
-25880 genes, 24 samples.
+26308 genes, 24 samples.
 edgeRdeconv
 12.3
-25873 genes, 24 samples.
+26327 genes, 24 samples.
 edgeRdeconv
 12.4
-25763 genes, 24 samples.
+26349 genes, 24 samples.
 edgeRdeconv
 12.5
-25866 genes, 24 samples.
+26240 genes, 24 samples.
 edgeRdeconv
 6.1
-24003 genes, 12 samples.
+24867 genes, 12 samples.
 edgeRdeconv
 6.2
-24026 genes, 12 samples.
+24733 genes, 12 samples.
 edgeRdeconv
 6.3
-24145 genes, 12 samples.
+24748 genes, 12 samples.
 edgeRdeconv
 6.4
-24059 genes, 12 samples.
+24557 genes, 12 samples.
 edgeRdeconv
 6.5
-23882 genes, 12 samples.
+24587 genes, 12 samples.
 edgeRdeconv
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
@@ -179,14 +179,14 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] scran_1.2.0                scater_1.2.0              
+ [1] scran_1.2.2                scater_1.2.0              
  [3] ggplot2_2.2.1              BiocParallel_1.8.1        
- [5] edgeR_3.17.5               limma_3.30.8              
- [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [5] edgeR_3.17.5               limma_3.30.13             
+ [7] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
  [9] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [11] IRanges_2.8.1              S4Vectors_0.12.1          
 [13] tidyr_0.6.1                dplyr_0.5.0               
-[15] survey_3.31-2              survival_2.40-1           
+[15] survey_3.31-5              survival_2.40-1           
 [17] Matrix_1.2-8               GEOquery_2.40.0           
 [19] Biobase_2.34.0             BiocGenerics_0.20.0       
 [21] tximport_1.2.0             reshape2_1.4.2            
@@ -195,7 +195,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] viridis_0.3.4         httr_1.2.1            dynamicTreeCut_1.63-1
  [4] splines_3.3.1         shiny_1.0.0           assertthat_0.1       
- [7] statmod_1.4.26        vipor_0.4.4           RSQLite_1.1-2        
+ [7] statmod_1.4.29        vipor_0.4.4           RSQLite_1.1-2        
 [10] lattice_0.20-34       quadprog_1.5-5        digest_0.6.12        
 [13] XVector_0.14.0        colorspace_1.3-2      htmltools_0.3.5      
 [16] httpuv_1.3.3          plyr_1.8.4            XML_3.98-1.5         
@@ -213,4 +213,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-449.709  12.016 463.075 
+515.963  36.692 555.069 

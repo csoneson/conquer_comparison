@@ -2335,4 +2335,4 @@ Joining, by = c("ncells", "repl")
 > 
 > proc.time()
     user   system  elapsed 
- 727.847  592.974 1717.787 
+ 701.917  513.992 1495.427 

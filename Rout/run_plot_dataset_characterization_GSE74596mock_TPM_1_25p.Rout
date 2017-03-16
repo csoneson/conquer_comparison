@@ -141,6 +141,7 @@ package 'ggplot2' was built under R version 3.3.2
 6.3
 6.4
 6.5
+There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w["n_genes"]),
 +                         stringsAsFactors = FALSE) %>%
@@ -342,7 +343,7 @@ other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
  [3] irlba_2.1.2                VGAM_1.0-3                
  [5] Matrix_1.2-8               lazyeval_0.2.0            
- [7] UpSetR_1.3.2               MultiAssayExperiment_1.0.0
+ [7] UpSetR_1.3.2               MultiAssayExperiment_1.0.1
  [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
 [11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [13] S4Vectors_0.12.1           Biobase_2.34.0            
@@ -355,7 +356,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.9            lattice_0.20-34        gtools_3.5.0          
  [4] assertthat_0.1         digest_0.6.12          mime_0.5              
- [7] slam_0.1-38            R6_2.2.0               plyr_1.8.4            
+ [7] slam_0.1-40            R6_2.2.0               plyr_1.8.4            
 [10] qlcMatrix_0.9.5        gplots_3.0.1           zlibbioc_1.20.0       
 [13] gdata_2.17.0           combinat_0.0-8         DT_0.2                
 [16] labeling_0.3           stringr_1.1.0          htmlwidgets_0.8       
@@ -366,10 +367,10 @@ loaded via a namespace (and not attached):
 [31] xtable_1.8-2           gtable_0.2.0           DBI_0.5-1             
 [34] magrittr_1.5           scales_0.4.1           KernSmooth_2.23-15    
 [37] stringi_1.1.2          XVector_0.14.0         ROCR_1.0-7            
-[40] limma_3.30.8           fastICA_1.2-0          RColorBrewer_1.1-2    
+[40] limma_3.30.13          fastICA_1.2-0          RColorBrewer_1.1-2    
 [43] tools_3.3.1            HSMMSingleCell_0.108.0 colorspace_1.3-2      
 [46] cluster_2.0.5          caTools_1.17.1         shinydashboard_0.5.3  
 > 
 > proc.time()
    user  system elapsed 
-178.459  15.531 194.550 
+222.705 135.471 361.084 

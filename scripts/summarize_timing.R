@@ -103,7 +103,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   })
   ngenes <- do.call(rbind, ngenes) %>% group_by(dataset, filt, ncells) %>%
     dplyr::summarize(ngenes = median(nbr_tested)) %>% 
-    mutate(ncells = as.numeric(ncells))
+    dplyr::mutate(ncells = as.numeric(ncells))
   y3 <- dplyr::full_join(y2, ngenes)
   
   ns <- y3 %>% filter(method == y3$method[1]) %>% group_by(ncells) %>% tally()
@@ -135,7 +135,8 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
                    "_nbr_called.rds"))
   })
   ngenes <- do.call(rbind, ngenes) %>% ungroup() %>% mutate(ncells = as.numeric(ncells)) %>%
-    mutate(repl = as.numeric(repl)) %>% dplyr::rename(ngenes = nbr_tested)
+    dplyr::mutate(repl = as.numeric(repl)) %>% dplyr::rename(ngenes = nbr_tested) %>%
+    dplyr::mutate(method = gsub(exts, "", method))
   y4 <- lapply(summary_data_list, function(m) {
    m$timing_full
   })

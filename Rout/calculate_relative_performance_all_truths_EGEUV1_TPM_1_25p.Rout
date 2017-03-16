@@ -132,10 +132,10 @@ loaded via a namespace (and not attached):
 [22] digest_0.6.12        tibble_1.2           gridExtra_2.2.1     
 [25] shiny_1.0.0          ggplot2_2.2.1        bitops_1.0-6        
 [28] htmlwidgets_0.8      mime_0.5             stringi_1.1.2       
-[31] gdata_2.17.0         limma_3.30.8         UpSetR_1.3.2        
+[31] gdata_2.17.0         limma_3.30.13        UpSetR_1.3.2        
 [34] shinyBS_0.61         gplots_3.0.1         scales_0.4.1        
 [37] httpuv_1.3.3        
 > 
 > proc.time()
     user   system  elapsed 
-1130.407    4.958 1138.754 
+1133.767    3.944 1143.858 

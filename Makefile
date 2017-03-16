@@ -81,6 +81,10 @@ $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(FILT),$(foreach k,$(MT),$(
 $(addsuffix .rds, $(addprefix results/, $(foreach k,$(MTbulk),$(foreach X,$(DSbulk),$X_$k)))) \
 $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(FILT),$(foreach k,$(MTbulk),$(foreach X,$(DSbulk),$X_$k_$Y)))))
 
+## Simulate data
+sim: $(addsuffix .rds, $(addprefix data/, $(foreach X,$(DSforsim),$Xsim123))) \
+$(addsuffix .rds, $(addprefix data/, $(foreach X,$(DSforsim),$Xsim123mock)))
+
 ## List all rules
 list:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
@@ -100,8 +104,8 @@ $(foreach j,$(DSbulk),$(eval $(call configrule,$(j))))
 ## --------------------------------- Simulate data ------------------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define simrule
-data/$(1)sim$(2).rds: scripts/simulate_data.R data/$(1).rds config/$(1).json software/zingeR/R/simulation.R
-	$R "--args dataset='$(1)' config_file='config/$(1).json' nDE=1000 seed=$(2)" scripts/simulate_data.R Rout/simulate_data_$(1)_$(2).Rout
+data/$(1)sim$(2).rds: scripts/simulate_data.R data/$(1).rds config/$(1).json scripts/powsim_modified_functions.R
+	$R "--args dataset='$(1)' config_file='config/$(1).json' pDE=0.1 seed=$(2)" scripts/simulate_data.R Rout/simulate_data_$(1)_$(2).Rout
 endef
 $(foreach j,$(DSforsim),$(eval $(call simrule,$(j),123)))
 
@@ -216,6 +220,7 @@ $(foreach X,$(DS),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule,$(X),$(Y)))))
 $(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule,$(X),$(Y)))))
 $(foreach X,$(Dss),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X),$(Y)))))
 $(foreach X,$(Dssbulk),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X),$(Y)))))
+$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X)mock,$(Y)))))
 
 define plotrule2
 figures/$(2)/$(1)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R figures/cobra_data/$(1)_cobra.rds \
@@ -241,6 +246,7 @@ $(foreach k,$(FILT),$(foreach X,$(DS),$(foreach Y,$(PLOTTYPE1),$(eval $(call plo
 $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
 $(foreach k,$(FILT),$(foreach X,$(Dss),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
 $(foreach k,$(FILT),$(foreach X,$(Dssbulk),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
+$(foreach k,$(FILT),$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X)mock,$(Y),$(k))))))
 
 define plotrule2_filt
 figures/$(2)/$(1)_$(3)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R figures/cobra_data/$(1)_$(3)_cobra.rds \

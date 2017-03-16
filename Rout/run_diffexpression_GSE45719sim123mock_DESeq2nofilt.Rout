@@ -105,7 +105,7 @@ $nreps
 +   }
 + }
 24.1
-27318 genes, 48 samples.
+27041 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -115,10 +115,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 27318 with nonzero total read count
+out of 27041 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 11, 0.04% 
-LFC < 0 (down)   : 15, 0.055% 
+LFC > 0 (up)     : 2, 0.0074% 
+LFC < 0 (down)   : 9, 0.033% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -126,7 +126,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.1
-25913 genes, 24 samples.
+25912 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -136,10 +136,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 25913 with nonzero total read count
+out of 25912 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 50, 0.19% 
-LFC < 0 (down)   : 43, 0.17% 
+LFC > 0 (up)     : 26, 0.1% 
+LFC < 0 (down)   : 29, 0.11% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -147,7 +147,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.2
-25878 genes, 24 samples.
+25978 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -157,10 +157,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 25878 with nonzero total read count
+out of 25978 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 60, 0.23% 
-LFC < 0 (down)   : 41, 0.16% 
+LFC > 0 (up)     : 9, 0.035% 
+LFC < 0 (down)   : 14, 0.054% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -168,7 +168,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.3
-25953 genes, 24 samples.
+25988 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -178,10 +178,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 25953 with nonzero total read count
+out of 25988 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 61, 0.24% 
-LFC < 0 (down)   : 56, 0.22% 
+LFC > 0 (up)     : 19, 0.073% 
+LFC < 0 (down)   : 20, 0.077% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -189,7 +189,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.4
-25903 genes, 24 samples.
+26049 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -199,10 +199,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 25903 with nonzero total read count
+out of 26049 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 35, 0.14% 
-LFC < 0 (down)   : 43, 0.17% 
+LFC > 0 (up)     : 28, 0.11% 
+LFC < 0 (down)   : 24, 0.092% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -210,7 +210,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.5
-25867 genes, 24 samples.
+26020 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -220,10 +220,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 25867 with nonzero total read count
+out of 26020 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 59, 0.23% 
-LFC < 0 (down)   : 43, 0.17% 
+LFC > 0 (up)     : 33, 0.13% 
+LFC < 0 (down)   : 28, 0.11% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -231,7 +231,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.1
-24073 genes, 12 samples.
+24493 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -241,10 +241,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 24073 with nonzero total read count
+out of 24493 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 128, 0.53% 
-LFC < 0 (down)   : 125, 0.52% 
+LFC > 0 (up)     : 69, 0.28% 
+LFC < 0 (down)   : 87, 0.36% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -252,7 +252,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.2
-24121 genes, 12 samples.
+24426 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -262,10 +262,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 24121 with nonzero total read count
+out of 24426 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 92, 0.38% 
-LFC < 0 (down)   : 105, 0.44% 
+LFC > 0 (up)     : 80, 0.33% 
+LFC < 0 (down)   : 81, 0.33% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -273,7 +273,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.3
-24102 genes, 12 samples.
+24470 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -283,10 +283,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 24102 with nonzero total read count
+out of 24470 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 107, 0.44% 
-LFC < 0 (down)   : 121, 0.5% 
+LFC > 0 (up)     : 82, 0.34% 
+LFC < 0 (down)   : 65, 0.27% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -294,7 +294,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.4
-24104 genes, 12 samples.
+24154 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -304,10 +304,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 24104 with nonzero total read count
+out of 24154 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 117, 0.49% 
-LFC < 0 (down)   : 133, 0.55% 
+LFC > 0 (up)     : 98, 0.41% 
+LFC < 0 (down)   : 83, 0.34% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -315,7 +315,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.5
-24069 genes, 12 samples.
+24271 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -325,10 +325,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 24069 with nonzero total read count
+out of 24271 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 102, 0.42% 
-LFC < 0 (down)   : 103, 0.43% 
+LFC > 0 (up)     : 96, 0.4% 
+LFC < 0 (down)   : 73, 0.3% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -356,11 +356,11 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] DESeq2_1.14.1              MultiAssayExperiment_1.0.0
+ [1] DESeq2_1.14.1              MultiAssayExperiment_1.0.1
  [3] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [5] GenomeInfoDb_1.10.3        IRanges_2.8.1             
  [7] S4Vectors_0.12.1           tidyr_0.6.1               
- [9] dplyr_0.5.0                survey_3.31-2             
+ [9] dplyr_0.5.0                survey_3.31-5             
 [11] survival_2.40-1            Matrix_1.2-8              
 [13] GEOquery_2.40.0            Biobase_2.34.0            
 [15] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -389,4 +389,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1360.977   15.437 1379.265 
+1063.685  102.221 1169.376 
