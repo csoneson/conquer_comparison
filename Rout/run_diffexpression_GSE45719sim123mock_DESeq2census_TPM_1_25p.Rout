@@ -107,7 +107,7 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -116,16 +116,16 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 815 genes
+-- replacing outliers and refitting for 175 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 12081 with nonzero total read count
+out of 9881 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
-LFC < 0 (down)   : 0, 0% 
+LFC < 0 (down)   : 1, 0.01% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -133,7 +133,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -142,24 +142,24 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 943 genes
+-- replacing outliers and refitting for 226 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 11744 with nonzero total read count
+out of 9330 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 5, 0.043% 
+low counts [2]   : 2, 0.021% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -168,24 +168,24 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 994 genes
+-- replacing outliers and refitting for 233 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 11718 with nonzero total read count
+out of 9356 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 3, 0.026% 
+low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -194,24 +194,24 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 941 genes
+-- replacing outliers and refitting for 230 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 11776 with nonzero total read count
+out of 9374 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 2, 0.017% 
+low counts [2]   : 2, 0.021% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -220,53 +220,50 @@ gene-wise dispersion estimates
 mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 936 genes
+-- replacing outliers and refitting for 243 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 11746 with nonzero total read count
+out of 9316 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 8, 0.068% 
+low counts [2]   : 7, 0.075% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
--- replacing outliers and refitting for 948 genes
+-- replacing outliers and refitting for 260 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 estimating dispersions
 fitting model and testing
 
-out of 11727 with nonzero total read count
+out of 9370 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
-LFC < 0 (down)   : 0, 0% 
+LFC < 0 (down)   : 1, 0.011% 
 outliers [1]     : 0, 0% 
-low counts [2]   : 5, 0.043% 
+low counts [2]   : 5, 0.053% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -276,18 +273,18 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 11133 with nonzero total read count
+out of 8504 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
-outliers [1]     : 386, 3.5% 
+outliers [1]     : 101, 1.2% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -297,18 +294,18 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 11104 with nonzero total read count
+out of 8481 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 0, 0% 
+LFC > 0 (up)     : 3, 0.035% 
 LFC < 0 (down)   : 0, 0% 
-outliers [1]     : 438, 3.9% 
+outliers [1]     : 85, 1% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -318,18 +315,18 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 11126 with nonzero total read count
+out of 8525 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
-LFC < 0 (down)   : 1, 0.009% 
-outliers [1]     : 398, 3.6% 
+LFC < 0 (down)   : 0, 0% 
+outliers [1]     : 103, 1.2% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -339,18 +336,18 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 11232 with nonzero total read count
+out of 8425 with nonzero total read count
 adjusted p-value < 0.05
-LFC > 0 (up)     : 0, 0% 
-LFC < 0 (down)   : 1, 0.0089% 
-outliers [1]     : 413, 3.7% 
+LFC > 0 (up)     : 1, 0.012% 
+LFC < 0 (down)   : 0, 0% 
+outliers [1]     : 102, 1.2% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
 [2] see 'independentFiltering' argument of ?results
 
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 DESeq2census
 converting counts to integer mode
 estimating size factors
@@ -360,11 +357,11 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 11149 with nonzero total read count
+out of 8478 with nonzero total read count
 adjusted p-value < 0.05
 LFC > 0 (up)     : 0, 0% 
 LFC < 0 (down)   : 0, 0% 
-outliers [1]     : 402, 3.6% 
+outliers [1]     : 103, 1.2% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
 [1] see 'cooksCutoff' argument of ?results
@@ -394,11 +391,11 @@ other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
  [3] irlba_2.1.2                VGAM_1.0-3                
  [5] ggplot2_2.2.1              DESeq2_1.14.1             
- [7] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [7] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
  [9] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [11] IRanges_2.8.1              S4Vectors_0.12.1          
 [13] tidyr_0.6.1                dplyr_0.5.0               
-[15] survey_3.31-2              survival_2.40-1           
+[15] survey_3.31-5              survival_2.40-1           
 [17] Matrix_1.2-8               GEOquery_2.40.0           
 [19] Biobase_2.34.0             BiocGenerics_0.20.0       
 [21] tximport_1.2.0             reshape2_1.4.2            
@@ -406,9 +403,9 @@ other attached packages:
 
 loaded via a namespace (and not attached):
  [1] httr_1.2.1             Formula_1.2-1          shiny_1.0.0           
- [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-38           
+ [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-40           
  [7] RSQLite_1.1-2          backports_1.0.5        lattice_0.20-34       
-[10] limma_3.30.8           digest_0.6.12          RColorBrewer_1.1-2    
+[10] limma_3.30.13          digest_0.6.12          RColorBrewer_1.1-2    
 [13] XVector_0.14.0         checkmate_1.8.2        colorspace_1.3-2      
 [16] fastICA_1.2-0          htmltools_0.3.5        httpuv_1.3.3          
 [19] plyr_1.8.4             XML_3.98-1.5           pheatmap_1.0.8        
@@ -429,4 +426,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-330.575   8.970 340.173 
+278.772   8.216 287.966 

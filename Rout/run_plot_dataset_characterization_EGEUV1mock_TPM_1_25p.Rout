@@ -196,12 +196,20 @@ Using cell as id variables
 +                                                 " cells per group"))) %>%
 +   dplyr::rename(condition = value) %>% dplyr::select(-mtype)
 > char_cells_m <- dplyr::full_join(char_cells_m, char_cells_cond, by = c("cell", "ncells", "repl"))
+> char_cells_s <- char_cells_m %>% tidyr::spread(key = mtype, value = value) %>%
++   dplyr::mutate(replicate = paste0(ncells, ", repl ", repl)) %>%
++   dplyr::arrange(ncells, as.numeric(repl))
+> 
 >                                                 
 > print(ggplot(char_gene_s, aes(x = avecount, y = fraczero)) + geom_point(size = 0.3) +
 +         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
 +         xlab("Average count per gene") + ylab("Fraction zeros per gene"))
 Warning message:
 Removed 36924 rows containing missing values (geom_point). 
+> print(ggplot(char_cells_s %>% dplyr::filter(!is.na(condition)), 
++              aes(x = libsize, y = fraczero, color = condition)) + geom_point(size = 0.7) +
++         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
++         xlab("Library size") + ylab("Fraction zeros per cell"))
 > 
 > for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
 +   nn <- switch(tp,
@@ -338,4 +346,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-625.968 251.623 909.043 
+562.103  47.874 613.576 

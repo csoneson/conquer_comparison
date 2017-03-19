@@ -107,37 +107,37 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 monocle
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 monocle
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 monocle
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 monocle
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 monocle
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 monocle
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 monocle
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 monocle
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 monocle
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 monocle
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 monocle
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
@@ -160,14 +160,14 @@ attached base packages:
  [8] utils     datasets  methods   base     
 
 other attached packages:
- [1] edgeR_3.17.5               limma_3.30.8              
+ [1] edgeR_3.17.5               limma_3.30.13             
  [3] monocle_2.2.0              DDRTree_0.1.4             
  [5] irlba_2.1.2                VGAM_1.0-3                
- [7] ggplot2_2.2.1              MultiAssayExperiment_1.0.0
+ [7] ggplot2_2.2.1              MultiAssayExperiment_1.0.1
  [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
 [11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [13] S4Vectors_0.12.1           tidyr_0.6.1               
-[15] dplyr_0.5.0                survey_3.31-2             
+[15] dplyr_0.5.0                survey_3.31-5             
 [17] survival_2.40-1            Matrix_1.2-8              
 [19] GEOquery_2.40.0            Biobase_2.34.0            
 [21] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -176,7 +176,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.9            locfit_1.5-9.1         lattice_0.20-34       
  [4] assertthat_0.1         digest_0.6.12          mime_0.5              
- [7] slam_0.1-38            R6_2.2.0               plyr_1.8.4            
+ [7] slam_0.1-40            R6_2.2.0               plyr_1.8.4            
 [10] qlcMatrix_0.9.5        httr_1.2.1             zlibbioc_1.20.0       
 [13] lazyeval_0.2.0         combinat_0.0-8         stringr_1.1.0         
 [16] igraph_1.0.1           pheatmap_1.0.8         RCurl_1.95-4.8        
@@ -191,4 +191,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-4794.036   14.039 4815.809 
+4737.326   19.135 4772.220 

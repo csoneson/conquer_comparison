@@ -111,70 +111,70 @@ $nreps
 +   }
 + }
 50.1
-13553 genes, 100 samples.
+11370 genes, 100 samples.
 monoclecensus
-Removing 399 outliers
+Removing 243 outliers
 24.1
-13439 genes, 48 samples.
+11299 genes, 48 samples.
 monoclecensus
-Removing 395 outliers
+Removing 223 outliers
 24.2
-13427 genes, 48 samples.
+11332 genes, 48 samples.
 monoclecensus
-Removing 414 outliers
+Removing 222 outliers
 24.3
-13441 genes, 48 samples.
+11303 genes, 48 samples.
 monoclecensus
-Removing 377 outliers
+Removing 239 outliers
 24.4
-13432 genes, 48 samples.
+11324 genes, 48 samples.
 monoclecensus
-Removing 413 outliers
+Removing 244 outliers
 24.5
-13420 genes, 48 samples.
+11318 genes, 48 samples.
 monoclecensus
-Removing 389 outliers
+Removing 246 outliers
 12.1
-13232 genes, 24 samples.
+11128 genes, 24 samples.
 monoclecensus
-Removing 380 outliers
+Removing 219 outliers
 12.2
-13243 genes, 24 samples.
+11139 genes, 24 samples.
 monoclecensus
-Removing 401 outliers
+Removing 232 outliers
 12.3
-13255 genes, 24 samples.
+11191 genes, 24 samples.
 monoclecensus
-Removing 403 outliers
+Removing 213 outliers
 12.4
-13246 genes, 24 samples.
+11159 genes, 24 samples.
 monoclecensus
-Removing 388 outliers
+Removing 232 outliers
 12.5
-13239 genes, 24 samples.
+11144 genes, 24 samples.
 monoclecensus
-Removing 387 outliers
+Removing 239 outliers
 6.1
-12966 genes, 12 samples.
+10813 genes, 12 samples.
 monoclecensus
-Removing 332 outliers
+Removing 189 outliers
 6.2
-12935 genes, 12 samples.
+10811 genes, 12 samples.
 monoclecensus
-Removing 339 outliers
+Removing 176 outliers
 6.3
-12892 genes, 12 samples.
+10778 genes, 12 samples.
 monoclecensus
-Removing 326 outliers
+Removing 181 outliers
 6.4
-12894 genes, 12 samples.
+10797 genes, 12 samples.
 monoclecensus
-Removing 339 outliers
+Removing 170 outliers
 6.5
-12908 genes, 12 samples.
+10838 genes, 12 samples.
 monoclecensus
-Removing 336 outliers
-There were 23 warnings (use warnings() to see them)
+Removing 187 outliers
+There were 16 warnings (use warnings() to see them)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -199,12 +199,12 @@ other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
  [3] irlba_2.1.2                VGAM_1.0-3                
  [5] ggplot2_2.2.1              DESeq2_1.14.1             
- [7] edgeR_3.17.5               limma_3.30.8              
- [9] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [7] edgeR_3.17.5               limma_3.30.13             
+ [9] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
 [11] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [13] IRanges_2.8.1              S4Vectors_0.12.1          
 [15] tidyr_0.6.1                dplyr_0.5.0               
-[17] survey_3.31-2              survival_2.40-1           
+[17] survey_3.31-5              survival_2.40-1           
 [19] Matrix_1.2-8               GEOquery_2.40.0           
 [21] Biobase_2.34.0             BiocGenerics_0.20.0       
 [23] tximport_1.2.0             reshape2_1.4.2            
@@ -212,7 +212,7 @@ other attached packages:
 
 loaded via a namespace (and not attached):
  [1] httr_1.2.1             Formula_1.2-1          shiny_1.0.0           
- [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-38           
+ [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-40           
  [7] RSQLite_1.1-2          backports_1.0.5        lattice_0.20-34       
 [10] digest_0.6.12          RColorBrewer_1.1-2     XVector_0.14.0        
 [13] checkmate_1.8.2        colorspace_1.3-2       fastICA_1.2-0         
@@ -235,4 +235,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-4775.059   20.636 4803.668 
+5127.350   31.969 5173.667 

@@ -748,11 +748,11 @@ attached base packages:
 other attached packages:
  [1] MetaDE_1.0.5               combinat_0.0-8            
  [3] impute_1.48.0              preprocessCore_1.36.0     
- [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.0
+ [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.1
  [7] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [9] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [11] S4Vectors_0.12.1           tidyr_0.6.1               
-[13] dplyr_0.5.0                survey_3.31-2             
+[13] dplyr_0.5.0                survey_3.31-5             
 [15] survival_2.40-1            Matrix_1.2-8              
 [17] GEOquery_2.40.0            Biobase_2.34.0            
 [19] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -770,4 +770,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-2734.023  282.524 3051.254 
+2984.971  336.385 3347.475 

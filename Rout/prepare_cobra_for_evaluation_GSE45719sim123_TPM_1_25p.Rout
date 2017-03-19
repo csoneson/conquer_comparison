@@ -125,14 +125,49 @@ package 'ggplot2' was built under R version 3.3.2
 +   }
 + }
 [1] "session_info" "timing"       "tt"           "df"          
-13553 new features and 1 new methods added to padj table
+11370 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-313 new features and 1 new methods added to pval table
+282 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-313 new features and 1 new methods added to padj table
+282 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+195 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+195 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+132 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+132 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+132 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+132 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+81 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+81 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+170 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+170 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
@@ -143,52 +178,38 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-152 new features and 1 new methods added to pval table
+141 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-152 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-107 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-107 new features and 1 new methods added to padj table
+141 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-95 new features and 1 new methods added to pval table
+135 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-95 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-208 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-208 new features and 1 new methods added to padj table
+135 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-222 new features and 1 new methods added to pval table
+124 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-222 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-151 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-151 new features and 1 new methods added to padj table
+124 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-145 new features and 1 new methods added to pval table
+184 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-145 new features and 1 new methods added to padj table
+184 new features and 1 new methods added to padj table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+136 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
+136 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
@@ -199,38 +220,17 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-198 new features and 1 new methods added to pval table
+143 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-198 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-181 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-181 new features and 1 new methods added to padj table
+143 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
-173 new features and 1 new methods added to pval table
+129 new features and 1 new methods added to pval table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-173 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-149 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-149 new features and 1 new methods added to padj table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "tt"           "df"          
-148 new features and 1 new methods added to pval table
-0 new features and 0 new methods added to score table
-0 new features and 0 new annotations added to truth table
-148 new features and 1 new methods added to padj table
+129 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
@@ -1325,12 +1325,37 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-13553 new features and 1 new methods added to score table
+11370 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-313 new features and 1 new methods added to score table
+282 new features and 1 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+195 new features and 1 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+132 new features and 1 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+132 new features and 1 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+81 new features and 1 new methods added to score table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+170 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
@@ -1340,37 +1365,27 @@ package 'ggplot2' was built under R version 3.3.2
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-152 new features and 1 new methods added to score table
+141 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-107 new features and 1 new methods added to score table
+135 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-95 new features and 1 new methods added to score table
+124 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-208 new features and 1 new methods added to score table
+184 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-222 new features and 1 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
-0 new features and 1 new methods added to padj table
-0 new features and 0 new annotations added to truth table
-151 new features and 1 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
-0 new features and 1 new methods added to padj table
-0 new features and 0 new annotations added to truth table
-145 new features and 1 new methods added to score table
+136 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
@@ -1380,27 +1395,12 @@ package 'ggplot2' was built under R version 3.3.2
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-198 new features and 1 new methods added to score table
+143 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
-181 new features and 1 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
-0 new features and 1 new methods added to padj table
-0 new features and 0 new annotations added to truth table
-173 new features and 1 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
-0 new features and 1 new methods added to padj table
-0 new features and 0 new annotations added to truth table
-149 new features and 1 new methods added to score table
-0 new features and 0 new annotations added to truth table
-[1] "session_info" "timing"       "res"          "df"          
-0 new features and 1 new methods added to padj table
-0 new features and 0 new annotations added to truth table
-148 new features and 1 new methods added to score table
+129 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
@@ -2311,7 +2311,7 @@ There were 15 warnings (use warnings() to see them)
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-16153 new features and 219 new annotations added to truth table
+13712 new features and 219 new annotations added to truth table
 > 
 > ## Make data frame with number of significant, non-significant and NA calls for each method
 > cobraperf <- calculate_performance(cobra, aspects = "fpr", 
@@ -2335,4 +2335,4 @@ Joining, by = c("ncells", "repl")
 > 
 > proc.time()
    user  system elapsed 
-338.953  38.215 386.861 
+252.365   5.585 259.842 

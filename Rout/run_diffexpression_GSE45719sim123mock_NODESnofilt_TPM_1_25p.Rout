@@ -105,14 +105,14 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 NODES
 Loading required package: preprocessCore
 Dimensions of supplied expression matrix:
-Genes=13432; Cells=48
+Genes=11266; Cells=48
 
 Dimensions of supplied processed matrix:
-Genes=13432; Cells=48
+Genes=11266; Cells=48
 
 Loading required package: MetaDE
 Loading required package: impute
@@ -147,15 +147,15 @@ Loading required package: tools
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 25.648 0.324 26.021 
+Timing stopped at: 23.167 0.24 23.471 
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=13248; Cells=24
+Genes=11125; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=13248; Cells=24
+Genes=11125; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -179,15 +179,15 @@ Genes=13248; Cells=24
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 24.12 0.132 24.293 
+Timing stopped at: 23.828 0.04 23.937 
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=13275; Cells=24
+Genes=11164; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=13275; Cells=24
+Genes=11164; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -211,15 +211,15 @@ Genes=13275; Cells=24
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 25.438 0.267 25.775 
+Timing stopped at: 24.173 0.031 24.286 
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=13328; Cells=24
+Genes=11159; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=13328; Cells=24
+Genes=11159; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -243,15 +243,15 @@ Genes=13328; Cells=24
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 24.945 0.239 25.245 
+Timing stopped at: 22.916 0.231 23.214 
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=13268; Cells=24
+Genes=11083; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=13268; Cells=24
+Genes=11083; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -275,15 +275,15 @@ Genes=13268; Cells=24
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 23.584 0.056 23.685 
+Timing stopped at: 22.128 0.112 22.294 
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=13280; Cells=24
+Genes=11168; Cells=24
 
 Dimensions of supplied processed matrix:
-Genes=13280; Cells=24
+Genes=11168; Cells=24
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -307,15 +307,15 @@ Genes=13280; Cells=24
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 23.898 0.064 24.018 
+Timing stopped at: 21.169 0.048 21.272 
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=12922; Cells=12
+Genes=10845; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=12922; Cells=12
+Genes=10845; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -339,15 +339,15 @@ Genes=12922; Cells=12
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 22.421 0.048 22.515 
+Timing stopped at: 22.758 0.028 22.852 
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=12876; Cells=12
+Genes=10784; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=12876; Cells=12
+Genes=10784; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -371,15 +371,15 @@ Genes=12876; Cells=12
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 24.468 0.019 24.535 
+Timing stopped at: 21.389 0.24 21.68 
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=12882; Cells=12
+Genes=10806; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=12882; Cells=12
+Genes=10806; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -403,15 +403,15 @@ Genes=12882; Cells=12
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 22.725 0.052 22.816 
+Timing stopped at: 23.286 0.044 23.414 
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=12973; Cells=12
+Genes=10805; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=12973; Cells=12
+Genes=10805; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -435,15 +435,15 @@ Genes=12973; Cells=12
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 22.94 0.159 23.165 
+Timing stopped at: 23.556 0.311 23.948 
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 NODES
 Dimensions of supplied expression matrix:
-Genes=12886; Cells=12
+Genes=10806; Cells=12
 
 Dimensions of supplied processed matrix:
-Genes=12886; Cells=12
+Genes=10806; Cells=12
 
 [1] "Randomization run = 1"
 [1] "Randomization run = 2"
@@ -467,7 +467,7 @@ Genes=12886; Cells=12
 [1] "Randomization run = 20"
 
 Smoothing the noise density...
-Timing stopped at: 21.908 0.272 22.217 
+Timing stopped at: 23.634 0.934 24.627 
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -491,11 +491,11 @@ attached base packages:
 other attached packages:
  [1] MetaDE_1.0.5               combinat_0.0-8            
  [3] impute_1.48.0              preprocessCore_1.36.0     
- [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.0
+ [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.1
  [7] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [9] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [11] S4Vectors_0.12.1           tidyr_0.6.1               
-[13] dplyr_0.5.0                survey_3.31-2             
+[13] dplyr_0.5.0                survey_3.31-5             
 [15] survival_2.40-1            Matrix_1.2-8              
 [17] GEOquery_2.40.0            Biobase_2.34.0            
 [19] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -513,4 +513,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-277.549   4.573 282.831 
+269.055   5.701 275.588 

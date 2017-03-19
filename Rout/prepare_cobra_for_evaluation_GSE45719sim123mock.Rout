@@ -125,7 +125,7 @@ package 'ggplot2' was built under R version 3.3.2
 +   }
 + }
 [1] "session_info" "timing"       "tt"           "df"          
-27318 new features and 1 new methods added to padj table
+27041 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "tt"           "df"          
@@ -950,7 +950,7 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
-27318 new features and 1 new methods added to score table
+27041 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
 0 new features and 1 new methods added to padj table
@@ -1661,7 +1661,7 @@ Warning messages:
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-27318 new features and 159 new annotations added to truth table
+27041 new features and 159 new annotations added to truth table
 > 
 > ## Make data frame with number of significant, non-significant and NA calls for each method
 > cobraperf <- calculate_performance(cobra, aspects = "fpr", 
@@ -1685,4 +1685,4 @@ Joining, by = c("ncells", "repl")
 > 
 > proc.time()
    user  system elapsed 
-385.327  20.419 407.364 
+279.050   6.895 288.336 

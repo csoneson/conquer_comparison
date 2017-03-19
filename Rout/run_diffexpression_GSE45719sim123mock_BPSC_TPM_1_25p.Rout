@@ -105,37 +105,37 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 BPSC
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 BPSC
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 BPSC
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 BPSC
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 BPSC
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 BPSC
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 BPSC
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 BPSC
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 BPSC
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 BPSC
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 BPSC
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
@@ -159,14 +159,14 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] edgeR_3.17.5               limma_3.30.8              
- [3] BPSC_0.99.0                doParallel_1.0.10         
+ [1] edgeR_3.17.5               limma_3.30.13             
+ [3] BPSC_0.99.1                doParallel_1.0.10         
  [5] iterators_1.0.8            foreach_1.4.3             
- [7] statmod_1.4.26             MultiAssayExperiment_1.0.0
+ [7] statmod_1.4.29             MultiAssayExperiment_1.0.1
  [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
 [11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [13] S4Vectors_0.12.1           tidyr_0.6.1               
-[15] dplyr_0.5.0                survey_3.31-2             
+[15] dplyr_0.5.0                survey_3.31-5             
 [17] survival_2.40-1            Matrix_1.2-8              
 [19] GEOquery_2.40.0            Biobase_2.34.0            
 [21] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -185,4 +185,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
      user    system   elapsed 
-63486.441   333.627 63909.336 
+64619.157   298.208 65193.647 

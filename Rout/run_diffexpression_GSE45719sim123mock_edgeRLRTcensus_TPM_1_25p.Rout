@@ -107,39 +107,38 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 edgeRLRTcensus
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 edgeRLRTcensus
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 edgeRLRTcensus
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 edgeRLRTcensus
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 edgeRLRTcensus
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 edgeRLRTcensus
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 edgeRLRTcensus
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 edgeRLRTcensus
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 edgeRLRTcensus
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 edgeRLRTcensus
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 edgeRLRTcensus
-There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -164,18 +163,18 @@ other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
  [3] irlba_2.1.2                VGAM_1.0-3                
  [5] ggplot2_2.2.1              edgeR_3.17.5              
- [7] limma_3.30.8               MultiAssayExperiment_1.0.0
+ [7] limma_3.30.13              MultiAssayExperiment_1.0.1
  [9] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
 [11] GenomeInfoDb_1.10.3        IRanges_2.8.1             
 [13] S4Vectors_0.12.1           tidyr_0.6.1               
-[15] dplyr_0.5.0                survey_3.31-2             
+[15] dplyr_0.5.0                survey_3.31-5             
 [17] survival_2.40-1            Matrix_1.2-8              
 [19] GEOquery_2.40.0            Biobase_2.34.0            
 [21] BiocGenerics_0.20.0        tximport_1.2.0            
 [23] reshape2_1.4.2             rjson_0.2.15              
 
 loaded via a namespace (and not attached):
- [1] locfit_1.5-9.1         slam_0.1-38            lattice_0.20-34       
+ [1] locfit_1.5-9.1         slam_0.1-40            lattice_0.20-34       
  [4] colorspace_1.3-2       fastICA_1.2-0          htmltools_0.3.5       
  [7] XML_3.98-1.5           DBI_0.5-1              RColorBrewer_1.1-2    
 [10] HSMMSingleCell_0.108.0 matrixStats_0.51.0     plyr_1.8.4            
@@ -192,4 +191,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-110.208   5.616 116.156 
+ 92.774   6.594  99.680 

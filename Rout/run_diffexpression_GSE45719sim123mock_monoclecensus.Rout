@@ -107,50 +107,50 @@ $nreps
 +   }
 + }
 24.1
-27318 genes, 48 samples.
+27041 genes, 48 samples.
 monoclecensus
-Removing 507 outliers
+Removing 234 outliers
 12.1
-25913 genes, 24 samples.
+25912 genes, 24 samples.
 monoclecensus
-Removing 467 outliers
+Removing 265 outliers
 12.2
-25878 genes, 24 samples.
+25978 genes, 24 samples.
 monoclecensus
-Removing 469 outliers
+Removing 247 outliers
 12.3
-25953 genes, 24 samples.
+25988 genes, 24 samples.
 monoclecensus
-Removing 481 outliers
+Removing 221 outliers
 12.4
-25903 genes, 24 samples.
+26049 genes, 24 samples.
 monoclecensus
-Removing 456 outliers
+Removing 248 outliers
 12.5
-25867 genes, 24 samples.
+26020 genes, 24 samples.
 monoclecensus
-Removing 476 outliers
+Removing 247 outliers
 6.1
-24073 genes, 12 samples.
+24493 genes, 12 samples.
 monoclecensus
-Removing 382 outliers
+Removing 207 outliers
 6.2
-24121 genes, 12 samples.
+24426 genes, 12 samples.
 monoclecensus
-Removing 390 outliers
+Removing 215 outliers
 6.3
-24102 genes, 12 samples.
+24470 genes, 12 samples.
 monoclecensus
-Removing 385 outliers
+Removing 206 outliers
 6.4
-24104 genes, 12 samples.
+24154 genes, 12 samples.
 monoclecensus
-Removing 380 outliers
+Removing 217 outliers
 6.5
-24069 genes, 12 samples.
+24271 genes, 12 samples.
 monoclecensus
-Removing 382 outliers
-There were 27 warnings (use warnings() to see them)
+Removing 220 outliers
+There were 11 warnings (use warnings() to see them)
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
 > 
@@ -175,12 +175,12 @@ other attached packages:
  [1] monocle_2.2.0              DDRTree_0.1.4             
  [3] irlba_2.1.2                VGAM_1.0-3                
  [5] ggplot2_2.2.1              DESeq2_1.14.1             
- [7] edgeR_3.17.5               limma_3.30.8              
- [9] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [7] edgeR_3.17.5               limma_3.30.13             
+ [9] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
 [11] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
 [13] IRanges_2.8.1              S4Vectors_0.12.1          
 [15] tidyr_0.6.1                dplyr_0.5.0               
-[17] survey_3.31-2              survival_2.40-1           
+[17] survey_3.31-5              survival_2.40-1           
 [19] Matrix_1.2-8               GEOquery_2.40.0           
 [21] Biobase_2.34.0             BiocGenerics_0.20.0       
 [23] tximport_1.2.0             reshape2_1.4.2            
@@ -188,7 +188,7 @@ other attached packages:
 
 loaded via a namespace (and not attached):
  [1] httr_1.2.1             Formula_1.2-1          shiny_1.0.0           
- [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-38           
+ [4] assertthat_0.1         latticeExtra_0.6-28    slam_0.1-40           
  [7] RSQLite_1.1-2          backports_1.0.5        lattice_0.20-34       
 [10] digest_0.6.12          RColorBrewer_1.1-2     XVector_0.14.0        
 [13] checkmate_1.8.2        colorspace_1.3-2       fastICA_1.2-0         
@@ -211,4 +211,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-8156.033   57.498 8233.349 
+9153.433   54.370 9236.111 

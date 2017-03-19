@@ -109,52 +109,52 @@ $nreps
 +   }
 + }
 50.1
-13553 genes, 100 samples.
+11370 genes, 100 samples.
 scde
 24.1
-13439 genes, 48 samples.
+11299 genes, 48 samples.
 scde
 24.2
-13427 genes, 48 samples.
+11332 genes, 48 samples.
 scde
 24.3
-13441 genes, 48 samples.
+11303 genes, 48 samples.
 scde
 24.4
-13432 genes, 48 samples.
+11324 genes, 48 samples.
 scde
 24.5
-13420 genes, 48 samples.
+11318 genes, 48 samples.
 scde
 12.1
-13232 genes, 24 samples.
+11128 genes, 24 samples.
 scde
 12.2
-13243 genes, 24 samples.
+11139 genes, 24 samples.
 scde
 12.3
-13255 genes, 24 samples.
+11191 genes, 24 samples.
 scde
 12.4
-13246 genes, 24 samples.
+11159 genes, 24 samples.
 scde
 12.5
-13239 genes, 24 samples.
+11144 genes, 24 samples.
 scde
 6.1
-12966 genes, 12 samples.
+10813 genes, 12 samples.
 scde
 6.2
-12935 genes, 12 samples.
+10811 genes, 12 samples.
 scde
 6.3
-12892 genes, 12 samples.
+10778 genes, 12 samples.
 scde
 6.4
-12894 genes, 12 samples.
+10797 genes, 12 samples.
 scde
 6.5
-12908 genes, 12 samples.
+10838 genes, 12 samples.
 scde
 > 
 > saveRDS(res, file = paste0(config$resfilebase, "_", demethod, exts, ".rds"))
@@ -177,12 +177,12 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] scde_2.2.0                 flexmix_2.3-13            
- [3] lattice_0.20-34            MultiAssayExperiment_1.0.0
+ [1] scde_1.99.4                flexmix_2.3-13            
+ [3] lattice_0.20-34            MultiAssayExperiment_1.0.1
  [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
  [9] S4Vectors_0.12.1           tidyr_0.6.1               
-[11] dplyr_0.5.0                survey_3.31-2             
+[11] dplyr_0.5.0                survey_3.31-5             
 [13] survival_2.40-1            Matrix_1.2-8              
 [15] GEOquery_2.40.0            Biobase_2.34.0            
 [17] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -194,7 +194,7 @@ loaded via a namespace (and not attached):
  [5] mime_0.5                  R6_2.2.0                 
  [7] plyr_1.8.4                MatrixModels_0.4-1       
  [9] httr_1.2.1                zlibbioc_1.20.0          
-[11] minqa_1.2.4               SparseM_1.74             
+[11] minqa_1.2.4               SparseM_1.76             
 [13] car_2.1-4                 nloptr_1.0.4             
 [15] splines_3.3.1             lme4_1.1-12              
 [17] BiocParallel_1.8.1        stringr_1.1.0            
@@ -206,10 +206,10 @@ loaded via a namespace (and not attached):
 [29] tibble_1.2                edgeR_3.17.5             
 [31] Lmoments_1.2-3            XML_3.98-1.5             
 [33] MASS_7.3-45               bitops_1.0-6             
-[35] nlme_3.1-128              xtable_1.8-2             
+[35] nlme_3.1-131              xtable_1.8-2             
 [37] DBI_0.5-1                 magrittr_1.5             
 [39] stringi_1.1.2             XVector_0.14.0           
-[41] RcppArmadillo_0.7.700.0.0 limma_3.30.8             
+[41] RcppArmadillo_0.7.700.0.0 limma_3.30.13            
 [43] brew_1.0-6                RColorBrewer_1.1-2       
 [45] tools_3.3.1               Cairo_1.5-9              
 [47] Rook_1.1-1                pbkrtest_0.4-6           
@@ -218,4 +218,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
      user    system   elapsed 
-13326.255    81.937 13425.401 
+20034.986   412.693 20506.493 

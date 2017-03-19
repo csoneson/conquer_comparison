@@ -7,10 +7,10 @@ include include_datasets.mk
 include include_filterings.mk
 
 ## Plot types
-PLOTTYPE1 := timing results_characterization results_relativetruth 
+PLOTTYPE := timing results_characterization results_relativetruth consistency results_relativetruth_all truefpr
+PLOTTYPE1 := timing results_characterization results_relativetruth truefpr
 PLOTTYPE2 := consistency
 PLOTTYPE3 := results_relativetruth_all
-PLOTTYPE4 := truefpr
 SUMMARYTYPE := truefpr pca timing fracNA crossmethod_consistency relfprtpr
 SUMMARYTYPE2 := filtering
 
@@ -19,14 +19,19 @@ SUMMARYTYPE2 := filtering
 ## Define the default rule
 all: plotds plotind plotorigmock \
 figures/summary_crossds/summary_orig_vs_mock.rds \
+figures/summary_crossds/summary_orig_vs_mock_sim.rds \
 figures/summary_crossds/summary_orig_vs_mock_bulk.rds \
 $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_, $(foreach K,$(SUMMARYTYPE),$(K)))) \
 $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE),$(K)_$(Y))))) \
 $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE2),$(K)_$(Y))))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_, $(foreach K,$(SUMMARYTYPE),$(K)))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE),$(K)_$(Y))))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE2),$(K)_$(Y))))) \
 $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_, $(foreach K,$(SUMMARYTYPE),$(K)))) \
 $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE),$(K)_$(Y))))) \
 $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE2),$(K)_$(Y))))) \
 $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y))) \
 $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y)))
 
 ## Plot original vs mock comparison
@@ -36,28 +41,26 @@ $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(FILT),$(foreach X,$(DSbulkb),$X_$Y))))
 
 ## Plot individual data set results
-plotind: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE1),$(foreach X,$(DS),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE1),$(foreach Y,$(FILT),$(foreach X,$(DS),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach X,$(Dss),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach Y,$(FILT),$(foreach X,$(Dss),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE2),$(foreach X,$(DS),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE2),$(foreach Y,$(FILT),$(foreach X,$(DS),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE3),$(foreach X,$(DS),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE3),$(foreach Y,$(FILT),$(foreach X,$(DS),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE1),$(foreach X,$(DSbulk),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE1),$(foreach Y,$(FILT),$(foreach X,$(DSbulk),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach X,$(Dssbulk),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach Y,$(FILT),$(foreach X,$(Dssbulk),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE2),$(foreach X,$(DSbulk),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE2),$(foreach Y,$(FILT),$(foreach X,$(DSbulk),$k/$X_$Y_$k))))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE3),$(foreach X,$(DSbulk),$k/$X_$k)))) \
-$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE3),$(foreach Y,$(FILT),$(foreach X,$(DSbulk),$k/$X_$Y_$k)))))
+plotind: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach X,$(DS),$k/$X_$k)))) \
+$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach Y,$(FILT),$(foreach X,$(DS),$k/$X_$Y_$k))))) \
+$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach X,$(DSbulk),$k/$X_$k)))) \
+$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach Y,$(FILT),$(foreach X,$(DSbulk),$k/$X_$Y_$k)))))
 
 ## Plot data set characteristics
 plotds: $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach X,$(DS),$X))) \
 $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FILT),$(foreach X,$(DS),$X_$Y)))) \
 $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach X,$(DSbulk),$X))) \
 $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FILT),$(foreach X,$(DSbulk),$X_$Y))))
+
+tmp: $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(Dsb),$k))) \
+$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(FILT),$(foreach k,$(Dsb),$k_$j)))) \
+$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(DSbulk),$k))) \
+$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j)))) \
+$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(Dsb),$k))) \
+$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(Dsb),$k_$j)))) \
+$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(DSbulk),$k))) \
+$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j))))
+
 
 ## Prepare results for plotting, step II
 plotprepare: $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(DS),$k))) \
@@ -218,9 +221,6 @@ figures/$(2)/$(1)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluat
 endef
 $(foreach X,$(DS),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule,$(X),$(Y)))))
 $(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule,$(X),$(Y)))))
-$(foreach X,$(Dss),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X),$(Y)))))
-$(foreach X,$(Dssbulk),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X),$(Y)))))
-$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule,$(X)mock,$(Y)))))
 
 define plotrule2
 figures/$(2)/$(1)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R figures/cobra_data/$(1)_cobra.rds \
@@ -244,9 +244,6 @@ figures/$(2)/$(1)_$(3)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_ev
 endef
 $(foreach k,$(FILT),$(foreach X,$(DS),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
 $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE1),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
-$(foreach k,$(FILT),$(foreach X,$(Dss),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
-$(foreach k,$(FILT),$(foreach X,$(Dssbulk),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X),$(Y),$(k))))))
-$(foreach k,$(FILT),$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule_filt,$(X)mock,$(Y),$(k))))))
 
 define plotrule2_filt
 figures/$(2)/$(1)_$(3)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R figures/cobra_data/$(1)_$(3)_cobra.rds \
@@ -291,6 +288,7 @@ scripts/plot_setup.R scripts/run_plot_single_dataset_origvsmock.R scripts/plot_s
 endef
 $(foreach i,$(Dsb),$(eval $(call origvsmockrule,$(i))))
 $(foreach i,$(DSbulkb),$(eval $(call origvsmockrule,$(i))))
+$(foreach i,$(Dsbsim),$(eval $(call origvsmockrule,$(i))))
 
 define origvsmockrule_filt
 figures/orig_vs_mock/$(1)_$(2)_orig_vs_mock_summary_data.rds: figures/consistency/$(1)_$(2)_concordances.rds \
@@ -300,6 +298,7 @@ scripts/run_plot_single_dataset_origvsmock.R scripts/plot_single_dataset_origvsm
 endef
 $(foreach k,$(FILT), $(foreach i,$(Dsb),$(eval $(call origvsmockrule_filt,$(i),$(k)))))
 $(foreach k,$(FILT), $(foreach i,$(DSbulkb),$(eval $(call origvsmockrule_filt,$(i),$(k)))))
+$(foreach k,$(FILT), $(foreach i,$(Dsbsim),$(eval $(call origvsmockrule_filt,$(i),$(k)))))
 
 ## ------------------ Summary plots, mostly across mock data sets --------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -451,11 +450,90 @@ scripts/run_plot_multi_dataset_summarization.R scripts/summarize_filtering.R inc
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_filtering_bulk,$(k))))
 
+## ------------------- Summary plots, across mock data sets (sim) --------------------- ##
+## ------------------------------------------------------------------------------------ ##
+figures/summary_crossds/summary_truefpr_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),truefpr/$Y_truefpr))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='' summarytype='truefpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_truefpr_sim.Rout
+
+figures/summary_crossds/summary_pca_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),results_characterization/$Y_results_characterization))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_pca.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='' summarytype='pca' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_pca_sim.Rout
+
+figures/summary_crossds/summary_timing_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),timing/$Y_timing))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_timing.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='' summarytype='timing' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_timing_sim.Rout
+
+figures/summary_crossds/summary_crossmethod_consistency_sim.rds: $(addsuffix .rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),consistency/$Y_concordances))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_crossmethod_consistency.R scripts/help_function_crossmethod_concordance.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='' summarytype='crossmethod_consistency' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_crossmethod_consistency_sim.Rout
+
+figures/summary_crossds/summary_relfprtpr_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),results_relativetruth/$Y_results_relativetruth))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_relfprtpr.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='' summarytype='relfprtpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_relfprtpr_sim.Rout
+
+figures/summary_crossds/summary_fracNA_sim.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),cobra_data/$Y))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_fracNA.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='' summarytype='fracNA' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_fracNA_sim.Rout
+
+define summaryrule_truefpr_sim
+figures/summary_crossds/summary_truefpr_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),truefpr/$Y_$(1)_truefpr))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='$(1)' summarytype='truefpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_truefpr_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_truefpr_sim,$(k))))
+
+define summaryrule_pca_sim
+figures/summary_crossds/summary_pca_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),results_characterization/$Y_$(1)_results_characterization))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_pca.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='$(1)' summarytype='pca' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_pca_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_pca_sim,$(k))))
+
+define summaryrule_timing_sim
+figures/summary_crossds/summary_timing_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),timing/$Y_$(1)_timing))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_timing.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='$(1)' summarytype='timing' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_timing_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_timing_sim,$(k))))
+
+define summaryrule_crossmethod_consistency_sim
+figures/summary_crossds/summary_crossmethod_consistency_$(1)_sim.rds: $(addsuffix .rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),consistency/$Y_$(1)_concordances))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_crossmethod_consistency.R scripts/help_function_crossmethod_concordance.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='$(1)' summarytype='crossmethod_consistency' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_crossmethod_consistency_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_crossmethod_consistency_sim,$(k))))
+
+define summaryrule_relfprtpr_sim
+figures/summary_crossds/summary_relfprtpr_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),results_relativetruth/$Y_$(1)_results_relativetruth))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_relfprtpr.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='$(1)' summarytype='relfprtpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_relfprtpr_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_relfprtpr_sim,$(k))))
+
+define summaryrule_fracna_sim
+figures/summary_crossds/summary_fracNA_$(1)_sim.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),cobra_data/$Y_$(1)))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_fracNA.R include_datasets.mk
+	$R "--args datasets='${Dsssimc}' filt='$(1)' summarytype='fracNA' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_fracNA_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_fracna_sim,$(k))))
+
+define summaryrule_filtering_sim
+figures/summary_crossds/summary_filtering_$(1)_sim.rds: $(addsuffix _cobra.rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),cobra_data/$Y_$(1)))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_filtering.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='$(1)' summarytype='filtering' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_filtering_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_filtering_sim,$(k))))
+
 ## --------------------------- Summary plots, orig vs mock ---------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 figures/summary_crossds/summary_orig_vs_mock.rds: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(Dsb),$Y))) \
 scripts/run_plot_multi_dataset_origvsmock.R include_datasets.mk
 	$R "--args datasets='${Dsbc}' filt='' dtpext=''" scripts/run_plot_multi_dataset_origvsmock.R Rout/run_plot_multi_dataset_origvsmock.Rout
+
+figures/summary_crossds/summary_orig_vs_mock_sim.rds: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(Dsbsim),$Y))) \
+scripts/run_plot_multi_dataset_origvsmock.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='' dtpext='_sim'" scripts/run_plot_multi_dataset_origvsmock.R Rout/run_plot_multi_dataset_origvsmock_sim.Rout
 
 figures/summary_crossds/summary_orig_vs_mock_bulk.rds: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(DSbulkb),$Y))) \
 scripts/run_plot_multi_dataset_origvsmock.R include_datasets.mk
@@ -467,6 +545,13 @@ scripts/run_plot_multi_dataset_origvsmock.R include_datasets.mk
 	$R "--args datasets='${Dsbc}' filt='$(1)' dtpext=''" scripts/run_plot_multi_dataset_origvsmock.R Rout/plot_summarize_$(1)_orig_vs_mock.Rout
 endef
 $(foreach k,$(FILT),$(eval $(call plotrule_summary_origvsmock,$(k))))
+
+define plotrule_summary_origvsmock_sim
+figures/summary_crossds/summary_orig_vs_mock_$(1)_sim.rds: $(addsuffix _$(1)_orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(Dsbsim),$Y))) \
+scripts/run_plot_multi_dataset_origvsmock.R include_datasets.mk 
+	$R "--args datasets='${Dsbsimc}' filt='$(1)' dtpext='_sim'" scripts/run_plot_multi_dataset_origvsmock.R Rout/plot_summarize_$(1)_orig_vs_mock_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call plotrule_summary_origvsmock_sim,$(k))))
 
 define plotrule_summary_origvsmockbulk
 figures/summary_crossds/summary_orig_vs_mock_$(1)_bulk.rds: $(addsuffix _$(1)_orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach Y,$(DSbulkb),$Y))) \

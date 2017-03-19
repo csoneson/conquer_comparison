@@ -748,20 +748,20 @@ attached base packages:
 other attached packages:
  [1] MetaDE_1.0.5               combinat_0.0-8            
  [3] impute_1.48.0              preprocessCore_1.36.0     
- [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.0
- [7] SummarizedExperiment_1.4.0 GenomicRanges_1.26.1      
- [9] GenomeInfoDb_1.10.1        IRanges_2.8.1             
-[11] S4Vectors_0.12.0           tidyr_0.6.0               
-[13] dplyr_0.5.0                survey_3.31-2             
-[15] survival_2.40-1            Matrix_1.2-7.1            
+ [5] NODES_0.0.0.9010           MultiAssayExperiment_1.0.1
+ [7] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
+ [9] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+[11] S4Vectors_0.12.1           tidyr_0.6.1               
+[13] dplyr_0.5.0                survey_3.31-5             
+[15] survival_2.40-1            Matrix_1.2-8              
 [17] GEOquery_2.40.0            Biobase_2.34.0            
 [19] BiocGenerics_0.20.0        tximport_1.2.0            
 [21] reshape2_1.4.2             rjson_0.2.15              
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.8          plyr_1.8.4           XVector_0.14.0      
- [4] bitops_1.0-6         zlibbioc_1.20.0      digest_0.6.11       
- [7] tibble_1.2           lattice_0.20-34      shiny_0.14.2        
+ [1] Rcpp_0.12.9          plyr_1.8.4           XVector_0.14.0      
+ [4] bitops_1.0-6         zlibbioc_1.20.0      digest_0.6.12       
+ [7] tibble_1.2           lattice_0.20-34      shiny_1.0.0         
 [10] DBI_0.5-1            httr_1.2.1           stringr_1.1.0       
 [13] shinydashboard_0.5.3 R6_2.2.0             XML_3.98-1.5        
 [16] magrittr_1.5         htmltools_0.3.5      splines_3.3.1       
@@ -770,4 +770,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1244.979   68.480 1317.929 
+1509.253   94.302 1612.177 

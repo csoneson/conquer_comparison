@@ -105,37 +105,37 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 zingeR
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 zingeR
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 zingeR
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 zingeR
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 zingeR
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 zingeR
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 zingeR
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 zingeR
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 zingeR
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 zingeR
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 zingeR
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
@@ -160,11 +160,11 @@ attached base packages:
 
 other attached packages:
  [1] genefilter_1.56.0          edgeR_3.17.5              
- [3] limma_3.30.8               MultiAssayExperiment_1.0.0
+ [3] limma_3.30.13              MultiAssayExperiment_1.0.1
  [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
  [9] S4Vectors_0.12.1           tidyr_0.6.1               
-[11] dplyr_0.5.0                survey_3.31-2             
+[11] dplyr_0.5.0                survey_3.31-5             
 [13] survival_2.40-1            Matrix_1.2-8              
 [15] GEOquery_2.40.0            Biobase_2.34.0            
 [17] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -184,4 +184,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-2711.971   14.116 2730.331 
+2513.801   17.406 2537.164 

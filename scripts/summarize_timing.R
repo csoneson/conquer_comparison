@@ -30,6 +30,18 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
                 axis.title.y = element_text(size = 13)) + 
           guides(color = guide_legend(ncol = 2, title = ""),
                  shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  
+  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+          theme_bw() + xlab("") + ylab("Relative timing") + 
+          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+          scale_shape_discrete(name = "Number of cells") + 
+          facet_wrap(~ncells) + 
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                axis.text.y = element_text(size = 12),
+                axis.title.y = element_text(size = 13)) + 
+          guides(color = guide_legend(ncol = 2, title = ""),
+                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
 
   print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
           geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
@@ -37,6 +49,19 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
           scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
           scale_shape_discrete(name = "Number of cells") + 
           scale_y_log10() + 
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                axis.text.y = element_text(size = 12),
+                axis.title.y = element_text(size = 13)) + 
+          guides(color = guide_legend(ncol = 2, title = ""),
+                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  
+  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+          theme_bw() + xlab("") + ylab("Relative timing") + 
+          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+          scale_shape_discrete(name = "Number of cells") + 
+          scale_y_log10() + 
+          facet_wrap(~ncells) + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
                 axis.text.y = element_text(size = 12),
                 axis.title.y = element_text(size = 13)) + 

@@ -105,7 +105,7 @@ $nreps
 +   }
 + }
 24.1
-13432 genes, 48 samples.
+11266 genes, 48 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -209,11 +209,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 148
+Number of thresholds chosen (all possible thresholds) = 113
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.1
-13248 genes, 24 samples.
+11125 genes, 24 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -317,11 +317,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 81
+Number of thresholds chosen (all possible thresholds) = 69
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.2
-13275 genes, 24 samples.
+11164 genes, 24 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -425,11 +425,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 85
+Number of thresholds chosen (all possible thresholds) = 61
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.3
-13328 genes, 24 samples.
+11159 genes, 24 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -533,11 +533,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 94
+Number of thresholds chosen (all possible thresholds) = 10
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.4
-13268 genes, 24 samples.
+11083 genes, 24 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -641,11 +641,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 39
+Number of thresholds chosen (all possible thresholds) = 68
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 12.5
-13280 genes, 24 samples.
+11168 genes, 24 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -749,11 +749,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 90
+Number of thresholds chosen (all possible thresholds) = 99
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 6.1
-12922 genes, 12 samples.
+10845 genes, 12 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -857,11 +857,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 45
+Number of thresholds chosen (all possible thresholds) = 24
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 6.2
-12876 genes, 12 samples.
+10784 genes, 12 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -965,11 +965,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 28
+Number of thresholds chosen (all possible thresholds) = 47
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 6.3
-12882 genes, 12 samples.
+10806 genes, 12 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -1073,11 +1073,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 53
+Number of thresholds chosen (all possible thresholds) = 52
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 6.4
-12973 genes, 12 samples.
+10805 genes, 12 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -1181,11 +1181,11 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 17
+Number of thresholds chosen (all possible thresholds) = 29
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 6.5
-12886 genes, 12 samples.
+10806 genes, 12 samples.
 SAMseq
 Estimating sequencing depths...
 Resampling to get new data matrices...
@@ -1289,7 +1289,7 @@ perm= 97
 perm= 98
 perm= 99
 perm= 100
-Number of thresholds chosen (all possible thresholds) = 43
+Number of thresholds chosen (all possible thresholds) = 65
 Getting all the cutoffs for the thresholds...
 Getting number of false positives in the permutation...
 > 
@@ -1314,11 +1314,11 @@ attached base packages:
 
 other attached packages:
  [1] samr_2.0                   matrixStats_0.51.0        
- [3] impute_1.48.0              MultiAssayExperiment_1.0.0
+ [3] impute_1.48.0              MultiAssayExperiment_1.0.1
  [5] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [7] GenomeInfoDb_1.10.3        IRanges_2.8.1             
  [9] S4Vectors_0.12.1           tidyr_0.6.1               
-[11] dplyr_0.5.0                survey_3.31-2             
+[11] dplyr_0.5.0                survey_3.31-5             
 [13] survival_2.40-1            Matrix_1.2-8              
 [15] GEOquery_2.40.0            Biobase_2.34.0            
 [17] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -1337,4 +1337,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-353.129  23.901 378.474 
+334.015  19.920 355.086 

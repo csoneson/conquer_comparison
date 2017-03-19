@@ -109,52 +109,52 @@ $nreps
 +   }
 + }
 50.1
-13553 genes, 100 samples.
+11370 genes, 100 samples.
 Wilcoxon
 24.1
-13439 genes, 48 samples.
+11299 genes, 48 samples.
 Wilcoxon
 24.2
-13427 genes, 48 samples.
+11332 genes, 48 samples.
 Wilcoxon
 24.3
-13441 genes, 48 samples.
+11303 genes, 48 samples.
 Wilcoxon
 24.4
-13432 genes, 48 samples.
+11324 genes, 48 samples.
 Wilcoxon
 24.5
-13420 genes, 48 samples.
+11318 genes, 48 samples.
 Wilcoxon
 12.1
-13232 genes, 24 samples.
+11128 genes, 24 samples.
 Wilcoxon
 12.2
-13243 genes, 24 samples.
+11139 genes, 24 samples.
 Wilcoxon
 12.3
-13255 genes, 24 samples.
+11191 genes, 24 samples.
 Wilcoxon
 12.4
-13246 genes, 24 samples.
+11159 genes, 24 samples.
 Wilcoxon
 12.5
-13239 genes, 24 samples.
+11144 genes, 24 samples.
 Wilcoxon
 6.1
-12966 genes, 12 samples.
+10813 genes, 12 samples.
 Wilcoxon
 6.2
-12935 genes, 12 samples.
+10811 genes, 12 samples.
 Wilcoxon
 6.3
-12892 genes, 12 samples.
+10778 genes, 12 samples.
 Wilcoxon
 6.4
-12894 genes, 12 samples.
+10797 genes, 12 samples.
 Wilcoxon
 6.5
-12908 genes, 12 samples.
+10838 genes, 12 samples.
 Wilcoxon
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
@@ -178,12 +178,12 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] edgeR_3.17.5               limma_3.30.8              
- [3] MultiAssayExperiment_1.0.0 SummarizedExperiment_1.4.0
+ [1] edgeR_3.17.5               limma_3.30.13             
+ [3] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
  [5] GenomicRanges_1.26.2       GenomeInfoDb_1.10.3       
  [7] IRanges_2.8.1              S4Vectors_0.12.1          
  [9] tidyr_0.6.1                dplyr_0.5.0               
-[11] survey_3.31-2              survival_2.40-1           
+[11] survey_3.31-5              survival_2.40-1           
 [13] Matrix_1.2-8               GEOquery_2.40.0           
 [15] Biobase_2.34.0             BiocGenerics_0.20.0       
 [17] tximport_1.2.0             reshape2_1.4.2            
@@ -202,4 +202,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-394.208  10.837 406.100 
+324.850  14.339 340.613 

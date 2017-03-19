@@ -109,23 +109,20 @@ $nreps
 +   }
 + }
 50.1
-13553 genes, 100 samples.
+11370 genes, 100 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13553 with nonzero total read count
+out of 11370 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 194, 1.4% 
-LFC < 0 (down)   : 199, 1.5% 
+LFC > 0 (up)     : 645, 5.7% 
+LFC < 0 (down)   : 625, 5.5% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -133,7 +130,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 24.1
-13439 genes, 48 samples.
+11299 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -146,10 +143,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 13439 with nonzero total read count
+out of 11299 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 144, 1.1% 
-LFC < 0 (down)   : 144, 1.1% 
+LFC > 0 (up)     : 620, 5.5% 
+LFC < 0 (down)   : 615, 5.4% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -157,23 +154,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 24.2
-13427 genes, 48 samples.
+11332 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13427 with nonzero total read count
+out of 11332 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 146, 1.1% 
-LFC < 0 (down)   : 133, 0.99% 
+LFC > 0 (up)     : 623, 5.5% 
+LFC < 0 (down)   : 632, 5.6% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -181,23 +175,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 24.3
-13441 genes, 48 samples.
+11303 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13441 with nonzero total read count
+out of 11303 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 132, 0.98% 
-LFC < 0 (down)   : 159, 1.2% 
+LFC > 0 (up)     : 621, 5.5% 
+LFC < 0 (down)   : 590, 5.2% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -205,23 +196,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 24.4
-13432 genes, 48 samples.
+11324 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13432 with nonzero total read count
+out of 11324 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 143, 1.1% 
-LFC < 0 (down)   : 154, 1.1% 
+LFC > 0 (up)     : 620, 5.5% 
+LFC < 0 (down)   : 620, 5.5% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -229,7 +217,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 24.5
-13420 genes, 48 samples.
+11318 genes, 48 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -242,10 +230,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 13420 with nonzero total read count
+out of 11318 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 154, 1.1% 
-LFC < 0 (down)   : 137, 1% 
+LFC > 0 (up)     : 647, 5.7% 
+LFC < 0 (down)   : 618, 5.5% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -253,23 +241,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.1
-13232 genes, 24 samples.
+11128 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13232 with nonzero total read count
+out of 11128 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 110, 0.83% 
-LFC < 0 (down)   : 115, 0.87% 
+LFC > 0 (up)     : 582, 5.2% 
+LFC < 0 (down)   : 526, 4.7% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -277,23 +262,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.2
-13243 genes, 24 samples.
+11139 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13243 with nonzero total read count
+out of 11139 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 121, 0.91% 
-LFC < 0 (down)   : 107, 0.81% 
+LFC > 0 (up)     : 556, 5% 
+LFC < 0 (down)   : 536, 4.8% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -301,23 +283,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.3
-13255 genes, 24 samples.
+11191 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13255 with nonzero total read count
+out of 11191 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 108, 0.81% 
-LFC < 0 (down)   : 109, 0.82% 
+LFC > 0 (up)     : 559, 5% 
+LFC < 0 (down)   : 577, 5.2% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -325,23 +304,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.4
-13246 genes, 24 samples.
+11159 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13246 with nonzero total read count
+out of 11159 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 124, 0.94% 
-LFC < 0 (down)   : 104, 0.79% 
+LFC > 0 (up)     : 574, 5.1% 
+LFC < 0 (down)   : 548, 4.9% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -349,23 +325,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 12.5
-13239 genes, 24 samples.
+11144 genes, 24 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 13239 with nonzero total read count
+out of 11144 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 105, 0.79% 
-LFC < 0 (down)   : 128, 0.97% 
+LFC > 0 (up)     : 561, 5% 
+LFC < 0 (down)   : 541, 4.9% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -373,23 +346,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.1
-12966 genes, 12 samples.
+10813 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 12966 with nonzero total read count
+out of 10813 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 121, 0.93% 
-LFC < 0 (down)   : 131, 1% 
+LFC > 0 (up)     : 519, 4.8% 
+LFC < 0 (down)   : 456, 4.2% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -397,23 +367,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.2
-12935 genes, 12 samples.
+10811 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 12935 with nonzero total read count
+out of 10811 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 133, 1% 
-LFC < 0 (down)   : 142, 1.1% 
+LFC > 0 (up)     : 512, 4.7% 
+LFC < 0 (down)   : 499, 4.6% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -421,23 +388,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.3
-12892 genes, 12 samples.
+10778 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 12892 with nonzero total read count
+out of 10778 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 134, 1% 
-LFC < 0 (down)   : 144, 1.1% 
+LFC > 0 (up)     : 491, 4.6% 
+LFC < 0 (down)   : 481, 4.5% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -445,7 +409,7 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.4
-12894 genes, 12 samples.
+10797 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
@@ -455,10 +419,10 @@ mean-dispersion relationship
 final dispersion estimates
 fitting model and testing
 
-out of 12894 with nonzero total read count
+out of 10797 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 142, 1.1% 
-LFC < 0 (down)   : 140, 1.1% 
+LFC > 0 (up)     : 519, 4.8% 
+LFC < 0 (down)   : 499, 4.6% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -466,23 +430,20 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 
 6.5
-12908 genes, 12 samples.
+10838 genes, 12 samples.
 DESeq2
 converting counts to integer mode
 estimating size factors
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
--- note: fitType='parametric', but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType='local' or 'mean' to avoid this message next time.
 final dispersion estimates
 fitting model and testing
 
-out of 12908 with nonzero total read count
+out of 10838 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 132, 1% 
-LFC < 0 (down)   : 87, 0.67% 
+LFC > 0 (up)     : 528, 4.9% 
+LFC < 0 (down)   : 472, 4.4% 
 outliers [1]     : 0, 0% 
 low counts [2]   : 0, 0% 
 (mean count < 0)
@@ -510,11 +471,11 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] DESeq2_1.14.1              MultiAssayExperiment_1.0.0
+ [1] DESeq2_1.14.1              MultiAssayExperiment_1.0.1
  [3] SummarizedExperiment_1.4.0 GenomicRanges_1.26.2      
  [5] GenomeInfoDb_1.10.3        IRanges_2.8.1             
  [7] S4Vectors_0.12.1           tidyr_0.6.1               
- [9] dplyr_0.5.0                survey_3.31-2             
+ [9] dplyr_0.5.0                survey_3.31-5             
 [11] survival_2.40-1            Matrix_1.2-8              
 [13] GEOquery_2.40.0            Biobase_2.34.0            
 [15] BiocGenerics_0.20.0        tximport_1.2.0            
@@ -542,5 +503,5 @@ loaded via a namespace (and not attached):
 [55] memoise_1.0.0        knitr_1.15.1        
 > 
 > proc.time()
-    user   system  elapsed 
-1296.289   27.730 1327.482 
+   user  system elapsed 
+878.778  15.895 897.666 
