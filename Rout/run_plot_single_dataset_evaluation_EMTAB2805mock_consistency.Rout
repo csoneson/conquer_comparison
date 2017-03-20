@@ -61,42 +61,196 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+48.1
+48.2
+48.3
+48.4
+48.5
+6.1
+6.2
+6.3
+6.4
+6.5
+BPSC
+D3E
+DESeq2
+DESeq2census
+DESeq2nofilt
+edgeRLRT
+edgeRLRTcensus
+edgeRLRTdeconv
+edgeRLRTrobust
+edgeRQLF
+MASTcpm
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpmDetRate
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpm
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpmDetRate
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+monocle
+monoclecensus
+NODES
+SAMseq
+SCDE
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+Seurat
+Seuratnofilt
+voomlimma
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+Wilcoxon
+zingeR
+zingeRauto
+zingeRautonofilt
+BPSC.12
+BPSC.24
+BPSC.48
+BPSC.6
+D3E.12
+D3E.24
+D3E.48
+D3E.6
+DESeq2.12
+DESeq2.24
+DESeq2.48
+DESeq2.6
+DESeq2census.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2census.24
+DESeq2census.48
+DESeq2census.6
+DESeq2nofilt.12
+DESeq2nofilt.24
+DESeq2nofilt.48
+DESeq2nofilt.6
+edgeRLRT.12
+edgeRLRT.24
+edgeRLRT.48
+edgeRLRT.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTcensus.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTcensus.24
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTcensus.48
+edgeRLRTcensus.6
+edgeRLRTdeconv.12
+edgeRLRTdeconv.24
+edgeRLRTdeconv.48
+edgeRLRTdeconv.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTrobust.12
+edgeRLRTrobust.24
+edgeRLRTrobust.48
+edgeRLRTrobust.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRQLF.12
+edgeRQLF.24
+edgeRQLF.48
+edgeRQLF.6
+MASTcpm.12
+MASTcpm.24
+MASTcpm.48
+MASTcpm.6
+MASTcpmDetRate.12
+MASTcpmDetRate.24
+MASTcpmDetRate.48
+MASTcpmDetRate.6
+MASTtpm.12
+MASTtpm.24
+MASTtpm.48
+MASTtpm.6
+MASTtpmDetRate.12
+MASTtpmDetRate.24
+MASTtpmDetRate.48
+MASTtpmDetRate.6
+monocle.12
+monocle.24
+monocle.48
+monocle.6
+monoclecensus.12
+monoclecensus.24
+monoclecensus.48
+monoclecensus.6
+NODES.12
+NODES.24
+NODES.48
+NODES.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SAMseq.12
+SAMseq.24
+SAMseq.48
+SAMseq.6
+SCDE.12
+SCDE.24
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SCDE.48
+SCDE.6
+Seurat.12
+Seurat.24
+Seurat.48
+Seurat.6
+Seuratnofilt.12
+Seuratnofilt.24
+Seuratnofilt.48
+Seuratnofilt.6
+voomlimma.12
+voomlimma.24
+voomlimma.48
+voomlimma.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+Wilcoxon.12
+Wilcoxon.24
+Wilcoxon.48
+Wilcoxon.6
+zingeR.12
+zingeR.24
+zingeR.48
+zingeR.6
+zingeRauto.12
+zingeRauto.24
+zingeRauto.48
+zingeRauto.6
+zingeRautonofilt.12
+zingeRautonofilt.24
+zingeRautonofilt.48
+zingeRautonofilt.6
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -159,4 +313,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-216.869   6.324 223.760 
+300.323  10.104 314.344 

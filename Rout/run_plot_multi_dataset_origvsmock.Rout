@@ -30,8 +30,8 @@ Setting LC_CTYPE failed, using "C"
 > print(datasets)
            GSE45719            GSE74596           EMTAB2805   GSE60749-GPL13112 
          "GSE45719"          "GSE74596"         "EMTAB2805" "GSE60749-GPL13112" 
-  GSE48968-GPL13112     UsoskinGSE59739      GSE45719sim123 
-"GSE48968-GPL13112"   "UsoskinGSE59739"    "GSE45719sim123" 
+  GSE48968-GPL13112     UsoskinGSE59739 
+"GSE48968-GPL13112"   "UsoskinGSE59739" 
 > print(filt)
 [1] ""
 > print(dtpext)
@@ -85,11 +85,8 @@ package 'ggplot2' was built under R version 3.3.2
 +               axis.text.y = element_text(size = 12),
 +               axis.title.y = element_text(size = 13)))
 Warning messages:
-1: Removed 177 rows containing non-finite values (stat_boxplot). 
-2: The shape palette can deal with a maximum of 6 discrete values because
-more than 6 becomes difficult to discriminate; you have 7. Consider
-specifying shapes manually if you must have them. 
-3: Removed 200 rows containing missing values (geom_point). 
+1: Removed 151 rows containing non-finite values (stat_boxplot). 
+2: Removed 151 rows containing missing values (geom_point). 
 > 
 > print(concsum %>% 
 +         ggplot(aes(x = method, y = mediandiff, col = method)) + 
@@ -103,11 +100,8 @@ specifying shapes manually if you must have them.
 +               axis.text.y = element_text(size = 12),
 +               axis.title.y = element_text(size = 13)))
 Warning messages:
-1: Removed 177 rows containing non-finite values (stat_boxplot). 
-2: The shape palette can deal with a maximum of 6 discrete values because
-more than 6 becomes difficult to discriminate; you have 7. Consider
-specifying shapes manually if you must have them. 
-3: Removed 200 rows containing missing values (geom_point). 
+1: Removed 151 rows containing non-finite values (stat_boxplot). 
+2: Removed 151 rows containing missing values (geom_point). 
 > 
 > dev.off()
 null device 
@@ -164,4 +158,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 10.469   0.761  11.258 
+ 12.077   0.885  13.019 

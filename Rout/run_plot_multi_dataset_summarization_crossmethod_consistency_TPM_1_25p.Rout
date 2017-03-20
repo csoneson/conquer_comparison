@@ -30,8 +30,8 @@ Setting LC_CTYPE failed, using "C"
 > print(datasets)
            GSE45719            GSE74596           EMTAB2805   GSE60749-GPL13112 
          "GSE45719"          "GSE74596"         "EMTAB2805" "GSE60749-GPL13112" 
-  GSE48968-GPL13112     UsoskinGSE59739      GSE45719sim123 
-"GSE48968-GPL13112"   "UsoskinGSE59739"    "GSE45719sim123" 
+  GSE48968-GPL13112     UsoskinGSE59739 
+"GSE48968-GPL13112"   "UsoskinGSE59739" 
 > print(filt)
 [1] "TPM_1_25p"
 > print(dtpext)
@@ -108,4 +108,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-289.386   8.067 298.149 
+325.581  83.550 414.724 

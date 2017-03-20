@@ -35,6 +35,10 @@ if (plottype == "timing") {
                                       dataset, exts, "_relative_performance.rds"))
   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
                                                  colvec = cols, exts = exts, summary_data = summary_data)
+} else if (plottype == "performance_realtruth") {
+  cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
+  summary_data <- get(paste0("plot_", plottype))(cobraperf, 
+                                                 colvec = cols, exts = exts, summary_data = summary_data)
 } else {
   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)

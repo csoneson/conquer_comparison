@@ -78,6 +78,7 @@ plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data 
                                     thrs = 0.05)
   
   for (m in unique(get_nsamples(basemethods(cobrares)))) {
+    message(m)
     res <- plot_res_subset(cobrares, 
                            keepmethods = basemethods(cobrares)[get_nsamples(basemethods(cobrares)) == m],
                            type = "number", colvec = colvec, nsamp = m)

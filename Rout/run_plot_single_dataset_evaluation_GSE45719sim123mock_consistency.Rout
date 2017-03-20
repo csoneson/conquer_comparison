@@ -61,60 +61,199 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+6.1
+6.2
+6.3
+6.4
+6.5
+BPSC
+D3E
+DESeq2
+DESeq2census
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt
+edgeRLRT
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTcensus
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTdeconv
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTrobust
+edgeRQLF
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpm
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpmDetRate
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpm
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpmDetRate
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+monocle
+monoclecensus
+NODES
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SAMseq
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SCDE
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+Seurat
+Seuratnofilt
+voomlimma
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+Wilcoxon
+zingeR
+zingeRauto
+zingeRautonofilt
+BPSC.12
+BPSC.24
+BPSC.6
+D3E.12
+D3E.24
+D3E.6
+DESeq2.12
+DESeq2.24
+DESeq2.6
+DESeq2census.12
+DESeq2census.24
+DESeq2census.6
+DESeq2nofilt.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt.24
+DESeq2nofilt.6
+edgeRLRT.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRT.24
+edgeRLRT.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTcensus.12
+edgeRLRTcensus.24
+edgeRLRTcensus.6
+edgeRLRTdeconv.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTdeconv.24
+edgeRLRTdeconv.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRTrobust.12
+edgeRLRTrobust.24
+edgeRLRTrobust.6
+edgeRQLF.12
+edgeRQLF.24
+edgeRQLF.6
+MASTcpm.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpm.24
+MASTcpm.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpmDetRate.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTcpmDetRate.24
+MASTcpmDetRate.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpm.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpm.24
+MASTtpm.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+MASTtpmDetRate.12
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+MASTtpmDetRate.24
+MASTtpmDetRate.6
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+monocle.12
+monocle.24
+monocle.6
+monoclecensus.12
+monoclecensus.24
+monoclecensus.6
+NODES.12
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+NODES.24
+NODES.6
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+SAMseq.12
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+SAMseq.24
+SAMseq.6
+SCDE.12
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+SCDE.24
+SCDE.6
+Seurat.12
+Seurat.24
+Seurat.6
+Seuratnofilt.12
+Seuratnofilt.24
+Seuratnofilt.6
+voomlimma.12
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+voomlimma.24
+voomlimma.6
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+Wilcoxon.12
+Wilcoxon.24
+Wilcoxon.6
+zingeR.12
+zingeR.24
+zingeR.6
+zingeRauto.12
+zingeRauto.24
+zingeRauto.6
+zingeRautonofilt.12
+zingeRautonofilt.24
+zingeRautonofilt.6
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -177,4 +316,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-230.832  13.089 244.830 
+259.135   8.398 270.245 

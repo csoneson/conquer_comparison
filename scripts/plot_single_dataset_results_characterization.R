@@ -23,6 +23,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     df2$Var3 <- gsub(exts, "", gsub(paste0(".", szi), "", df2$Var2))
     names(colvec) <- gsub(exts, "", names(colvec))
     for (y in c("avetpm", "avecount", "vartpm")) {
+      message(y)
       nn <- switch(y,
                    avetpm = "average TPM",
                    avecount = "average count",
@@ -74,6 +75,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
               ggtitle(paste0(ifelse(exts == "", "", paste0(gsub("^_", "", exts), ", ")), szi)))
     }
     for (y in c("fraczero", "fraczeroround", "fraczerodiff", "cvtpm")) {
+      message(y)
       nn <- switch(y, 
                    fraczero = "Fraction zeros",
                    fraczeroround = "Fraction zeros after rounding",

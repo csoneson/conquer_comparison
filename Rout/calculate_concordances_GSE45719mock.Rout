@@ -46,13 +46,28 @@ Setting LC_CTYPE failed, using "C"
 > calculate_concordance <- function(mtx, maxrank, frac) {
 +   if (ncol(mtx) > 1) {
 +     data.frame(t(sapply(1:maxrank, function(i) {
-+       p <- sum(table(unlist(mtx[1:i, ])) >= frac * ncol(mtx))
++       p <- sort(mtx[1:i, ])
++       ## Note: this assumes that frac is large enough that a gene must appear at
++       ## least twice to be of interest
++       p <- p[duplicated(p)]
++       p <- sum(table(p) + 1 >= frac * ncol(mtx))
 +       c(k = i, p = p, frac = frac)
 +     })), stringsAsFactors = FALSE)
 +   } else {
 +     NULL
 +   }
 + }
+> 
+> # calculate_concordance <- function(mtx, maxrank, frac) {
+> #   if (ncol(mtx) > 1) {
+> #     data.frame(t(sapply(1:maxrank, function(i) {
+> #       p <- sum(table(unlist(mtx[1:i, ])) >= frac * ncol(mtx))
+> #       c(k = i, p = p, frac = frac)
+> #     })), stringsAsFactors = FALSE)
+> #   } else {
+> #     NULL
+> #   }
+> # }
 > 
 > get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 > get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
@@ -82,6 +97,7 @@ Joining, by = "gene"
 > for (i in colnames(pconc)) {
 +   pconc[, i] <- order(pconc[, i])
 + }
+> pconc <- as.matrix(pconc)
 > 
 > all_methods <- unique(get_method(colnames(pconc)))
 > all_nsamples <- unique(get_nsamples(colnames(pconc)))
@@ -243,5 +259,5 @@ loaded via a namespace (and not attached):
 [37] httpuv_1.3.3        
 > 
 > proc.time()
-     user    system   elapsed 
-10646.741    26.995 10693.876 
+    user   system  elapsed 
+2963.087   41.805 3016.667 

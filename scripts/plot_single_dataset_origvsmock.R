@@ -14,6 +14,7 @@ plot_compare_orig_mock <- function(concordances, colvec, summary_data = list()) 
   
   for (nbrsamples in unique(intersect(subset(concs, tp == "original")$ncells1,
                                       subset(concs, tp == "mock")$ncells1))) {
+    message(nbrsamples)
     print(concs %>% dplyr::filter(ncells1 == nbrsamples & ncells2 == nbrsamples) %>%
             ggplot(aes(x = method, y = auc, color = method, shape = tp)) + 
             geom_point(size = 5) + theme_bw() + xlab("") + 

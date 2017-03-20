@@ -11,8 +11,10 @@ PLOTTYPE := timing results_characterization results_relativetruth consistency re
 PLOTTYPE1 := timing results_characterization results_relativetruth truefpr
 PLOTTYPE2 := consistency
 PLOTTYPE3 := results_relativetruth_all
+PLOTTYPE4 := performance_realtruth
 SUMMARYTYPE := truefpr pca timing fracNA crossmethod_consistency relfprtpr
 SUMMARYTYPE2 := filtering
+SUMMARYTYPE3 := trueperformance
 
 .PHONY: all
 
@@ -32,7 +34,9 @@ $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y
 $(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE2),$(K)_$(Y))))) \
 $(addsuffix .rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y))) \
 $(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y))) \
-$(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y)))
+$(addsuffix _bulk.rds, $(addprefix figures/summary_crossds/summary_orig_vs_mock_, $(foreach Y,$(FILT),$Y))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_, $(foreach K,$(SUMMARYTYPE3),$(K)))) \
+$(addsuffix _sim.rds, $(addprefix figures/summary_crossds/summary_, $(foreach Y,$(FILT),$(foreach K,$(SUMMARYTYPE3),$(K)_$(Y)))))
 
 ## Plot original vs mock comparison
 plotorigmock: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $(foreach X,$(Dsb),$X))) \
@@ -43,6 +47,8 @@ $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix figures/orig_vs_mock/, $
 ## Plot individual data set results
 plotind: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach X,$(DS),$k/$X_$k)))) \
 $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach Y,$(FILT),$(foreach X,$(DS),$k/$X_$Y_$k))))) \
+$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach X,$(DSsim),$k/$X_$k)))) \
+$(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE4),$(foreach Y,$(FILT),$(foreach X,$(DSsim),$k/$X_$Y_$k))))) \
 $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach X,$(DSbulk),$k/$X_$k)))) \
 $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach k,$(PLOTTYPE),$(foreach Y,$(FILT),$(foreach X,$(DSbulk),$k/$X_$Y_$k)))))
 
@@ -52,16 +58,6 @@ $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FI
 $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach X,$(DSbulk),$X))) \
 $(addsuffix .rds, $(addprefix figures/dataset_characteristics/, $(foreach Y,$(FILT),$(foreach X,$(DSbulk),$X_$Y))))
 
-tmp: $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(Dsb),$k))) \
-$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(FILT),$(foreach k,$(Dsb),$k_$j)))) \
-$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(DSbulk),$k))) \
-$(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j)))) \
-$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(Dsb),$k))) \
-$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(Dsb),$k_$j)))) \
-$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(DSbulk),$k))) \
-$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j))))
-
-
 ## Prepare results for plotting, step II
 plotprepare: $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach k,$(DS),$k))) \
 $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(FILT),$(foreach k,$(DS),$k_$j)))) \
@@ -70,7 +66,9 @@ $(addsuffix _concordances.rds, $(addprefix figures/consistency/, $(foreach j,$(F
 $(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(DS),$k))) \
 $(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(DS),$k_$j)))) \
 $(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach k,$(DSbulk),$k))) \
-$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j))))
+$(addsuffix _relative_performance.rds, $(addprefix figures/results_relativetruth_all/, $(foreach j,$(FILT),$(foreach k,$(DSbulk),$k_$j)))) \
+$(addsuffix _performance.rds, $(addprefix figures/performance_realtruth/, $(foreach k,$(DSsim),$k))) \
+$(addsuffix _performance.rds, $(addprefix figures/performance_realtruth/, $(foreach j,$(FILT),$(foreach k,$(DSsim),$k_$j))))
 
 ## Prepare results for plotting, step I
 cobra: $(addsuffix _cobra.rds, $(addprefix figures/cobra_data/, $(foreach k,$(DS),$k))) \
@@ -213,6 +211,21 @@ endef
 $(foreach k,$(FILT),$(foreach X,$(DS),$(eval $(call relperfrule_filt,$(X),$(k)))))
 $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(eval $(call relperfrule_filt,$(X),$(k)))))
 
+## -------------------------- Calculate true performances ----------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+define trueperfrule
+figures/performance_realtruth/$(1)_performance.rds: scripts/calculate_performance_realtruth.R figures/cobra_data/$(1)_cobra.rds data/$(1)_truth.rds
+	$R "--args dataset='$(1)' filt=''" scripts/calculate_performance_realtruth.R Rout/calculate_performance_realtruth_$(1).Rout
+endef
+$(foreach X,$(DSsim),$(eval $(call trueperfrule,$(X))))
+
+define trueperfrule_filt
+figures/performance_realtruth/$(1)_$(2)_performance.rds: scripts/calculate_performance_realtruth.R figures/cobra_data/$(1)_$(2)_cobra.rds data/$(1)_truth.rds
+	$R "--args dataset='$(1)' filt='$(2)'" scripts/calculate_performance_realtruth.R Rout/calculate_performance_realtruth_$(1)_$(2).Rout
+endef
+$(foreach k,$(FILT),$(foreach X,$(DSsim),$(eval $(call trueperfrule_filt,$(X),$(k)))))
+
+
 ## --------------------------- Plots for evaluation ----------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define plotrule
@@ -238,6 +251,13 @@ endef
 $(foreach X,$(DS),$(foreach Y,$(PLOTTYPE3),$(eval $(call plotrule3,$(X),$(Y)))))
 $(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE3),$(eval $(call plotrule3,$(X),$(Y)))))
 
+define plotrule4
+figures/$(2)/$(1)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R \
+figures/performance_realtruth/$(1)_performance.rds
+	$R "--args dataset='$(1)' config_file='config/$(1).json' filt='' plottype='$(2)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)_$(2).Rout
+endef
+$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule4,$(X),$(Y)))))
+
 define plotrule_filt
 figures/$(2)/$(1)_$(3)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R figures/cobra_data/$(1)_$(3)_cobra.rds
 	$R "--args dataset='$(1)' config_file='config/$(1).json' filt='$(3)' plottype='$(2)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)_$(3)_$(2).Rout
@@ -260,6 +280,13 @@ figures/results_relativetruth_all/$(1)_$(3)_relative_performance.rds
 endef
 $(foreach k,$(FILT),$(foreach X,$(DS),$(foreach Y,$(PLOTTYPE3),$(eval $(call plotrule3_filt,$(X),$(Y),$(k))))))
 $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(foreach Y,$(PLOTTYPE3),$(eval $(call plotrule3_filt,$(X),$(Y),$(k))))))
+
+define plotrule4_filt
+figures/$(2)/$(1)_$(3)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R \
+figures/performance_realtruth/$(1)_$(3)_performance.rds
+	$R "--args dataset='$(1)' config_file='config/$(1).json' filt='$(3)' plottype='$(2)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)_$(3)_$(2).Rout
+endef
+$(foreach k,$(FILT),$(foreach X,$(DSsim),$(foreach Y,$(PLOTTYPE4),$(eval $(call plotrule4_filt,$(X),$(Y),$(k))))))
 
 ## -------------------- Plots for characterization of data set ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
@@ -456,6 +483,10 @@ figures/summary_crossds/summary_truefpr_sim.rds: $(addsuffix _summary_data.rds, 
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R include_datasets.mk
 	$R "--args datasets='${Dsssimc}' filt='' summarytype='truefpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_truefpr_sim.Rout
 
+figures/summary_crossds/summary_trueperformance_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),performance_realtruth/$Y_performance_realtruth))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_trueperformance.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='' summarytype='trueperformance' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_trueperformance_sim.Rout
+
 figures/summary_crossds/summary_pca_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),results_characterization/$Y_results_characterization))) \
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_pca.R include_datasets.mk
 	$R "--args datasets='${Dsssimc}' filt='' summarytype='pca' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_pca_sim.Rout
@@ -482,6 +513,13 @@ scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R inclu
 	$R "--args datasets='${Dsssimc}' filt='$(1)' summarytype='truefpr' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_truefpr_$(1)_sim.Rout
 endef
 $(foreach k,$(FILT),$(eval $(call summaryrule_truefpr_sim,$(k))))
+
+define summaryrule_trueperformance_sim
+figures/summary_crossds/summary_trueperformance_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsbsim),performance_realtruth/$Y_$(1)_performance_realtruth))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_trueperformance.R include_datasets.mk
+	$R "--args datasets='${Dsbsimc}' filt='$(1)' summarytype='trueperformance' dtpext='_sim'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_trueperformance_$(1)_sim.Rout
+endef
+$(foreach k,$(FILT),$(eval $(call summaryrule_trueperformance_sim,$(k))))
 
 define summaryrule_pca_sim
 figures/summary_crossds/summary_pca_$(1)_sim.rds: $(addsuffix _summary_data.rds, $(addprefix figures/, $(foreach Y,$(Dsssim),results_characterization/$Y_$(1)_results_characterization))) \

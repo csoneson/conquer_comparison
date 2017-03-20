@@ -61,12 +61,135 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+26.1
+26.2
+26.3
+26.4
+26.5
+6.1
+6.2
+6.3
+6.4
+6.5
+BPSC
+D3E
+DESeq2
+DESeq2census
+DESeq2nofilt
+edgeRLRT
+edgeRLRTcensus
+edgeRLRTdeconv
+edgeRLRTrobust
+edgeRQLF
+MASTcpm
+MASTcpmDetRate
+MASTtpm
+MASTtpmDetRate
+monocle
+monoclecensus
+NODES
+SAMseq
+SCDE
+Seurat
+Seuratnofilt
+voomlimma
+Wilcoxon
+zingeR
+zingeRauto
+zingeRautonofilt
+BPSC.12
+BPSC.26
+BPSC.6
+D3E.12
+D3E.26
+D3E.6
+DESeq2.12
+DESeq2.26
+DESeq2.6
+DESeq2census.12
+DESeq2census.26
+DESeq2census.6
+DESeq2nofilt.12
+DESeq2nofilt.26
+DESeq2nofilt.6
+edgeRLRT.12
+edgeRLRT.26
+edgeRLRT.6
+edgeRLRTcensus.12
+edgeRLRTcensus.26
+edgeRLRTcensus.6
+edgeRLRTdeconv.12
+edgeRLRTdeconv.26
+edgeRLRTdeconv.6
+edgeRLRTrobust.12
+edgeRLRTrobust.26
+edgeRLRTrobust.6
+edgeRQLF.12
+edgeRQLF.26
+edgeRQLF.6
+MASTcpm.12
+MASTcpm.26
+MASTcpm.6
+MASTcpmDetRate.12
+MASTcpmDetRate.26
+MASTcpmDetRate.6
+MASTtpm.12
+MASTtpm.26
+MASTtpm.6
+MASTtpmDetRate.12
+MASTtpmDetRate.26
+MASTtpmDetRate.6
+monocle.12
+monocle.26
+monocle.6
+monoclecensus.12
+monoclecensus.26
+monoclecensus.6
+NODES.12
+NODES.26
+NODES.6
+SAMseq.12
+SAMseq.26
+SAMseq.6
+SCDE.12
+SCDE.26
+SCDE.6
+Seurat.12
+Seurat.26
+Seurat.6
+Seuratnofilt.12
+Seuratnofilt.26
+Seuratnofilt.6
+voomlimma.12
+voomlimma.26
+voomlimma.6
+Wilcoxon.12
+Wilcoxon.26
+Wilcoxon.6
+zingeR.12
+zingeR.26
+zingeR.6
+zingeRauto.12
+zingeRauto.26
+zingeRauto.6
+zingeRautonofilt.12
+zingeRautonofilt.26
+zingeRautonofilt.6
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -129,4 +252,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-268.180   4.635 273.428 
+316.310  10.674 328.910 

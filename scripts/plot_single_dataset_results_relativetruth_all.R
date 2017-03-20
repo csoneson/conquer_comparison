@@ -12,6 +12,7 @@ plot_results_relativetruth_all <- function(cobra, relperf_alltruths, colvec,
   for (m in ttmp) {
     for (k in unique(as.numeric(get_repl(colnames(padj(cobra)))))) {
       for (tb in names(relperf_alltruths)) {
+        message(paste0(m, ".", k, ".", tb))
         tbt <- relperf_alltruths[[tb]]
         rownames(tbt) <- gsub(exts, "", rownames(tbt))
         colnames(tbt) <- gsub(exts, "", colnames(tbt))

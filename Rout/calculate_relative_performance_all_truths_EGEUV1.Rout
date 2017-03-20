@@ -81,3 +81,61 @@ Setting LC_CTYPE failed, using "C"
 + }
 edgeRLRT
 SAMseq
+edgeRQLF
+NODES
+DESeq2
+DESeq2nofilt
+edgeRLRTdeconv
+edgeRLRTrobust
+voomlimma
+zingeRauto
+Wilcoxon
+> RES <- list(fdr = do.call(rbind, fdr_all) %>% dcast(truth ~ method, value.var = "FDR") %>% as.data.frame(),
++             fpr = do.call(rbind, fpr_all) %>% dcast(truth ~ method, value.var = "FPR") %>% as.data.frame(),
++             tpr = do.call(rbind, tpr_all) %>% dcast(truth ~ method, value.var = "TPR") %>% as.data.frame(),
++             f1 = do.call(rbind, f1_all) %>% dcast(truth ~ method, value.var = "F1") %>% as.data.frame())
+> RES <- lapply(RES, function(tb) {
++   rownames(tb) <- tb$truth
++   tb$truth <- NULL
++   tb[order(rownames(tb)), ]
++ })
+> 
+> saveRDS(RES, file = paste0("figures/results_relativetruth_all/", dataset, exts, "_relative_performance.rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] reshape2_1.4.2 tidyr_0.6.1    dplyr_0.5.0    iCOBRA_1.2.0  
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9          magrittr_1.5         munsell_0.4.3       
+ [4] colorspace_1.3-2     xtable_1.8-2         R6_2.2.0            
+ [7] stringr_1.1.0        ROCR_1.0-7           plyr_1.8.4          
+[10] caTools_1.17.1       tools_3.3.1          shinydashboard_0.5.3
+[13] DT_0.2               grid_3.3.1           gtable_0.2.0        
+[16] KernSmooth_2.23-15   DBI_0.5-1            gtools_3.5.0        
+[19] htmltools_0.3.5      lazyeval_0.2.0       assertthat_0.1      
+[22] digest_0.6.12        tibble_1.2           gridExtra_2.2.1     
+[25] shiny_1.0.0          ggplot2_2.2.1        bitops_1.0-6        
+[28] htmlwidgets_0.8      mime_0.5             stringi_1.1.2       
+[31] gdata_2.17.0         limma_3.30.13        UpSetR_1.3.2        
+[34] shinyBS_0.61         gplots_3.0.1         scales_0.4.1        
+[37] httpuv_1.3.3        
+> 
+> proc.time()
+    user   system  elapsed 
+3252.397   56.234 3322.829 

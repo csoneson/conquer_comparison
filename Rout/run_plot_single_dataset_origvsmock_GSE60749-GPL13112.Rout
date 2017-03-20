@@ -50,6 +50,8 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
 > summary_data <- plot_compare_orig_mock(concordances, colvec = cols, summary_data = list())
+12
+24
 > dev.off()
 null device 
           1 
@@ -111,4 +113,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 43.535   1.828  45.552 
+ 45.774   0.929  46.953 

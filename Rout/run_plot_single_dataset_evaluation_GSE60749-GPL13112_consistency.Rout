@@ -61,12 +61,166 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+48.1
+48.2
+48.3
+48.4
+48.5
+90.1
+90.2
+90.3
+90.4
+90.5
+BPSC
+D3E
+DESeq2
+DESeq2census
+DESeq2nofilt
+edgeRLRT
+edgeRLRTcensus
+edgeRLRTdeconv
+edgeRLRTrobust
+edgeRQLF
+MASTcpm
+MASTcpmDetRate
+MASTtpm
+MASTtpmDetRate
+monocle
+monoclecensus
+NODES
+SAMseq
+SCDE
+Seurat
+Seuratnofilt
+voomlimma
+Wilcoxon
+zingeR
+zingeRauto
+zingeRautonofilt
+BPSC.12
+BPSC.24
+BPSC.48
+BPSC.90
+D3E.12
+D3E.24
+D3E.48
+D3E.90
+DESeq2.12
+DESeq2.24
+DESeq2.48
+DESeq2.90
+DESeq2census.12
+DESeq2census.24
+DESeq2census.48
+DESeq2census.90
+DESeq2nofilt.12
+DESeq2nofilt.24
+DESeq2nofilt.48
+DESeq2nofilt.90
+edgeRLRT.12
+edgeRLRT.24
+edgeRLRT.48
+edgeRLRT.90
+edgeRLRTcensus.12
+edgeRLRTcensus.24
+edgeRLRTcensus.48
+edgeRLRTcensus.90
+edgeRLRTdeconv.12
+edgeRLRTdeconv.24
+edgeRLRTdeconv.48
+edgeRLRTdeconv.90
+edgeRLRTrobust.12
+edgeRLRTrobust.24
+edgeRLRTrobust.48
+edgeRLRTrobust.90
+edgeRQLF.12
+edgeRQLF.24
+edgeRQLF.48
+edgeRQLF.90
+MASTcpm.12
+MASTcpm.24
+MASTcpm.48
+MASTcpm.90
+MASTcpmDetRate.12
+MASTcpmDetRate.24
+MASTcpmDetRate.48
+MASTcpmDetRate.90
+MASTtpm.12
+MASTtpm.24
+MASTtpm.48
+MASTtpm.90
+MASTtpmDetRate.12
+MASTtpmDetRate.24
+MASTtpmDetRate.48
+MASTtpmDetRate.90
+monocle.12
+monocle.24
+monocle.48
+monocle.90
+monoclecensus.12
+monoclecensus.24
+monoclecensus.48
+monoclecensus.90
+NODES.12
+NODES.24
+NODES.48
+NODES.90
+SAMseq.12
+SAMseq.24
+SAMseq.48
+SAMseq.90
+SCDE.12
+SCDE.24
+SCDE.48
+SCDE.90
+Seurat.12
+Seurat.24
+Seurat.48
+Seurat.90
+Seuratnofilt.12
+Seuratnofilt.24
+Seuratnofilt.48
+Seuratnofilt.90
+voomlimma.12
+voomlimma.24
+voomlimma.48
+voomlimma.90
+Wilcoxon.12
+Wilcoxon.24
+Wilcoxon.48
+Wilcoxon.90
+zingeR.12
+zingeR.24
+zingeR.48
+zingeR.90
+zingeRauto.12
+zingeRauto.24
+zingeRauto.48
+zingeRauto.90
+zingeRautonofilt.12
+zingeRautonofilt.24
+zingeRautonofilt.48
+zingeRautonofilt.90
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -129,4 +283,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-403.759  13.409 418.414 
+495.397  20.384 520.169 

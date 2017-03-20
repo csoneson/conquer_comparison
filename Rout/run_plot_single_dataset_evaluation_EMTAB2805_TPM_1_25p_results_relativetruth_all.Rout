@@ -61,10 +61,94 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
+96.1.fdr
+96.1.fpr
+96.1.tpr
+96.1.f1
+96.2.fdr
+96.2.fpr
+96.2.tpr
+96.2.f1
+96.3.fdr
+96.3.fpr
+96.3.tpr
+96.3.f1
+96.4.fdr
+96.4.fpr
+96.4.tpr
+96.4.f1
+96.5.fdr
+96.5.fpr
+96.5.tpr
+96.5.f1
+48.1.fdr
+48.1.fpr
+48.1.tpr
+48.1.f1
+48.2.fdr
+48.2.fpr
+48.2.tpr
+48.2.f1
+48.3.fdr
+48.3.fpr
+48.3.tpr
+48.3.f1
+48.4.fdr
+48.4.fpr
+48.4.tpr
+48.4.f1
+48.5.fdr
+48.5.fpr
+48.5.tpr
+48.5.f1
+24.1.fdr
+24.1.fpr
+24.1.tpr
+24.1.f1
+24.2.fdr
+24.2.fpr
+24.2.tpr
+24.2.f1
+24.3.fdr
+24.3.fpr
+24.3.tpr
+24.3.f1
+24.4.fdr
+24.4.fpr
+24.4.tpr
+24.4.f1
+24.5.fdr
+24.5.fpr
+24.5.tpr
+24.5.f1
+12.1.fdr
+12.1.fpr
+12.1.tpr
+12.1.f1
+12.2.fdr
+12.2.fpr
+12.2.tpr
+12.2.f1
+12.3.fdr
+12.3.fpr
+12.3.tpr
+12.3.f1
+12.4.fdr
+12.4.fpr
+12.4.tpr
+12.4.f1
+12.5.fdr
+12.5.fpr
+12.5.tpr
+12.5.f1
 > dev.off()
 null device 
           1 
@@ -126,4 +210,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 20.127   0.939  21.272 
+ 21.378   0.807  22.303 

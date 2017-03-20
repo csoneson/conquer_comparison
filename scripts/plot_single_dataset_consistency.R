@@ -62,6 +62,7 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
     ## UpSet plots
     for (sz in all_sizes) {
       for (j in all_replicates) {
+        message(paste0(sz, ".", j))
         c2 <- colvec
         names(c2) <- paste0(names(c2), ".", sz, ".", j)
         km <- paste0(all_methods, ".", sz, ".", j)
@@ -82,6 +83,7 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
   }
   if (length(all_sizes) > 1) {
     for (mth in all_methods) {
+      message(mth)
       c2 <- colvec[mth]
       km <- intersect(unlist(lapply(paste0(mth, ".", all_sizes), 
                                     function(m) paste0(m, ".", all_replicates))), 
@@ -102,6 +104,7 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
   if (max_nreps > 1) {
     for (mth in all_methods) {
       for (sz in all_sizes) {
+        message(paste0(mth, ".", sz))
         c2 <- colvec[mth]
         tmpmth <- intersect(paste0(mth, ".", sz, ".", all_replicates), basemethods(cobraperf))
         if (length(tmpmth) > 1) {

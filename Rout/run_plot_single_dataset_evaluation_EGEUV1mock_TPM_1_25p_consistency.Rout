@@ -61,34 +61,113 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+44.1
+44.2
+44.3
+44.4
+44.5
+6.1
+6.2
+6.3
+6.4
+6.5
+DESeq2_TPM_1_25p
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt_TPM_1_25p
+edgeRLRT_TPM_1_25p
+edgeRLRTdeconv_TPM_1_25p
+edgeRLRTrobust_TPM_1_25p
+edgeRQLF_TPM_1_25p
+NODES_TPM_1_25p
+SAMseq_TPM_1_25p
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+voomlimma_TPM_1_25p
+Wilcoxon_TPM_1_25p
+zingeRauto_TPM_1_25p
+DESeq2_TPM_1_25p.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2_TPM_1_25p.24
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2_TPM_1_25p.44
+DESeq2_TPM_1_25p.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt_TPM_1_25p.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt_TPM_1_25p.24
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+DESeq2nofilt_TPM_1_25p.44
+DESeq2nofilt_TPM_1_25p.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+edgeRLRT_TPM_1_25p.12
+edgeRLRT_TPM_1_25p.24
+edgeRLRT_TPM_1_25p.44
+edgeRLRT_TPM_1_25p.6
+edgeRLRTdeconv_TPM_1_25p.12
+edgeRLRTdeconv_TPM_1_25p.24
+edgeRLRTdeconv_TPM_1_25p.44
+edgeRLRTdeconv_TPM_1_25p.6
+edgeRLRTrobust_TPM_1_25p.12
+edgeRLRTrobust_TPM_1_25p.24
+edgeRLRTrobust_TPM_1_25p.44
+edgeRLRTrobust_TPM_1_25p.6
+edgeRQLF_TPM_1_25p.12
+edgeRQLF_TPM_1_25p.24
+edgeRQLF_TPM_1_25p.44
+edgeRQLF_TPM_1_25p.6
+NODES_TPM_1_25p.12
+NODES_TPM_1_25p.24
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+NODES_TPM_1_25p.44
+NODES_TPM_1_25p.6
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SAMseq_TPM_1_25p.12
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
+SAMseq_TPM_1_25p.24
+SAMseq_TPM_1_25p.44
+SAMseq_TPM_1_25p.6
+voomlimma_TPM_1_25p.12
+voomlimma_TPM_1_25p.24
+voomlimma_TPM_1_25p.44
+voomlimma_TPM_1_25p.6
+Wilcoxon_TPM_1_25p.12
+Wilcoxon_TPM_1_25p.24
+Wilcoxon_TPM_1_25p.44
+Wilcoxon_TPM_1_25p.6
+zingeRauto_TPM_1_25p.12
+zingeRauto_TPM_1_25p.24
+zingeRauto_TPM_1_25p.44
+zingeRauto_TPM_1_25p.6
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -151,4 +230,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 81.500   1.546  83.350 
+ 84.813   2.589  88.718 

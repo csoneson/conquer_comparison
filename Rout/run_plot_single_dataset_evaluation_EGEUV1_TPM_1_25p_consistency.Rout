@@ -61,12 +61,91 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+48.1
+48.2
+48.3
+48.4
+48.5
+87.1
+87.2
+87.3
+87.4
+87.5
+DESeq2_TPM_1_25p
+DESeq2nofilt_TPM_1_25p
+edgeRLRT_TPM_1_25p
+edgeRLRTdeconv_TPM_1_25p
+edgeRLRTrobust_TPM_1_25p
+edgeRQLF_TPM_1_25p
+NODES_TPM_1_25p
+SAMseq_TPM_1_25p
+voomlimma_TPM_1_25p
+Wilcoxon_TPM_1_25p
+zingeRauto_TPM_1_25p
+DESeq2_TPM_1_25p.12
+DESeq2_TPM_1_25p.24
+DESeq2_TPM_1_25p.48
+DESeq2_TPM_1_25p.87
+DESeq2nofilt_TPM_1_25p.12
+DESeq2nofilt_TPM_1_25p.24
+DESeq2nofilt_TPM_1_25p.48
+DESeq2nofilt_TPM_1_25p.87
+edgeRLRT_TPM_1_25p.12
+edgeRLRT_TPM_1_25p.24
+edgeRLRT_TPM_1_25p.48
+edgeRLRT_TPM_1_25p.87
+edgeRLRTdeconv_TPM_1_25p.12
+edgeRLRTdeconv_TPM_1_25p.24
+edgeRLRTdeconv_TPM_1_25p.48
+edgeRLRTdeconv_TPM_1_25p.87
+edgeRLRTrobust_TPM_1_25p.12
+edgeRLRTrobust_TPM_1_25p.24
+edgeRLRTrobust_TPM_1_25p.48
+edgeRLRTrobust_TPM_1_25p.87
+edgeRQLF_TPM_1_25p.12
+edgeRQLF_TPM_1_25p.24
+edgeRQLF_TPM_1_25p.48
+edgeRQLF_TPM_1_25p.87
+NODES_TPM_1_25p.12
+NODES_TPM_1_25p.24
+NODES_TPM_1_25p.48
+NODES_TPM_1_25p.87
+SAMseq_TPM_1_25p.12
+SAMseq_TPM_1_25p.24
+SAMseq_TPM_1_25p.48
+SAMseq_TPM_1_25p.87
+voomlimma_TPM_1_25p.12
+voomlimma_TPM_1_25p.24
+voomlimma_TPM_1_25p.48
+voomlimma_TPM_1_25p.87
+Wilcoxon_TPM_1_25p.12
+Wilcoxon_TPM_1_25p.24
+Wilcoxon_TPM_1_25p.48
+Wilcoxon_TPM_1_25p.87
+zingeRauto_TPM_1_25p.12
+zingeRauto_TPM_1_25p.24
+zingeRauto_TPM_1_25p.48
+zingeRauto_TPM_1_25p.87
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -129,4 +208,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-119.037   2.094 121.416 
+128.965   2.180 131.736 

@@ -61,12 +61,91 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+24.1
+24.2
+24.3
+24.4
+24.5
+48.1
+48.2
+48.3
+48.4
+48.5
+87.1
+87.2
+87.3
+87.4
+87.5
+DESeq2
+DESeq2nofilt
+edgeRLRT
+edgeRLRTdeconv
+edgeRLRTrobust
+edgeRQLF
+NODES
+SAMseq
+voomlimma
+Wilcoxon
+zingeRauto
+DESeq2.12
+DESeq2.24
+DESeq2.48
+DESeq2.87
+DESeq2nofilt.12
+DESeq2nofilt.24
+DESeq2nofilt.48
+DESeq2nofilt.87
+edgeRLRT.12
+edgeRLRT.24
+edgeRLRT.48
+edgeRLRT.87
+edgeRLRTdeconv.12
+edgeRLRTdeconv.24
+edgeRLRTdeconv.48
+edgeRLRTdeconv.87
+edgeRLRTrobust.12
+edgeRLRTrobust.24
+edgeRLRTrobust.48
+edgeRLRTrobust.87
+edgeRQLF.12
+edgeRQLF.24
+edgeRQLF.48
+edgeRQLF.87
+NODES.12
+NODES.24
+NODES.48
+NODES.87
+SAMseq.12
+SAMseq.24
+SAMseq.48
+SAMseq.87
+voomlimma.12
+voomlimma.24
+voomlimma.48
+voomlimma.87
+Wilcoxon.12
+Wilcoxon.24
+Wilcoxon.48
+Wilcoxon.87
+zingeRauto.12
+zingeRauto.24
+zingeRauto.48
+zingeRauto.87
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -129,4 +208,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-133.150   2.519 136.000 
+147.395   9.600 158.115 

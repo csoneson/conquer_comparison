@@ -61,12 +61,166 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+12.1
+12.2
+12.3
+12.4
+12.5
+22.1
+22.2
+22.3
+22.4
+22.5
+44.1
+44.2
+44.3
+44.4
+44.5
+6.1
+6.2
+6.3
+6.4
+6.5
+BPSC_TPM_1_25p
+D3E_TPM_1_25p
+DESeq2_TPM_1_25p
+DESeq2census_TPM_1_25p
+DESeq2nofilt_TPM_1_25p
+edgeRLRT_TPM_1_25p
+edgeRLRTcensus_TPM_1_25p
+edgeRLRTdeconv_TPM_1_25p
+edgeRLRTrobust_TPM_1_25p
+edgeRQLF_TPM_1_25p
+MASTcpm_TPM_1_25p
+MASTcpmDetRate_TPM_1_25p
+MASTtpm_TPM_1_25p
+MASTtpmDetRate_TPM_1_25p
+monocle_TPM_1_25p
+monoclecensus_TPM_1_25p
+NODES_TPM_1_25p
+SAMseq_TPM_1_25p
+SCDE_TPM_1_25p
+Seurat_TPM_1_25p
+Seuratnofilt_TPM_1_25p
+voomlimma_TPM_1_25p
+Wilcoxon_TPM_1_25p
+zingeR_TPM_1_25p
+zingeRauto_TPM_1_25p
+zingeRautonofilt_TPM_1_25p
+BPSC_TPM_1_25p.12
+BPSC_TPM_1_25p.22
+BPSC_TPM_1_25p.44
+BPSC_TPM_1_25p.6
+D3E_TPM_1_25p.12
+D3E_TPM_1_25p.22
+D3E_TPM_1_25p.44
+D3E_TPM_1_25p.6
+DESeq2_TPM_1_25p.12
+DESeq2_TPM_1_25p.22
+DESeq2_TPM_1_25p.44
+DESeq2_TPM_1_25p.6
+DESeq2census_TPM_1_25p.12
+DESeq2census_TPM_1_25p.22
+DESeq2census_TPM_1_25p.44
+DESeq2census_TPM_1_25p.6
+DESeq2nofilt_TPM_1_25p.12
+DESeq2nofilt_TPM_1_25p.22
+DESeq2nofilt_TPM_1_25p.44
+DESeq2nofilt_TPM_1_25p.6
+edgeRLRT_TPM_1_25p.12
+edgeRLRT_TPM_1_25p.22
+edgeRLRT_TPM_1_25p.44
+edgeRLRT_TPM_1_25p.6
+edgeRLRTcensus_TPM_1_25p.12
+edgeRLRTcensus_TPM_1_25p.22
+edgeRLRTcensus_TPM_1_25p.44
+edgeRLRTcensus_TPM_1_25p.6
+edgeRLRTdeconv_TPM_1_25p.12
+edgeRLRTdeconv_TPM_1_25p.22
+edgeRLRTdeconv_TPM_1_25p.44
+edgeRLRTdeconv_TPM_1_25p.6
+edgeRLRTrobust_TPM_1_25p.12
+edgeRLRTrobust_TPM_1_25p.22
+edgeRLRTrobust_TPM_1_25p.44
+edgeRLRTrobust_TPM_1_25p.6
+edgeRQLF_TPM_1_25p.12
+edgeRQLF_TPM_1_25p.22
+edgeRQLF_TPM_1_25p.44
+edgeRQLF_TPM_1_25p.6
+MASTcpm_TPM_1_25p.12
+MASTcpm_TPM_1_25p.22
+MASTcpm_TPM_1_25p.44
+MASTcpm_TPM_1_25p.6
+MASTcpmDetRate_TPM_1_25p.12
+MASTcpmDetRate_TPM_1_25p.22
+MASTcpmDetRate_TPM_1_25p.44
+MASTcpmDetRate_TPM_1_25p.6
+MASTtpm_TPM_1_25p.12
+MASTtpm_TPM_1_25p.22
+MASTtpm_TPM_1_25p.44
+MASTtpm_TPM_1_25p.6
+MASTtpmDetRate_TPM_1_25p.12
+MASTtpmDetRate_TPM_1_25p.22
+MASTtpmDetRate_TPM_1_25p.44
+MASTtpmDetRate_TPM_1_25p.6
+monocle_TPM_1_25p.12
+monocle_TPM_1_25p.22
+monocle_TPM_1_25p.44
+monocle_TPM_1_25p.6
+monoclecensus_TPM_1_25p.12
+monoclecensus_TPM_1_25p.22
+monoclecensus_TPM_1_25p.44
+monoclecensus_TPM_1_25p.6
+NODES_TPM_1_25p.12
+NODES_TPM_1_25p.22
+NODES_TPM_1_25p.44
+NODES_TPM_1_25p.6
+SAMseq_TPM_1_25p.12
+SAMseq_TPM_1_25p.22
+SAMseq_TPM_1_25p.44
+SAMseq_TPM_1_25p.6
+SCDE_TPM_1_25p.12
+SCDE_TPM_1_25p.22
+SCDE_TPM_1_25p.44
+SCDE_TPM_1_25p.6
+Seurat_TPM_1_25p.12
+Seurat_TPM_1_25p.22
+Seurat_TPM_1_25p.44
+Seurat_TPM_1_25p.6
+Seuratnofilt_TPM_1_25p.12
+Seuratnofilt_TPM_1_25p.22
+Seuratnofilt_TPM_1_25p.44
+Seuratnofilt_TPM_1_25p.6
+voomlimma_TPM_1_25p.12
+voomlimma_TPM_1_25p.22
+voomlimma_TPM_1_25p.44
+voomlimma_TPM_1_25p.6
+Wilcoxon_TPM_1_25p.12
+Wilcoxon_TPM_1_25p.22
+Wilcoxon_TPM_1_25p.44
+Wilcoxon_TPM_1_25p.6
+zingeR_TPM_1_25p.12
+zingeR_TPM_1_25p.22
+zingeR_TPM_1_25p.44
+zingeR_TPM_1_25p.6
+zingeRauto_TPM_1_25p.12
+zingeRauto_TPM_1_25p.22
+zingeRauto_TPM_1_25p.44
+zingeRauto_TPM_1_25p.6
+zingeRautonofilt_TPM_1_25p.12
+zingeRautonofilt_TPM_1_25p.22
+zingeRautonofilt_TPM_1_25p.44
+zingeRautonofilt_TPM_1_25p.6
 There were 50 or more warnings (use warnings() to see the first 50)
 > dev.off()
 null device 
@@ -129,4 +283,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-269.410   8.048 278.262 
+328.509   9.025 340.288 

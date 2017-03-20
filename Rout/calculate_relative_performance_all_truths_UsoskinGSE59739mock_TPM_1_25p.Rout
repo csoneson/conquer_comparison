@@ -149,5 +149,5 @@ loaded via a namespace (and not attached):
 [37] httpuv_1.3.3        
 > 
 > proc.time()
-   user  system elapsed 
-982.944   2.783 991.269 
+    user   system  elapsed 
+1074.503    6.941 1085.113 

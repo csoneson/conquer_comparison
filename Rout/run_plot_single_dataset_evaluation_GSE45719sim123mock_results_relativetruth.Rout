@@ -61,23 +61,30 @@ package 'ggplot2' was built under R version 3.3.2
 +                                       dataset, exts, "_relative_performance.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
 +                                                  colvec = cols, exts = exts, summary_data = summary_data)
++ } else if (plottype == "performance_realtruth") {
++   cobraperf <- readRDS(paste0("figures/performance_realtruth/", dataset, exts, "_performance.rds"))
++   summary_data <- get(paste0("plot_", plottype))(cobraperf, 
++                                                  colvec = cols, exts = exts, summary_data = summary_data)
 + } else {
 +   cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
 +   summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
 + }
+12
+24
+6
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
   too few colors provided, 103 random colors will be added
-2: Removed 40 rows containing missing values (geom_point). 
-3: Removed 40 rows containing missing values (geom_point). 
+2: Removed 35 rows containing missing values (geom_point). 
+3: Removed 35 rows containing missing values (geom_point). 
 4: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
   too many colors supplied, only the first 26 will be used
-5: Removed 8 rows containing missing values (geom_point). 
-6: Removed 8 rows containing missing values (geom_point). 
+5: Removed 7 rows containing missing values (geom_point). 
+6: Removed 7 rows containing missing values (geom_point). 
 7: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
   too few colors provided, 103 random colors will be added
-8: Removed 40 rows containing missing values (geom_point). 
-9: Removed 40 rows containing missing values (geom_point). 
+8: Removed 35 rows containing missing values (geom_point). 
+9: Removed 35 rows containing missing values (geom_point). 
 > dev.off()
 null device 
           1 
@@ -139,4 +146,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-529.310  11.161 542.135 
+692.070 191.597 897.836 
