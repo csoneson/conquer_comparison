@@ -79,7 +79,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
                 log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
   
   ## ---------------------------------- PCA ----------------------------------- ##
-  pdf(paste0(figdir, "/summary_pca", exts, dtpext, ".pdf"), width = 10, height = 7)
+  pdf(paste0(figdir, "/summary_pca", exts, dtpext, ".pdf"), width = 12, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0("figures/results_characterization/", ds, exts, 
                    "_results_characterization_summary_data.rds"))
@@ -93,6 +93,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
           dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
           dplyr::select_("Var2", stat, "charac")  %>%
           dplyr::filter(charac != "fraczerodiff") %>%
+          dplyr::filter(charac != "fraczeroround") %>%
           dplyr::filter(charac != "log2_avecount")
       })
       ## Visualize summary statistics for each characteristic
@@ -100,45 +101,47 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
       statname <- switch(stat,
                          tstat = "t-statistic comparing significant and non-significant genes",
                          mediandiff = "median difference between significant and non-significant genes")
-      x %>% tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
-        dplyr::mutate(charac = charname[charac]) %>%
-        ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
-        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
-        facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = ""))
+      print(x %>% 
+              tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+              dplyr::mutate(charac = charname[charac]) %>%
+              ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
+              geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+              facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                    axis.text.y = element_text(size = 12),
+                    axis.title.y = element_text(size = 13)) + 
+              scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")))
       
-      x %>% tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
-        dplyr::mutate(charac = charname[charac]) %>%
-        ggplot(aes_string(x = "charac", y = stat, color = "method", shape = "dataset")) + 
-        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
-        facet_wrap(~method, scales = "fixed") + xlab("") + ylab(statname) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = ""))
+      print(x %>% 
+              tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+              dplyr::mutate(charac = charname[charac]) %>%
+              ggplot(aes_string(x = "charac", y = stat, color = "method", shape = "dataset")) + 
+              geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+              facet_wrap(~method, scales = "fixed") + xlab("") + ylab(statname) + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                    axis.text.y = element_text(size = 12),
+                    axis.title.y = element_text(size = 13)) + 
+              scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")))
       
-      x %>% dplyr::group_by(charac) %>% 
-        dplyr::mutate_(stat = paste0("(", stat, "-mean(", stat, "))/sd(", stat, ")")) %>% 
-        dplyr::ungroup() %>% as.data.frame() %>%
-        tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
-        dplyr::mutate(charac = charname[charac]) %>%
-        ggplot(aes_string(x = "charac", y = "stat", color = "method", shape = "dataset")) + 
-        geom_hline(yintercept = 0) + 
-        geom_point() + theme_bw() + facet_wrap(~method, scales = "fixed") + 
-        xlab("") + ylab(paste0(statname, ",\ncentered and scaled across all instances)")) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = ""))
+      print(x %>% dplyr::group_by(charac) %>% 
+              dplyr::mutate_(stat = paste0("(", stat, "-mean(", stat, "))/sd(", stat, ")")) %>% 
+              dplyr::ungroup() %>% as.data.frame() %>%
+              tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+              dplyr::mutate(charac = charname[charac]) %>%
+              ggplot(aes_string(x = "charac", y = "stat", color = "method", shape = "dataset")) + 
+              geom_hline(yintercept = 0) + 
+              geom_point() + theme_bw() + facet_wrap(~method, scales = "fixed") + 
+              xlab("") + ylab(paste0(statname, ",\ncentered and scaled across all instances)")) + 
+              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                    axis.text.y = element_text(size = 12),
+                    axis.title.y = element_text(size = 13)) + 
+              scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+              guides(color = guide_legend(ncol = 2, title = ""),
+                     shape = guide_legend(ncol = 2, title = "")))
       
       x <- x %>% dcast(charac ~ Var2, value.var = stat)
       rownames(x) <- x$charac
@@ -158,6 +161,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
           dplyr::mutate(Var2 = paste0(Var2, ".", dataset, ".", filt)) %>%
           dplyr::select_("Var2", stat, "charac")  %>%
           dplyr::filter(charac != "fraczerodiff") %>%
+          dplyr::filter(charac != "fraczeroround") %>%
           dplyr::filter(charac != "log2_avecount") %>%
           dplyr::group_by(charac) %>%
           dplyr::mutate_(newy = interp(~scale(x, scale = FALSE), x = as.name(stat))) %>%

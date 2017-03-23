@@ -18,10 +18,12 @@ get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
 demethods <- strsplit(demethods, ",")[[1]]
 
-print(demethods)
-print(dataset)
-print(config_file)
-print(filt)
+print(demethods) ## DE methods to include
+print(resdir)  ## Directory from which to fetch the DE results
+print(dataset)  ## Data set
+print(config_file)  ## Configuration file
+print(filt)  ## Filtering
+print(outdir)  ## Directory to which to write the output
 
 if (filt == "") { 
   exts <- filt
@@ -30,8 +32,7 @@ if (filt == "") {
 }
 
 ## Create iCOBRA object from the result files for the different methods
-(resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
-                    dataset, "_", demethods, exts, ".rds"))
+(resfiles <- paste0(resdir, "/", dataset, "_", demethods, exts, ".rds"))
 file.exists(resfiles)
 cobra <- NULL
 timings <- list()
@@ -107,14 +108,17 @@ rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
-## Make data frame with number of significant, non-significant and NA calls for each method
+## Make data frame with number of significant, non-significant and NA calls for
+## each method
 cobraperf <- calculate_performance(cobra, aspects = "fpr", 
-                                   binary_truth = paste0(demethods[1], exts, ".truth"), thrs = 0.05)
+                                   binary_truth = paste0(demethods[1],
+                                                         exts, ".truth"), thrs = 0.05)
 sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
   dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
   dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-tested <- data.frame(nbr_tested = colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
+tested <- data.frame(nbr_tested = 
+                       colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
 tested$dataset <- rownames(tested)
 tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
 nbr_called <- dplyr::full_join(sign_0.05, tested) %>% dplyr::select(-type)
@@ -122,6 +126,8 @@ nbr_called$dataset <- dataset
 nbr_called$filt <- filt
 nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
 
-saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
-saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
-saveRDS(nbr_called, file = paste0("figures/cobra_data/", dataset, exts, "_nbr_called.rds"))
+saveRDS(timings, file = paste0(outdir, "/", dataset, exts, "_timings.rds"))
+saveRDS(nbr_called, file = paste0(outdir, "/", dataset, exts, "_nbr_called.rds"))
+saveRDS(cobra, file = paste0(outdir, "/", dataset, exts, "_cobra.rds"))
+
+sessionInfo()

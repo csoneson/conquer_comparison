@@ -8,8 +8,10 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(reshape2))
 
-print(dataset)
-print(filt)
+print(dataset)  ## Data set
+print(filt)  ## Filtering
+print(cobradir)  ## Directory where to look for cobra object (output from prepare_cobra_for_evaluation.R)
+print(outdir) ## Directory where to save the calculated concordances
 
 if (filt == "") {
   exts <- filt
@@ -21,7 +23,7 @@ get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
-cobratmp <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
+cobratmp <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
 pval(cobratmp)[is.na(pval(cobratmp))] <- 1
 padj(cobratmp)[is.na(padj(cobratmp))] <- 1
 
@@ -66,6 +68,6 @@ RES <- lapply(RES, function(tb) {
   tb[order(rownames(tb)), ]
 })
 
-saveRDS(RES, file = paste0("figures/results_relativetruth_all/", dataset, exts, "_relative_performance.rds"))
+saveRDS(RES, file = paste0(outdir, "/", dataset, exts, "_relative_performance.rds"))
 
 sessionInfo()

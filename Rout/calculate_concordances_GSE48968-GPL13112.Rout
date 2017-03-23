@@ -29,10 +29,14 @@ Setting LC_CTYPE failed, using "C"
 > suppressPackageStartupMessages(library(tidyr))
 > suppressPackageStartupMessages(library(caTools))
 > 
-> print(dataset)
+> print(dataset)  ## Data set
 [1] "GSE48968-GPL13112"
-> print(filt)
+> print(filt)  ## Filtering
 [1] ""
+> print(cobradir)  ## Directory where to look for cobra object (output from prepare_cobra_for_evaluation.R)
+[1] "output/cobra_data"
+> print(outdir) ## Directory where to save the calculated concordances
+[1] "output/concordances"
 > 
 > if (filt == "") {
 +   exts <- filt
@@ -41,16 +45,28 @@ Setting LC_CTYPE failed, using "C"
 + }
 > 
 > ## Function to calculate concordance for a matrix mtx. Considering the top
-> ## maxrank variables, returning the number of hits shared by at least a fraction
-> ## frac of the columns of mtx.
-> calculate_concordance <- function(mtx, maxrank, frac) {
+> ## maxrank variables, returning the number of hits shared by all columns of mtx
+> calculate_concordance <- function(mtx, maxrank) {
 +   if (ncol(mtx) > 1) {
 +     data.frame(t(sapply(1:maxrank, function(i) {
 +       p <- sort(mtx[1:i, ])
-+       ## Note: this assumes that frac is large enough that a gene must appear at
-+       ## least twice to be of interest
 +       p <- p[duplicated(p)]
-+       p <- sum(table(p) + 1 >= frac * ncol(mtx))
++       p <- sum(table(p) + 1 == ncol(mtx))
++       c(k = i, p = p, frac = 1)
++     })), stringsAsFactors = FALSE)
++   } else {
++     NULL
++   }
++ }
+> 
+> ## Slower version of concordance calculation, which allows to find genes shared 
+> ## between at least a certain fraction of the columns. Note, however, that it is
+> ## more difficult to interpret the results if frac != 1, since the concordance
+> ## value can be larger than maxrank
+> calculate_concordance_slow <- function(mtx, maxrank, frac) {
++   if (ncol(mtx) > 1) {
++     data.frame(t(sapply(1:maxrank, function(i) {
++       p <- sum(table(unlist(mtx[1:i, ])) >= frac * ncol(mtx))
 +       c(k = i, p = p, frac = frac)
 +     })), stringsAsFactors = FALSE)
 +   } else {
@@ -58,37 +74,67 @@ Setting LC_CTYPE failed, using "C"
 +   }
 + }
 > 
-> # calculate_concordance <- function(mtx, maxrank, frac) {
-> #   if (ncol(mtx) > 1) {
-> #     data.frame(t(sapply(1:maxrank, function(i) {
-> #       p <- sum(table(unlist(mtx[1:i, ])) >= frac * ncol(mtx))
-> #       c(k = i, p = p, frac = frac)
-> #     })), stringsAsFactors = FALSE)
-> #   } else {
-> #     NULL
-> #   }
-> # }
+> ## For each k in 1:maxrank, count the number of genes occurring each number of
+> ## times. The output is a data frame with three columns: nbr_occ, nbr_genes, k.
+> ## For a given row, interpret as follows: among the top-k genes from each
+> ## method, nbr_genes occur exactly nbr_occ times. To get the total number of
+> ## methods (columns) of the matrix, do:
+> ## out %>% dplyr::group_by(k) %>% dplyr::summarize(nbr_col = sum(nbr_occ * nbr_genes)) %>% dplyr::ungroup() %>% dplyr::mutate(nbr_col = nbr_col/k). 
+> ## All values of nbr_col in the resulting matrix should be the same. The total
+> ## number of distinct genes among the top-k across all the columns is obtained
+> ## by summing the values in the nbr_genes column for a given value of k
+> calculate_nbr_occurrences <- function(mtx, maxrank) {
++   if (ncol(mtx) > 1) {
++     do.call(rbind, lapply(1:maxrank, function(i) {
++       tbl <- table(unlist(mtx[1:i, ]))
++       data.frame(table(tbl)) %>% dplyr::mutate(k = i) %>%
++         dplyr::rename(nbr_occ = tbl) %>%
++         dplyr::rename(nbr_genes = Freq) %>%
++         dplyr::mutate(nbr_occ = as.numeric(as.character(nbr_occ))) %>%
++         dplyr::full_join(data.frame(k = i, nbr_occ = 1:ncol(mtx)))
++     })) %>% dplyr::arrange(k, nbr_occ) %>%
++       dplyr::mutate(nbr_genes = replace(nbr_genes, is.na(nbr_genes), 0))
++   } else {
++     NULL
++   }
++ }
 > 
 > get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 > get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 > get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 > 
-> cobratmp <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
-> pval(cobratmp)[is.na(pval(cobratmp))] <- 1
-> padj(cobratmp)[is.na(padj(cobratmp))] <- 1
+> cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
+> ## Set p-values and adjusted p-values for untested genes and genes with NA
+> ## values to 1
+> pval(cobra)[is.na(pval(cobra))] <- 1
+> padj(cobra)[is.na(padj(cobra))] <- 1
+> ## Similarly, set score for untested genes and genes with NA values to a value 
+> ## below the smallest observed score and change the sign so that the smallest
+> ## (most negative) score corresponds to the most significant gene
+> if (nrow(iCOBRA::score(cobra)) > 0) {
++   iCOBRA::score(cobra)[is.na(iCOBRA::score(cobra))] <- min(iCOBRA::score(cobra), na.rm = TRUE) - 1
++   iCOBRA::score(cobra) <- -iCOBRA::score(cobra)
++ }
 > 
 > summary_data <- list()
 > 
 > ## -------------------------- Concordance plots --------------------------- ##
 > maxrank <- 1000
-> minfrac <- 1
 > 
-> pconc <- pval(cobratmp)
-> ## For methods not returning p-values, use adjusted p-values
-> addm <- setdiff(colnames(padj(cobratmp)), colnames(pconc))
+> pconc <- pval(cobra)
+> ## For methods not returning p-values, use scores or adjusted p-values
+> addm <- setdiff(colnames(iCOBRA::score(cobra)), colnames(pconc))
 > if (length(addm) > 0) {
 +   pconc <- dplyr::full_join(data.frame(gene = rownames(pconc), pconc),
-+                             data.frame(gene = rownames(padj(cobratmp)), padj(cobratmp)[, addm]))
++                             data.frame(gene = rownames(iCOBRA::score(cobra)), iCOBRA::score(cobra)[, addm]))
++   rownames(pconc) <- pconc$gene
++   pconc$gene <- NULL
++ }
+Joining, by = "gene"
+> addm <- setdiff(colnames(padj(cobra)), colnames(pconc))
+> if (length(addm) > 0) {
++   pconc <- dplyr::full_join(data.frame(gene = rownames(pconc), pconc),
++                             data.frame(gene = rownames(padj(cobra)), padj(cobra)[, addm]))
 +   rownames(pconc) <- pconc$gene
 +   pconc$gene <- NULL
 + }
@@ -106,7 +152,7 @@ Joining, by = "gene"
 > ## Across all instances (all sample sizes, all replicates), for the same method
 > concvals <- do.call(rbind, lapply(all_methods, function(mth) {
 +   concval <- calculate_concordance(mtx = pconc[, which(get_method(colnames(pconc)) == mth)], 
-+                                    maxrank = maxrank, frac = minfrac)
++                                    maxrank = maxrank)
 +   concval$method <- mth
 +   concval
 + }))
@@ -116,7 +162,7 @@ Joining, by = "gene"
 > 
 > conc_auc <- concvals %>% dplyr::group_by(method) %>% 
 +   dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
-+   dplyr::mutate(frac = minfrac)
++   dplyr::mutate(frac = 1)
 > summary_data$concordance_fullds_auc <- 
 +   rbind(summary_data$concordance_fullds_auc, 
 +         conc_auc %>% dplyr::mutate(dataset = dataset, filt = filt))
@@ -128,7 +174,7 @@ Joining, by = "gene"
 +       calculate_concordance(mtx = pconc[, intersect(which(get_method(colnames(pconc)) == mth),
 +                                                     which(get_nsamples(colnames(pconc)) == i)), 
 +                                         drop = FALSE],
-+                             maxrank = maxrank, frac = minfrac)
++                             maxrank = maxrank)
 +     if (!is.null(concval)) {
 +       concval$method <- mth
 +       concval$ncells <- i
@@ -146,7 +192,7 @@ Joining, by = "gene"
 > 
 > conc_auc_ss <- concvals_ss %>% dplyr::group_by(method, ncells) %>% 
 +   dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
-+   dplyr::mutate(frac = minfrac)
++   dplyr::mutate(frac = 1)
 > summary_data$concordance_byncells_auc <- 
 +   rbind(summary_data$concordance_byncells_auc, 
 +         conc_auc_ss %>% dplyr::mutate(dataset = dataset, filt = filt))
@@ -160,7 +206,7 @@ Joining, by = "gene"
 +       concval <- NULL
 +       for (j1 in 1:(ncol(tmp) - 1)) {
 +         for (j2 in (j1 + 1):(ncol(tmp))) {
-+           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank, frac = minfrac)
++           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank)
 +           cv$ncells1 <- i
 +           cv$ncells2 <- i
 +           cv$replicate1 <- get_repl(colnames(tmp)[j1])
@@ -182,7 +228,7 @@ Joining, by = "gene"
 > conc_auc_pw <- concvals_pairwise %>% 
 +   dplyr::group_by(method, ncells1, ncells2, replicate1, replicate2) %>% 
 +   dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
-+   dplyr::mutate(frac = minfrac)
++   dplyr::mutate(frac = 1)
 > summary_data$concordance_pairwise_auc <- 
 +   rbind(summary_data$concordance_pairwise_auc, 
 +         conc_auc_pw %>% dplyr::mutate(dataset = dataset, filt = filt))
@@ -196,7 +242,7 @@ Joining, by = "gene"
 +       concval <- NULL
 +       for (j1 in 1:(ncol(tmp) - 1)) {
 +         for (j2 in (j1 + 1):(ncol(tmp))) {
-+           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank, frac = minfrac)
++           cv <- calculate_concordance(mtx = tmp[, c(j1, j2)], maxrank = maxrank)
 +           cv$method1 <- get_method(colnames(tmp)[j1])
 +           cv$method2 <- get_method(colnames(tmp)[j2])
 +           concval <- rbind(concval, cv)
@@ -210,54 +256,3 @@ Joining, by = "gene"
 +     }
 +   }))
 + }))
-> summary_data$concordance_betweenmethods <- 
-+   rbind(summary_data$concordance_betweenmethods, 
-+         concvals_btwmth %>% dplyr::mutate(dataset = dataset, filt = filt))
-> 
-> conc_auc_btwmth <- concvals_btwmth %>% 
-+   dplyr::group_by(method1, method2, ncells, repl) %>% 
-+   dplyr::summarize(auc = caTools::trapz(c(0, k, k[length(k)]), c(0, p, 0))/(maxrank^2/2)) %>%
-+   dplyr::mutate(frac = minfrac)
-> summary_data$concordance_betweenmethods_auc <- 
-+   rbind(summary_data$concordance_betweenmethods_auc, 
-+         conc_auc_btwmth %>% dplyr::mutate(dataset = dataset, filt = filt))
-> 
-> saveRDS(summary_data, file = paste0("figures/consistency/", dataset, exts, "_concordances.rds"))
-> 
-> sessionInfo()
-R version 3.3.1 (2016-06-21)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 14.04.5 LTS
-
-locale:
- [1] LC_CTYPE=C                 LC_NUMERIC=C              
- [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
- [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
- [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-other attached packages:
-[1] caTools_1.17.1 tidyr_0.6.1    dplyr_0.5.0    iCOBRA_1.2.0  
-
-loaded via a namespace (and not attached):
- [1] Rcpp_0.12.9          magrittr_1.5         munsell_0.4.3       
- [4] colorspace_1.3-2     xtable_1.8-2         R6_2.2.0            
- [7] stringr_1.1.0        ROCR_1.0-7           plyr_1.8.4          
-[10] tools_3.3.1          shinydashboard_0.5.3 DT_0.2              
-[13] grid_3.3.1           gtable_0.2.0         KernSmooth_2.23-15  
-[16] DBI_0.5-1            gtools_3.5.0         htmltools_0.3.5     
-[19] lazyeval_0.2.0       assertthat_0.1       digest_0.6.12       
-[22] tibble_1.2           gridExtra_2.2.1      shiny_1.0.0         
-[25] reshape2_1.4.2       ggplot2_2.2.1        bitops_1.0-6        
-[28] htmlwidgets_0.8      mime_0.5             stringi_1.1.2       
-[31] gdata_2.17.0         limma_3.30.13        UpSetR_1.3.2        
-[34] shinyBS_0.61         gplots_3.0.1         scales_0.4.1        
-[37] httpuv_1.3.3        
-> 
-> proc.time()
-    user   system  elapsed 
-4692.101   53.202 4754.215 

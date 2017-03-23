@@ -41,7 +41,7 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > demethods <- strsplit(demethods, ",")[[1]]
 > 
-> print(demethods)
+> print(demethods) ## DE methods to include
  [1] "edgeRLRT"         "SAMseq"           "Wilcoxon"         "zingeR"          
  [5] "edgeRQLF"         "NODES"            "NODESnofilt"      "BPSC"            
  [9] "DESeq2"           "DESeq2nofilt"     "edgeRLRTdeconv"   "MASTcpm"         
@@ -49,12 +49,16 @@ package 'ggplot2' was built under R version 3.3.2
 [17] "edgeRLRTrobust"   "voomlimma"        "zingeRauto"       "Seurat"          
 [21] "Seuratnofilt"     "DESeq2census"     "edgeRLRTcensus"   "zingeRautonofilt"
 [25] "monoclecensus"    "monocle"          "D3E"             
-> print(dataset)
+> print(resdir)  ## Directory from which to fetch the DE results
+[1] "results"
+> print(dataset)  ## Data set
 [1] "GSE74596sim123"
-> print(config_file)
+> print(config_file)  ## Configuration file
 [1] "config/GSE74596sim123.json"
-> print(filt)
+> print(filt)  ## Filtering
 [1] ""
+> print(outdir)  ## Directory to which to write the output
+[1] "output/cobra_data"
 > 
 > if (filt == "") { 
 +   exts <- filt
@@ -63,35 +67,34 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > 
 > ## Create iCOBRA object from the result files for the different methods
-> (resfiles <- paste0("/home/Shared/data/seq/conquer/comparison/results/",
-+                     dataset, "_", demethods, exts, ".rds"))
- [1] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_edgeRLRT.rds"        
- [2] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_SAMseq.rds"          
- [3] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_Wilcoxon.rds"        
- [4] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_zingeR.rds"          
- [5] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_edgeRQLF.rds"        
- [6] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_NODES.rds"           
- [7] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_NODESnofilt.rds"     
- [8] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_BPSC.rds"            
- [9] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_DESeq2.rds"          
-[10] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_DESeq2nofilt.rds"    
-[11] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_edgeRLRTdeconv.rds"  
-[12] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_MASTcpm.rds"         
-[13] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_MASTcpmDetRate.rds"  
-[14] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_MASTtpm.rds"         
-[15] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_MASTtpmDetRate.rds"  
-[16] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_SCDE.rds"            
-[17] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_edgeRLRTrobust.rds"  
-[18] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_voomlimma.rds"       
-[19] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_zingeRauto.rds"      
-[20] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_Seurat.rds"          
-[21] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_Seuratnofilt.rds"    
-[22] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_DESeq2census.rds"    
-[23] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_edgeRLRTcensus.rds"  
-[24] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_zingeRautonofilt.rds"
-[25] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_monoclecensus.rds"   
-[26] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_monocle.rds"         
-[27] "/home/Shared/data/seq/conquer/comparison/results/GSE74596sim123_D3E.rds"             
+> (resfiles <- paste0(resdir, "/", dataset, "_", demethods, exts, ".rds"))
+ [1] "results/GSE74596sim123_edgeRLRT.rds"        
+ [2] "results/GSE74596sim123_SAMseq.rds"          
+ [3] "results/GSE74596sim123_Wilcoxon.rds"        
+ [4] "results/GSE74596sim123_zingeR.rds"          
+ [5] "results/GSE74596sim123_edgeRQLF.rds"        
+ [6] "results/GSE74596sim123_NODES.rds"           
+ [7] "results/GSE74596sim123_NODESnofilt.rds"     
+ [8] "results/GSE74596sim123_BPSC.rds"            
+ [9] "results/GSE74596sim123_DESeq2.rds"          
+[10] "results/GSE74596sim123_DESeq2nofilt.rds"    
+[11] "results/GSE74596sim123_edgeRLRTdeconv.rds"  
+[12] "results/GSE74596sim123_MASTcpm.rds"         
+[13] "results/GSE74596sim123_MASTcpmDetRate.rds"  
+[14] "results/GSE74596sim123_MASTtpm.rds"         
+[15] "results/GSE74596sim123_MASTtpmDetRate.rds"  
+[16] "results/GSE74596sim123_SCDE.rds"            
+[17] "results/GSE74596sim123_edgeRLRTrobust.rds"  
+[18] "results/GSE74596sim123_voomlimma.rds"       
+[19] "results/GSE74596sim123_zingeRauto.rds"      
+[20] "results/GSE74596sim123_Seurat.rds"          
+[21] "results/GSE74596sim123_Seuratnofilt.rds"    
+[22] "results/GSE74596sim123_DESeq2census.rds"    
+[23] "results/GSE74596sim123_edgeRLRTcensus.rds"  
+[24] "results/GSE74596sim123_zingeRautonofilt.rds"
+[25] "results/GSE74596sim123_monoclecensus.rds"   
+[26] "results/GSE74596sim123_monocle.rds"         
+[27] "results/GSE74596sim123_D3E.rds"             
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
@@ -2293,14 +2296,17 @@ There were 15 warnings (use warnings() to see them)
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 20832 new features and 219 new annotations added to truth table
 > 
-> ## Make data frame with number of significant, non-significant and NA calls for each method
+> ## Make data frame with number of significant, non-significant and NA calls for
+> ## each method
 > cobraperf <- calculate_performance(cobra, aspects = "fpr", 
-+                                    binary_truth = paste0(demethods[1], exts, ".truth"), thrs = 0.05)
++                                    binary_truth = paste0(demethods[1],
++                                                          exts, ".truth"), thrs = 0.05)
 > sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
 +   dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
 +   dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
 +   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-> tested <- data.frame(nbr_tested = colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
+> tested <- data.frame(nbr_tested = 
++                        colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
 > tested$dataset <- rownames(tested)
 > tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
 > nbr_called <- dplyr::full_join(sign_0.05, tested) %>% dplyr::select(-type)
@@ -2309,10 +2315,57 @@ Joining, by = c("ncells", "repl")
 > nbr_called$filt <- filt
 > nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
 > 
-> saveRDS(cobra, file = paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
-> saveRDS(timings, file = paste0("figures/cobra_data/", dataset, exts, "_timings.rds"))
-> saveRDS(nbr_called, file = paste0("figures/cobra_data/", dataset, exts, "_nbr_called.rds"))
+> saveRDS(timings, file = paste0(outdir, "/", dataset, exts, "_timings.rds"))
+> saveRDS(nbr_called, file = paste0(outdir, "/", dataset, exts, "_nbr_called.rds"))
+> saveRDS(cobra, file = paste0(outdir, "/", dataset, exts, "_cobra.rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] splines   parallel  stats4    stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] monocle_2.2.0              DDRTree_0.1.4             
+ [3] irlba_2.1.2                VGAM_1.0-3                
+ [5] ggplot2_2.2.1              Matrix_1.2-8              
+ [7] tidyr_0.6.1                dplyr_0.5.0               
+ [9] MultiAssayExperiment_1.0.1 SummarizedExperiment_1.4.0
+[11] Biobase_2.34.0             GenomicRanges_1.26.2      
+[13] GenomeInfoDb_1.10.3        IRanges_2.8.1             
+[15] S4Vectors_0.12.1           BiocGenerics_0.20.0       
+[17] rjson_0.2.15               iCOBRA_1.2.0              
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9            lattice_0.20-34        gtools_3.5.0          
+ [4] assertthat_0.1         digest_0.6.12          mime_0.5              
+ [7] slam_0.1-40            R6_2.2.0               plyr_1.8.4            
+[10] qlcMatrix_0.9.5        gplots_3.0.1           zlibbioc_1.20.0       
+[13] lazyeval_0.2.0         gdata_2.17.0           DT_0.2                
+[16] combinat_0.0-8         stringr_1.1.0          htmlwidgets_0.8       
+[19] igraph_1.0.1           pheatmap_1.0.8         RCurl_1.95-4.8        
+[22] munsell_0.4.3          shiny_1.0.0            httpuv_1.3.3          
+[25] htmltools_0.3.5        tibble_1.2             gridExtra_2.2.1       
+[28] matrixStats_0.51.0     shinyBS_0.61           bitops_1.0-6          
+[31] grid_3.3.1             xtable_1.8-2           gtable_0.2.0          
+[34] DBI_0.5-1              magrittr_1.5           scales_0.4.1          
+[37] KernSmooth_2.23-15     stringi_1.1.2          XVector_0.14.0        
+[40] ROCR_1.0-7             reshape2_1.4.2         limma_3.30.13         
+[43] fastICA_1.2-0          RColorBrewer_1.1-2     tools_3.3.1           
+[46] HSMMSingleCell_0.108.0 colorspace_1.3-2       cluster_2.0.5         
+[49] UpSetR_1.3.2           caTools_1.17.1         shinydashboard_0.5.3  
 > 
 > proc.time()
    user  system elapsed 
-355.299   4.136 361.969 
+479.201  19.760 931.328 
