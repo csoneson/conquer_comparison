@@ -1,9 +1,11 @@
-summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols = cols,
+                                singledsfigdir, cobradir, concordancedir, dschardir) {
   ## ---------------------------------- True FPR ------------------------------ ##
-  pdf(paste0(figdir, "/summary_heatmaps_relfprtpr", exts, dtpext, ".pdf"),
+  pdf(paste0(figdir, "/summary_relfprtpr", exts, dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/results_relativetruth/", ds, exts, "_results_relativetruth_summary_data.rds"))
+    readRDS(paste0(singledsfigdir, "/results_relativetruth/", 
+                   ds, exts, "_results_relativetruth_summary_data.rds"))
   })
   ## Heatmap of relative FPRs
   y <- lapply(summary_data_list, function(m) {
@@ -69,10 +71,11 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols = cols) {
   dev.off()
   
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_performance_relfprtpr", exts, dtpext, ".pdf"),
+  pdf(paste0(figdir, "/summary_relfprtpr", exts, dtpext, "_2.pdf"),
       width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/results_relativetruth/", ds, exts, "_results_relativetruth_summary_data.rds"))
+    readRDS(paste0(singledsfigdir, "/results_relativetruth/",
+                   ds, exts, "_results_relativetruth_summary_data.rds"))
   })
   ## Relative FPR
   y <- lapply(summary_data_list, function(m) {

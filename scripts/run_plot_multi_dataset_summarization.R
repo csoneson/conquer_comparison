@@ -10,9 +10,14 @@ print(datasets)
 print(filt)
 print(dtpext)
 print(summarytype)
+print(singledsfigdir)
+print(cobradir)
+print(dschardir)
+print(concordancedir)
+print(figdir)
 
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/summarize_", summarytype, ".R"))
+source("scripts/plot_setup.R")
+source(paste0("scripts/summarize_", summarytype, ".R"))
 
 if (filt == "") { 
   exts <- filt
@@ -21,9 +26,13 @@ if (filt == "") {
 }
 names(cols) <- paste0(names(cols), exts)
 
-get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
+get(paste0("summarize_", summarytype))(figdir = figdir, 
                                        datasets = datasets, exts = exts, 
-                                       dtpext = dtpext, cols = cols)
-saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
+                                       dtpext = dtpext, cols = cols,
+                                       singledsfigdir = singledsfigdir,
+                                       cobradir = cobradir,
+                                       concordancedir = concordancedir,
+                                       dschardir = dschardir)
+saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
 sessionInfo()
 

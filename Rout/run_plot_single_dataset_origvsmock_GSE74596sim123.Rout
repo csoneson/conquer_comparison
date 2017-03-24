@@ -28,11 +28,15 @@ Setting LC_CTYPE failed, using "C"
 [1] "GSE74596sim123"
 > print(filt)
 [1] ""
+> print(concordancedir)
+[1] "output/concordances"
+> print(figdir)
+[1] "figures/orig_vs_mock"
 > 
-> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+> source("scripts/plot_setup.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
-> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_single_dataset_origvsmock.R")
+> source("scripts/plot_single_dataset_origvsmock.R")
 > 
 > concordances <- list()
 > 
@@ -44,11 +48,11 @@ package 'ggplot2' was built under R version 3.3.2
 > names(cols) <- paste0(names(cols), exts)
 > 
 > for (tp in c("", "mock")) {
-+   concordances[[paste0("tp_", tp)]] <- readRDS(paste0("figures/consistency/", 
++   concordances[[paste0("tp_", tp)]] <- readRDS(paste0(concordancedir, "/", 
 +                                                       dataset, tp, exts, "_concordances.rds"))
 + }
 > 
-> pdf(paste0("figures/orig_vs_mock/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
+> pdf(paste0(figdir, "/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
 > summary_data <- plot_compare_orig_mock(concordances, colvec = cols, summary_data = list())
 12
 6
@@ -62,7 +66,7 @@ null device
 +   L
 + })
 > 
-> saveRDS(summary_data, file = paste0("figures/orig_vs_mock/", dataset, exts,
+> saveRDS(summary_data, file = paste0(figdir, "/", dataset, exts,
 +                                     "_orig_vs_mock_summary_data.rds"))
 > 
 > sessionInfo()
@@ -113,4 +117,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 45.414   0.847  46.488 
+ 38.906   1.052  40.070 

@@ -38,11 +38,21 @@ Setting LC_CTYPE failed, using "C"
 [1] ""
 > print(summarytype)
 [1] "truefpr"
+> print(singledsfigdir)
+[1] "figures/single_dataset"
+> print(cobradir)
+[1] "output/cobra_data"
+> print(dschardir)
+[1] "figures/dataset_characteristics"
+> print(concordancedir)
+[1] "output/concordances"
+> print(figdir)
+[1] "figures/multi_dataset/truefpr"
 > 
-> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+> source("scripts/plot_setup.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
-> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/summarize_", summarytype, ".R"))
+> source(paste0("scripts/summarize_", summarytype, ".R"))
 > 
 > if (filt == "") { 
 +   exts <- filt
@@ -51,9 +61,13 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
+> get(paste0("summarize_", summarytype))(figdir = figdir, 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols)
++                                        dtpext = dtpext, cols = cols,
++                                        singledsfigdir = singledsfigdir,
++                                        cobradir = cobradir,
++                                        concordancedir = concordancedir,
++                                        dschardir = dschardir)
 No id variables; using all as measure variables
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -144,7 +158,7 @@ No id variables; using all as measure variables
 null device 
           1 
 There were 50 or more warnings (use warnings() to see the first 50)
-> saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
+> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -194,4 +208,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-608.040  24.715 635.140 
+581.158  29.394 611.969 

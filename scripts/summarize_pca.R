@@ -74,14 +74,15 @@ plot_pca <- function(x, title_ext = "", stat) {
   }
 }
 
-summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
+                          singledsfigdir, cobradir, concordancedir, dschardir) {
   charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
                 log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
   
   ## ---------------------------------- PCA ----------------------------------- ##
   pdf(paste0(figdir, "/summary_pca", exts, dtpext, ".pdf"), width = 12, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/results_characterization/", ds, exts, 
+    readRDS(paste0(singledsfigdir, "/results_characterization/", ds, exts, 
                    "_results_characterization_summary_data.rds"))
   })
   ## PCA of significant gene characteristics

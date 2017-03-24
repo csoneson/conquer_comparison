@@ -41,17 +41,15 @@ package 'ggplot2' was built under R version 3.3.2
 > suppressPackageStartupMessages(library(UpSetR))
 > suppressPackageStartupMessages(library(lazyeval))
 > suppressPackageStartupMessages(library(monocle))
-> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
-> source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
-> source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_cell_characteristics.R")
+> source("scripts/prepare_mae.R")
+> source("scripts/calculate_gene_characteristics.R")
+> source("scripts/calculate_cell_characteristics.R")
 > 
 > if (filt == "") { 
 +   exts <- filt
 + } else {
 +   exts <- paste0("_", filt)
 + }
-> 
-> pdf(paste0("figures/dataset_characteristics/", dataset, exts, ".pdf"), width = 14, height = 9)
 > 
 > print(dataset)
 [1] "GSE60749-GPL13112"
@@ -61,6 +59,10 @@ package 'ggplot2' was built under R version 3.3.2
 [1] ""
 > print(cell_cycle_file)
 [1] "data/cell_cycle_geneids.rds"
+> print(figdir)
+[1] "figures/dataset_characteristics"
+> 
+> pdf(paste0(figdir, "/", dataset, exts, "_dataset_characteristics.pdf"), width = 14, height = 9)
 > 
 > config <- fromJSON(file = config_file)
 > mae <- readRDS(config$mae)
@@ -293,7 +295,7 @@ null device
 +                  L$filt <- filt
 +                  L
 +                }), 
-+         paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
++         paste0(figdir, "/", dataset, exts, "_dataset_characteristics_summary_data.rds"))
 > 
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -346,4 +348,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1450.122  313.424 1772.793 
+1193.543   58.675 1256.988 

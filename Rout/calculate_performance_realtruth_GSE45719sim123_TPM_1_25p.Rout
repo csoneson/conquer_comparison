@@ -29,10 +29,14 @@ Setting LC_CTYPE failed, using "C"
 > suppressPackageStartupMessages(library(tidyr))
 > suppressPackageStartupMessages(library(reshape2))
 > 
-> print(dataset)
+> print(dataset)  ## Data set
 [1] "GSE45719sim123"
-> print(filt)
+> print(filt)  ## Filtering
 [1] "TPM_1_25p"
+> print(cobradir)  ## Directory where to look for cobra object (output from prepare_cobra_for_evaluation.R)
+[1] "output/cobra_data"
+> print(outdir) ## Directory where to save the calculated concordances
+[1] "output/performance_realtruth"
 > 
 > if (filt == "") {
 +   exts <- filt
@@ -44,14 +48,16 @@ Setting LC_CTYPE failed, using "C"
 > get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 > get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 > 
-> cobra <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
+> cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
 > ## Set p-values and adjusted p-values for untested genes and genes with NA
 > ## values to 1
 > pval(cobra)[is.na(pval(cobra))] <- 1
 > padj(cobra)[is.na(padj(cobra))] <- 1
 > ## Similarly, set score for untested genes and genes with NA values to a value
 > ## below the smallest observed score
-> iCOBRA::score(cobra)[is.na(iCOBRA::score(cobra))] <- min(iCOBRA::score(cobra), na.rm = TRUE) - 1
+> if (nrow(iCOBRA::score(cobra)) > 0) {
++   iCOBRA::score(cobra)[is.na(iCOBRA::score(cobra))] <- min(iCOBRA::score(cobra), na.rm = TRUE) - 1
++ }
 > 
 > truth <- readRDS(paste0("data/", dataset, "_truth.rds"))
 > 
@@ -70,8 +76,7 @@ Setting LC_CTYPE failed, using "C"
 +   dplyr::mutate(AUC = cumsum(dFPR * dTPR/2 + dFPR * TPRs)) %>%
 +   dplyr::ungroup() %>% as.data.frame()
 > 
-> saveRDS(cobraperf, file = paste0("figures/performance_realtruth/", 
-+                                  dataset, exts, "_performance.rds"))
+> saveRDS(cobraperf, file = paste0(outdir, "/", dataset, exts, "_performance.rds"))
 > 
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -109,4 +114,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-1135.022   32.339 1171.042 
+1752.395  151.612 1918.780 

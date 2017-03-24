@@ -18,9 +18,9 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(lazyeval))
 suppressPackageStartupMessages(library(monocle))
-source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
-source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
-source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_cell_characteristics.R")
+source("scripts/prepare_mae.R")
+source("scripts/calculate_gene_characteristics.R")
+source("scripts/calculate_cell_characteristics.R")
 
 if (filt == "") { 
   exts <- filt
@@ -28,12 +28,13 @@ if (filt == "") {
   exts <- paste0("_", filt)
 }
 
-pdf(paste0("figures/dataset_characteristics/", dataset, exts, ".pdf"), width = 14, height = 9)
-
 print(dataset)
 print(config_file)
 print(filt)
 print(cell_cycle_file)
+print(figdir)
+
+pdf(paste0(figdir, "/", dataset, exts, "_dataset_characteristics.pdf"), width = 14, height = 9)
 
 config <- fromJSON(file = config_file)
 mae <- readRDS(config$mae)
@@ -224,6 +225,6 @@ saveRDS(lapply(list(char_cells_m = char_cells_m,
                  L$filt <- filt
                  L
                }), 
-        paste0("figures/dataset_characteristics/", dataset, exts, ".rds"))
+        paste0(figdir, "/", dataset, exts, "_dataset_characteristics_summary_data.rds"))
 
 sessionInfo()

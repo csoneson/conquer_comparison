@@ -1,9 +1,10 @@
-summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = cols,
+                                      singledsfigdir, cobradir, concordancedir, dschardir) {
   ## ---------------------------------- True FPR ------------------------------ ##
-  pdf(paste0(figdir, "/summary_heatmaps_real_truth", exts, dtpext, ".pdf"),
+  pdf(paste0(figdir, "/summary_trueperformance", exts, dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/performance_realtruth/", ds, exts,
+    readRDS(paste0(singledsfigdir, "/performance_realtruth/", ds, exts,
                    "_performance_realtruth_summary_data.rds"))
   })
   for (asp in c("FDR", "TPR")) {
@@ -44,10 +45,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
   dev.off()
 
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_performance_real_truth", exts, dtpext, ".pdf"),
+  pdf(paste0(figdir, "/summary_trueperformance", exts, dtpext, "_2.pdf"),
       width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/performance_realtruth/", ds, exts,
+    readRDS(paste0(singledsfigdir, "/performance_realtruth/", ds, exts,
                    "_performance_realtruth_summary_data.rds"))
   })
   y <- lapply(summary_data_list, function(m) {

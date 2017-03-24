@@ -3,9 +3,9 @@ empty :=
 space := $(empty) $(empty)
 
 ## All methods
-MT := edgeRLRT SAMseq Wilcoxon zingeR edgeRQLF NODES NODESnofilt BPSC DESeq2 DESeq2nofilt edgeRLRTdeconv MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma zingeRauto Seurat Seuratnofilt DESeq2census edgeRLRTcensus zingeRautonofilt monoclecensus monocle D3E
+MT := edgeRLRT SAMseq Wilcoxon zingeR edgeRQLF NODES NODESnofilt BPSC DESeq2 DESeq2nofilt edgeRLRTdeconv MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma zingeRauto Seurat Seuratnofilt DESeq2census edgeRLRTcensus zingeRautonofilt monoclecensus monocle D3E limmatrend
 MTc := $(subst $(space),$(comma),$(MT))
 
 ## Methods to apply to bulk RNA-seq data sets
-MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt DESeq2 DESeq2nofilt edgeRLRTdeconv edgeRLRTrobust voomlimma zingeRauto
+MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt DESeq2 DESeq2nofilt edgeRLRTdeconv edgeRLRTrobust voomlimma zingeRauto limmatrend
 MTcbulk := $(subst $(space),$(comma),$(MTbulk))

@@ -19,15 +19,18 @@ run_SCDE <- function(L) {
     ediff <- scde.expression.difference(o.ifm, intcount[, valid.cells], o.prior, 
                                         groups = grp, n.randomizations = 100, 
                                         n.cores = 1, verbose = 0)
+    p.values <- 2*pnorm(abs(ediff$Z), lower.tail = FALSE)
     p.values.adj <- 2*pnorm(abs(ediff$cZ), lower.tail = FALSE)
   })
   
+  hist(p.values, 50)
   hist(p.values.adj, 50)
   
   list(session_info = session_info,
        timing = timing,
        res = ediff,
-       df = data.frame(padj = p.values.adj,
+       df = data.frame(pval = p.values,
+                       padj = p.values.adj,
                        score = abs(ediff$Z), 
                        row.names = rownames(ediff)))
 }

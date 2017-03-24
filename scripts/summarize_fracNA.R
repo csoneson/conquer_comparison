@@ -1,7 +1,8 @@
-summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols,
+                             singledsfigdir, cobradir, concordancedir, dschardir) {
   pdf(paste0(figdir, "/summary_fracNA", exts, dtpext, ".pdf"), width = 14, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, exts, "_nbr_called.rds"))
+    readRDS(paste0(cobradir, "/", ds, exts, "_nbr_called.rds"))
   })
   tmp_data <- do.call(rbind, summary_data_list) %>% 
     dplyr::mutate(fracNA = nbr_NA/nbr_tested) %>%
@@ -23,7 +24,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols) {
                 axis.title.y = element_text(size = 13)))
   dev.off()
   
-  pdf(paste0(figdir, "/summary_fracNA_comb", exts, dtpext, ".pdf"), width = 10, height = 7)
+  pdf(paste0(figdir, "/summary_fracNA", exts, dtpext, "_comb.pdf"), width = 10, height = 7)
   print(ggplot(tmp_data, aes(x = method, y = fracNA, color = method)) + 
           geom_boxplot(outlier.size = -1) +
           geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 

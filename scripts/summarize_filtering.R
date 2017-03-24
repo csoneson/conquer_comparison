@@ -1,11 +1,12 @@
-summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
+                                singledsfigdir, cobradir, concordancedir, dschardir) {
   pdf(paste0(figdir, "/summary_filtering", exts, dtpext, ".pdf"), width = 14, height = 7)
   
   summary_data_list_orig <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, "_nbr_called.rds"))
+    readRDS(paste0(cobradir, "/", ds, "_nbr_called.rds"))
   })
   summary_data_list_filt <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, exts, "_nbr_called.rds"))
+    readRDS(paste0(cobradir, "/", ds, exts, "_nbr_called.rds"))
   })
   L <- rbind(do.call(rbind, summary_data_list_orig),
              do.call(rbind, summary_data_list_filt)) %>%
@@ -26,7 +27,7 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols) {
   
   ## Plot library size vs fraction zeros across all data sets
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/dataset_characteristics/", ds, ".rds"))
+    readRDS(paste0(dschardir, "/", ds, "_dataset_characteristics_summary_data.rds"))
   })
   L <- do.call(rbind, lapply(summary_data_list, function(x) x$char_cells_m %>% 
                                dplyr::filter(mtype %in% c("libsize", "fraczeroround")) %>%

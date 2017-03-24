@@ -36,11 +36,21 @@ Setting LC_CTYPE failed, using "C"
 [1] "_sim"
 > print(summarytype)
 [1] "trueperformance"
+> print(singledsfigdir)
+[1] "figures/single_dataset"
+> print(cobradir)
+[1] "output/cobra_data"
+> print(dschardir)
+[1] "figures/dataset_characteristics"
+> print(concordancedir)
+[1] "output/concordances"
+> print(figdir)
+[1] "figures/multi_dataset/trueperformance"
 > 
-> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+> source("scripts/plot_setup.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
-> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/summarize_", summarytype, ".R"))
+> source(paste0("scripts/summarize_", summarytype, ".R"))
 > 
 > if (filt == "") { 
 +   exts <- filt
@@ -49,9 +59,13 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
+> get(paste0("summarize_", summarytype))(figdir = figdir, 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols)
++                                        dtpext = dtpext, cols = cols,
++                                        singledsfigdir = singledsfigdir,
++                                        cobradir = cobradir,
++                                        concordancedir = concordancedir,
++                                        dschardir = dschardir)
 `geom_smooth()` using method = 'loess'
 `geom_smooth()` using method = 'loess'
 `geom_smooth()` using method = 'loess'
@@ -61,7 +75,7 @@ package 'ggplot2' was built under R version 3.3.2
 null device 
           1 
 There were 50 or more warnings (use warnings() to see the first 50)
-> saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
+> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -111,4 +125,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 20.932   1.072  22.079 
+ 21.734   0.884  22.651 

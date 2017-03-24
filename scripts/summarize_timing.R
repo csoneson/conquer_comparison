@@ -1,8 +1,9 @@
-summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
+summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
+                             singledsfigdir, cobradir, concordancedir, dschardir) {
   ## ------------------------------- Timing ----------------------------------- ##
   pdf(paste0(figdir, "/summary_timing", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/timing/", ds, exts, 
+    readRDS(paste0(singledsfigdir, "/timing/", ds, exts, 
                    "_timing_summary_data.rds"))
   })
   y <- lapply(summary_data_list, function(m) {
@@ -123,7 +124,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   
   ## Dependence on number of genes
   ngenes <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, exts, 
+    readRDS(paste0(cobradir, "/", ds, exts, 
                    "_nbr_called.rds"))
   })
   ngenes <- do.call(rbind, ngenes) %>% group_by(dataset, filt, ncells) %>%
@@ -156,7 +157,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols) {
   
   ## 2d heatmap
   ngenes <- lapply(datasets, function(ds) {
-    readRDS(paste0("figures/cobra_data/", ds, exts, 
+    readRDS(paste0(cobradir, "/", ds, exts, 
                    "_nbr_called.rds"))
   })
   ngenes <- do.call(rbind, ngenes) %>% ungroup() %>% mutate(ncells = as.numeric(ncells)) %>%

@@ -38,11 +38,21 @@ Setting LC_CTYPE failed, using "C"
 [1] ""
 > print(summarytype)
 [1] "timing"
+> print(singledsfigdir)
+[1] "figures/single_dataset"
+> print(cobradir)
+[1] "output/cobra_data"
+> print(dschardir)
+[1] "figures/dataset_characteristics"
+> print(concordancedir)
+[1] "output/concordances"
+> print(figdir)
+[1] "figures/multi_dataset/timing"
 > 
-> source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
+> source("scripts/plot_setup.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
-> source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/summarize_", summarytype, ".R"))
+> source(paste0("scripts/summarize_", summarytype, ".R"))
 > 
 > if (filt == "") { 
 +   exts <- filt
@@ -51,9 +61,13 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = "figures/summary_crossds", 
+> get(paste0("summarize_", summarytype))(figdir = figdir, 
 +                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols)
++                                        dtpext = dtpext, cols = cols,
++                                        singledsfigdir = singledsfigdir,
++                                        cobradir = cobradir,
++                                        concordancedir = concordancedir,
++                                        dschardir = dschardir)
 Joining, by = c("ncells", "dataset", "filt")
 Joining, by = c("method", "ncells", "repl", "dataset", "filt")
 null device 
@@ -63,7 +77,7 @@ Warning messages:
 2: Removed 78 rows containing missing values (geom_point). 
 3: Removed 3 rows containing non-finite values (stat_boxplot). 
 4: Removed 3 rows containing missing values (geom_point). 
-> saveRDS(NULL, file = paste0("figures/summary_crossds/summary_", summarytype, exts, dtpext, ".rds"))
+> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -118,4 +132,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 66.894   4.146  71.660 
+ 45.161   1.051  46.976 

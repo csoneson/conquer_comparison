@@ -7,7 +7,7 @@ DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE638
 DSc := $(subst $(space),$(comma),$(DS))
 
 ## Data sets for which we have both original and mock results (to compare consistency)
-Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739 
+Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739
 Dsbc := $(subst $(space),$(comma),$(Dsb))
 
 Dsbsim := GSE45719sim123 GSE74596sim123 GSE48968-GPL13112sim123

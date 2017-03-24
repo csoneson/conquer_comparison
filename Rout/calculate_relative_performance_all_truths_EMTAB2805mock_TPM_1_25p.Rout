@@ -29,10 +29,14 @@ Setting LC_CTYPE failed, using "C"
 > suppressPackageStartupMessages(library(tidyr))
 > suppressPackageStartupMessages(library(reshape2))
 > 
-> print(dataset)
+> print(dataset)  ## Data set
 [1] "EMTAB2805mock"
-> print(filt)
+> print(filt)  ## Filtering
 [1] "TPM_1_25p"
+> print(cobradir)  ## Directory where to look for cobra object (output from prepare_cobra_for_evaluation.R)
+[1] "output/cobra_data"
+> print(outdir) ## Directory where to save the calculated concordances
+[1] "output/relative_performance"
 > 
 > if (filt == "") {
 +   exts <- filt
@@ -44,7 +48,7 @@ Setting LC_CTYPE failed, using "C"
 > get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 > get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 > 
-> cobratmp <- readRDS(paste0("figures/cobra_data/", dataset, exts, "_cobra.rds"))
+> cobratmp <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
 > pval(cobratmp)[is.na(pval(cobratmp))] <- 1
 > padj(cobratmp)[is.na(padj(cobratmp))] <- 1
 > 
@@ -115,7 +119,7 @@ zingeRautonofilt_TPM_1_25p
 +   tb[order(rownames(tb)), ]
 + })
 > 
-> saveRDS(RES, file = paste0("figures/results_relativetruth_all/", dataset, exts, "_relative_performance.rds"))
+> saveRDS(RES, file = paste0(outdir, "/", dataset, exts, "_relative_performance.rds"))
 > 
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
@@ -153,4 +157,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
     user   system  elapsed 
-4552.942   20.132 4588.662 
+5865.830  167.634 6068.669 

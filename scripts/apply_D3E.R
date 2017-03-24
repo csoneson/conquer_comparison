@@ -4,7 +4,7 @@ run_D3E <- function(L) {
   timing <- system.time({
     tmp <- cbind(GeneID = rownames(L$count), L$count)
     colnames(tmp) <- c("GeneID", make.names(L$condt))
-    rnb <- sample(1:1e5, 1)
+    rnb <- paste0(format(Sys.time(), "%Y_%m_%d_%H_%M_%S"), "_", round(runif(1) * 1e8))
     message(rnb)
     write.table(tmp, file = paste0("tmp/d3e_", rnb, ".txt"), row.names = FALSE,
                 col.names = TRUE, quote = FALSE, sep = "\t")
