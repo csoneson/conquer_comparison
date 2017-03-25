@@ -26,13 +26,13 @@ if (filt == "") {
 }
 names(cols) <- paste0(names(cols), exts)
 
-get(paste0("summarize_", summarytype))(figdir = figdir, 
-                                       datasets = datasets, exts = exts, 
-                                       dtpext = dtpext, cols = cols,
-                                       singledsfigdir = singledsfigdir,
-                                       cobradir = cobradir,
-                                       concordancedir = concordancedir,
-                                       dschardir = dschardir)
-saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
+ggplots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
+                                                  datasets = datasets, exts = exts, 
+                                                  dtpext = dtpext, cols = cols,
+                                                  singledsfigdir = singledsfigdir,
+                                                  cobradir = cobradir,
+                                                  concordancedir = concordancedir,
+                                                  dschardir = dschardir)
+saveRDS(ggplots, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, "_plots.rds"))
 sessionInfo()
 

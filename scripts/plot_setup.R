@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(ggbiplot))
 suppressPackageStartupMessages(library(RColorBrewer))
 suppressPackageStartupMessages(library(scatterplot3d))
 suppressPackageStartupMessages(library(pheatmap))
-source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
+source("scripts/prepare_mae.R")
 
 #' Convenience functions to extract the first, second and third part of each of
 #' a vector of strings (parts are separated by .)
@@ -25,16 +25,25 @@ get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
-cols <- c("#488d00", "black", "#8bff58", "#ff5cd5", "#9CC0AD",
-          "#ab0022", "#7c9e58", "#e6a900", "#ff516e", "#364922",
-          "#db0a4c", "#017671", "cyan", "#6d6de8", "blue",
-          "#a5a5e5", "#777777", "#6400a6", "#f2c6cf", "#afeda6", 
-          "#af5d6d", "#bf8bb2", "#F7EE55", "gray", 
-          "pink", "#7BAFDE", "#42425b")
-names(cols) <- c("edgeRLRT", "zingeR", "SAMseq", "edgeRQLF", "NODES",
-                 "DESeq2", "edgeRLRTdeconv", "SCDE", "monocle", "edgeRLRTrobust", 
-                 "voomlimma", "Wilcoxon", "BPSC", "MASTcpm", "MASTcpmDetRate", 
-                 "MASTtpm", "zingeRauto", "Seurat", "DESeq2census", "edgeRLRTcensus",
-                 "DESeq2nofilt", "Seuratnofilt", "NODESnofilt", "zingeRautonofilt",
-                 "monoclecensus", "D3E", "MASTtpmDetRate")
+cols <- c("#771155", "#AA4488", "#CC99BB", 
+          "#3A0027", "#BCA2B4",
+          "#114477", "#4477AA", "#77AADD", 
+          "#117777", "#44AAAA", "#77CCCC",
+          "#117744", "#44AA77", "#88CCAA", "#004120",
+          "#777711", "#AAAA44", 
+          "#774411", "#AA7744",  
+          "#771122", "#AA4455", "#DD7788", "yellow",
+          "#DDDD77", "#DDAA77", "#86861B",
+          "black", "grey")
+names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
+                 "edgeRQLF", "edgeRLRTrobust",
+                 "zingeR", "zingeRauto", "zingeRautonofilt",
+                 "DESeq2", "DESeq2nofilt", "DESeq2census",
+                 "MASTtpm", "MASTcpm", "MASTtpmDetRate", "MASTcpmDetRate",
+                 "monocle", "monoclecensus", 
+                 "Seurat", "Seuratnofilt", 
+                 "SAMseq", "Wilcoxon", "NODES", "NODESnofilt",
+                 "SCDE", "BPSC", "D3E", 
+                 "voomlimma", "limmatrend")
+
 

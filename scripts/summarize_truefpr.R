@@ -1,5 +1,7 @@
 summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
                               singledsfigdir, cobradir, concordancedir, dschardir) {
+  plots <- list()
+  
   ## ---------------------------------- True FPR ------------------------------ ##
   pdf(paste0(figdir, "/summary_truefpr", exts, dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
@@ -55,7 +57,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
   ## Remove extension from method name
   y$method <- gsub(exts, "", y$method)
   
-  print(ggplot(y, aes(x = method, y = FPR, color = method)) + 
+  (plots[["truefpr"]] <- ggplot(y, aes(x = method, y = FPR, color = method)) + 
           geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
           geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
           theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
@@ -77,16 +79,18 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
     tmp$method <- gsub(exts, "", tmp$method)
     
     for (i in unique(tmp$ncells.repl)) {
-      print(tmp %>% subset(ncells.repl == i) %>% 
-              ggplot(aes(x = value, fill = method)) + geom_histogram() + 
-              facet_wrap(~method, scales = "free_y") + 
-              theme_bw() + xlab("p-value") + ylab("") + 
-              theme(axis.text.y = element_blank(),
-                    axis.ticks.y = element_blank()) + 
-              scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
-                                name = "", guide = FALSE) + 
-              ggtitle(paste0(ds, ".", i)))
+      (plots[[paste0("pvalues_", ds, "_", i)]] <- tmp %>% subset(ncells.repl == i) %>% 
+         ggplot(aes(x = value, fill = method)) + geom_histogram() + 
+         facet_wrap(~method, scales = "free_y") + 
+         theme_bw() + xlab("p-value") + ylab("") + 
+         theme(axis.text.y = element_blank(),
+               axis.ticks.y = element_blank()) + 
+         scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
+                           name = "", guide = FALSE) + 
+         ggtitle(paste0(ds, ".", i)))
     }
   }
   dev.off()
+  
+  plots
 }

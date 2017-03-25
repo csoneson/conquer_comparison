@@ -1,5 +1,7 @@
 summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
                              singledsfigdir, cobradir, concordancedir, dschardir) {
+  plots <- list()
+  
   ## ------------------------------- Timing ----------------------------------- ##
   pdf(paste0(figdir, "/summary_timing", exts, dtpext, ".pdf"), width = 10, height = 7)
   summary_data_list <- lapply(datasets, function(ds) {
@@ -21,62 +23,67 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   y$ncells <- factor(y$ncells, levels = unique(sort(as.numeric(as.character(y$ncells)))))
   
   ## Boxplots
-  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
-          theme_bw() + xlab("") + ylab("Relative timing") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
-          scale_shape_discrete(name = "Number of cells") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
-  
-  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
-          theme_bw() + xlab("") + ylab("Relative timing") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
-          scale_shape_discrete(name = "Number of cells") + 
-          facet_wrap(~ncells) + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  (plots[["rel_timing_boxplot_comb"]] <- 
+      ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+      theme_bw() + xlab("") + ylab("Relative timing") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+      scale_shape_discrete(name = "Number of cells") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
 
-  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
-          theme_bw() + xlab("") + ylab("Relative timing") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
-          scale_shape_discrete(name = "Number of cells") + 
-          scale_y_log10() + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
-  
-  print(ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
-          theme_bw() + xlab("") + ylab("Relative timing") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
-          scale_shape_discrete(name = "Number of cells") + 
-          scale_y_log10() + 
-          facet_wrap(~ncells) + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  (plots[["rel_timing_boxplot_sep"]] <- 
+      ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+      theme_bw() + xlab("") + ylab("Relative timing") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+      scale_shape_discrete(name = "Number of cells") + 
+      facet_wrap(~ncells) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+
+  (plots[["rel_timing_boxplot_comb_log"]] <- 
+      ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+      theme_bw() + xlab("") + ylab("Relative timing") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+      scale_shape_discrete(name = "Number of cells") + 
+      scale_y_log10() + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+
+  (plots[["rel_timing_boxplot_sep_log"]] <- 
+      ggplot(y, aes(x = method, y = timing, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = ncells)) + 
+      theme_bw() + xlab("") + ylab("Relative timing") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") +
+      scale_shape_discrete(name = "Number of cells") + 
+      scale_y_log10() + 
+      facet_wrap(~ncells) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
 
   ## Barplots
-  y %>% group_by(method) %>% dplyr::summarize(mean = mean(timing), sd = sd(timing)) %>%
-    ggplot(aes(x = method, y = mean, fill = method)) + 
-    geom_errorbar(aes(ymin = min(mean)/2, ymax = mean + sd), width = 0.2) + 
-    geom_bar(stat = "identity") + 
-    theme_bw() + xlab("") + ylab("Relative timing") + 
-    scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+  (plots[["rel_timing_barplot_comb"]] <- 
+      y %>% group_by(method) %>% dplyr::summarize(mean = mean(timing), sd = sd(timing)) %>%
+      ggplot(aes(x = method, y = mean, fill = method)) + 
+      geom_errorbar(aes(ymin = min(mean)/2, ymax = mean + sd), width = 0.2) + 
+      geom_bar(stat = "identity") + 
+      theme_bw() + xlab("") + ylab("Relative timing") + 
+      scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)))
   
   ## Dependence on number of samples
   y2 <- lapply(summary_data_list, function(m) {
@@ -90,37 +97,39 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   ## Remove extension from method name
   y2$method <- gsub(exts, "", y2$method)
   
-  print(y2 %>% group_by(method, dataset, filt) %>%
-          arrange(ncells) %>% 
-          dplyr::mutate(dt = c(0, diff(timing)),
-                        t = c(0, timing[1:(length(timing) - 1)]),
-                        ds = c(0, diff(ncells)),
-                        s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
-          dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
-          filter(!is.na(reltime)) %>%
-          ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2)) + 
-          theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of cells") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)))
+  (plots[["rel_timing_change_by_nsamples_1"]] <- 
+      y2 %>% group_by(method, dataset, filt) %>%
+      arrange(ncells) %>% 
+      dplyr::mutate(dt = c(0, diff(timing)),
+                    t = c(0, timing[1:(length(timing) - 1)]),
+                    ds = c(0, diff(ncells)),
+                    s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
+      dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
+      filter(!is.na(reltime)) %>%
+      ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2)) + 
+      theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of cells") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)))
   
-  print(y2 %>% group_by(method, dataset, filt) %>%
-          arrange(ncells) %>% 
-          dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
-                        t = c(0, timing[1:(length(timing) - 1)]),
-                        ds = c(0, ncells[2:(length(ncells))]),
-                        s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
-          dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
-          filter(!is.na(reltime)) %>%
-          ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2)) + 
-          theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of cells") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)))
+  (plots[["rel_timing_change_by_nsamples_2"]] <- 
+      y2 %>% group_by(method, dataset, filt) %>%
+      arrange(ncells) %>% 
+      dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
+                    t = c(0, timing[1:(length(timing) - 1)]),
+                    ds = c(0, ncells[2:(length(ncells))]),
+                    s = c(0, ncells[1:(length(ncells) - 1)])) %>% 
+      dplyr::mutate(reltime = (dt/t)/(ds/s)) %>%
+      filter(!is.na(reltime)) %>%
+      ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2)) + 
+      theme_bw() + xlab("") + ylab("Relative change in time per relative increase in number of cells") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)))
   
   ## Dependence on number of genes
   ngenes <- lapply(datasets, function(ds) {
@@ -136,23 +145,24 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   ns_keep <- ns$ncells[ns$n > 1]
   
   if (length(ns_keep) > 0) {
-    print(y3 %>% filter(ncells %in% ns_keep) %>% group_by(method, ncells, filt) %>%
-            dplyr::arrange(ngenes) %>%
-            dplyr::filter(length(timing) > 1) %>%
-            dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
-                          t = c(0, timing[1:(length(timing) - 1)]),
-                          dg = c(0, ngenes[2:(length(ngenes))]),
-                          g = c(0, ngenes[1:(length(ngenes)) - 1])) %>%
-            dplyr::mutate(reltime = (dt/t)/(dg/g)) %>%
-            filter(!is.na(reltime)) %>%
-            ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
-            geom_point(position = position_jitter(width = 0.2)) + 
-            theme_bw() + xlab("") + 
-            ylab("Relative change in time per relative increase in number of genes") + 
-            scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                  axis.text.y = element_text(size = 12),
-                  axis.title.y = element_text(size = 13)))
+    (plots[["rel_timing_change_by_ngenes"]] <- 
+       y3 %>% filter(ncells %in% ns_keep) %>% group_by(method, ncells, filt) %>%
+       dplyr::arrange(ngenes) %>%
+       dplyr::filter(length(timing) > 1) %>%
+       dplyr::mutate(dt = c(0, timing[2:(length(timing))]),
+                     t = c(0, timing[1:(length(timing) - 1)]),
+                     dg = c(0, ngenes[2:(length(ngenes))]),
+                     g = c(0, ngenes[1:(length(ngenes)) - 1])) %>%
+       dplyr::mutate(reltime = (dt/t)/(dg/g)) %>%
+       filter(!is.na(reltime)) %>%
+       ggplot(aes(x = method, y = reltime, color = method)) + geom_boxplot(outlier.size = -1) + 
+       geom_point(position = position_jitter(width = 0.2)) + 
+       theme_bw() + xlab("") + 
+       ylab("Relative change in time per relative increase in number of genes") + 
+       scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+             axis.text.y = element_text(size = 12),
+             axis.title.y = element_text(size = 13)))
   }
   
   ## 2d heatmap
@@ -232,27 +242,29 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
     res <- optim(par = c(1, 1, 1, 1), fn = biexp, x = x, y = y, z = z)
     res$par[c(2, 4)]
   }
-  print(y4 %>% group_by(method, ncells, filt) %>% 
-          dplyr::summarise(expn = calc_expn(timing, ngenes)) %>%
-          ggplot(aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2)) + 
-          theme_bw() + xlab("") + 
-          ylab("Exponent in power model of timing vs number of genes") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)))
+  (plots[["timing_exponent_ngenes"]] <- 
+      y4 %>% group_by(method, ncells, filt) %>% 
+      dplyr::summarise(expn = calc_expn(timing, ngenes)) %>%
+      ggplot(aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2)) + 
+      theme_bw() + xlab("") + 
+      ylab("Exponent in power model of timing vs number of genes") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)))
   
-  print(y4 %>% group_by(method, ngenes_cat, filt) %>% 
-          dplyr::summarise(expn = calc_expn(timing, ncells)) %>%
-          ggplot(aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2)) + 
-          theme_bw() + xlab("") + 
-          ylab("Exponent in power model of timing vs number of cells") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)))
+  (plots[["timing_exponent_ncells"]] <- 
+      y4 %>% group_by(method, ngenes_cat, filt) %>% 
+      dplyr::summarise(expn = calc_expn(timing, ncells)) %>%
+      ggplot(aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2)) + 
+      theme_bw() + xlab("") + 
+      ylab("Exponent in power model of timing vs number of cells") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)))
   
   print(y4 %>% group_by(method, filt) %>% 
           dplyr::summarise(expn = calc_expn2(timing, ncells, ngenes)[1]) %>%
@@ -278,4 +290,5 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   
   dev.off()
   
+  plots
 }

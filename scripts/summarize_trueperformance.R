@@ -1,5 +1,7 @@
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = cols,
                                       singledsfigdir, cobradir, concordancedir, dschardir) {
+  plots <- list()
+  
   ## ---------------------------------- True FPR ------------------------------ ##
   pdf(paste0(figdir, "/summary_trueperformance", exts, dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
@@ -74,7 +76,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
       guides(color = guide_legend(ncol = 2, title = ""),
              shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
     if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
-    print(p1)
+    (plots[[paste0(asp, "_all")]] <- p1)
     
     p2 <- y %>% dplyr::filter(thr == "thr0.05") %>%
       dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
@@ -89,8 +91,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
       guides(color = guide_legend(ncol = 2, title = ""),
              shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
     if (asp == "FDR") p2 <- p2 + geom_hline(yintercept = 0.05)
-    print(p2)
-    
+    (plots[[paste0(asp, "_byncells")]] <- p2)
+        
     p3 <- y %>% dplyr::filter(thr == "thr0.05") %>%
       dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
       dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
@@ -105,7 +107,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
       guides(color = guide_legend(ncol = 2, title = ""),
              shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
     if (asp == "FDR") p3 <- p3 + geom_hline(yintercept = 0.05)
-    print(p3)
+    (plots[[paste0(asp, "_byncells_sep")]] <- p3)
   }  
 
   ## AUROC
@@ -120,42 +122,44 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
   y$method <- gsub(exts, "", y$method)
   
   asp <- "AUROC"
-  print(y %>% 
-          ggplot(aes_string(x = "method", y = asp, color = "method")) + 
-          geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) + 
-          theme_bw() + xlab("") + ylab("Area under ROC curve") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 1, title = "")))
+  (plots[["auroc_all"]] <- y %>% 
+      ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+      geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) + 
+      theme_bw() + xlab("") + ylab("Area under ROC curve") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 1, title = "")))
+  
+  (plots[["auroc_byncells"]] <- y %>% 
+      dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
+      dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
+      ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
+      geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
+      theme_bw() + xlab("") + ylab("Area under ROC curve") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = "")))
 
-  print(y %>% 
-          dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
-          dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
-          ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
-          geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
-          theme_bw() + xlab("") + ylab("Area under ROC curve") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = "")))
-
-  print(y %>% 
-          dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
-          dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
-          ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
-          geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
-          facet_wrap(~dataset, scales = "free_x") + 
-          theme_bw() + xlab("") + ylab("Area under ROC curve") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = "")))
-
+  (plots[["auroc_byncells_sep"]] <- y %>% 
+      dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
+      dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
+      ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
+      geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
+      facet_wrap(~dataset, scales = "free_x") + 
+      theme_bw() + xlab("") + ylab("Area under ROC curve") + 
+      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = "")))
+  
   dev.off()
+  
+  plots
 }

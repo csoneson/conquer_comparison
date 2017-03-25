@@ -8,6 +8,9 @@ print(filt)
 print(concordancedir)
 print(figdir)
 
+## Define the number of top-ranked genes to consider for AUC calculations
+k0 <- 100
+
 source("scripts/plot_setup.R")
 source("scripts/plot_single_dataset_origvsmock.R")
 
@@ -26,7 +29,8 @@ for (tp in c("", "mock")) {
 }
 
 pdf(paste0(figdir, "/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
-summary_data <- plot_compare_orig_mock(concordances, colvec = cols, summary_data = list())
+summary_data <- plot_compare_orig_mock(concordances, colvec = cols, k0 = k0, 
+                                       summary_data = list())
 dev.off()
 
 summary_data <- lapply(summary_data, function(L) {

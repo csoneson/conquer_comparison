@@ -84,3 +84,41 @@ $nreps
 
 > 
 > mae <- readRDS(config$mae)
+> groupid <- config$groupid
+> mae <- clean_mae(mae = mae, groupid = groupid)
+> 
+> subsets <- readRDS(config$subfile)
+> keep_samples <- subsets$keep_samples
+> imposed_condition <- subsets$out_condition
+> 
+> res <- list()
+> 
+> sizes <- names(keep_samples)
+> for (sz in sizes) {
++   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
++     message(sz, ".", i)
++     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
++     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
++     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
++     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
++     dev.off()
++   }
++ }
+95.1
+30261 genes, 190 samples.
+scde
+48.1
+27470 genes, 96 samples.
+scde
+48.2
+27100 genes, 96 samples.
+scde
+48.3
+27057 genes, 96 samples.
+scde
+48.4
+27462 genes, 96 samples.
+scde
+48.5
+26672 genes, 96 samples.
+scde

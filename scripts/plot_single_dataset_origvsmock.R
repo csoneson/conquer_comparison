@@ -1,9 +1,9 @@
 source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 
-plot_compare_orig_mock <- function(concordances, colvec, summary_data = list()) {
+plot_compare_orig_mock <- function(concordances, colvec, k0, summary_data = list()) {
   concs <- lapply(names(concordances), function(ncbr) {
-    conc <- concordances[[ncbr]]$concordance_pairwise_auc
-    conc %>%
+    concordances[[ncbr]]$concordance_pairwise_bymethod %>%
+      dplyr::filter(k == k0) %>%
       dplyr::mutate(tp = ncbr) %>%
       dplyr::mutate(tp = replace(tp, tp == "tp_mock", "mock")) %>%
       dplyr::mutate(tp = replace(tp, tp == "tp_", "original"))
@@ -16,9 +16,9 @@ plot_compare_orig_mock <- function(concordances, colvec, summary_data = list()) 
                                       subset(concs, tp == "mock")$ncells1))) {
     message(nbrsamples)
     print(concs %>% dplyr::filter(ncells1 == nbrsamples & ncells2 == nbrsamples) %>%
-            ggplot(aes(x = method, y = auc, color = method, shape = tp)) + 
+            ggplot(aes(x = method, y = AUCs, color = method, shape = tp)) + 
             geom_point(size = 5) + theme_bw() + xlab("") + 
-            ylab(paste0("Area under concordance curve")) + 
+            ylab(paste0("Area under concordance curve, top-", k0)) + 
             scale_color_manual(values = colvec, name = "") + 
             scale_shape_discrete(name = "") + 
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 

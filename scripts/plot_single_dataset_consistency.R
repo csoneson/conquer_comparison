@@ -1,11 +1,11 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-source("/home/Shared/data/seq/conquer/comparison/scripts/help_function_crossmethod_concordance.R")
+source("scripts/help_function_crossmethod_concordance.R")
 
 #' Make UpSet plot, making sure that the first and last columns have at least
 #' one significant feature
 #' 
 plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
-  ## Reorder so that the first and last columns have something significant
+  ## Reorder so that the first and last columns have something significant, if
+  ## possible
   m <- min(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m)) 
     overlap(cobraplot) <- overlap(cobraplot)[, c(m, setdiff(1:ncol(overlap(cobraplot)), m))]
@@ -18,30 +18,53 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
 
 plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = list()) {
   ## ------------------------- Concordance plots ---------------------------- ##
-  print(ggplot(concordances$concordance_fullds %>% 
+  print(ggplot(concordances$concordance_fullds_bymethod %>% 
+                 dplyr::ungroup() %>%
                  dplyr::mutate(method = gsub(exts, "", method)), 
-               aes(x = k, y = p, group = method, color = method)) +
+               aes(x = k, y = nbr_genes, group = method, color = method)) +
           geom_line() + 
-          scale_color_manual(values = structure(colvec, names = gsub(exts, "", names(colvec))), name = "") +
+          scale_color_manual(values = structure(
+            colvec, names = gsub(exts, "", names(colvec))), name = "") +
           theme_bw() + xlab("Number of top-ranked genes") + 
-          ylab("Fraction shared between all instances") + 
+          ylab("Number of genes shared between all instances") + 
           theme(axis.text = element_text(size = 12),
                 axis.title = element_text(size = 13)))
 
-  print(ggplot(concordances$concordance_byncells %>%
+  print(ggplot(concordances$concordance_byncells_bymethod %>%
+                 dplyr::ungroup() %>% 
                  dplyr::mutate(method = gsub(exts, "", method)), 
-               aes(x = k, y = p, group = method, color = method)) +
+               aes(x = k, y = nbr_genes, group = method, color = method)) +
           geom_line() + 
-          scale_color_manual(values = structure(colvec, names = gsub(exts, "", names(colvec))), name = "") +
+          scale_color_manual(values = structure(
+            colvec, names = gsub(exts, "", names(colvec))), name = "") +
           theme_bw() + facet_wrap(~ncells) + theme(legend.position = "bottom") + 
-          xlab("Number of top-ranked genes") + ylab("Fraction shared between all instances") + 
+          xlab("Number of top-ranked genes") + 
+          ylab("Number of genes shared between all instances") + 
           theme(axis.text = element_text(size = 12),
                 axis.title = element_text(size = 13)))
 
-  help_function_crossmethod_concordance(concordances$concordance_betweenmethods_auc %>%
-                                          dplyr::ungroup() %>%
-                                          dplyr::mutate(method1 = gsub(exts, "", method1),
-                                                        method2 = gsub(exts, "", method2)))
+  for (k0 in c(100, 1000)) {
+    help_function_crossmethod_concordance(concordances$concordance_betweenmethods_pairwise %>%
+                                            dplyr::ungroup() %>%
+                                            dplyr::mutate(method1 = gsub(exts, "", method1),
+                                                          method2 = gsub(exts, "", method2)),
+                                          k0 = k0)
+  }
+  
+  ## Plot fraction of top-k genes shared by each number of methods
+  k0 <- 100
+  concordances$nbrshared_betweenmethods_all %>% 
+    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
+    dplyr::filter(k == k0) %>% dplyr::group_by(ncells, repl) %>%
+    dplyr::mutate(tot_nbr_unique_genes = sum(nbr_genes)) %>%
+    dplyr::mutate(frac_genes = nbr_genes/tot_nbr_unique_genes) %>%
+    dplyr::mutate(m = sapply(1:length(frac_genes), function(i) sum(frac_genes[i:length(frac_genes)]))) %>%
+    dplyr::mutate(ncells_repl = interaction(ncells, repl)) %>%
+    ggplot(aes(x = nbr_occ, y = m, group = ncells_repl, color = ncells)) + 
+    geom_line() + theme_bw() + xlab("Number of DE methods (M)") + 
+    ylab(paste0("Fraction of top-", k0, " genes shared by at least M DE methods")) + 
+    scale_color_discrete(name = "Number of \ncells per group")
+  
   
   ## ------------------------------ Overlaps -------------------------------- ##
   cobratmp <- cobra

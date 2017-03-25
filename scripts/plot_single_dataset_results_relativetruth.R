@@ -1,5 +1,3 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 #' Help function to plot FPR and TPR for a subset of methods (defined either by
 #' method or sample size)
 #' 

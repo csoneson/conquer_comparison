@@ -11,6 +11,7 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
   concordances$method1 <- gsub(exts, "", concordances$method1)
   concordances$method2 <- gsub(exts, "", concordances$method2)
   
-  help_function_crossmethod_concordance(concordances)  
+  help_function_crossmethod_concordance(concordances, k0 = 100)
+  help_function_crossmethod_concordance(concordances, k0 = 1000)
   dev.off()
 }

@@ -9,8 +9,8 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
-source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
-source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
+source("scripts/prepare_mae.R")
+source("scripts/calculate_gene_characteristics.R")
 
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
@@ -23,7 +23,7 @@ print(resdir)  ## Directory from which to fetch the DE results
 print(dataset)  ## Data set
 print(config_file)  ## Configuration file
 print(filt)  ## Filtering
-print(outdir)  ## Directory to which to write the output
+print(outdir)  ## Directory where the output will be written
 
 if (filt == "") { 
   exts <- filt
@@ -66,16 +66,17 @@ for (rfn in resfiles) {   ## for each DE method
 
 cobra <- calculate_adjp(cobra)
 
-## Add gene characteristics to the COBRA object
+## ------------ Add gene characteristics to the COBRA object ---------------- ##
+
 config <- fromJSON(file = config_file)
 mae <- readRDS(config$mae)
 groupid <- config$groupid
 mae <- clean_mae(mae = mae, groupid = groupid)
-
 subsets <- readRDS(config$subfile)
 keep_samples <- subsets$keep_samples
 imposed_condition <- subsets$out_condition
 
+## Calculate gene characteristics for each data subset
 sizes <- names(keep_samples)
 truth <- list()
 for (sz in sizes) {   ## for each sample size
@@ -83,31 +84,42 @@ for (sz in sizes) {   ## for each sample size
     message(sz, ".", i)
     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
     chars <- calculate_gene_characteristics(L)
-    df2 <- chars$characs
-    colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
-                                                     ".", sz, ".", i)
-    truth[[paste0(sz, ".", i)]] <- df2
+    characs <- chars$characs
+    colnames(characs)[colnames(characs) != "gene"] <- 
+      paste0(colnames(characs)[colnames(characs) != "gene"], ".", sz, ".", i)
+    truth[[paste0(sz, ".", i)]] <- characs
   }
 }
 truth <- Reduce(function(...) dplyr::full_join(..., by = "gene"), truth)
 
+## ---------------------- Define relative truths ---------------------------- ##
 ## Define "truth" for each method as the genes that are differentially 
 ## expressed with the largest sample size
-tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
-                     max(as.numeric(as.character(get_nsamples(colnames(padj(cobra))))))]
+(maxn <- max(as.numeric(as.character(get_nsamples(colnames(padj(cobra)))))))
+tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == maxn, drop = FALSE]
 colnames(tmp) <- paste0(get_method(colnames(tmp)), ".truth")
 tmp <- (tmp <= 0.05)
 mode(tmp) <- "numeric"
-tmp <- tmp[match(truth$gene, rownames(tmp)), ]
+tmp <- tmp[match(truth$gene, rownames(tmp)), , drop = FALSE]
+rownames(tmp) <- truth$gene
+## At this point, truth (and thus also tmp) contains all genes that are tested 
+## for at least one subset. For the unfiltered data, all genes are tested for 
+## the largest subset. However, for the TPM-filtered data, this is not 
+## necessarily the case. Despite this, we still consider all genes included in 
+## the truth table as "eligible" for relative performance comparisons. Thus, we 
+## set NA p-values to 0, since these represent genes that were indeed tested (in
+## at least one subset), but filtered out internally
 tmp[is.na(tmp)] <- 0
 
 truth <- dplyr::full_join(truth, 
-                          data.frame(tmp, stringsAsFactors=FALSE) %>% dplyr::mutate(gene = rownames(tmp)), 
+                          data.frame(tmp, stringsAsFactors = FALSE) %>% 
+                            dplyr::mutate(gene = rownames(tmp)), 
                           by = "gene")
 rownames(truth) <- truth$gene
 
 cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
+## ------------ Summarize number of calls for each method ------------------- ##
 ## Make data frame with number of significant, non-significant and NA calls for
 ## each method
 cobraperf <- calculate_performance(cobra, aspects = "fpr", 
@@ -117,15 +129,19 @@ sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
   dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
   dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-tested <- data.frame(nbr_tested = 
-                       colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
+tested <- 
+  data.frame(nbr_tested = 
+               colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], 
+                       na.rm = TRUE))
 tested$dataset <- rownames(tested)
-tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
+tested <- tested %>% 
+  tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
 nbr_called <- dplyr::full_join(sign_0.05, tested) %>% dplyr::select(-type)
 nbr_called$dataset <- dataset
 nbr_called$filt <- filt
 nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
 
+## --------------------- Save output files ---------------------------------- ##
 saveRDS(timings, file = paste0(outdir, "/", dataset, exts, "_timings.rds"))
 saveRDS(nbr_called, file = paste0(outdir, "/", dataset, exts, "_nbr_called.rds"))
 saveRDS(cobra, file = paste0(outdir, "/", dataset, exts, "_cobra.rds"))
