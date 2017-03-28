@@ -18,6 +18,7 @@ suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(UpSetR))
 suppressPackageStartupMessages(library(lazyeval))
 suppressPackageStartupMessages(library(monocle))
+suppressPackageStartupMessages(library(scater))
 source("scripts/prepare_mae.R")
 source("scripts/calculate_gene_characteristics.R")
 source("scripts/calculate_cell_characteristics.R")
@@ -34,7 +35,7 @@ print(filt)
 print(cell_cycle_file)
 print(figdir)
 
-pdf(paste0(figdir, "/", dataset, exts, "_dataset_characteristics.pdf"), width = 14, height = 9)
+plots <- list()
 
 config <- fromJSON(file = config_file)
 mae <- readRDS(config$mae)
@@ -53,6 +54,42 @@ if (!is.null(metadata(mae)$index)) {
 } else {
   cell_cycle_ids <- NULL
 }
+
+## Make t-SNE plot, indicating the selected groups. Only for unfiltered data,
+## since the filtering will anyway take place later
+if (filt == "") {
+  pdf(paste0(figdir, "/", dataset, exts, "_dataset_characteristics_1.pdf"), width = 7, height = 7)
+  groupidcomb <- paste(groupid, collapse = ".")
+  sceset <- newSCESet(countData = assays(experiments(mae)[["gene"]])[["count_lstpm"]], 
+                      tpmData = assays(experiments(mae)[["gene"]])[["TPM"]],
+                      phenoData = new("AnnotatedDataFrame", data = as.data.frame(pData(mae))))
+  sceset <- scater::plotTSNE(sceset[!duplicated(tpm(sceset)), ], 
+                             exprs_values = "tpm", return_SCESet = TRUE,
+                             draw_plot = FALSE)
+  df <- data.frame(cell = rownames(sceset@reducedDimension), 
+                   sceset@reducedDimension) %>% 
+    dplyr::full_join(data.frame(cell = rownames(pData(sceset)), 
+                                group = pData(sceset)[, groupidcomb]),
+                     by = "cell")
+  plots[["tsne"]] <- 
+    ggplot(df, aes(x = X1, y = X2)) + geom_point(size = 2, color = "grey") + 
+    geom_point(data = df %>% dplyr::filter(group %in% config$keepgroups), size = 2, aes(color = group)) + 
+    scale_color_manual(
+      values = structure(
+        c("blue", "red", rep("grey", length(unique(pData(sceset)[, groupidcomb])) - 2)), 
+        names = c(config$keepgroups, 
+                  setdiff(unique(pData(sceset)[, groupidcomb]), config$keepgroups))),
+      breaks = config$keepgroups, name = "") + 
+    theme_bw() + xlab("t-SNE dimension 1") + ylab("t-SNE dimension 2") + 
+    theme(legend.position = "bottom",
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 13)) + 
+    ggtitle(dataset)
+  print(plots[["tsne"]])
+  dev.off()
+}
+
+pdf(paste0(figdir, "/", dataset, exts, "_dataset_characteristics_2.pdf"), width = 14, height = 9)
 
 sizes <- names(keep_samples)
 char_gene <- list()
@@ -217,6 +254,7 @@ for (tp in c("libsize", "fraczero", "fraczeroround", "libsizecensus", "fraczeroc
 
 dev.off()
 
+saveRDS(plots, file = paste0(figdir, "/", dataset, exts, "_dataset_characteristics_plots.rds"))
 saveRDS(lapply(list(char_cells_m = char_cells_m, 
                     char_gene_m = char_gene_m,
                     char_ds_m = char_ds_m),

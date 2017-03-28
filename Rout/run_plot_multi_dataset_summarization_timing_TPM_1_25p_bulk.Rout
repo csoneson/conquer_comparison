@@ -59,21 +59,19 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = figdir, 
-+                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols,
-+                                        singledsfigdir = singledsfigdir,
-+                                        cobradir = cobradir,
-+                                        concordancedir = concordancedir,
-+                                        dschardir = dschardir)
+> ggplots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
++                                                   datasets = datasets, exts = exts, 
++                                                   dtpext = dtpext, cols = cols,
++                                                   singledsfigdir = singledsfigdir,
++                                                   cobradir = cobradir,
++                                                   concordancedir = concordancedir,
++                                                   dschardir = dschardir)
 Joining, by = c("ncells", "dataset", "filt")
 Joining, by = c("method", "ncells", "repl", "dataset", "filt")
-null device 
-          1 
 Warning messages:
-1: Removed 11 rows containing non-finite values (stat_boxplot). 
-2: Removed 11 rows containing missing values (geom_point). 
-> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
+1: Removed 12 rows containing non-finite values (stat_boxplot). 
+2: Removed 12 rows containing missing values (geom_point). 
+> saveRDS(ggplots, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, "_plots.rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -128,4 +126,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 33.397   1.981  36.933 
+ 31.080   0.825  32.011 

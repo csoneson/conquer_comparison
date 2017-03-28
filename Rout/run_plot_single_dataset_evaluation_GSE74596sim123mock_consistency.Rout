@@ -81,6 +81,8 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
 12.1
 12.2
 12.3
@@ -108,6 +110,7 @@ edgeRLRTcensus
 edgeRLRTdeconv
 edgeRLRTrobust
 edgeRQLF
+limmatrend
 MASTcpm
 geom_path: Each group consists of only one observation. Do you need to adjust
 the group aesthetic?
@@ -176,6 +179,9 @@ the group aesthetic?
 edgeRQLF.12
 edgeRQLF.22
 edgeRQLF.6
+limmatrend.12
+limmatrend.22
+limmatrend.6
 MASTcpm.12
 MASTcpm.22
 MASTcpm.6
@@ -300,4 +306,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-282.347   3.706 287.297 
+422.526  12.817 437.122 

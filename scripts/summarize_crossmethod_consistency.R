@@ -7,7 +7,7 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
     readRDS(paste0(concordancedir, "/", ds, exts, "_concordances.rds"))
   })
   concordances <- do.call(rbind, lapply(summary_data_list, 
-                                        function(x) as.data.frame(x$concordance_betweenmethods_auc)))
+                                        function(x) as.data.frame(x$concordance_betweenmethods_pairwise)))
   concordances$method1 <- gsub(exts, "", concordances$method1)
   concordances$method2 <- gsub(exts, "", concordances$method2)
   

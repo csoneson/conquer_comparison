@@ -35,22 +35,20 @@ concs <- do.call(rbind, lapply(summary_data_list, function(x) x$concordances))
 pdf(paste0(figdir, "/summary_orig_vs_mock", exts, dtpext, ".pdf"), 
     width = 10, height = 7)
 
-nbr_keep <- unique(intersect(subset(concs, tp == "original")$ncells1,
-                             subset(concs, tp == "mock")$ncells1))
+nbr_keep <- unique(intersect(subset(concs, tp == "original")$ncells,
+                             subset(concs, tp == "mock")$ncells))
 ## Remove extension from method name
 concs$method <- gsub(exts, "", concs$method)
 
 concsum <- concs %>% as.data.frame() %>%
-  dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-  dplyr::filter(ncells1 == ncells2) %>%
-  dplyr::group_by(dataset, ncells1, method) %>% 
-  dplyr::summarize(tstat = ttest(tp, auc),
-                   mediandiff = median(auc[tp == "original"]) - median(auc[tp == "mock"]))
+  dplyr::filter(ncells %in% nbr_keep) %>%
+  dplyr::group_by(dataset, ncells, method) %>% 
+  dplyr::summarize(tstat = ttest(tp, AUCs),
+                   mediandiff = median(AUCs[tp == "original"]) - median(AUCs[tp == "mock"]))
 
 print(concs %>% dplyr::filter(tp == "original") %>%
-        dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-        dplyr::filter(ncells1 == ncells2) %>%
-        ggplot(aes(x = method, y = auc, col = method)) + 
+        dplyr::filter(ncells %in% nbr_keep) %>%
+        ggplot(aes(x = method, y = AUCs, col = method)) + 
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) + 
         theme_bw() + xlab("") + ylab("area under concordance curve, signal data set") + 
@@ -61,9 +59,8 @@ print(concs %>% dplyr::filter(tp == "original") %>%
               axis.title.y = element_text(size = 13)))
 
 print(concs %>% dplyr::filter(tp == "mock") %>%
-        dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-        dplyr::filter(ncells1 == ncells2) %>%
-        ggplot(aes(x = method, y = auc, col = method)) + 
+        dplyr::filter(ncells %in% nbr_keep) %>%
+        ggplot(aes(x = method, y = AUCs, col = method)) + 
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) + 
         theme_bw() + xlab("") + ylab("area under concordance curve, mock data set") + 
@@ -74,9 +71,8 @@ print(concs %>% dplyr::filter(tp == "mock") %>%
               axis.title.y = element_text(size = 13)))
 
 print(concs %>% dplyr::filter(tp == "original") %>%
-        dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-        dplyr::filter(ncells1 == ncells2) %>%
-        ggplot(aes(x = method, y = auc, col = method)) + 
+        dplyr::filter(ncells %in% nbr_keep) %>%
+        ggplot(aes(x = method, y = AUCs, col = method)) + 
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2)) + 
         facet_wrap(~dataset) + 
@@ -88,9 +84,8 @@ print(concs %>% dplyr::filter(tp == "original") %>%
               axis.title.y = element_text(size = 13)))
 
 print(concs %>% dplyr::filter(tp == "mock") %>%
-        dplyr::filter(ncells1 %in% nbr_keep & ncells2 %in% nbr_keep) %>%
-        dplyr::filter(ncells1 == ncells2) %>%
-        ggplot(aes(x = method, y = auc, col = method)) + 
+        dplyr::filter(ncells %in% nbr_keep) %>%
+        ggplot(aes(x = method, y = AUCs, col = method)) + 
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2)) + 
         facet_wrap(~dataset) + 
@@ -126,7 +121,7 @@ print(concsum %>%
 
 dev.off()
 
-saveRDS(NULL, paste0(figdir, "/summary_orig_vs_mock", exts, dtpext, ".rds"))
+saveRDS(NULL, paste0(figdir, "/summary_orig_vs_mock", exts, dtpext, "_plots.rds"))
 
 sessionInfo()
 

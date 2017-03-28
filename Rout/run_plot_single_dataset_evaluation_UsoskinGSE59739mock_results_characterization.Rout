@@ -228,5 +228,5 @@ loaded via a namespace (and not attached):
 [37] assertthat_0.1       R6_2.2.0            
 > 
 > proc.time()
-    user   system  elapsed 
-1026.536   13.983 1044.820 
+   user  system elapsed 
+984.054   9.808 997.559 

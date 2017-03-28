@@ -33,6 +33,9 @@ Setting LC_CTYPE failed, using "C"
 > print(figdir)
 [1] "figures/orig_vs_mock"
 > 
+> ## Define the number of top-ranked genes to consider for AUC calculations
+> k0 <- 100
+> 
 > source("scripts/plot_setup.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
@@ -53,9 +56,11 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > 
 > pdf(paste0(figdir, "/", dataset, exts, "_orig_vs_mock.pdf"), width = 14, height = 9)
-> summary_data <- plot_compare_orig_mock(concordances, colvec = cols, summary_data = list())
-12
-24
+> summary_data <- plot_compare_orig_mock(concordances, colvec = cols, k0 = k0, 
++                                        summary_data = list())
+Warning messages:
+1: Unknown column 'ncells1' 
+2: Unknown column 'ncells1' 
 > dev.off()
 null device 
           1 
@@ -105,16 +110,16 @@ loaded via a namespace (and not attached):
  [4] htmltools_0.3.5      DBI_0.5-1            sp_1.2-4            
  [7] stringr_1.1.0        zlibbioc_1.20.0      munsell_0.4.3       
 [10] gtable_0.2.0         caTools_1.17.1       htmlwidgets_0.8     
-[13] labeling_0.3         httpuv_1.3.3         Rcpp_0.12.9         
-[16] KernSmooth_2.23-15   xtable_1.8-2         ROCR_1.0-7          
-[19] DT_0.2               gdata_2.17.0         limma_3.30.13       
-[22] XVector_0.14.0       mime_0.5             gplots_3.0.1        
-[25] gridExtra_2.2.1      digest_0.6.12        stringi_1.1.2       
-[28] shiny_1.0.0          tools_3.3.1          bitops_1.0-6        
-[31] magrittr_1.5         RCurl_1.95-4.8       tibble_1.2          
-[34] Matrix_1.2-8         shinyBS_0.61         shinydashboard_0.5.3
-[37] assertthat_0.1       R6_2.2.0            
+[13] httpuv_1.3.3         Rcpp_0.12.9          KernSmooth_2.23-15  
+[16] xtable_1.8-2         ROCR_1.0-7           DT_0.2              
+[19] gdata_2.17.0         limma_3.30.13        XVector_0.14.0      
+[22] mime_0.5             gplots_3.0.1         gridExtra_2.2.1     
+[25] digest_0.6.12        stringi_1.1.2        shiny_1.0.0         
+[28] tools_3.3.1          bitops_1.0-6         magrittr_1.5        
+[31] RCurl_1.95-4.8       tibble_1.2           Matrix_1.2-8        
+[34] shinyBS_0.61         shinydashboard_0.5.3 assertthat_0.1      
+[37] R6_2.2.0            
 > 
 > proc.time()
    user  system elapsed 
- 43.400   1.620  45.346 
+136.120   3.303 139.935 

@@ -57,16 +57,17 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
   ## Remove extension from method name
   y$method <- gsub(exts, "", y$method)
   
-  (plots[["truefpr"]] <- ggplot(y, aes(x = method, y = FPR, color = method)) + 
-          geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
-          geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
-          theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
-          scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          guides(color = guide_legend(ncol = 2, title = ""),
-                 shape = guide_legend(ncol = 2, title = "Number of \ncells per group")))
+  plots[["truefpr"]] <- ggplot(y, aes(x = method, y = FPR, color = method)) + 
+    geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
+    geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
+    theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
+    scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13)) + 
+    guides(color = guide_legend(ncol = 2, title = ""),
+           shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+  print(plots[["truefpr"]])
   
   ## P-value distributions
   for (ds in datasets) {
@@ -79,15 +80,16 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
     tmp$method <- gsub(exts, "", tmp$method)
     
     for (i in unique(tmp$ncells.repl)) {
-      (plots[[paste0("pvalues_", ds, "_", i)]] <- tmp %>% subset(ncells.repl == i) %>% 
-         ggplot(aes(x = value, fill = method)) + geom_histogram() + 
-         facet_wrap(~method, scales = "free_y") + 
-         theme_bw() + xlab("p-value") + ylab("") + 
-         theme(axis.text.y = element_blank(),
-               axis.ticks.y = element_blank()) + 
-         scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
-                           name = "", guide = FALSE) + 
-         ggtitle(paste0(ds, ".", i)))
+      p <- tmp %>% subset(ncells.repl == i) %>% 
+        ggplot(aes(x = value, fill = method)) + geom_histogram() + 
+        facet_wrap(~method, scales = "free_y") + 
+        theme_bw() + xlab("p-value") + ylab("") + 
+        theme(axis.text.y = element_blank(),
+              axis.ticks.y = element_blank()) + 
+        scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
+                          name = "", guide = FALSE) + 
+        ggtitle(paste0(ds, ".", i))
+      print(p)
     }
   }
   dev.off()

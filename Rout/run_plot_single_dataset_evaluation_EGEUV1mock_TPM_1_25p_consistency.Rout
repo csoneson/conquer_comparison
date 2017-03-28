@@ -81,6 +81,8 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
 12.1
 12.2
 12.3
@@ -109,6 +111,9 @@ edgeRLRT_TPM_1_25p
 edgeRLRTdeconv_TPM_1_25p
 edgeRLRTrobust_TPM_1_25p
 edgeRQLF_TPM_1_25p
+limmatrend_TPM_1_25p
+geom_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
 NODES_TPM_1_25p
 SAMseq_TPM_1_25p
 geom_path: Each group consists of only one observation. Do you need to adjust
@@ -152,6 +157,10 @@ edgeRQLF_TPM_1_25p.12
 edgeRQLF_TPM_1_25p.24
 edgeRQLF_TPM_1_25p.44
 edgeRQLF_TPM_1_25p.6
+limmatrend_TPM_1_25p.12
+limmatrend_TPM_1_25p.24
+limmatrend_TPM_1_25p.44
+limmatrend_TPM_1_25p.6
 NODES_TPM_1_25p.12
 NODES_TPM_1_25p.24
 geom_path: Each group consists of only one observation. Do you need to adjust
@@ -240,4 +249,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 97.590   3.302 101.656 
+135.967   5.333 142.332 

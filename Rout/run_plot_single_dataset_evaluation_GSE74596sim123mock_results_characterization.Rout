@@ -32,6 +32,8 @@ Setting LC_CTYPE failed, using "C"
 [1] "results_characterization"
 > print(cobradir)
 [1] "output/cobra_data"
+> print(concordancedir)
+[1] "output/concordances"
 > print(relperfdir)
 [1] "output/relative_performance"
 > print(realperfdir)
@@ -224,8 +226,7 @@ loaded via a namespace (and not attached):
 [31] magrittr_1.5         RCurl_1.95-4.8       tibble_1.2          
 [34] Matrix_1.2-8         shinyBS_0.61         shinydashboard_0.5.3
 [37] assertthat_0.1       R6_2.2.0            
-> rds"))
-+ 
-+ sessionInfo()
-+ Error: unexpected end of input
-Execution halted
+> 
+> proc.time()
+    user   system  elapsed 
+1308.227   11.394 1323.725 

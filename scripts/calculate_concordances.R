@@ -29,15 +29,19 @@ maxrank <- 1000
 ## method, nbr_genes occur exactly nbr_occ times. 
 calculate_nbr_occurrences <- function(mtx, maxrank) {
   if (ncol(mtx) > 1) {
-    do.call(rbind, lapply(1:maxrank, function(i) {
-      tbl <- table(unlist(mtx[1:i, ]))
-      data.frame(table(tbl)) %>% dplyr::mutate(k = i) %>%
-        dplyr::rename(nbr_occ = tbl) %>%
-        dplyr::rename(nbr_genes = Freq) %>%
-        dplyr::mutate(nbr_occ = as.numeric(as.character(nbr_occ))) %>%
-        dplyr::full_join(data.frame(k = i, nbr_occ = 1:ncol(mtx)), by = c("nbr_occ", "k"))
-    })) %>% dplyr::arrange(k, nbr_occ) %>%
-      dplyr::mutate(nbr_genes = replace(nbr_genes, is.na(nbr_genes), 0)) %>%
+    M <- matrix(0, max(mtx[1:maxrank, ]), maxrank)
+    for (i in 1:ncol(mtx)) {
+      M[cbind(mtx[1:maxrank, i], 1:maxrank)] <- M[cbind(mtx[1:maxrank, i], 1:maxrank)] + 1
+    }
+    M <- M[rowSums(M) != 0, ]
+    M <- t(apply(M, 1, cumsum))
+    M2 <- matrix(0, ncol(mtx), maxrank)
+    for (i in 1:nrow(M)) {
+      M2[cbind(M[i, ], 1:ncol(M))] <- M2[cbind(M[i, ], 1:ncol(M))] + 1
+    }
+    M2 <- M2 %>% reshape2::melt() %>%
+      dplyr::rename(k = Var2, nbr_genes = value, nbr_occ = Var1)
+    M2 %>% dplyr::arrange(k, nbr_occ) %>%
       dplyr::mutate(nbr_cols = ncol(mtx))
   } else {
     NULL

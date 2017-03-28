@@ -85,13 +85,13 @@ package 'ggplot2' was built under R version 3.3.2
 58
 Warning messages:
 1: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 88 random colors will be added
+  too few colors provided, 92 random colors will be added
 2: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 88 random colors will be added
+  too few colors provided, 92 random colors will be added
 3: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too few colors provided, 88 random colors will be added
+  too few colors provided, 92 random colors will be added
 4: In define_colors(cobraperf = cobraperf, palette = colorscheme, facetted = facetted,  :
-  too many colors supplied, only the first 23 will be used
+  too many colors supplied, only the first 24 will be used
 > dev.off()
 null device 
           1 
@@ -153,4 +153,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-392.660  23.490 418.576 
+328.330   7.157 336.469 

@@ -1,0 +1,142 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+During startup - Warning message:
+Setting LC_CTYPE failed, using "C" 
+> args <- (commandArgs(trailingOnly = TRUE))
+> for (i in 1:length(args)) {
++   eval(parse(text = args[[i]]))
++ }
+> 
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(ggplot2))
+Warning message:
+package 'ggplot2' was built under R version 3.3.2 
+> suppressPackageStartupMessages(library(cowplot))
+> 
+> print(figdir)  ## Directory where individual plots are stored
+[1] "figures"
+> print(outdir)  ## Directory where final plots will be saved
+[1] "figures/final_figures"
+> 
+> ## --------------------- Make figures for publication ----------------------- ##
+> 
+> ## t-SNEs
+> X <- list()
+> for (ds in c("GSE74596", "GSE45719", "GSE48968-GPL13112", "EMTAB2805", 
++              "UsoskinGSE59739", "GSE63818-GPL16791", "GSE60749-GPL13112", "EGEUV1")) {
++   X[[ds]] <- readRDS(paste0(figdir, "/dataset_characteristics/", ds,
++                             "_dataset_characteristics_plots.rds"))
++ }
+> pdf(paste0(outdir, "/tsne_final.pdf"), width = 9, height = 22)
+> print(plot_grid(plotlist = lapply(X, function(x) x$tsne + guides(color = guide_legend(nrow = 2))), 
++                 ncol = 2, labels = LETTERS[1:8], align = "h"))
+> dev.off()
+null device 
+          1 
+> 
+> ## fraction NA
+> xorig <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_plots.rds"))
+> xfilt <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_TPM_1_25p_plots.rds"))
+> p <- plot_grid(plot_grid(xorig$fracna_comb + theme(legend.position = "none") + 
++                            ggtitle("Without filtering"), 
++                          xfilt$fracna_comb + theme(legend.position = "none") + 
++                            ggtitle("After filtering"),
++                          labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
++                get_legend(xorig$fracna_comb + 
++                             theme(legend.position = "bottom") + 
++                             guides(colour = FALSE,
++                                    shape = 
++                                      guide_legend(nrow = 1,
++                                                   title = "Number of cells per group",
++                                                   title.theme = element_text(size = 12,
++                                                                              angle = 0),
++                                                   label.theme = element_text(size = 10,
++                                                                              angle = 0),
++                                                   keywidth = 1, default.unit = "cm"))),
++                rel_heights = c(1.7, 0.1), ncol = 1)
+> pdf(paste0(outdir, "/fracNA_final.pdf"), width = 12, height = 6)
+> print(p)
+> dev.off()
+null device 
+          1 
+> 
+> ## True FPR
+> xorig <- readRDS(paste0(figdir, "/multi_dataset/truefpr/summary_truefpr_plots.rds"))
+> xfilt <- readRDS(paste0(figdir, "/multi_dataset/truefpr/summary_truefpr_TPM_1_25p_plots.rds"))
+> p <- plot_grid(plot_grid(xorig$truefpr + theme(legend.position = "none") + 
++                            ggtitle("Without filtering") + ylim(0,0.8), 
++                          xfilt$truefpr + theme(legend.position = "none") + 
++                            ggtitle("After filtering") + ylim(0,0.8),
++                          labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
++                get_legend(xorig$truefpr + 
++                             theme(legend.position = "bottom") + 
++                             guides(colour = FALSE,
++                                    shape = 
++                                      guide_legend(nrow = 1,
++                                                   title = "Number of cells per group",
++                                                   title.theme = element_text(size = 12,
++                                                                              angle = 0),
++                                                   label.theme = element_text(size = 10,
++                                                                              angle = 0),
++                                                   keywidth = 1, default.unit = "cm"))),
++                rel_heights = c(1.7, 0.1), ncol = 1)
+> pdf(paste0(outdir, "/truefpr_final.pdf"), width = 12, height = 6)
+> print(p)
+> dev.off()
+null device 
+          1 
+> 
+> ## True FDR
+> 
+> ## True TPR
+> 
+> ## Timing
+> 
+> saveRDS(NULL, file = paste0(outdir, "/final_plots.rds"))
+> 
+> sessionInfo()
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+locale:
+ [1] LC_CTYPE=C                 LC_NUMERIC=C              
+ [3] LC_TIME=en_CA.UTF-8        LC_COLLATE=en_CA.UTF-8    
+ [5] LC_MONETARY=en_CA.UTF-8    LC_MESSAGES=en_CA.UTF-8   
+ [7] LC_PAPER=en_CA.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_CA.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] cowplot_0.7.0 ggplot2_2.2.1 tidyr_0.6.1   dplyr_0.5.0  
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9      digest_0.6.12    assertthat_0.1   grid_3.3.1      
+ [5] R6_2.2.0         plyr_1.8.4       gtable_0.2.0     DBI_0.5-1       
+ [9] magrittr_1.5     scales_0.4.1     lazyeval_0.2.0   labeling_0.3    
+[13] tools_3.3.1      munsell_0.4.3    colorspace_1.3-2 tibble_1.2      
+> 
+> proc.time()
+   user  system elapsed 
+ 18.175   0.555  18.841 

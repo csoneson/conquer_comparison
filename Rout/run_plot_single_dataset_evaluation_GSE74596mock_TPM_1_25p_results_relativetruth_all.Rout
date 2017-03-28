@@ -200,4 +200,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 17.630   0.936  18.714 
+ 16.126   0.798  16.988 

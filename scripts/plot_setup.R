@@ -32,9 +32,9 @@ cols <- c("#771155", "#AA4488", "#CC99BB",
           "#117744", "#44AA77", "#88CCAA", "#004120",
           "#777711", "#AAAA44", 
           "#774411", "#AA7744",  
-          "#771122", "#AA4455", "#DD7788", "yellow",
+          "#771122", "#AA4455", "#DD7788", "#FFFF00",
           "#DDDD77", "#DDAA77", "#86861B",
-          "black", "grey")
+          "#000000", "#BEBEBE")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
                  "edgeRQLF", "edgeRLRTrobust",
                  "zingeR", "zingeRauto", "zingeRautonofilt",
@@ -46,4 +46,13 @@ names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus",
                  "SCDE", "BPSC", "D3E", 
                  "voomlimma", "limmatrend")
 
-
+## Write color definitions to file
+s <- sapply(1:length(cols), function(x) {
+  if (length(grep("^#", cols[x])) > 0) {
+    paste0("\\", "definecolor{", names(cols)[x], "}{HTML}{", gsub("#", "", cols[x]), "}")
+  } else {
+    paste0("\\", "definecolor{", names(cols)[x], "}{HTML}{", gsub("#", "", cols[x]), "}")
+  }
+})
+write.table(s, file = "color_definitions.txt", quote = FALSE, 
+            sep = "\n", row.names = FALSE, col.names = FALSE)

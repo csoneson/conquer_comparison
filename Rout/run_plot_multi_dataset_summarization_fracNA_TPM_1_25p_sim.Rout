@@ -61,16 +61,14 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = figdir, 
-+                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols,
-+                                        singledsfigdir = singledsfigdir,
-+                                        cobradir = cobradir,
-+                                        concordancedir = concordancedir,
-+                                        dschardir = dschardir)
-null device 
-          1 
-> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
+> ggplots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
++                                                   datasets = datasets, exts = exts, 
++                                                   dtpext = dtpext, cols = cols,
++                                                   singledsfigdir = singledsfigdir,
++                                                   cobradir = cobradir,
++                                                   concordancedir = concordancedir,
++                                                   dschardir = dschardir)
+> saveRDS(ggplots, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, "_plots.rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -120,4 +118,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
- 14.702   0.868  16.267 
+ 14.333   1.031  15.402 

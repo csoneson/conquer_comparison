@@ -30,8 +30,8 @@ Setting LC_CTYPE failed, using "C"
 > suppressPackageStartupMessages(library(MultiAssayExperiment))
 > suppressPackageStartupMessages(library(dplyr))
 > suppressPackageStartupMessages(library(tidyr))
-> source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
-> source("/home/Shared/data/seq/conquer/comparison/scripts/calculate_gene_characteristics.R")
+> source("scripts/prepare_mae.R")
+> source("scripts/calculate_gene_characteristics.R")
 Warning message:
 package 'ggplot2' was built under R version 3.3.2 
 > 
@@ -48,7 +48,7 @@ package 'ggplot2' was built under R version 3.3.2
 [13] "MASTcpmDetRate"   "MASTtpm"          "MASTtpmDetRate"   "SCDE"            
 [17] "edgeRLRTrobust"   "voomlimma"        "zingeRauto"       "Seurat"          
 [21] "Seuratnofilt"     "DESeq2census"     "edgeRLRTcensus"   "zingeRautonofilt"
-[25] "monoclecensus"    "monocle"          "D3E"             
+[25] "monoclecensus"    "monocle"          "D3E"              "limmatrend"      
 > print(resdir)  ## Directory from which to fetch the DE results
 [1] "results"
 > print(dataset)  ## Data set
@@ -57,7 +57,7 @@ package 'ggplot2' was built under R version 3.3.2
 [1] "config/GSE60749-GPL13112mock.json"
 > print(filt)  ## Filtering
 [1] ""
-> print(outdir)  ## Directory to which to write the output
+> print(outdir)  ## Directory where the output will be written
 [1] "output/cobra_data"
 > 
 > if (filt == "") { 
@@ -95,9 +95,10 @@ package 'ggplot2' was built under R version 3.3.2
 [25] "results/GSE60749-GPL13112mock_monoclecensus.rds"   
 [26] "results/GSE60749-GPL13112mock_monocle.rds"         
 [27] "results/GSE60749-GPL13112mock_D3E.rds"             
+[28] "results/GSE60749-GPL13112mock_limmatrend.rds"      
 > file.exists(resfiles)
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 > cobra <- NULL
 > timings <- list()
 > for (rfn in resfiles) {   ## for each DE method
@@ -1325,82 +1326,115 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new methods added to score table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new methods added to score table
 0 new features and 0 new annotations added to truth table
 44495 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to score table
@@ -2249,6 +2283,86 @@ package 'ggplot2' was built under R version 3.3.2
 0 new features and 1 new methods added to padj table
 0 new features and 0 new annotations added to truth table
 [1] "session_info" "timing"       "res"          "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
+0 new features and 1 new methods added to pval table
+0 new features and 0 new annotations added to truth table
+0 new features and 1 new methods added to padj table
+0 new features and 0 new annotations added to truth table
+[1] "session_info" "timing"       "tt"           "df"          
 0 new features and 1 new methods added to pval table
 0 new features and 0 new annotations added to truth table
 0 new features and 1 new methods added to padj table
@@ -2256,16 +2370,17 @@ package 'ggplot2' was built under R version 3.3.2
 > 
 > cobra <- calculate_adjp(cobra)
 > 
-> ## Add gene characteristics to the COBRA object
+> ## ------------ Add gene characteristics to the COBRA object ---------------- ##
+> 
 > config <- fromJSON(file = config_file)
 > mae <- readRDS(config$mae)
 > groupid <- config$groupid
 > mae <- clean_mae(mae = mae, groupid = groupid)
-> 
 > subsets <- readRDS(config$subfile)
 > keep_samples <- subsets$keep_samples
 > imposed_condition <- subsets$out_condition
 > 
+> ## Calculate gene characteristics for each data subset
 > sizes <- names(keep_samples)
 > truth <- list()
 > for (sz in sizes) {   ## for each sample size
@@ -2273,10 +2388,10 @@ package 'ggplot2' was built under R version 3.3.2
 +     message(sz, ".", i)
 +     L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
 +     chars <- calculate_gene_characteristics(L)
-+     df2 <- chars$characs
-+     colnames(df2)[colnames(df2) != "gene"] <- paste0(colnames(df2)[colnames(df2) != "gene"],
-+                                                      ".", sz, ".", i)
-+     truth[[paste0(sz, ".", i)]] <- df2
++     characs <- chars$characs
++     colnames(characs)[colnames(characs) != "gene"] <- 
++       paste0(colnames(characs)[colnames(characs) != "gene"], ".", sz, ".", i)
++     truth[[paste0(sz, ".", i)]] <- characs
 +   }
 + }
 47.1
@@ -2298,24 +2413,36 @@ package 'ggplot2' was built under R version 3.3.2
 > truth <- Reduce(function(...) dplyr::full_join(..., by = "gene"), truth)
 There were 15 warnings (use warnings() to see them)
 > 
+> ## ---------------------- Define relative truths ---------------------------- ##
 > ## Define "truth" for each method as the genes that are differentially 
 > ## expressed with the largest sample size
-> tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == 
-+                      max(as.numeric(as.character(get_nsamples(colnames(padj(cobra))))))]
+> (maxn <- max(as.numeric(as.character(get_nsamples(colnames(padj(cobra)))))))
+[1] 47
+> tmp <- padj(cobra)[, get_nsamples(colnames(padj(cobra))) == maxn, drop = FALSE]
 > colnames(tmp) <- paste0(get_method(colnames(tmp)), ".truth")
 > tmp <- (tmp <= 0.05)
 > mode(tmp) <- "numeric"
-> tmp <- tmp[match(truth$gene, rownames(tmp)), ]
+> tmp <- tmp[match(truth$gene, rownames(tmp)), , drop = FALSE]
+> rownames(tmp) <- truth$gene
+> ## At this point, truth (and thus also tmp) contains all genes that are tested 
+> ## for at least one subset. For the unfiltered data, all genes are tested for 
+> ## the largest subset. However, for the TPM-filtered data, this is not 
+> ## necessarily the case. Despite this, we still consider all genes included in 
+> ## the truth table as "eligible" for relative performance comparisons. Thus, we 
+> ## set NA p-values to 0, since these represent genes that were indeed tested (in
+> ## at least one subset), but filtered out internally
 > tmp[is.na(tmp)] <- 0
 > 
 > truth <- dplyr::full_join(truth, 
-+                           data.frame(tmp, stringsAsFactors=FALSE) %>% dplyr::mutate(gene = rownames(tmp)), 
++                           data.frame(tmp, stringsAsFactors = FALSE) %>% 
++                             dplyr::mutate(gene = rownames(tmp)), 
 +                           by = "gene")
 > rownames(truth) <- truth$gene
 > 
 > cobra <- COBRAData(truth = truth, object_to_extend = cobra)
-44495 new features and 219 new annotations added to truth table
+44495 new features and 220 new annotations added to truth table
 > 
+> ## ------------ Summarize number of calls for each method ------------------- ##
 > ## Make data frame with number of significant, non-significant and NA calls for
 > ## each method
 > cobraperf <- calculate_performance(cobra, aspects = "fpr", 
@@ -2325,16 +2452,20 @@ There were 15 warnings (use warnings() to see them)
 +   dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
 +   dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
 +   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
-> tested <- data.frame(nbr_tested = 
-+                        colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], na.rm = TRUE))
+> tested <- 
++   data.frame(nbr_tested = 
++                colSums(truth(cobra)[, grep("tested", colnames(truth(cobra)))], 
++                        na.rm = TRUE))
 > tested$dataset <- rownames(tested)
-> tested <- tested %>% tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
+> tested <- tested %>% 
++   tidyr::separate(dataset, into = c("type", "ncells", "repl"), sep = "\\.")
 > nbr_called <- dplyr::full_join(sign_0.05, tested) %>% dplyr::select(-type)
 Joining, by = c("ncells", "repl")
 > nbr_called$dataset <- dataset
 > nbr_called$filt <- filt
 > nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
 > 
+> ## --------------------- Save output files ---------------------------------- ##
 > saveRDS(timings, file = paste0(outdir, "/", dataset, exts, "_timings.rds"))
 > saveRDS(nbr_called, file = paste0(outdir, "/", dataset, exts, "_nbr_called.rds"))
 > saveRDS(cobra, file = paste0(outdir, "/", dataset, exts, "_cobra.rds"))
@@ -2387,5 +2518,5 @@ loaded via a namespace (and not attached):
 [49] UpSetR_1.3.2           caTools_1.17.1         shinydashboard_0.5.3  
 > 
 > proc.time()
-    user   system  elapsed 
- 901.770  398.271 1773.405 
+   user  system elapsed 
+873.719  62.819 949.145 

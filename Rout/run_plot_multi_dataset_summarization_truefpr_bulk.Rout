@@ -59,13 +59,13 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 > names(cols) <- paste0(names(cols), exts)
 > 
-> get(paste0("summarize_", summarytype))(figdir = figdir, 
-+                                        datasets = datasets, exts = exts, 
-+                                        dtpext = dtpext, cols = cols,
-+                                        singledsfigdir = singledsfigdir,
-+                                        cobradir = cobradir,
-+                                        concordancedir = concordancedir,
-+                                        dschardir = dschardir)
+> ggplots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
++                                                   datasets = datasets, exts = exts, 
++                                                   dtpext = dtpext, cols = cols,
++                                                   singledsfigdir = singledsfigdir,
++                                                   cobradir = cobradir,
++                                                   concordancedir = concordancedir,
++                                                   dschardir = dschardir)
 No id variables; using all as measure variables
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -83,10 +83,8 @@ No id variables; using all as measure variables
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-null device 
-          1 
 There were 16 warnings (use warnings() to see them)
-> saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, ".rds"))
+> saveRDS(ggplots, file = paste0(figdir, "/summary_", summarytype, exts, dtpext, "_plots.rds"))
 > sessionInfo()
 R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -136,4 +134,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-120.883  12.258 134.055 
+159.879   6.989 167.422 

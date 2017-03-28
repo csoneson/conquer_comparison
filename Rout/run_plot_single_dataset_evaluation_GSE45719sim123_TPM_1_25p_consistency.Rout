@@ -81,6 +81,8 @@ package 'ggplot2' was built under R version 3.3.2
 + }
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `geom_smooth()` using method = 'loess'
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`geom_smooth()` using method = 'loess'
 12.1
 12.2
 12.3
@@ -111,6 +113,7 @@ edgeRLRTcensus_TPM_1_25p
 edgeRLRTdeconv_TPM_1_25p
 edgeRLRTrobust_TPM_1_25p
 edgeRQLF_TPM_1_25p
+limmatrend_TPM_1_25p
 MASTcpm_TPM_1_25p
 MASTcpmDetRate_TPM_1_25p
 MASTtpm_TPM_1_25p
@@ -167,6 +170,10 @@ edgeRQLF_TPM_1_25p.12
 edgeRQLF_TPM_1_25p.24
 edgeRQLF_TPM_1_25p.50
 edgeRQLF_TPM_1_25p.6
+limmatrend_TPM_1_25p.12
+limmatrend_TPM_1_25p.24
+limmatrend_TPM_1_25p.50
+limmatrend_TPM_1_25p.6
 MASTcpm_TPM_1_25p.12
 MASTcpm_TPM_1_25p.24
 MASTcpm_TPM_1_25p.50
@@ -293,4 +300,4 @@ loaded via a namespace (and not attached):
 > 
 > proc.time()
    user  system elapsed 
-380.372   6.679 388.957 
+529.493   8.675 540.119 
