@@ -37,6 +37,6 @@ get(paste0("summarize_", summarytype))(figdir = figdir,
                                        cobradir = cobradir,
                                        concordancedir = concordancedir,
                                        dschardir = dschardir)
-saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, dtpext, "_plots.rds"))
+saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, dtpext, ".rds"))
 sessionInfo()
 

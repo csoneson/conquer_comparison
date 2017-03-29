@@ -34,7 +34,6 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   }))
   timing <- dplyr::full_join(timing, ngenes)
   
-  ## Remove extension from method name
   timing$ncells_fact <- factor(timing$ncells, levels = 
                                  unique(sort(as.numeric(as.character(timing$ncells)))))
   ## Set plot symbols for number of cells per group

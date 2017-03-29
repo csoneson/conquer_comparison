@@ -75,68 +75,6 @@ pdf(paste0(outdir, "/concordancediff_final.pdf"), width = 12, height = 12)
 print(p)
 dev.off()
 
-## ---------------------------- fraction NA --------------------------------- ##
-## single-cell
-xorig <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_plots.rds"))
-xfilt <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_TPM_1_25p_plots.rds"))
-p <- plot_grid(plot_grid(xorig$fracna_comb + theme(legend.position = "none") + 
-                           ggtitle("Without filtering"), 
-                         xfilt$fracna_comb + theme(legend.position = "none") + 
-                           ggtitle("After filtering"),
-                         labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-               get_legend(xorig$fracna_comb + 
-                            theme(legend.position = "bottom") + 
-                            guides(colour = FALSE,
-                                   shape = 
-                                     guide_legend(nrow = 1,
-                                                  title = "Number of cells per group",
-                                                  title.theme = element_text(size = 12,
-                                                                             angle = 0),
-                                                  label.theme = element_text(size = 12,
-                                                                             angle = 0),
-                                                  keywidth = 1, default.unit = "cm"))),
-               rel_heights = c(1.7, 0.1), ncol = 1)
-pdf(paste0(outdir, "/fracNA_final.pdf"), width = 12, height = 6)
-print(p)
-dev.off()
-
-## Split by data set
-xorig <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_plots.rds"))
-p <- xorig$fracna_sep + theme(legend.position = "bottom") + 
-  ggtitle("Without filtering") + 
-  guides(colour = FALSE,
-         shape = guide_legend(nrow = 1,
-                        title = "Number of cells per group",
-                        title.theme = element_text(size = 12, angle = 0),
-                        label.theme = element_text(size = 12, angle = 0),
-                        keywidth = 1, default.unit = "cm"))
-pdf(paste0(outdir, "/fracNA_final_sepbyds.pdf"), width = 12, height = 6)
-print(p)
-dev.off()
-
-## bulk
-xorig <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_bulk_plots.rds"))
-xfilt <- readRDS(paste0(figdir, "/multi_dataset/fracNA/summary_fracNA_TPM_1_25p_bulk_plots.rds"))
-p <- plot_grid(plot_grid(xorig$fracna_comb + theme(legend.position = "none") + 
-                           ggtitle("Without filtering") + ylim(-0.01, 1), 
-                         xfilt$fracna_comb + theme(legend.position = "none") + 
-                           ggtitle("After filtering") + ylim(-0.01, 1),
-                         labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-               get_legend(xorig$fracna_comb + 
-                            theme(legend.position = "bottom") + 
-                            guides(colour = FALSE,
-                                   shape = 
-                                     guide_legend(nrow = 1,
-                                                  title = "Number of cells per group",
-                                                  title.theme = element_text(size = 12,
-                                                                             angle = 0),
-                                                  label.theme = element_text(size = 12,
-                                                                             angle = 0),
-                                                  keywidth = 1, default.unit = "cm"))),
-               rel_heights = c(1.7, 0.1), ncol = 1)
-pdf(paste0(outdir, "/fracNA_final_bulk.pdf"), width = 12, height = 6)
-print(p)
-dev.off()
 
 ## ------------------------------ True FPR ---------------------------------- ##
 ## single-cell
