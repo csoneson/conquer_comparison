@@ -1,5 +1,3 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 plot_performance_realtruth <- function(cobraperf, colvec, exts = exts, summary_data = list()) {
   summary_data$FDRTPR <- rbind(summary_data$FDRTPR, fdrtpr(cobraperf))
   summary_data$AUROC <- rbind(summary_data$AUROC, 

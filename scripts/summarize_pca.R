@@ -76,6 +76,8 @@ plot_pca <- function(x, title_ext = "", stat) {
 
 summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
                           singledsfigdir, cobradir, concordancedir, dschardir) {
+  plots <- list()
+  
   charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
                 log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
   
@@ -85,8 +87,8 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
     readRDS(paste0(singledsfigdir, "/results_characterization/", ds, exts, 
                    "_results_characterization_summary_data.rds"))
   })
-  ## PCA of significant gene characteristics
-  lapply(c(list(datasets), as.list(datasets)), function(ds) {
+  for (ds in c(list(datasets), as.list(datasets))) {
+#  lapply(c(list(datasets), as.list(datasets)), function(ds) {
     for (stat in c("tstat")) {
       x <- lapply(summary_data_list[ds], function(m) {
         m$stats_charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
@@ -100,20 +102,22 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
       ## Visualize summary statistics for each characteristic
       x <- do.call(rbind, x)
       statname <- switch(stat,
-                         tstat = "t-statistic comparing significant and non-significant genes",
-                         mediandiff = "median difference between significant and non-significant genes")
-      print(x %>% 
-              tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
-              dplyr::mutate(charac = charname[charac]) %>%
-              ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
-              geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
-              facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
-              theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                    axis.text.y = element_text(size = 12),
-                    axis.title.y = element_text(size = 13)) + 
-              scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
-              guides(color = guide_legend(ncol = 2, title = ""),
-                     shape = guide_legend(ncol = 2, title = "")))
+                         tstat = "t-statistic comparing significant \nand non-significant genes",
+                         mediandiff = "median difference between \nsignificant and non-significant genes")
+      p <- x %>% 
+        tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
+        dplyr::mutate(charac = charname[charac]) %>%
+        ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
+        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+        facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = ""))
+      plots[[paste0(paste(ds, collapse = "_"), stat, "_distribution")]] <- p
+      print(p)
       
       print(x %>% 
               tidyr::separate(Var2, into = c("method", "ncells", "repl", "dataset", "filt"), sep = "\\.") %>%
@@ -151,7 +155,7 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
       
       plot_pca(x, title_ext = "", stat = stat)
     }
-  })
+  }
   
   ## The same as above, but centering and scaling each statistic within each data set before merging
   lapply(c(list(datasets)), function(ds) {
@@ -187,4 +191,6 @@ summarize_pca <- function(figdir, datasets, exts, dtpext, cols = cols,
      }
   })
   dev.off()
+  
+  plots
 }

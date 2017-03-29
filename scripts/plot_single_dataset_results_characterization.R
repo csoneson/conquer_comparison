@@ -1,9 +1,9 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 plot_results_characterization <- function(cobra, colvec, exts, summary_data = list()) {
   sizes_nsamples <- gsub("avetpm.", "", grep("avetpm.", colnames(truth(cobra)), value = TRUE))
   for (szi in sizes_nsamples) {
     message(szi)
+    ## Set unobserved p-values and adjusted p-values to 1, since these will be
+    ## considered "nonsignificant"
     pvals <- pval(cobra)[, grep(paste0("\\.", szi, "$"), colnames(pval(cobra)))]
     pvals[is.na(pvals)] <- 1
     padjs <- padj(cobra)[, grep(paste0("\\.", szi, "$"), colnames(padj(cobra)))]

@@ -1,5 +1,3 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 #' Calculate "relative performance", using the results for the largest sample 
 #' size as the truth. All performances (FDR, FPR, TPR) are calculated using each
 #' of the methods' results as truth and represented in matrix form
@@ -7,6 +5,7 @@ source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 plot_results_relativetruth_all <- function(cobra, relperf_alltruths, colvec, 
                                            exts = exts, summary_data = list()) {
 
+  ## Get unique set of sample sizes
   ttmp <- unique(as.numeric(get_nsamples(colnames(padj(cobra)))))
   ttmp <- as.character(sort(as.numeric(ttmp), decreasing = TRUE))
   for (m in ttmp) {

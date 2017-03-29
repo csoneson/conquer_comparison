@@ -4,9 +4,12 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(pheatmap))
 
-help_function_crossmethod_concordance <- function(concordance_betweenmethods_auc, k0) {
-  ## Visualize cross-method consistency (average pairwise AUC)
-  cmcons <- concordance_betweenmethods_auc  %>% 
+help_function_crossmethod_concordance <- function(concordance_betweenmethods_pairwise, k0) {
+  ## Visualize cross-method consistency (average pairwise AUC between methods
+  ## for top-k0 genes)
+  ## Calculate average area under concordance curve across all data set
+  ## instances, for each pair of methods
+  cmcons <- concordance_betweenmethods_pairwise  %>% 
     dplyr::filter(k == k0) %>% dplyr::group_by(method1, method2) %>%
     dplyr::summarize(AUC = mean(AUCs)) %>% as.data.frame()
   cmcons <- rbind(cmcons, data.frame(method1 = unique(c(cmcons$method1, cmcons$method2)),
@@ -22,13 +25,15 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_auc
     }
   }
   pheatmap(cmcons, cluster_rows = TRUE, cluster_cols = TRUE,
-           main = paste0("Average pairwise AUC across all data set instances, top-", k0), 
+           main = paste0("Area under method/method concordance curve,", 
+                         "\naveraged across all data set instances, top ", k0, " genes"), 
            color = colorRampPalette(rev(brewer.pal(n = 7, name =
                                                      "RdYlBu")))(100),
            breaks = seq(0, 1, length.out = 101))
   
-  ## Visualize distributions of cross-method consistency
-  cmdist <- concordance_betweenmethods_auc %>% dplyr::filter(k == k0)
+  ## Visualize full distributions of cross-method consistencies across data set
+  ## instances
+  cmdist <- concordance_betweenmethods_pairwise %>% dplyr::filter(k == k0)
   for (i in 1:nrow(cmdist)) {
     if (cmdist[i, "method1"] > cmdist[i, "method2"]) {
       cmdist[i, c("method1", "method2")] <- cmdist[i, c("method2", "method1")]
@@ -37,17 +42,24 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_auc
   print(ggplot(cmdist, aes(x = AUCs)) + geom_line(stat = "density") +
           facet_grid(method1 ~ method2, scales = "free") + theme_bw() +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-                axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
-                strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank()) +
-          xlim(0, 1) + xlab(paste0("AUC, top-", k0)))
-  print(ggplot(cmdist, aes(x = AUC)) + geom_histogram() +
+                axis.ticks = element_blank(), 
+                strip.text.x = element_text(size = 12, angle = 90),
+                strip.text.y = element_text(size = 12, angle = 0), 
+                panel.grid = element_blank()) +
+          xlim(0, 1) + 
+          xlab(paste0("Area under method/method concordance curve, top ", k0, " genes")))
+  print(ggplot(cmdist, aes(x = AUCs)) + geom_histogram() +
           facet_grid(method1 ~ method2, scales = "free") + theme_bw() +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-                axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
-                strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank()) +
-          xlim(0, 1) + xlab(paste0("AUC, top-", k0)))
+                axis.ticks = element_blank(), 
+                strip.text.x = element_text(size = 12, angle = 90),
+                strip.text.y = element_text(size = 12, angle = 0), 
+                panel.grid = element_blank()) +
+          xlim(0, 1) + 
+          xlab(paste0("Area under method/method concordance curve, top ", k0, " genes")))
   
-  ## Get order to visualize distributions in
+  ## Order methods by hierarchical clustering result and visualize distributions
+  ## of AUCs in color code
   hcl <- hclust(as.dist(1 - cmcons))
   hclord <- hcl$labels[hcl$order]
   cmdist2 <- cmdist %>% dplyr::group_by(method1, method2) %>%
@@ -62,22 +74,32 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_auc
   print(ggplot(cmdist2, aes(x = ordr, y = ycoord)) + geom_raster(aes(fill = AUCs)) +
           facet_grid(method1 ~ method2) + theme_bw() +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-                axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
-                strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
-                panel.border = element_blank(), strip.background = element_rect(colour = "white")) +
+                axis.ticks = element_blank(), 
+                strip.text.x = element_text(size = 12, angle = 90),
+                strip.text.y = element_text(size = 12, angle = 0), 
+                panel.grid = element_blank(),
+                panel.border = element_blank(), 
+                strip.background = element_rect(colour = "white")) +
           xlab("") + ylab("") +
-          scale_fill_continuous(low = "black", high = "yellow", name = paste0("AUC, top-", k0)))
+          scale_fill_continuous(low = "black", high = "yellow", 
+                                name = paste0("AUC,\ntop ", k0, "\ngenes")))
   
   print(ggplot(cmdist2, aes(x = ordr, y = ycoord)) + geom_raster(aes(fill = AUCs)) +
           facet_grid(method1 ~ method2) + theme_bw() +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-                axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
-                strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
-                panel.border = element_blank(), strip.background = element_rect(colour = "white")) +
+                axis.ticks = element_blank(), 
+                strip.text.x = element_text(size = 12, angle = 90),
+                strip.text.y = element_text(size = 12, angle = 0), 
+                panel.grid = element_blank(),
+                panel.border = element_blank(), 
+                strip.background = element_rect(colour = "white")) +
           xlab("") + ylab("") +
           scale_fill_continuous(low = "black", high = "yellow", 
-                                name = paste0("AUC, top-", k0), limits = c(0, 1)))
+                                name = paste0("AUC,\ntop ", k0, "\ngenes"), 
+                                limits = c(0, 1)))
   
+  ## Plot dependence of AUC on number of cells per group, for each pair of
+  ## methods
   cmdist2 <- dplyr::mutate(cmdist2, ncells = as.numeric(as.character(ncells)))
   print(ggplot(cmdist2, aes(x = ncells, y = AUCs)) + geom_point(size = 0.5) +
           geom_smooth() +
@@ -86,5 +108,5 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_auc
                 axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
                 strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
                 strip.background = element_rect(colour = "white")) +
-          xlab("Number of cells per group") + ylab(paste0("AUC, top-", k0)))
+          xlab("Number of cells per group") + ylab(paste0("AUC, top ", k0, " genes")))
 }

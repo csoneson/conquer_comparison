@@ -53,17 +53,17 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
   
   ## Plot fraction of top-k genes shared by each number of methods
   k0 <- 100
-  concordances$nbrshared_betweenmethods_all %>% 
-    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
-    dplyr::filter(k == k0) %>% dplyr::group_by(ncells, repl) %>%
-    dplyr::mutate(tot_nbr_unique_genes = sum(nbr_genes)) %>%
-    dplyr::mutate(frac_genes = nbr_genes/tot_nbr_unique_genes) %>%
-    dplyr::mutate(m = sapply(1:length(frac_genes), function(i) sum(frac_genes[i:length(frac_genes)]))) %>%
-    dplyr::mutate(ncells_repl = interaction(ncells, repl)) %>%
-    ggplot(aes(x = nbr_occ, y = m, group = ncells_repl, color = ncells)) + 
-    geom_line() + theme_bw() + xlab("Number of DE methods (M)") + 
-    ylab(paste0("Fraction of top-", k0, " genes shared by at least M DE methods")) + 
-    scale_color_discrete(name = "Number of \ncells per group")
+  print(concordances$nbrshared_betweenmethods_all %>% 
+          dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
+          dplyr::filter(k == k0) %>% dplyr::group_by(ncells, repl) %>%
+          dplyr::mutate(tot_nbr_unique_genes = sum(nbr_genes)) %>%
+          dplyr::mutate(frac_genes = nbr_genes/tot_nbr_unique_genes) %>%
+          dplyr::mutate(m = sapply(1:length(frac_genes), function(i) sum(frac_genes[i:length(frac_genes)]))) %>%
+          dplyr::mutate(ncells_repl = interaction(ncells, repl)) %>%
+          ggplot(aes(x = nbr_occ, y = m, group = ncells_repl, color = ncells)) + 
+          geom_line() + theme_bw() + xlab("Number of DE methods (M)") + 
+          ylab(paste0("Fraction of top ", k0, " genes shared by at least M DE methods")) + 
+          scale_color_discrete(name = "Number of \ncells per group"))
   
   
   ## ------------------------------ Overlaps -------------------------------- ##

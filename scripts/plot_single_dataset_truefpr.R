@@ -3,12 +3,16 @@ source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
 plot_truefpr <- function(cobra, colvec, exts = exts, summary_data = list()) {
   pvs <- pval(cobra)
   fpr <- apply(pvs, 2, function(x) length(which(x <= 0.05))/length(x[!is.na(x)]))
+  nsign <- apply(pvs, 2, function(x) length(which(x <= 0.05)))
+  ntest <- apply(pvs, 2, function(x) length(x[!is.na(x)]))
+  
+  df <- data.frame(method = names(fpr), FPR = fpr, nsign = nsign, ntest = ntest, 
+                   stringsAsFactors = FALSE)
   
   summary_data$fracpbelow0.05 <- 
-    rbind(summary_data$fracpbelow0.05, 
-          data.frame(method = names(fpr), FPR = fpr, stringsAsFactors = FALSE))
+    rbind(summary_data$fracpbelow0.05, df)
   
-  print(data.frame(method = names(fpr), FPR = fpr, stringsAsFactors = FALSE) %>% 
+  print(df %>% 
           tidyr::separate(method, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>%
           dplyr::mutate(method = gsub(exts, "", method)) %>%
           dplyr::mutate(nbr_samples = 
@@ -24,7 +28,7 @@ plot_truefpr <- function(cobra, colvec, exts = exts, summary_data = list()) {
                 axis.title.y = element_text(size = 15)))
   
   for (i in sort(unique(as.numeric(get_nsamples(names(fpr)))))) {
-    print(data.frame(method = names(fpr), FPR = fpr, stringsAsFactors = FALSE) %>% 
+    print(df %>% 
             tidyr::separate(method, into = c("method", "nbr_samples", "replicate"), sep = "\\.") %>%
             dplyr::mutate(method = gsub(exts, "", method)) %>%
             dplyr::filter(nbr_samples == i) %>% 

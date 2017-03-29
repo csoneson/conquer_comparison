@@ -21,7 +21,7 @@ plot_timing <- function(timinglist, colvec, exts = exts, summary_data = list()) 
   print(timings %>%    
           ggplot(aes(x = ncells, y = timing, group = method, color = method)) + 
           geom_line(size = 2.5) + scale_y_log10() + theme_bw() + 
-          xlab("Number of cells") + 
+          xlab("Number of cells per group") + 
           scale_color_manual(values = structure(colvec, names = gsub(exts, "", names(colvec)))))
   return(invisible(summary_data))
 }

@@ -1,6 +1,6 @@
 summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
                                 singledsfigdir, cobradir, concordancedir, dschardir) {
-  pdf(paste0(figdir, "/summary_filtering", exts, dtpext, ".pdf"), width = 14, height = 7)
+  pdf(paste0(figdir, "/summary_filtering", exts, dtpext, ".pdf"), width = 12, height = 7)
   
   summary_data_list_orig <- lapply(datasets, function(ds) {
     readRDS(paste0(cobradir, "/", ds, "_nbr_called.rds"))
@@ -19,7 +19,7 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
   
   print(ggplot(L, aes(x = dataset, y = retain)) + geom_boxplot(outlier.size = -1) + 
           geom_point(position = position_jitter(width = 0.2), aes(color = ncells)) + 
-          theme_bw() + xlab("") + ylab("Retained fraction after filtering") + 
+          theme_bw() + xlab("") + ylab("Retained fraction of original set of genes after filtering") + 
           guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
           theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
                 axis.text.y = element_text(size = 12),
@@ -29,13 +29,14 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
   summary_data_list <- lapply(datasets, function(ds) {
     readRDS(paste0(dschardir, "/", ds, "_dataset_characteristics_summary_data.rds"))
   })
-  L <- do.call(rbind, lapply(summary_data_list, function(x) x$char_cells_m %>% 
-                               dplyr::filter(mtype %in% c("libsize", "fraczeroround")) %>%
-                               dplyr::mutate(cell = paste0(dataset, ".", cell, ".", ncells, ".", repl)) %>%
-                               dplyr::select(cell, mtype, value) %>%
-                               tidyr::spread(key = mtype, value = value) %>%
-                               tidyr::separate(cell, into = c("dataset", "cell", "ncells", "repl"), sep = "\\.")))
-  L <- L %>% 
+  L <- do.call(
+    rbind, 
+    lapply(summary_data_list, function(x) x$char_cells_m %>% 
+             dplyr::filter(mtype %in% c("libsize", "fraczeroround")) %>%
+             dplyr::mutate(cell = paste0(dataset, ".", cell, ".", ncells, ".", repl)) %>%
+             dplyr::select(cell, mtype, value) %>%
+             tidyr::spread(key = mtype, value = value) %>%
+             tidyr::separate(cell, into = c("dataset", "cell", "ncells", "repl"), sep = "\\."))) %>%
     dplyr::mutate(ncells = factor(ncells, 
                                   levels = paste0(sort(unique(
                                     as.numeric(as.character(gsub(" cells per group", 

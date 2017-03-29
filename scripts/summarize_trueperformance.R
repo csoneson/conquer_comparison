@@ -63,6 +63,11 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
   ## Remove extension from method name
   y$method <- gsub(exts, "", y$method)
   
+  ## Set plot symbols for number of cells per group
+  ncells <- sort(as.numeric(as.character(unique(y$n_samples))))
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
+  names(pch) <- as.character(ncells)
+  
   for (asp in c("FDR", "TPR")) {
     p1 <- y %>% dplyr::filter(thr == "thr0.05") %>%
       ggplot(aes_string(x = "method", y = asp, color = "method")) + 
@@ -70,6 +75,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
       geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
       theme_bw() + xlab("") + ylab(paste0("True ", asp, " at adj.p = 0.05 cutoff")) + 
       scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_shape_manual(values = pch) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 
@@ -128,9 +134,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols = col
   plots[["auroc_all"]] <- y %>% 
     ggplot(aes_string(x = "method", y = asp, color = "method")) + 
     geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), aes(shape = dataset)) + 
+    geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
     theme_bw() + xlab("") + ylab("Area under ROC curve") + 
     scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+    scale_shape_manual(values = pch) + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13)) + 
