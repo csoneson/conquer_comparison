@@ -65,7 +65,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
       ggplot(truefpr %>% dplyr::filter(filt == f),
              aes(x = method, y = FPR, color = method)) + 
       geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
-      geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
+      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
       theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
       scale_color_manual(values = cols) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -81,7 +81,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     ggplot(truefpr,
            aes(x = method, y = FPR, color = method)) + 
     geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
+    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
     theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
     facet_wrap(~ filt) + 
     scale_color_manual(values = cols) + 

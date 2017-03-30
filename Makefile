@@ -37,6 +37,7 @@ $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach Y,$(FILT),$(Y)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach Y,$(FILT),$(Y)))) \
 $(multidsfigdir)/timing/summary_timing_all.rds \
+$(multidsfigdir)/tsne/summary_tsne_all.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE1),$(foreach K,$(SUMMARYTYPE1),$(K)/summary_$(K)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE2),$(foreach K,$(SUMMARYTYPE2),$(K)/summary_$(K)_$(D))))) \
@@ -155,7 +156,7 @@ $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach Y,$(4),$Y))) scripts/
 	$R "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
 $(foreach X,$(DS),$(eval $(call cobrarule,$(X),,,$(MT),${MTc},)))
-$(foreach X,$(DSbulk),$(eval $(call cobrarule,$(X),,,$(MTbulk),${MTCbulk},_bulk)))
+$(foreach X,$(DSbulk),$(eval $(call cobrarule,$(X),,,$(MTbulk),${MTcbulk},_bulk)))
 $(foreach k,$(FILT),$(foreach X,$(DS),$(eval $(call cobrarule,$(X),$(k),_$(k),$(MT),${MTc},))))
 $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(eval $(call cobrarule,$(X),$(k),_$(k),$(MTbulk),${MTcbulk},_bulk))))
 
@@ -188,7 +189,7 @@ $(realperfdir)/$(1)$(3)_performance.rds: scripts/calculate_performance_realtruth
 	$R "--args dataset='$(1)' filt='$(2)' cobradir='$(cobradir)' outdir='$(realperfdir)'" scripts/calculate_performance_realtruth.R Rout/calculate_performance_realtruth_$(1)$(3).Rout
 endef
 $(foreach X,$(DSsimsignal),$(eval $(call trueperfrule,$(X),,)))
-$(foreach k,$(FILT),$(foreach X,$(DSsimsignal),$(eval $(call trueperfrule_filt,$(X),$(k),_$(k)))))
+$(foreach k,$(FILT),$(foreach X,$(DSsimsignal),$(eval $(call trueperfrule,$(X),$(k),_$(k)))))
 
 ## --------------------------- Plots for evaluation ----------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -341,3 +342,9 @@ $(eval $(call summaryrule_origvsmock,_real,$(Dsb),${Dsbc},${FILTc}))
 $(eval $(call summaryrule_origvsmock,_sim,$(Dsbsim),${Dsbsimc},${FILTc}))
 $(eval $(call summaryrule_origvsmock,_bulk,$(DSbulksignal),${DSbulksignalc},${FILTc}))
 
+define summaryrule_tsne
+$(multidsfigdir)/tsne/summary_tsne$(1).rds: $(addsuffix _dataset_characteristics_plots.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$Y))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_tsne.R include_datasets.mk scripts/plot_setup.R
+	$R "--args datasets='$(3)' filt='$(4)' summarytype='tsne' dtpext='$(1)' figdir='$(multidsfigdir)/tsne' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_tsne$(1).Rout
+endef
+$(eval $(call summaryrule_tsne,_all,$(DStsne),${DStsnec},))

@@ -46,3 +46,7 @@ DSbulkmockc := $(subst $(space),$(comma),$(DSbulkmock))
 ## All bulk data sets
 DSbulk := EGEUV1 EGEUV1mock
 DSbulkc := $(subst $(space),$(comma),$(DSbulk))
+
+## Data sets for tSNE plot
+DStsne := GSE74596 GSE45719 GSE48968-GPL13112 EMTAB2805 UsoskinGSE59739 GSE63818-GPL16791 GSE60749-GPL13112 EGEUV1
+DStsnec := $(subst $(space),$(comma),$(DStsne))

@@ -1,3 +1,9 @@
+ttestmod <- function(x, y, lmin) {
+  ## Perform t-test only if x and y are both longer than lmin
+  if (length(x) >= lmin & length(y) >= lmin) t.test(x, y)$statistic
+  else NA
+}
+
 plot_results_characterization <- function(cobra, colvec, exts, summary_data = list()) {
   sizes_nsamples <- gsub("avetpm.", "", grep("avetpm.", colnames(truth(cobra)), value = TRUE))
   for (szi in sizes_nsamples) {
@@ -34,7 +40,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
               df2 %>% dplyr::mutate_(newy = interp(~log2(x), x = as.name(y))) %>%
                 dplyr::group_by(Var2) %>% 
                 dplyr::summarise(
-                  tstat = tryCatch(t.test(newy[sign], newy[!sign])$statistic, error = function(e) NA),
+                  tstat = tryCatch(ttestmod(newy[sign], newy[!sign], lmin = 5), error = function(e) NA),
                   mediandiff = tryCatch(median(newy[sign]) - median(newy[!sign]), error = function(e) NA)) %>%
                 dplyr::mutate(charac = paste0("log2_", y)))
       
@@ -87,7 +93,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
               df2 %>% dplyr::mutate_(newy = interp(~x, x = as.name(y))) %>%
                 group_by(Var2) %>% 
                 dplyr::summarise(
-                  tstat = tryCatch(t.test(newy[sign], newy[!sign])$statistic, error = function(e) NA),
+                  tstat = tryCatch(ttestmod(newy[sign], newy[!sign], lmin = 5), error = function(e) NA),
                   mediandiff = tryCatch(median(newy[sign]) - median(newy[!sign]), error = function(e) NA)) %>%
                 dplyr::mutate(charac = y))
       
