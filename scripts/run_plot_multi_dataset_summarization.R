@@ -15,6 +15,7 @@ print(singledsfigdir)
 print(cobradir)
 print(dschardir)
 print(concordancedir)
+print(origvsmockdir)
 print(figdir)
 
 suppressPackageStartupMessages(library(cowplot))
@@ -36,7 +37,10 @@ get(paste0("summarize_", summarytype))(figdir = figdir,
                                        singledsfigdir = singledsfigdir,
                                        cobradir = cobradir,
                                        concordancedir = concordancedir,
-                                       dschardir = dschardir)
-saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, dtpext, ".rds"))
+                                       dschardir = dschardir,
+                                       origvsmockdir = origvsmockdir)
+saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, 
+                            ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
+                            dtpext, ".rds"))
 sessionInfo()
 

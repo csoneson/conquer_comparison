@@ -4,7 +4,8 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(pheatmap))
 
-help_function_crossmethod_concordance <- function(concordance_betweenmethods_pairwise, k0) {
+help_function_crossmethod_concordance <- function(concordance_betweenmethods_pairwise, 
+                                                  k0, titleext = "") {
   ## Visualize cross-method consistency (average pairwise AUC between methods
   ## for top-k0 genes)
   ## Calculate average area under concordance curve across all data set
@@ -26,7 +27,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   }
   pheatmap(cmcons, cluster_rows = TRUE, cluster_cols = TRUE,
            main = paste0("Area under method/method concordance curve,", 
-                         "\naveraged across all data set instances, top ", k0, " genes"), 
+                         "\naveraged across all data set instances, top ", 
+                         k0, " genes, ", titleext), 
            color = colorRampPalette(rev(brewer.pal(n = 7, name =
                                                      "RdYlBu")))(100),
            breaks = seq(0, 1, length.out = 101))
@@ -46,7 +48,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
                 strip.text.x = element_text(size = 12, angle = 90),
                 strip.text.y = element_text(size = 12, angle = 0), 
                 panel.grid = element_blank()) +
-          xlim(0, 1) + 
+          xlim(0, 1) + ggtitle(titleext) + 
           xlab(paste0("Area under method/method concordance curve, top ", k0, " genes")))
   print(ggplot(cmdist, aes(x = AUCs)) + geom_histogram() +
           facet_grid(method1 ~ method2, scales = "free") + theme_bw() +
@@ -55,7 +57,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
                 strip.text.x = element_text(size = 12, angle = 90),
                 strip.text.y = element_text(size = 12, angle = 0), 
                 panel.grid = element_blank()) +
-          xlim(0, 1) + 
+          xlim(0, 1) + ggtitle(titleext) + 
           xlab(paste0("Area under method/method concordance curve, top ", k0, " genes")))
   
   ## Order methods by hierarchical clustering result and visualize distributions
@@ -80,7 +82,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
                 panel.grid = element_blank(),
                 panel.border = element_blank(), 
                 strip.background = element_rect(colour = "white")) +
-          xlab("") + ylab("") +
+          xlab("") + ylab("") + ggtitle(titleext) + 
           scale_fill_continuous(low = "black", high = "yellow", 
                                 name = paste0("AUC,\ntop ", k0, "\ngenes")))
   
@@ -93,7 +95,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
                 panel.grid = element_blank(),
                 panel.border = element_blank(), 
                 strip.background = element_rect(colour = "white")) +
-          xlab("") + ylab("") +
+          xlab("") + ylab("") + ggtitle(titleext) + 
           scale_fill_continuous(low = "black", high = "yellow", 
                                 name = paste0("AUC,\ntop ", k0, "\ngenes"), 
                                 limits = c(0, 1)))
@@ -102,7 +104,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   ## methods
   cmdist2 <- dplyr::mutate(cmdist2, ncells = as.numeric(as.character(ncells)))
   print(ggplot(cmdist2, aes(x = ncells, y = AUCs)) + geom_point(size = 0.5) +
-          geom_smooth() +
+          geom_smooth() + ggtitle(titleext) + 
           facet_grid(method1 ~ method2) + theme_bw() +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
                 axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),

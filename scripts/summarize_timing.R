@@ -1,5 +1,6 @@
-summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
-                             singledsfigdir, cobradir, concordancedir, dschardir) {
+summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
+                             singledsfigdir, cobradir, concordancedir, 
+                             dschardir, origvsmockdir) {
   
   ## Generate list to hold all plots
   plots <- list()
@@ -175,7 +176,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols = cols,
   dev.off()
   
   ## --------------------------- Final summary plot ------------------------- ##
-  pdf(paste0(figdir, "/timing_final.pdf"), width = 12, height = 6)
+  pdf(paste0(figdir, "/timing_final", dtpext, ".pdf"), width = 12, height = 6)
   p <- plot_grid(plot_grid(plots$rel_timing_boxplot_comb_log + theme(legend.position = "none"), 
                            plots$timing_exponent_ncells + theme(legend.position = "none"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),

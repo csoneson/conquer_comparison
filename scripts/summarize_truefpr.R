@@ -1,5 +1,6 @@
-summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
-                              singledsfigdir, cobradir, concordancedir, dschardir) {
+summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
+                              singledsfigdir, cobradir, concordancedir, 
+                              dschardir, origvsmockdir) {
   
   ## Generate list to hold all plots
   plots <- list()
@@ -39,11 +40,11 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
     rownames(annotation_row) <- annotation_row$id
   
     pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
-             main = "True FPR", display_numbers = TRUE, 
-             colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
-             breaks = seq(0, 0.6, length.out = 101), 
+             main = paste0("True FPR, ", f), display_numbers = TRUE, 
+             color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
+             breaks = seq(0, 1, length.out = 101), 
              annotation_row = dplyr::select(annotation_row, n_samples, dataset), 
-             show_rownames = FALSE, main = f, 
+             show_rownames = FALSE, 
              annotation_col = data.frame(method = colnames(y), row.names = colnames(y)),
              annotation_colors = list(method = cols[colnames(y)]),
              annotation_names_col = FALSE)
@@ -53,56 +54,105 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols = cols,
   ## ------------------------------- Performance ------------------------------ ##
   pdf(paste0(figdir, "/summary_truefpr", exts, dtpext, "_2.pdf"),
       width = 10, height = 7)
-  # summary_data_list <- lapply(datasets, function(ds) {
-  #   readRDS(paste0(singledsfigdir, "/truefpr/", ds, exts, 
-  #                  "_truefpr_summary_data.rds"))
-  # })
-  # y <- lapply(summary_data_list, function(m) {
-  #   m$fracpbelow0.05 %>% 
-  #     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.")# %>%
-  # })
-  # y <- do.call(rbind, y) %>%
-  #   dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples))))))
-  # 
-  ## Remove extension from method name
-  # y$method <- gsub(exts, "", y$method)
+
+  truefpr <- truefpr %>% 
+    tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
+    dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
+    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
   
-  plots[["truefpr"]] <- ggplot(y, aes(x = method, y = FPR, color = method)) + 
+  for (f in unique(truefpr$filt)) {
+    plots[[paste0("truefpr_sep_", f)]] <- 
+      ggplot(truefpr %>% dplyr::filter(filt == f),
+             aes(x = method, y = FPR, color = method)) + 
+      geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
+      theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
+      scale_color_manual(values = cols) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+      ggtitle(f)
+    print(plots[[paste0("truefpr_sep_", f)]])
+  }
+  
+  plots[["truefpr_comb"]] <- 
+    ggplot(truefpr,
+           aes(x = method, y = FPR, color = method)) + 
     geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
     geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
     theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
-    scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+    facet_wrap(~ filt) + 
+    scale_color_manual(values = cols) + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13)) + 
     guides(color = guide_legend(ncol = 2, title = ""),
            shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
-  print(plots[["truefpr"]])
+  print(plots[["truefpr_comb"]])
   
   ## P-value distributions
   for (ds in datasets) {
-    cbr <- readRDS(paste0(cobradir, "/", ds, exts, "_cobra.rds"))
-    pv <- pval(cbr)
-    tmp <- reshape2::melt(pv) %>% 
-      tidyr::separate(variable, into = c("method", "ncells", "repl"), sep = "\\.") %>%
-      dplyr::mutate(ncells.repl = paste0(ncells, ".", repl))
-    ## Remove extension from method name
-    tmp$method <- gsub(exts, "", tmp$method)
-    
-    for (i in unique(tmp$ncells.repl)) {
-      p <- tmp %>% subset(ncells.repl == i) %>% 
-        ggplot(aes(x = value, fill = method)) + geom_histogram() + 
-        facet_wrap(~method, scales = "free_y") + 
-        theme_bw() + xlab("p-value") + ylab("") + 
-        theme(axis.text.y = element_blank(),
-              axis.ticks.y = element_blank()) + 
-        scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
-                          name = "", guide = FALSE) + 
-        ggtitle(paste0(ds, ".", i))
-      print(p)
+    for (e in exts) {
+      cbr <- readRDS(paste0(cobradir, "/", ds, e, "_cobra.rds"))
+      pv <- pval(cbr)
+      tmp <- reshape2::melt(pv) %>% 
+        tidyr::separate(variable, into = c("method", "ncells", "repl"), sep = "\\.") %>%
+        dplyr::mutate(ncells.repl = paste0(ncells, ".", repl))
+      ## Remove extension from method name
+      tmp$method <- gsub(paste(exts, collapse = "|"), "", tmp$method)
+      
+      for (i in unique(tmp$ncells.repl)) {
+        p <- tmp %>% subset(ncells.repl == i) %>% 
+          ggplot(aes(x = value, fill = method)) + geom_histogram() + 
+          facet_wrap(~method, scales = "free_y") + 
+          theme_bw() + xlab("p-value") + ylab("") + 
+          theme(axis.text.y = element_blank(),
+                axis.ticks.y = element_blank()) + 
+          scale_fill_manual(values = structure(cols, names = gsub(exts, "", names(cols))), 
+                            name = "", guide = FALSE) + 
+          ggtitle(paste0(ds, e, ".", i))
+        print(p)
+        if (ds == "EMTAB2805mock" & i == "48.1")
+          plots[[paste0("pvalues_", ds, e, "_", i)]] <- p
+      }
     }
   }
   dev.off()
   
-  plots
+  ## -------------------------- Final summary plots ------------------------- ##
+  pdf(paste0(figdir, "/truefpr_final", dtpext, ".pdf"), width = 12, height = 6)
+  p <- plot_grid(plot_grid(plots$truefpr_sep_ + theme(legend.position = "none") + 
+                             ggtitle("Without filtering"), 
+                           plots$truefpr_sep_TPM_1_25p + theme(legend.position = "none") + 
+                             ggtitle("After filtering"),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots$truefpr_sep_ + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+  
+  if ("pvalues_EMTAB2805mock_48.1" %in% names(plots)) {
+    pdf(paste0(figdir, "/truefpr_final_pval_nofilt", dtpext, ".pdf"), width = 10, height = 7)
+    print(plots[["pvalues_EMTAB2805mock_48.1"]])
+    dev.off()
+  }
+  
+  if ("pvalues_EMTAB2805mock_TPM_1_25p_48.1" %in% names(plots)) {
+    pdf(paste0(figdir, "/truefpr_final_pval_withfilt", dtpext, ".pdf"), width = 10, height = 7)
+    print(plots[["pvalues_EMTAB2805mock_TPM_1_25p_48.1"]])
+    dev.off()
+  }  
 }

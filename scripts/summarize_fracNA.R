@@ -1,5 +1,6 @@
-summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols,
-                             singledsfigdir, cobradir, concordancedir, dschardir) {
+summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
+                             singledsfigdir, cobradir, concordancedir, 
+                             dschardir, origvsmockdir) {
   
   ## Generate list to hold all plots
   plots <- list()
@@ -50,7 +51,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols = cols,
     ggplot(nbrgenes, aes(x = method, y = fracNA, color = method)) + 
     geom_boxplot(outlier.size = -1) +
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    facet_wrap( ~ filt, nrow = 1) + 
+    facet_wrap(~ filt, nrow = 1) + 
     theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
     scale_color_manual(values = cols) + 
     scale_shape_manual(values = pch) + 

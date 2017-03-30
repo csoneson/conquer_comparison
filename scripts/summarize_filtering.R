@@ -1,5 +1,8 @@
-summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
-                                singledsfigdir, cobradir, concordancedir, dschardir) {
+summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
+                                singledsfigdir, cobradir, concordancedir, 
+                                dschardir, origvsmockdir) {
+  exts <- setdiff(exts, "")
+  
   pdf(paste0(figdir, "/summary_filtering", exts, dtpext, ".pdf"), width = 12, height = 7)
   
   summary_data_list_orig <- lapply(datasets, function(ds) {
@@ -57,4 +60,5 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols = cols,
           theme(axis.text = element_text(size = 12), 
                 axis.title = element_text(size = 13)))
   
+  dev.off()
 }

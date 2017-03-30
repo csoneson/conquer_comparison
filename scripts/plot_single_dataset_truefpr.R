@@ -1,5 +1,3 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 plot_truefpr <- function(cobra, colvec, exts = exts, summary_data = list()) {
   pvs <- pval(cobra)
   fpr <- apply(pvs, 2, function(x) length(which(x <= 0.05))/length(x[!is.na(x)]))
