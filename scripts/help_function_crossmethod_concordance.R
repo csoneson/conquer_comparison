@@ -39,6 +39,16 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   ## Visualize full distributions of cross-method consistencies across data set
   ## instances
   cmdist <- concordance_betweenmethods_pairwise %>% dplyr::filter(k == k0)
+  
+  ## Add "diagonal" similarities between a method and itself
+  allm <- unique(c(cmdist$method1, cmdist$method2))
+  tmp <- cmdist %>% dplyr::group_by(dataset, filt, ncells, repl) %>%
+    dplyr::filter(row_number() == 1) %>% ungroup()
+  tmp <- tmp[rep(1:nrow(tmp), length(allm)), ] %>%
+    dplyr::mutate(method1 = rep(allm, each = nrow(tmp)), 
+                  method2 = rep(allm, each = nrow(tmp)), AUCs = 1, AUC = k^2/2)
+  cmdist <- rbind(cmdist, tmp)
+  
   for (i in 1:nrow(cmdist)) {
     if (cmdist[i, "method1"] > cmdist[i, "method2"]) {
       cmdist[i, c("method1", "method2")] <- cmdist[i, c("method2", "method1")]
@@ -70,8 +80,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   
   ## Order methods by hierarchical clustering result and visualize distributions
   ## of AUCs in color code
-  hcl <- hclust(as.dist(1 - cmcons))
-  hclord <- hcl$labels[hcl$order]
+  hclord <- rev(phm$tree_row$labels[phm$tree_row$order])
   cmdist2 <- cmdist %>% dplyr::group_by(method1, method2) %>%
     dplyr::arrange(AUCs) %>% dplyr::mutate(ordr = 1:length(AUCs), ycoord = 1)
   for (i in 1:nrow(cmdist2)) {
@@ -83,14 +92,15 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   cmdist2$method2 <- factor(cmdist2$method2, levels = hclord[hclord %in% cmdist2$method2])
 
   p <- ggplot(cmdist2, aes(x = ordr, y = ycoord)) + geom_raster(aes(fill = AUCs)) +
-    facet_grid(method1 ~ method2) + theme_bw() +
+    facet_grid(method1 ~ method2, scales = "free_x") + theme_bw() +
     theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
           axis.ticks = element_blank(), 
           strip.text.x = element_text(size = 12, angle = 90),
           strip.text.y = element_text(size = 12, angle = 0), 
           panel.grid = element_blank(),
           panel.border = element_blank(), 
-          strip.background = element_rect(colour = "white")) +
+          strip.background = element_rect(colour = "white"),
+          legend.position = c(0.1, 0.3)) +
     xlab("") + ylab("") + ggtitle(titleext) + 
     scale_fill_continuous(low = "black", high = "yellow", 
                           name = paste0("AUC,\ntop ", k0, "\ngenes"), 

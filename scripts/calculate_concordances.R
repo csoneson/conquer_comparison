@@ -7,6 +7,8 @@ suppressPackageStartupMessages(library(iCOBRA))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
 
+source("scripts/concordance_functions.R")
+
 print(dataset)  ## Data set
 print(filt)  ## Filtering
 print(cobradir)  ## Directory where to look for cobra object (output from prepare_cobra_for_evaluation.R)
@@ -22,42 +24,6 @@ if (filt == "") {
 maxrank <- 1000
 
 ## ----------------------------- Help functions ----------------------------- ##
-
-## For each k in 1:maxrank, count the number of genes occurring each number of 
-## times. The output is a data frame with three columns: nbr_occ, nbr_genes, k. 
-## For a given row, interpret as follows: among the top-k genes from each 
-## method, nbr_genes occur exactly nbr_occ times. 
-calculate_nbr_occurrences <- function(mtx, maxrank) {
-  if (ncol(mtx) > 1) {
-    M <- matrix(0, max(mtx[1:maxrank, ]), maxrank)
-    for (i in 1:ncol(mtx)) {
-      M[cbind(mtx[1:maxrank, i], 1:maxrank)] <- M[cbind(mtx[1:maxrank, i], 1:maxrank)] + 1
-    }
-    M <- M[rowSums(M) != 0, ]
-    M <- t(apply(M, 1, cumsum))
-    M2 <- matrix(0, ncol(mtx), maxrank)
-    for (i in 1:nrow(M)) {
-      M2[cbind(M[i, ], 1:ncol(M))] <- M2[cbind(M[i, ], 1:ncol(M))] + 1
-    }
-    M2 <- M2 %>% reshape2::melt() %>%
-      dplyr::rename(k = Var2, nbr_genes = value, nbr_occ = Var1)
-    M2 %>% dplyr::arrange(k, nbr_occ) %>%
-      dplyr::mutate(nbr_cols = ncol(mtx))
-  } else {
-    NULL
-  }
-}
-
-## Calculate partial (cumulative) AUCs. 
-## Assumes that x variable = k, y variable = nbr_genes
-calc_auc <- function(x) {
-  x %>% dplyr::mutate(dx = c(0, diff(k)),
-                      dy = c(0, diff(nbr_genes)),
-                      ys = c(0, nbr_genes[-length(nbr_genes)])) %>%
-    dplyr::mutate(AUC = cumsum(dx * dy/2 + dx * ys)) %>%
-    dplyr::mutate(AUCs = AUC/(k^2/2))
-}
-
 get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)

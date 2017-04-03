@@ -27,14 +27,14 @@ get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
 cols <- c("#771155", "#AA4488", "#CC99BB", 
           "#3A0027", "#BCA2B4",
-          "#114477", "#4477AA", "#77AADD", 
+          "#000000", "#4477AA", "#BEBEBE", 
           "#117777", "#44AAAA", "#77CCCC",
           "#117744", "#44AA77", "#88CCAA", "#004120",
           "#777711", "#AAAA44", 
           "#774411", "#AA7744",  
           "#771122", "#AA4455", "#DD7788", "#FFFF00",
           "#DDDD77", "#DDAA77", "#86861B",
-          "#000000", "#BEBEBE")
+          "#114477", "#77AADD")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
                  "edgeRQLF", "edgeRLRTrobust",
                  "zingeR", "zingeRauto", "zingeRautonofilt",

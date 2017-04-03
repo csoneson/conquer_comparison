@@ -36,4 +36,12 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
           ggtitle("After filtering"))
   dev.off()
   
+  pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_clust.pdf"), 
+      width = 12, height = 6)
+  plot(plots[["TPM_1_25p_100"]]$average_auc_clustering$tree_row)
+  dev.off()
+  
+  saveRDS(plots[["TPM_1_25p_100"]], 
+          file = paste0(figdir, "/crossmethod_consistency_final", dtpext, "_plots.rds"))
+  
 }

@@ -163,7 +163,7 @@ $(foreach k,$(FILT),$(foreach X,$(DSbulk),$(eval $(call cobrarule,$(X),$(k),_$(k
 ## ----------------------------- Calculate concordances ------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define concrule
-$(concordancedir)/$(1)$(3)_concordances.rds: scripts/calculate_concordances.R $(cobradir)/$(1)$(3)_cobra.rds
+$(concordancedir)/$(1)$(3)_concordances.rds: scripts/calculate_concordances.R $(cobradir)/$(1)$(3)_cobra.rds scripts/concordance_functions.R
 	$R "--args dataset='$(1)' filt='$(2)' cobradir='$(cobradir)' outdir='$(concordancedir)'" scripts/calculate_concordances.R Rout/calculate_concordances_$(1)$(3).Rout
 endef
 $(foreach X,$(DS),$(eval $(call concrule,$(X),,)))
