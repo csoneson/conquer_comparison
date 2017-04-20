@@ -27,26 +27,29 @@ pdf(paste0(figdir, "/", plottype, "/", dataset, exts, "_", plottype, ".pdf"), wi
 summary_data <- list()
 if (plottype == "timing") {
   timings <- readRDS(paste0(cobradir, "/", dataset, exts, "_timings.rds"))
-  summary_data <- get(paste0("plot_", plottype))(timings, colvec = cols,
-                                                 exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(
+    timinglist = timings, colvec = cols, exts = exts, summary_data = summary_data)
 } else if (plottype == "consistency") {
   cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
   concordances <- readRDS(paste0(concordancedir, "/", dataset, exts, "_concordances.rds"))
-  summary_data <- get(paste0("plot_", plottype))(cobra, concordances = concordances,
-                                                 colvec = cols, exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(
+    cobra = cobra, concordances = concordances,
+    colvec = cols, exts = exts, summary_data = summary_data)
 } else if (plottype == "results_relativetruth_all") {
   cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
   relperf_alltruths <- readRDS(paste0(relperfdir, "/", 
                                       dataset, exts, "_relative_performance.rds"))
-  summary_data <- get(paste0("plot_", plottype))(cobra, relperf_alltruths = relperf_alltruths, 
-                                                 colvec = cols, exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(
+    cobra = cobra, relperf_alltruths = relperf_alltruths, 
+    colvec = cols, exts = exts, summary_data = summary_data)
 } else if (plottype == "performance_realtruth") {
   cobraperf <- readRDS(paste0(realperfdir, "/", dataset, exts, "_performance.rds"))
-  summary_data <- get(paste0("plot_", plottype))(cobraperf, 
-                                                 colvec = cols, exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(
+    cobraperf = cobraperf, colvec = cols, exts = exts, summary_data = summary_data)
 } else {
   cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
-  summary_data <- get(paste0("plot_", plottype))(cobra, colvec = cols, exts = exts, summary_data = summary_data)
+  summary_data <- get(paste0("plot_", plottype))(
+    cobra = cobra, colvec = cols, exts = exts, summary_data = summary_data)
 }
 dev.off()
 

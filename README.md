@@ -11,3 +11,7 @@ To add a dataset, put the rds file containing the MultiArrayExperiment in the `d
 
 ## A note on the datasets
 Most datasets are obtained from the [*conquer*](http://imlspenticton.uzh.ch:3838/conquer/) repository. The RPM values for the Usoskin dataset was downloaded from [http://linnarssonlab.org/drg/](http://linnarssonlab.org/drg/) on December 18, 2016. 
+
+## Unit tests
+To run all the unit tests, just do (in R)
+``source("scripts/run_unit_tests.R")``. Alternatively, to run just the unit tests in a given file, do e.g. ``test_file("unit_tests/test_trueperformance.R", reporter = "summary")``.

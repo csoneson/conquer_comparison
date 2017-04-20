@@ -95,6 +95,26 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
       plots[[paste0(asp, "_all_", f)]] <- p1
       print(plots[[paste0(asp, "_all_", f)]])
+      
+      p2 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
+        dplyr::group_by(dataset, n_samples, method) %>% 
+        dplyr::summarize(TPR = median(TPR), FDR = median(FDR)) %>% 
+        dplyr::ungroup() %>%
+        ggplot(aes_string(x = "FDR", y = "TPR", color = "method", label = "method")) + 
+        geom_point(size = 2) + 
+        #geom_label_repel(size = 1) + 
+        theme_bw() + xlab(paste0("True FDR at adj.p = 0.05 cutoff")) + 
+        ylab(paste0("True TPR at adj.p = 0.05 cutoff")) +
+        facet_wrap(~dataset + n_samples) + 
+        scale_color_manual(values = cols) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title = element_text(size = 13)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggtitle(f)
+      plots[[paste0("fdrtpr_bydsncells_sep_", f)]] <- p2
+      print(plots[[paste0("fdrtpr_bydsncells_sep_", f)]])
     
       p3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
         dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%

@@ -15,7 +15,7 @@ get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 test_that("COBRAData object is correctly assembled", {
   gw <- getwd()
   setwd(topdir)
-  for (ds in c("EMTAB2805", "EMTAB2805mock", "GSE45719", "GSE45719mock", "GSE74596", "GSE74596mock", "UsoskinGSE59739", "UsoskinGSE59739mock", "EGEUV1", "EGEUV1mock")) {
+  for (ds in c("EMTAB2805", "EMTAB2805mock", "GSE45719", "GSE45719mock", "GSE74596", "GSE74596mock", "UsoskinGSE59739", "UsoskinGSE59739mock", "EGEUV1", "EGEUV1mock", "GSE63818-GPL16791", "GSE60749-GPL13112", "GSE60749-GPL13112mock", "GSE48968-GPL13112", "GSE48968-GPL13112mock", "GSE45719sim123", "GSE45719sim123mock", "GSE74596sim123", "GSE74596sim123mock", "GSE48968-GPL13112sim123", "GSE48968-GPL13112sim123mock")) {
     config <- fromJSON(file = paste0("config/", ds, ".json"))
     subsets <- readRDS(config$subfile)
     data <- readRDS(config$mae)

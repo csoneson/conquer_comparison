@@ -23,7 +23,8 @@ test_that("true performance is correctly calculated", {
           dplyr::rename_("tested" = paste0("tested.", get_nsamples(mth), ".", get_repl(mth))) %>%
           dplyr::filter(tested == TRUE) %>% dplyr::inner_join(truth, by = c("gene" = "id")) %>%
           dplyr::inner_join(data.frame(gene = rownames(padj(cobra)), padj = padj(cobra)[, mth],
-                                       stringsAsFactors = FALSE), by = "gene")
+                                       stringsAsFactors = FALSE), by = "gene") %>%
+          dplyr::mutate(padj = replace(padj, is.na(padj), 1))
         fpr_df <- fpr(perf) %>% dplyr::filter(method == mth)
         tpr_df <- tpr(perf) %>% dplyr::filter(method == mth)
         fdrtpr_df <- fdrtpr(perf) %>% dplyr::filter(method == mth)
@@ -64,12 +65,14 @@ test_that("true performance is correctly calculated", {
         
         expect_equal(fpr_df$FPR, fpr_df$FP/fpr_df$NONDIFF)
         expect_equal(tpr_df$TPR, tpr_df$TP/tpr_df$DIFF)
-        expect_equal(fdrtpr_df$FDR, fdrtpr_df$FP/fdrtpr_df$NBR)
-        
+        tmp <- fdrtpr_df$FP/fdrtpr_df$NBR
+        tmp[fdrtpr_df$NBR == 0] <- 0
+        expect_equal(fdrtpr_df$FDR, tmp)
+
         roc_df <- roc(perf) %>% dplyr::filter(method == mth)
-        roc_df <- roc_df %>% dplyr::filter(ROC_CUTOFF %in% sapply(fpr_df$thr, function(i) {
+        roc_df <- roc_df[match(sapply(fpr_df$thr, function(i) {
           max(roc_df$ROC_CUTOFF[roc_df$ROC_CUTOFF <= as.numeric(gsub("^thr", "", i))])
-        }))
+        }), roc_df$ROC_CUTOFF), ]
         expect_equal(roc_df$FPR, fpr_df$FPR)
         expect_equal(roc_df$TPR, tpr_df$TPR)
       }

@@ -36,6 +36,14 @@ if (nrow(iCOBRA::score(cobra)) > 0) {
     min(iCOBRA::score(cobra), na.rm = TRUE) - 1
 }
 
+## If a method has both score and p-value, remove the score to ascertain that
+## ROC curves will (if possible) be calculated from p-values
+iCOBRA::score(cobra)[, intersect(colnames(iCOBRA::score(cobra)),
+                                 colnames(pval(cobra)))] <- NULL
+if (ncol(iCOBRA::score(cobra)) == 0) {
+  iCOBRA::score(cobra) <- data.frame()
+}
+
 truth <- readRDS(paste0("data/", dataset, "_truth.rds"))
 
 cobra <- COBRAData(truth = truth, 
