@@ -37,7 +37,7 @@ cols <- c("#771155", "#AA4488", "#CC99BB",
           "#114477", "#77AADD")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
                  "edgeRQLF", "edgeRLRTrobust",
-                 "zingeR", "zingeRauto", "zingeRautonofilt",
+                 "ROTSvoom", "ROTScpm", "ROTStpm",
                  "DESeq2", "DESeq2nofilt", "DESeq2census",
                  "MASTtpm", "MASTcpm", "MASTtpmDetRate", "MASTcpmDetRate",
                  "monocle", "monoclecensus", 

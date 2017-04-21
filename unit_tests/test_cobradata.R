@@ -41,15 +41,17 @@ test_that("COBRAData object is correctly assembled", {
                                 filt = gsub("^_", "", f))
           ## Test that the calculated number of tested, called and significant
           ## genes are correct
-          ntested <- nrow(datasub$count)
-          ncalled <- sum(!is.na(padj(cobra)[, nm]))
-          nsign <- sum(padj(cobra)[, nm] <= 0.05, na.rm = TRUE)
-          tmp <- subset(ngenes, method == mth & ncells == get_nsamples(nm) & 
-                          repl == get_repl(nm) & dataset == ds & 
-                          filt == gsub("^_", "", f))
-          expect_equal(ntested, tmp$nbr_tested)
-          expect_equal(ncalled, tmp$nbr_called)
-          expect_equal(nsign, tmp$nbr_sign0.05)
+          if (nm %in% colnames(padj(cobra))) {
+            ntested <- nrow(datasub$count)
+            ncalled <- sum(!is.na(padj(cobra)[, nm]))
+            nsign <- sum(padj(cobra)[, nm] <= 0.05, na.rm = TRUE)
+            tmp <- subset(ngenes, method == mth & ncells == get_nsamples(nm) & 
+                            repl == get_repl(nm) & dataset == ds & 
+                            filt == gsub("^_", "", f))
+            expect_equal(ntested, tmp$nbr_tested)
+            expect_equal(ncalled, tmp$nbr_called)
+            expect_equal(nsign, tmp$nbr_sign0.05)
+          }
         }
         
         ## Test that truth is equivalent to adjusted p-values from largest
