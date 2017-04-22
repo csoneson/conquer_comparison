@@ -24,7 +24,7 @@ PLOTTYPE3 := results_relativetruth_all
 PLOTTYPE4 := performance_realtruth
 SUMMARYTYPE1 := truefpr crossmethod_consistency orig_vs_mock
 SUMMARYTYPE2 := de_characteristics relfprtpr
-SUMMARYTYPE3 := fracNA
+SUMMARYTYPE3 := fracNA nbrdet
 DSTYPE1 := real sim bulk
 DSTYPE2 := real sim
 DSTYPE3 := real bulk
@@ -275,6 +275,15 @@ scripts/run_plot_multi_dataset_summarization.R scripts/summarize_fracNA.R includ
 endef
 $(eval $(call summaryrule_fracNA,_real,$(DSreal),${DSrealc},${FILTc}))
 $(eval $(call summaryrule_fracNA,_bulk,$(DSbulk),${DSbulkc},${FILTc}))
+
+define summaryrule_nbrdet
+$(multidsfigdir)/nbrdet/summary_nbrdet$(1).rds: $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(2),$Y))) \
+$(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach K,$(FILT),$(foreach Y,$(2),$Y_$(K))))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_nbrdet.R include_datasets.mk scripts/plot_setup.R
+	$R "--args datasets='$(3)' filt='$(4)' summarytype='nbrdet' dtpext='$(1)' figdir='$(multidsfigdir)/nbrdet' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_nbrdet$(1).Rout
+endef
+$(eval $(call summaryrule_nbrdet,_real,$(DSrealsignal),${DSrealsignalc},${FILTc}))
+$(eval $(call summaryrule_nbrdet,_bulk,$(DSbulksignal),${DSbulksignalc},${FILTc}))
 
 define summaryrule_truefpr
 $(multidsfigdir)/truefpr/summary_truefpr$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/truefpr/, $(foreach Y,$(2),$Y_truefpr))) \

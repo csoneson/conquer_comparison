@@ -56,12 +56,14 @@ test_that("COBRAData object is correctly assembled", {
         
         ## Test that truth is equivalent to adjusted p-values from largest
         ## sample set
-        maxn <- max(as.numeric(as.character(get_nsamples(names(res)))))
-        tmp <- padj(cobra)[, paste0(mth, ".", maxn, ".1")]
-        tmp[is.na(tmp)] <- 1
-        expect_equal(as.numeric(tmp <= 0.05),
-                     truth(cobra)[match(rownames(padj(cobra)), rownames(truth(cobra))), 
-                                  paste0(mth, ".truth")])
+        if (paste0(mth, ".", maxn, ".1") %in% colnames(padj(cobra))) {
+          maxn <- max(as.numeric(as.character(get_nsamples(names(res)))))
+          tmp <- padj(cobra)[, paste0(mth, ".", maxn, ".1")]
+          tmp[is.na(tmp)] <- 1
+          expect_equal(as.numeric(tmp <= 0.05),
+                       truth(cobra)[match(rownames(padj(cobra)), rownames(truth(cobra))), 
+                                    paste0(mth, ".truth")])
+        }
       }
     }        
   }

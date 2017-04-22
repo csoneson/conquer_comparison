@@ -71,7 +71,7 @@ test_that("true performance is correctly calculated", {
 
         roc_df <- roc(perf) %>% dplyr::filter(method == mth)
         roc_df <- roc_df[match(sapply(fpr_df$thr, function(i) {
-          max(roc_df$ROC_CUTOFF[roc_df$ROC_CUTOFF <= as.numeric(gsub("^thr", "", i))])
+          max(roc_df$ROC_CUTOFF[round(roc_df$ROC_CUTOFF, 15) <= as.numeric(gsub("^thr", "", i))])
         }), roc_df$ROC_CUTOFF), ]
         expect_equal(roc_df$FPR, fpr_df$FPR)
         expect_equal(roc_df$TPR, tpr_df$TPR)
