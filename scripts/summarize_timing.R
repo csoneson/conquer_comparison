@@ -77,8 +77,14 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                                 override.aes = list(size = 1.5)))
   print(plots[["rel_timing_boxplot_sep"]])
 
+  tmp <- timing %>% dplyr::mutate(method = as.character(method)) %>% 
+    dplyr::group_by(method) %>% 
+    dplyr::mutate(rel_timing_median = median(rel_timing, na.rm = TRUE)) %>%
+    dplyr::ungroup()
+  tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$rel_timing_median, 
+                                                                    decreasing = TRUE)]))
   plots[["rel_timing_boxplot_comb_log"]] <- 
-    ggplot(timing, aes(x = method, y = rel_timing, color = method)) + 
+    ggplot(tmp, aes(x = method, y = rel_timing, color = method)) + 
     geom_boxplot(outlier.size = -1) + 
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
     theme_bw() + xlab("") + ylab("Relative computational \ntime requirement") + 
@@ -159,10 +165,15 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
           axis.title.y = element_text(size = 13))
   print(plots[["timing_exponent_ngenes"]])
 
-  plots[["timing_exponent_ncells"]] <- 
-    timing %>% group_by(method, ngenes_cat) %>% 
+  tmp <- timing %>% dplyr::group_by(method, ngenes_cat) %>% 
     dplyr::summarise(expn = calc_expn(timing, ncells)) %>%
-    ggplot(aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
+    dplyr::ungroup() %>% dplyr::mutate(method = as.character(method)) %>% 
+    dplyr::group_by(method) %>%
+    dplyr::mutate(expn_median = median(expn, na.rm = TRUE))
+  tmp$method = factor(tmp$method, levels = unique(tmp$method[order(tmp$expn_median, 
+                                                                   decreasing = TRUE)]))
+  plots[["timing_exponent_ncells"]] <- 
+    ggplot(tmp, aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
     geom_point(position = position_jitter(width = 0.2), size = 1) + 
     theme_bw() + xlab("") + 
     ylab("Exponent in power model of \ntiming vs number of cells") + 

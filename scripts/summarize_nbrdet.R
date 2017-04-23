@@ -164,6 +164,20 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     ggtitle("Without filtering")
   print(p)
   dev.off()
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds_filtered.pdf"), width = 18, height = 10)
+  p <- plots[["nbrdet_sep_TPM_1_25p"]] + 
+    theme(legend.position = "bottom") + 
+    guides(colour = FALSE,
+           shape = 
+             guide_legend(nrow = 1,
+                          title = "Number of cells per group",
+                          override.aes = list(size = 1.5),
+                          title.theme = element_text(size = 12, angle = 0),
+                          label.theme = element_text(size = 12, angle = 0),
+                          keywidth = 1, default.unit = "cm")) + 
+    ggtitle("After filtering")
+  print(p)
+  dev.off()
   
   pdf(paste0(figdir, "/nbrdet_final", dtpext, "_line_byds.pdf"), width = 18, height = 10)
   p <- plots[["nbrdet_sep_line_"]] + 
@@ -177,6 +191,20 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                           label.theme = element_text(size = 12, angle = 0),
                           keywidth = 1, default.unit = "cm")) + 
     ggtitle("Without filtering")
+  print(p)
+  dev.off()
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_line_byds_filtered.pdf"), width = 18, height = 10)
+  p <- plots[["nbrdet_sep_line_TPM_1_25p"]] + 
+    theme(legend.position = "bottom") + 
+    guides(shape = FALSE,
+           colour = 
+             guide_legend(nrow = 3,
+                          title = "",
+                          override.aes = list(size = 1.5),
+                          title.theme = element_text(size = 12, angle = 0),
+                          label.theme = element_text(size = 12, angle = 0),
+                          keywidth = 1, default.unit = "cm")) + 
+    ggtitle("After filtering")
   print(p)
   dev.off()
 }

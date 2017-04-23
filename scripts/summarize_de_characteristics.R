@@ -69,7 +69,8 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols)))) + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols)))) + 
       guides(color = guide_legend(ncol = 2, title = ""),
              shape = guide_legend(ncol = 2, title = ""))
     plots[[paste0(stat, "_bymethod_scaled")]] <- p

@@ -63,9 +63,13 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   print(plots[["fracna_comb"]])
   
   for (f in unique(nbrgenes$filt)) {
+    tmp <- nbrgenes %>% dplyr::filter(filt == f) %>%
+      dplyr::group_by(method) %>% dplyr::mutate(fracNAmedian = median(fracNA, na.rm = TRUE)) %>%
+      dplyr::ungroup()
+    tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$fracNAmedian, 
+                                                                      decreasing = TRUE)]))
     plots[[paste0("fracna_comb_", f)]] <-
-      ggplot(nbrgenes %>% dplyr::filter(filt == f), 
-             aes(x = method, y = fracNA, color = method)) + 
+      ggplot(tmp, aes(x = method, y = fracNA, color = method)) + 
       geom_boxplot(outlier.size = -1) +
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
       theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 

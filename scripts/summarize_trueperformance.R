@@ -79,11 +79,17 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   
   for (f in unique(fdrtpr$filt)) {
     for (asp in c("FDR", "TPR")) {
-      p1 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
-        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+      tmp <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
+        dplyr::group_by(method) %>% dplyr::mutate_(med = paste0("stats::median(", asp, ", na.rm = TRUE)")) %>%
+        dplyr::ungroup()
+      tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$med, decreasing = TRUE)]))
+      p1 <- tmp %>%
+        ggplot(aes_string(x = "method", y = asp, color = "method"))
+      if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
+      p1 <- p1 + 
         geom_boxplot(outlier.size = -1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at adj.p = 0.05 cutoff")) + 
+        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at\nadj.p = 0.05 cutoff")) + 
         scale_color_manual(values = cols) + 
         scale_shape_manual(values = pch) + 
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -92,7 +98,6 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         guides(color = guide_legend(ncol = 2, title = ""),
                shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
         ggtitle(f)
-      if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
       plots[[paste0(asp, "_all_", f)]] <- p1
       print(plots[[paste0(asp, "_all_", f)]])
       
@@ -119,7 +124,9 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       p3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
         dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
         dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
-        ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
+        ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method"))
+      if (asp == "FDR") p3 <- p3 + geom_hline(yintercept = 0.05)
+      p3 <- p3 + 
         geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
         facet_wrap(~dataset, scales = "free_x") + 
         theme_bw() + xlab("") + ylab(paste0("True ", asp, " at adj.p = 0.05 cutoff")) + 
@@ -130,7 +137,6 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         guides(color = guide_legend(ncol = 2, title = ""),
                shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
         ggtitle(f)
-      if (asp == "FDR") p3 <- p3 + geom_hline(yintercept = 0.05)
       plots[[paste0(asp, "_byncells_sep_", f)]] <- p3
       print(plots[[paste0(asp, "_byncells_sep_", f)]])
     }  
@@ -144,11 +150,15 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
 
   asp <- "AUROC"
   for (f in unique(auroc$filt)) {
-    plots[[paste0("auroc_all_", f)]] <- auroc %>%  dplyr::filter(filt == f) %>%
+    tmp <- auroc %>% dplyr::filter(filt == f) %>%
+      dplyr::group_by(method) %>% dplyr::mutate_(med = paste0("stats::median(", asp, ", na.rm = TRUE)")) %>%
+      dplyr::ungroup()
+    tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$med, decreasing = TRUE)]))
+    plots[[paste0("auroc_all_", f)]] <- tmp %>%
       ggplot(aes_string(x = "method", y = asp, color = "method")) + 
       geom_boxplot(outlier.size = -1) + 
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-      theme_bw() + xlab("") + ylab("Area under ROC curve") + 
+      theme_bw() + xlab("") + ylab("Area under\nROC curve") + 
       scale_color_manual(values = cols) + 
       scale_shape_manual(values = pch) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -178,29 +188,39 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## -------------------------- Final summary plots ------------------------- ##
-  for (asp in c("FDR", "TPR", "auroc")) {
-    pdf(paste0(figdir, "/true", asp, "_final", dtpext, ".pdf"), width = 12, height = 6)
-    p <- plot_grid(plot_grid(plots[[paste0(asp, "_all_")]] + theme(legend.position = "none") + 
-                               ggtitle("Without filtering") + ylim(-0.01, 1), 
-                             plots[[paste0(asp, "_all_TPM_1_25p")]] + theme(legend.position = "none") + 
-                               ggtitle("After filtering") + ylim(-0.01, 1),
-                             labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                   get_legend(plots[[paste0(asp, "_all_")]] + 
-                                theme(legend.position = "bottom") + 
-                                guides(colour = FALSE,
-                                       shape = 
-                                         guide_legend(nrow = 1,
-                                                      title = "Number of cells per group",
-                                                      override.aes = list(size = 1.5),
-                                                      title.theme = element_text(size = 12,
-                                                                                 angle = 0),
-                                                      label.theme = element_text(size = 10,
-                                                                                 angle = 0),
-                                                      keywidth = 1, default.unit = "cm"))),
-                   rel_heights = c(1.7, 0.1), ncol = 1)
-    print(p)
-    dev.off()
+  pdf(paste0(figdir, "/trueperformance_final", dtpext, ".pdf"), width = 12, height = 12)
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("FDR_all_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("TPR_all_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("TPR_all_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("auroc_all_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("auroc_all_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("E", "F"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots[[paste0("FDR_all_")]] + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 1.7, 1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
     
+  for (asp in c("FDR", "TPR", "auroc")) {
     pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 12, height = 6)
     p <- plot_grid(plot_grid(plots[[paste0(asp, "_byncells_sep_")]] + theme(legend.position = "none") + 
                                ggtitle("Without filtering") + ylim(-0.01, 1), 

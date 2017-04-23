@@ -41,7 +41,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
       theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -56,7 +57,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
       theme_bw() + xlab("") + ylab("Area under concordance curve, mock data set") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -72,7 +74,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
       facet_wrap(~dataset) + 
       theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -88,7 +91,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
       facet_wrap(~dataset) + 
       theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -97,12 +101,17 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     print(p)
     plots[[paste0("auc_mock_sep_", f)]] <- p
     
-    p <- concsum %>% 
+    tmp <- concsum %>% dplyr::mutate(method = as.character(method)) %>%
+      dplyr::group_by(method) %>% 
+      dplyr::mutate(tstat_median = median(tstat, na.rm = TRUE)) %>% dplyr::ungroup()
+    tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$tstat_median, decreasing = TRUE)]))
+    p <- tmp %>% 
       ggplot(aes(x = method, y = sign(tstat) * sqrt(abs(tstat)), col = method)) + 
       geom_boxplot(outlier.size = -1) +
       geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
       theme_bw() + xlab("") + ylab("sqrt(t-statistic, area under \nconcordance curve (signal - mock))") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -117,7 +126,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
       theme_bw() + xlab("") + 
       ylab("difference between median area under \nconcordance curve (signal - mock)") + 
-      scale_color_manual(values = structure(cols, names = gsub(exts, "", names(cols))), name = "") + 
+      scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                               "", names(cols))), name = "") + 
       scale_shape_discrete(name = "") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -130,11 +140,11 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
   
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, ".pdf"), width = 12, height = 12)
-  p <- plot_grid(plot_grid(plots$auc_signal_comb_ + theme(legend.position = "none"), 
-                           plots$auc_mock_comb_ + theme(legend.position = "none"),
+  p <- plot_grid(plot_grid(plots$auc_signal_comb_TPM_1_25p + theme(legend.position = "none"), 
+                           plots$auc_mock_comb_TPM_1_25p + theme(legend.position = "none"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                 plots$tstat_auc_ + theme(legend.position = "none"),
-                 get_legend(plots$tstat_auc_ + theme(legend.position = "bottom") + 
+                 plots$tstat_auc_TPM_1_25p + theme(legend.position = "none"),
+                 get_legend(plots$tstat_auc_TPM_1_25p + theme(legend.position = "bottom") + 
                               guides(colour = FALSE,
                                      shape = 
                                        guide_legend(nrow = 2,

@@ -17,7 +17,8 @@ clean_mae <- function(mae, groupid) {
   mae2
 }
   
-subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt) {
+subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt, 
+                       groupid = NULL) {
   s <- keep_samples[[as.character(sz)]][i, ]
   
   ## Subset and filter data matrices
@@ -27,6 +28,7 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt) {
     condt <- structure(imposed_condition[[as.character(sz)]][i, ],
                        names = rownames(Biobase::pData(mae)[s, ]))
   } else {
+    if (is.null(groupid)) stop("Must provide groupid")
     condt <- structure(as.character(Biobase::pData(mae)[s, groupid]),
                        names = rownames(Biobase::pData(mae)[s, ]))
   }
