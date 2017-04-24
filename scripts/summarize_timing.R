@@ -127,19 +127,6 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
   print(plots[["rel_timing_barplot_comb"]])
 
-  ## 3d plots 
-  rbPal <- colorRampPalette(c('red','blue'))
-  for (m in unique(timing$method)) {
-    pl3d <- scatterplot3d(subset(timing, method == m)$ncells, xlab = "Number of cells per group",  
-                          subset(timing, method == m)$ngenes, ylab = "Number of genes", 
-                          subset(timing, method == m)$timing, zlab = "Computational time requirement", 
-                          type = "h", pch = 19, main = m,
-                          color = rbPal(20)[as.numeric(cut(subset(timing, method == m)$timing, breaks = 20))])
-    model  <- lm(subset(timing, method == m)$timing ~ 
-                   subset(timing, method == m)$ncells + subset(timing, method == m)$ngenes)
-    pl3d$plane3d(model)
-  }
-  
   ## Help function to fit power model
   timing$ngenes_cat <- Hmisc::cut2(timing$ngenes, g = 10)
   ## Calculate exponent for single variable (keeping the other fixed)
@@ -150,7 +137,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
       NA
     }
   }
-
+  
   plots[["timing_exponent_ngenes"]] <- 
     timing %>% group_by(method, ncells) %>% 
     dplyr::summarise(expn = calc_expn(timing, ngenes)) %>%
@@ -164,7 +151,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13))
   print(plots[["timing_exponent_ngenes"]])
-
+  
   tmp <- timing %>% dplyr::group_by(method, ngenes_cat) %>% 
     dplyr::summarise(expn = calc_expn(timing, ncells)) %>%
     dplyr::ungroup() %>% dplyr::mutate(method = as.character(method)) %>% 
@@ -183,6 +170,24 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13))
   print(plots[["timing_exponent_ncells"]])
+  
+  dev.off()
+  
+  pdf(paste0(figdir, "/summary_timing", dtpext, "_3d.pdf"), width = 15, height = 15)
+  
+  ## 3d plots 
+  rbPal <- colorRampPalette(c('red','blue'))
+  par(mfrow = c(3, 3))
+  for (m in unique(timing$method)) {
+    pl3d <- scatterplot3d(subset(timing, method == m)$ncells, xlab = "Number of cells per group",  
+                          subset(timing, method == m)$ngenes, ylab = "Number of genes", 
+                          subset(timing, method == m)$timing, zlab = "Computational time requirement", 
+                          type = "h", pch = 19, main = m,
+                          color = rbPal(20)[as.numeric(cut(subset(timing, method == m)$timing, breaks = 20))])
+    model  <- lm(subset(timing, method == m)$timing ~ 
+                   subset(timing, method == m)$ncells + subset(timing, method == m)$ngenes)
+    pl3d$plane3d(model)
+  }
 
   dev.off()
   

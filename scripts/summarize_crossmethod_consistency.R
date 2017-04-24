@@ -30,18 +30,26 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
   dev.off()
   
   ## -------------------------- Final summary plots ------------------------- ##
-  pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, ".pdf"), 
-      width = 14, height = 10)
-  print(plots[["TPM_1_25p_100"]]$concordancedistr_color + 
-          ggtitle("After filtering"))
-  dev.off()
-  
-  pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_clust.pdf"), 
-      width = 12, height = 6)
-  plot(plots[["TPM_1_25p_100"]]$average_auc_clustering$tree_row)
-  dev.off()
-  
-  saveRDS(plots[["TPM_1_25p_100"]], 
-          file = paste0(figdir, "/crossmethod_consistency_final", dtpext, "_plots.rds"))
-  
+  for (k0 in K0) {
+    pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_", k0, ".pdf"), 
+        width = 14, height = 10)
+    print(plots[[paste0("TPM_1_25p_", k0)]]$concordancedistr_color + 
+            ggtitle("After filtering"))
+    dev.off()
+    
+    pdf(paste0(figdir, "/crossmethod_consistency_ncellsdep_final", dtpext, "_", k0, ".pdf"), 
+        width = 14, height = 10)
+    print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_ncells + 
+            ggtitle("After filtering"))
+    dev.off()
+    
+    pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_", k0, "_clust.pdf"), 
+        width = 12, height = 6)
+    plot(plots[[paste0("TPM_1_25p_", k0)]]$average_auc_clustering$tree_row)
+    dev.off()
+    
+    saveRDS(plots[[paste0("TPM_1_25p_", k0)]], 
+            file = paste0(figdir, "/crossmethod_consistency_final", dtpext,
+                          "_", k0, "_plots.rds"))
+  }  
 }
