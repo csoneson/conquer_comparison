@@ -1,9 +1,8 @@
 #' Help function to plot FPR and TPR for a subset of methods (defined either by
 #' method or sample size)
-#' 
 plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
-  cobraplot <- 
-    prepare_data_for_plot(cobrares, keepmethods = keepmethods, colorscheme = colvec)
+  cobraplot <- prepare_data_for_plot(cobrares, keepmethods = keepmethods, 
+                                     colorscheme = colvec)
   
   ## Modify method column so that all replicates with the same number of samples have the same name
   tpr(cobraplot) <- tpr(cobraplot) %>% 
@@ -53,9 +52,11 @@ plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data 
   pval(cobratmp)[is.na(pval(cobratmp))] <- 1
   padj(cobratmp)[is.na(padj(cobratmp))] <- 1
   
+  ## Melt adjusted p-value matrix
   tmp <- melt(as.matrix(padj(cobratmp))) %>% 
     tidyr::separate(Var2, into = c("method", "nsamples", "repl"), sep = "\\.", remove = FALSE) %>%
     dplyr::mutate(Var1 = paste0(method, ".", Var1)) 
+  ## Melt truth table
   truth <- melt(as.matrix(truth(cobratmp)[, grep("\\.truth", colnames(truth(cobratmp)))])) %>%
     dplyr::mutate(gene = paste(gsub("\\.truth", "", Var2), Var1, sep = ".")) %>%
     dplyr::mutate(status = value) %>%
@@ -68,6 +69,7 @@ plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data 
   vals <- tmp %>% dplyr::select(Var1, Var2, value) %>% dcast(Var1 ~ Var2) %>% as.data.frame()
   rownames(vals) <- vals$Var1
   vals$Var1 <- NULL
+  ## Generate COBRAData object where genes are defined by method + gene
   cobrarel <- COBRAData(padj = vals, truth = truth)
   
   cobrares <- calculate_performance(cobrarel, onlyshared = TRUE, 
