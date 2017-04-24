@@ -1,5 +1,3 @@
-source("/home/Shared/data/seq/conquer/comparison/scripts/plot_setup.R")
-
 plot_timing <- function(timinglist, colvec, exts = exts, summary_data = list()) {
   timings <- sapply(timinglist, function(i) i["elapsed"])
   
