@@ -26,8 +26,8 @@ calculate_nbr_occurrences <- function(mtx, maxrank) {
 ## Calculate partial (cumulative) AUCs. 
 ## Assumes that x variable = k, y variable = nbr_genes
 calc_auc <- function(x) {
-  x %>% dplyr::mutate(dx = c(0, diff(k)),
-                      dy = c(0, diff(nbr_genes)),
+  x %>% dplyr::mutate(dx = c(k[1], diff(k)),
+                      dy = c(nbr_genes[1], diff(nbr_genes)),
                       ys = c(0, nbr_genes[-length(nbr_genes)])) %>%
     dplyr::mutate(AUC = cumsum(dx * dy/2 + dx * ys)) %>%
     dplyr::mutate(AUCs = AUC/(k^2/2))

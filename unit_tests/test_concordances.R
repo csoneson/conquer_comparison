@@ -22,6 +22,11 @@ test_that("concordance calculations are correct on small example", {
   expect_equal(auc$nbr_genes, c(0, 0, 0, 0, 1))
   expect_equal(auc$AUC, c(0, 0, 0, 0, 0.5))
   expect_equal(auc$AUCs, c(0, 0, 0, 0, 0.04))
+  
+  R <- cbind(1:15, 1:15)
+  nbr <- calculate_nbr_occurrences(mtx = R, maxrank = 15)
+  auc <- calc_auc(nbr %>% dplyr::filter(nbr_occ == nbr_cols))
+  expect_equal(auc$AUCs, rep(1, 15))
 })
 
 test_that("concordance calculations are correct on real data", {

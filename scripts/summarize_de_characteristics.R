@@ -19,7 +19,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
   
-  for (stat in c("tstat")) {
+  for (stat in c("tstat", "snr")) {
     x <- charac %>% dplyr::filter_(paste0("!is.na(", stat, ")")) %>% 
       dplyr::filter_(paste0("is.finite(", stat, ")")) %>% 
       dplyr::filter(charac != "fraczerodiff") %>%
@@ -31,8 +31,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
 
     ## Visualize summary statistics for each characteristic
     statname <- switch(stat,
-                       tstat = "t-statistic comparing significant \nand non-significant genes",
-                       mediandiff = "median difference between \nsignificant and non-significant genes")
+                       tstat = "t-statistic comparing significant\nand non-significant genes",
+                       snr = "signal-to-noise statistic comparing\nsignificant and non-significant genes",
+                       mediandiff = "median difference between\nsignificant and non-significant genes")
     p <- x %>% 
       ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
       geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
@@ -79,18 +80,19 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## -------------------------- Final summary plots ------------------------- ##
-  pdf(paste0(figdir, "/de_characteristics_final", paste(exts, collapse = "_"), 
-             dtpext, ".pdf"), width = 10, height = 6)
-  p <- plots[["tstat_bystat"]] + 
-    theme(legend.position = "bottom") + 
-    guides(colour = FALSE,
-           shape = guide_legend(nrow = 2,
-                                title = "",
-                                override.aes = list(size = 1.5),
-                                title.theme = element_text(size = 12, angle = 0),
-                                label.theme = element_text(size = 12, angle = 0),
-                                keywidth = 1, default.unit = "cm"))
-  print(p)
-  dev.off()
-
+  for (stat in c("tstat", "snr")) {
+    pdf(paste0(figdir, "/de_characteristics_final", paste(exts, collapse = "_"), 
+               dtpext, "_", stat, ".pdf"), width = 10, height = 6)
+    p <- plots[[paste0(stat, "_bystat")]] + 
+      theme(legend.position = "bottom") + 
+      guides(colour = FALSE,
+             shape = guide_legend(nrow = 2,
+                                  title = "",
+                                  override.aes = list(size = 1.5),
+                                  title.theme = element_text(size = 12, angle = 0),
+                                  label.theme = element_text(size = 12, angle = 0),
+                                  keywidth = 1, default.unit = "cm"))
+    print(p)
+    dev.off()
+  }
 }
