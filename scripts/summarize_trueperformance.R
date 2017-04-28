@@ -6,7 +6,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   plots <- list()
   
   ## ----------------------------- Heatmaps --------------------------------- ##
-  pdf(paste0(figdir, "/summary_trueperformance", exts, dtpext, "_1.pdf"),
+  pdf(paste0(figdir, "/summary_trueperformance", dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
   
   ## Read all true FDR/TPR information
@@ -64,7 +64,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
 
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_trueperformance", exts, dtpext, "_2.pdf"),
+  pdf(paste0(figdir, "/summary_trueperformance", dtpext, "_2.pdf"),
       width = 10, height = 7)
   
   fdrtpr <- fdrtpr %>% 

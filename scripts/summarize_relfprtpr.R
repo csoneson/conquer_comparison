@@ -5,7 +5,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
   ## Generate list to hold all plots
   plots <- list()
   
-  pdf(paste0(figdir, "/summary_relfprtpr", exts, dtpext, "_1.pdf"),
+  pdf(paste0(figdir, "/summary_relfprtpr", dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
   
   X <- list()
@@ -62,7 +62,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
 
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_relfprtpr", exts, dtpext, "_2.pdf"),
+  pdf(paste0(figdir, "/summary_relfprtpr", dtpext, "_2.pdf"),
       width = 10, height = 7)
   
   X <- lapply(X, function(x) {

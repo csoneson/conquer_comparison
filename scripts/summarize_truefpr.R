@@ -5,7 +5,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   ## Generate list to hold all plots
   plots <- list()
   
-  pdf(paste0(figdir, "/summary_truefpr", exts, dtpext, "_1.pdf"),
+  pdf(paste0(figdir, "/summary_truefpr", dtpext, "_1.pdf"),
       width = 10, height = 4 * length(datasets))
   
   ## Read all true FPR information
@@ -52,7 +52,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## ------------------------------- Performance ------------------------------ ##
-  pdf(paste0(figdir, "/summary_truefpr", exts, dtpext, "_2.pdf"),
+  pdf(paste0(figdir, "/summary_truefpr", dtpext, "_2.pdf"),
       width = 10, height = 7)
 
   truefpr <- truefpr %>% 

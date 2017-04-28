@@ -103,7 +103,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
           legend.position = c(0.1, 0.3)) +
     xlab("") + ylab("") + ggtitle(titleext) + 
     scale_fill_continuous(low = "black", high = "yellow", 
-                          name = paste0("AUC,\ntop ", k0, "\ngenes"), 
+                          name = paste0("AUCC,\ntop ", k0, "\ngenes"), 
                           limits = c(0, 1))
   plots[["concordancedistr_color"]] <- p
   print(p)
@@ -118,7 +118,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
           axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
           strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
           strip.background = element_rect(colour = "white")) +
-    xlab("Number of cells per group") + ylab(paste0("AUC, top ", k0, " genes"))
+    xlab("Number of cells per group") + ylab(paste0("AUCC, top ", k0, " genes"))
   plots[["concordance_dep_ncells"]] <- p
   print(p)
   

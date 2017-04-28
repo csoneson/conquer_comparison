@@ -7,7 +7,7 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
   
   K0 <- c(100, 1000)
   
-  pdf(paste0(figdir, "/summary_crossmethod_consistency", exts, dtpext, ".pdf"), 
+  pdf(paste0(figdir, "/summary_crossmethod_consistency", dtpext, ".pdf"), 
       width = 14, height = 10)
   
   concordances <- do.call(rbind, lapply(datasets, function(ds) {
