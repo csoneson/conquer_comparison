@@ -1,5 +1,7 @@
 ## Test concordance calculations with small example
 
+suppressPackageStartupMessages(library(iCOBRA))
+
 topdir <- "/home/Shared/data/seq/conquer/comparison"
 
 source(paste0(topdir, "/scripts/concordance_functions.R"))

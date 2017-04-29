@@ -60,6 +60,7 @@ for (s in szi) {
   message(s)
   ## Subset cobra object to given data set instance
   cobratmp <- COBRAData(
+    pval = pval(cobra)[, grep(s, colnames(pval(cobra))), drop = FALSE],
     padj = padj(cobra)[, grep(s, colnames(padj(cobra))), drop = FALSE],
     score = iCOBRA::score(cobra)[, grep(s, colnames(iCOBRA::score(cobra))), drop = FALSE],
     truth = truth(cobra)[, c("gene", "status", 
@@ -68,6 +69,8 @@ for (s in szi) {
   ## Keep only genes that are tested for this data set instance
   truth(cobratmp) <- 
     truth(cobratmp)[!is.na(truth(cobratmp)[, paste0("tested.", s)]), , drop = FALSE]
+  pval(cobratmp) <- 
+    pval(cobratmp)[rownames(pval(cobratmp)) %in% rownames(truth(cobratmp)), , drop = FALSE]
   padj(cobratmp) <- 
     padj(cobratmp)[rownames(padj(cobratmp)) %in% rownames(truth(cobratmp)), , drop = FALSE]
   iCOBRA::score(cobratmp) <- 
