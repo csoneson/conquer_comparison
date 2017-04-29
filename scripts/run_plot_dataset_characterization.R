@@ -64,8 +64,7 @@ if (filt == "") {
                       tpmData = assays(experiments(mae)[["gene"]])[["TPM"]],
                       phenoData = new("AnnotatedDataFrame", data = as.data.frame(pData(mae))))
   sceset <- scater::plotTSNE(sceset[!duplicated(tpm(sceset)), ], 
-                             exprs_values = "tpm", return_SCESet = TRUE,
-                             draw_plot = FALSE)
+                             return_SCESet = TRUE, draw_plot = FALSE)
   df <- data.frame(cell = rownames(sceset@reducedDimension), 
                    sceset@reducedDimension) %>% 
     dplyr::full_join(data.frame(cell = rownames(pData(sceset)), 

@@ -2,10 +2,6 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
                                          dschardir, origvsmockdir) {
   
-  if (length(exts) > 1) {
-    exts <- setdiff(exts, "")
-  }
-  
   X <- do.call(rbind, lapply(datasets, function(ds) {
     keepgroups <- fromJSON(file = paste0("config/", ds, ".json"))$keepgroups
     readRDS(paste0(dschardir, "/", ds, "_dataset_characteristics_summary_data.rds"))$char_cells_m %>%

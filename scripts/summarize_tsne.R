@@ -2,10 +2,6 @@ summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
                            singledsfigdir, cobradir, concordancedir, 
                            dschardir, origvsmockdir) {
   
-  if (length(exts) > 1) {
-    exts <- setdiff(exts, "")
-  }
-  
   X <- list()
   for (ds in datasets) {
     X[[ds]] <- readRDS(paste0(dschardir, "/", ds,
