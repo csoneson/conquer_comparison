@@ -1,4 +1,5 @@
 suppressPackageStartupMessages(library(monocle))
+suppressPackageStartupMessages(library(cluster))
 
 calculate_cell_characteristics <- function(L) {
   cds <- newCellDataSet(L$tpm, 
@@ -15,8 +16,15 @@ calculate_cell_characteristics <- function(L) {
                               cell = colnames(L$count))
   fraczerocensus <- data.frame(fraczerocensus = colMeans(censuscounts == 0), 
                                cell = colnames(censuscounts))
+  
+  ## Silhouette width
+  silh <- silhouette(x = as.numeric(factor(L$condt)), dist = dist(t(log2(L$tpm + 1))))
+  silh <- data.frame(silhouette = silh[, "sil_width"], 
+                     cell = colnames(L$tpm))
+  
   df3 <- Reduce(function(...) dplyr::full_join(..., by = "cell"),
-                list(libsize, fraczero, fraczeroround, libsizecensus, fraczerocensus))
+                list(libsize, fraczero, fraczeroround, libsizecensus, 
+                     fraczerocensus, silh))
   
   list(characs = df3)
 }

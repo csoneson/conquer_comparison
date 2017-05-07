@@ -21,6 +21,9 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(fracNA = nbr_NA/nbr_tested) %>%
     dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells))))
   
+  ## Change "mock" to "null" in data set names
+  nbrgenes$dataset <- gsub("mock", "null", nbrgenes$dataset)
+  
   ## Set plot symbols for number of cells per group
   ncells <- levels(nbrgenes$ncells_fact)
   pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
@@ -37,7 +40,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
       theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
       scale_color_manual(values = cols) + 
       scale_shape_manual(values = pch) + 
-      facet_wrap(~dataset) + 
+      facet_wrap(~ dataset) + 
       guides(color = guide_legend(ncol = 2, title = ""),
              shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),

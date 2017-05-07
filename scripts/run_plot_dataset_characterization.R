@@ -115,7 +115,9 @@ for (sz in sizes) {
                                                      ".", sz, ".", i)
     char_cells[[paste0(sz, ".", i)]] <- df3
     
-    char_ds[[paste0(sz, ".", i)]] <- c(n_genes = nrow(L$count))
+    ## Dataset characteristics
+    char_ds[[paste0(sz, ".", i)]] <- c(n_genes = nrow(L$count),
+                                       silhouette_avg = mean(df3[, paste0("silhouette.", sz, ".", i)]))
     
     ## Plot expression of cell cycle genes
     if (!is.null(cell_cycle_ids)) {
@@ -141,7 +143,9 @@ for (sz in sizes) {
   }
 }
 
-char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(w) w["n_genes"]),
+char_ds_m <- data.frame(ds = names(char_ds), 
+                        n_genes = sapply(char_ds, function(w) w["n_genes"]),
+                        silhouette_avg = sapply(char_ds, function(w) w["silhouette_avg"]), 
                         stringsAsFactors = FALSE) %>%
   tidyr::separate(ds, into = c("n_cells", "repl"), sep = "\\.", remove = FALSE) %>%
   dplyr::mutate(n_cells = as.numeric(n_cells)) %>%
@@ -151,6 +155,13 @@ char_ds_m <- data.frame(ds = names(char_ds), n_genes = sapply(char_ds, function(
   dplyr::mutate(n_cells = factor(n_cells, levels = unique(n_cells)))
 print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
+        scale_fill_discrete(name = "Number of cells") + 
+        stat_summary(fun.data = function(x) {return(c(y = x,
+                                                      label = x))}, 
+                     geom = "text", alpha = 1, size = 2, vjust = -1, 
+                     position = position_dodge(width = 0.75)))
+print(char_ds_m %>% ggplot(aes(x = ds, y = silhouette_avg, fill = n_cells)) + geom_bar(stat = "identity") + 
+        theme_bw() + xlab("Data set") + ylab("Average silhouette width") + 
         scale_fill_discrete(name = "Number of cells") + 
         stat_summary(fun.data = function(x) {return(c(y = x,
                                                       label = x))}, 

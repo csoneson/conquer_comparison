@@ -16,6 +16,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     }))
   }))
   
+  ## Change "mock" to "null" in data set names
+  charac$dataset <- gsub("mock", "null", charac$dataset)
+  
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
   

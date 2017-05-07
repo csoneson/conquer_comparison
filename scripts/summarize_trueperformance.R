@@ -221,7 +221,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
     
   for (asp in c("FDR", "TPR", "auroc")) {
-    pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 12, height = 6)
+    pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 13, height = 6)
     p <- plot_grid(plot_grid(plots[[paste0(asp, "_byncells_sep_")]] + theme(legend.position = "none") + 
                                ggtitle("Without filtering") + ylim(-0.01, 1), 
                              plots[[paste0(asp, "_byncells_sep_TPM_1_25p")]] + theme(legend.position = "none") + 

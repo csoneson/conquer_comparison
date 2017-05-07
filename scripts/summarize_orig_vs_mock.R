@@ -58,7 +58,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         ggplot(aes(x = method, y = AUCs, col = method)) + 
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, mock data set") + 
+        theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
         scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
                                                                  "", names(cols))), name = "") + 
         scale_shape_discrete(name = "") +
@@ -111,7 +111,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         ggplot(aes(x = method, y = sign(tstat) * sqrt(abs(tstat)), col = method)) + 
         geom_boxplot(outlier.size = -1) +
         geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
-        theme_bw() + xlab("") + ylab("sqrt(t-statistic, area under \nconcordance curve (signal - mock))") + 
+        theme_bw() + xlab("") + ylab("sqrt(t-statistic, area under \nconcordance curve (signal - null))") + 
         scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
                                                                  "", names(cols))), name = "") + 
         scale_shape_discrete(name = "") +
@@ -127,7 +127,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         geom_boxplot(outlier.size = -1) +
         geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
         theme_bw() + xlab("") + 
-        ylab("difference between median area under \nconcordance curve (signal - mock)") + 
+        ylab("difference between median area under \nconcordance curve (signal - null)") + 
         scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
                                                                  "", names(cols))), name = "") + 
         scale_shape_discrete(name = "") +

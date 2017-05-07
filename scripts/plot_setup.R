@@ -34,7 +34,8 @@ cols <- c("#771155", "#AA4488", "#CC99BB",
           "#774411", "#AA7744",  
           "#771122", "#AA4455", "#DD7788", "#FFFF00",
           "#DDDD77", "#DDAA77", "#86861B",
-          "#114477", "#77AADD")
+          "#114477", "#77AADD",
+          "#FFA500")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
                  "edgeRQLF", "edgeRLRTrobust",
                  "ROTSvoom", "ROTScpm", "ROTStpm",
@@ -44,7 +45,8 @@ names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus",
                  "Seurat", "Seuratnofilt", 
                  "SAMseq", "Wilcoxon", "NODES", "NODESnofilt",
                  "SCDE", "BPSC", "D3E", 
-                 "voomlimma", "limmatrend")
+                 "voomlimma", "limmatrend",
+                 "metagenomeSeq")
 
 ## Write color definitions to file
 s <- sapply(1:length(cols), function(x) {

@@ -151,13 +151,15 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   
   if ("pvalues_EMTAB2805mock_48.1" %in% names(plots)) {
     pdf(paste0(figdir, "/truefpr_final_pval_nofilt", dtpext, ".pdf"), width = 10, height = 7)
-    print(plots[["pvalues_EMTAB2805mock_48.1"]])
+    print(plots[["pvalues_EMTAB2805mock_48.1"]] + 
+            ggtitle("EMTAB2805null.48.1"))
     dev.off()
   }
   
   if ("pvalues_EMTAB2805mock_TPM_1_25p_48.1" %in% names(plots)) {
     pdf(paste0(figdir, "/truefpr_final_pval_withfilt", dtpext, ".pdf"), width = 10, height = 7)
-    print(plots[["pvalues_EMTAB2805mock_TPM_1_25p_48.1"]])
+    print(plots[["pvalues_EMTAB2805mock_TPM_1_25p_48.1"]] + 
+            ggtitle("EMTAB2805null_TPM_1_25p.48.1"))
     dev.off()
   }  
 }
