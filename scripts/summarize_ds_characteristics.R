@@ -38,8 +38,8 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
-    guides(color = FALSE) + scale_y_log10() + 
-    theme_bw() + xlab("") + ylab("Silhouette width") + 
+    guides(color = FALSE) + 
+    theme_bw() + xlab("") + ylab("Silhouette width per cell") + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13))

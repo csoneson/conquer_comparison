@@ -1,7 +1,7 @@
 summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
                              dschardir, origvsmockdir) {
-  
+
   ## Generate list to hold all plots
   plots <- list()
   
@@ -137,6 +137,16 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
       NA
     }
   }
+  calc_mult <- function(y, x) {
+    if (length(x) > 3) {
+      exp(lm(log(y) ~ log(x))$coef[1])
+    } else {
+      NA
+    }
+  }
+  exponfun <- function(x, a, p) {
+    a * (x^p)
+  }
   
   plots[["timing_exponent_ngenes"]] <- 
     timing %>% group_by(method, ncells) %>% 
@@ -171,6 +181,34 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
           axis.title.y = element_text(size = 13))
   print(plots[["timing_exponent_ncells"]])
   
+  ## Plot dependence on number of cells for each method
+  tmp2 <- timing %>% dplyr::group_by(method, ngenes_cat) %>% 
+    dplyr::summarise(mult = calc_mult(timing, ncells)) %>%
+    dplyr::ungroup() %>% dplyr::mutate(method = as.character(method)) %>% 
+    dplyr::group_by(method)
+  tmp2 <- dplyr::full_join(tmp, tmp2)
+  tmp3 <- do.call(rbind, lapply(1:nrow(tmp2), function(i) {
+    data.frame(method = tmp2[i, "method"], 
+               ngenes_cat = tmp2[i, "ngenes_cat"], 
+               x = 6:100, 
+               stringsAsFactors = FALSE) %>%
+      dplyr::mutate(y = as.numeric(tmp2[i, "mult"]) * (x ^ as.numeric(tmp2[i, "expn"])))
+  }))
+  plots[["timing_dependence_permethod"]] <- 
+    ggplot(timing, aes(x = ncells, y = timing, group = ngenes_cat, col = ngenes_cat)) + 
+    facet_wrap(~ method, scales = "free") + geom_point(size = 0.5, alpha = 0.5) + 
+    geom_line(data = tmp3, aes(x = x, y = y), size = 1.25) + 
+    theme(legend.position = c(0.8, 0.075),
+          axis.title = element_text(size = 13),
+          axis.text = element_text(size = 12)) + 
+    scale_color_manual(values = c("#332288", "#88CCEE", "#44AA99", "#117733",
+                                  "#999933", "#DDCC77", "#661100", "#CC6677",
+                                  "#882255", "#AA4499")) + 
+    guides(color = guide_legend(ncol = 2, title = "Number of genes")) + 
+    xlab("Number of cells per group") + 
+    ylab("Computational time requirement")
+  print(plots[["timing_dependence_permethod"]])
+  
   dev.off()
   
   pdf(paste0(figdir, "/summary_timing", dtpext, "_3d.pdf"), width = 15, height = 15)
@@ -183,7 +221,8 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                           subset(timing, method == m)$ngenes, ylab = "Number of genes", 
                           subset(timing, method == m)$timing, zlab = "Computational time requirement", 
                           type = "h", pch = 19, main = m,
-                          color = rbPal(20)[as.numeric(cut(subset(timing, method == m)$timing, breaks = 20))])
+                          color = rbPal(20)[as.numeric(cut(subset(timing, method == m)$timing, 
+                                                           breaks = 20))])
     model  <- lm(subset(timing, method == m)$timing ~ 
                    subset(timing, method == m)$ncells + subset(timing, method == m)$ngenes)
     pl3d$plane3d(model)
@@ -212,5 +251,9 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                            rel_widths = c(1, 1), nrow = 1),
                  rel_heights = c(1.7, 0.2), ncol = 1)
   print(p)
+  dev.off()
+  
+  pdf(paste0(figdir, "/timing_final_ncellsdep", dtpext, ".pdf"), width = 14, height = 9)
+  print(plots[["timing_dependence_permethod"]])
   dev.off()
 }

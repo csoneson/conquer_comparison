@@ -160,7 +160,8 @@ print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(
                                                       label = x))}, 
                      geom = "text", alpha = 1, size = 2, vjust = -1, 
                      position = position_dodge(width = 0.75)))
-print(char_ds_m %>% ggplot(aes(x = ds, y = silhouette_avg, fill = n_cells)) + geom_bar(stat = "identity") + 
+print(char_ds_m %>% ggplot(aes(x = ds, y = round(silhouette_avg, 4), fill = n_cells)) + 
+        geom_bar(stat = "identity") + 
         theme_bw() + xlab("Data set") + ylab("Average silhouette width") + 
         scale_fill_discrete(name = "Number of cells") + 
         stat_summary(fun.data = function(x) {return(c(y = x,

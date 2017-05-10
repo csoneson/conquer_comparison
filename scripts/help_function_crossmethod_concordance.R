@@ -104,7 +104,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
           panel.grid = element_blank(),
           panel.border = element_blank(), 
           strip.background = element_rect(colour = "white"),
-          legend.position = c(0.1, 0.3)) +
+          legend.position = c(0.1, 0.3),
+          panel.spacing = unit(0.15, "lines")) +
     xlab("") + ylab("") + ggtitle(titleext) + 
     scale_fill_continuous(low = "black", high = "yellow", 
                           name = paste0("AUCC,\ntop-", k0, "\ngenes"), 
@@ -121,10 +122,27 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
     theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
           axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
           strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
-          strip.background = element_rect(colour = "white")) +
+          strip.background = element_rect(colour = "white"),
+          panel.spacing = unit(0.1, "lines")) +
     xlab("Number of cells per group") + ylab(paste0("AUCC, top-", k0, " genes"))
   plots[["concordance_dep_ncells"]] <- p
   print(p)
+  
+  ## Plot dependence of AUC on average silhouette width, for each pair of
+  ## methods
+  if ("silhouette_avg" %in% colnames(cmdist2)) {
+    p <- ggplot(cmdist2, aes(x = silhouette_avg, y = AUCs)) + geom_point(size = 0.5) +
+      geom_smooth() + ggtitle(titleext) + 
+      facet_grid(method1 ~ method2) + theme_bw() +
+      theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
+            axis.ticks = element_blank(), strip.text.x = element_text(size = 12, angle = 90),
+            strip.text.y = element_text(size = 12, angle = 0), panel.grid = element_blank(),
+            strip.background = element_rect(colour = "white"),
+            panel.spacing = unit(0.1, "lines")) +
+      xlab("Average silhouette width") + ylab(paste0("AUCC, top-", k0, " genes"))
+    plots[["concordance_dep_silhouette"]] <- p
+    print(p)
+  }
   
   invisible(plots)
 }

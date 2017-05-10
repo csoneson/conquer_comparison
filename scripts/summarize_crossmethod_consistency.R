@@ -16,10 +16,24 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
                                    e, "_concordances.rds"))$concordance_betweenmethods_pairwise) %>%
         dplyr::filter(k %in% K0) %>% 
         dplyr::mutate(method1 = gsub(paste(exts, collapse = "|"), "", method1)) %>%
-        dplyr::mutate(method2 = gsub(paste(exts, collapse = "|"), "", method2))
+        dplyr::mutate(method2 = gsub(paste(exts, collapse = "|"), "", method2)) %>%
+        dplyr::mutate(repl = as.numeric(as.character(repl))) %>%
+        dplyr::mutate(ncells = as.numeric(as.character(ncells)))
+    }))
+  }))
+  
+  dsinfo <- do.call(rbind, lapply(datasets, function(ds) {
+    do.call(rbind, lapply(exts, function(e) {
+      as.data.frame(readRDS(paste0(dschardir, "/", ds, 
+                                   e, "_dataset_characteristics_summary_data.rds"))$char_ds_m) %>%
+        dplyr::rename(ncells = n_cells) %>%
+        dplyr::mutate(ncells = as.numeric(as.character(ncells)))
     }))
   }))
 
+  concordances <- dplyr::full_join(concordances, dsinfo, 
+                                   by = c("ncells", "repl", "dataset", "filt"))
+  
   for (f in unique(concordances$filt)) {
     for (k0 in K0) {
       plots[[paste0(f, "_", k0)]] <- 
@@ -40,6 +54,12 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
     pdf(paste0(figdir, "/crossmethod_consistency_ncellsdep_final", dtpext, "_", k0, ".pdf"), 
         width = 14, height = 10)
     print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_ncells + 
+            ggtitle("After filtering"))
+    dev.off()
+    
+    pdf(paste0(figdir, "/crossmethod_consistency_silhouettedep_final", dtpext, "_", k0, ".pdf"), 
+        width = 14, height = 10)
+    print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_silhouette + 
             ggtitle("After filtering"))
     dev.off()
     

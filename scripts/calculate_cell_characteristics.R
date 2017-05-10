@@ -1,5 +1,6 @@
 suppressPackageStartupMessages(library(monocle))
 suppressPackageStartupMessages(library(cluster))
+suppressPackageStartupMessages(library(edgeR))
 
 calculate_cell_characteristics <- function(L) {
   cds <- newCellDataSet(L$tpm, 
@@ -22,9 +23,13 @@ calculate_cell_characteristics <- function(L) {
   silh <- data.frame(silhouette = silh[, "sil_width"], 
                      cell = colnames(L$tpm))
   
+  ## TMM normalization factors
+  tmm <- edgeR::calcNormFactors(L$count)
+  tmm <- data.frame(TMM = tmm, cell = colnames(L$count))
+  
   df3 <- Reduce(function(...) dplyr::full_join(..., by = "cell"),
                 list(libsize, fraczero, fraczeroround, libsizecensus, 
-                     fraczerocensus, silh))
+                     fraczerocensus, silh, tmm))
   
   list(characs = df3)
 }

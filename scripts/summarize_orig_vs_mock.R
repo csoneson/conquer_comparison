@@ -92,7 +92,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
         facet_wrap(~dataset) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
+        theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
         scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
                                                                  "", names(cols))), name = "") + 
         scale_shape_discrete(name = "") +
@@ -106,7 +106,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       tmp <- concsum %>% dplyr::mutate(method = as.character(method)) %>%
         dplyr::group_by(method) %>% 
         dplyr::mutate(tstat_median = median(tstat, na.rm = TRUE)) %>% dplyr::ungroup()
-      tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$tstat_median, decreasing = TRUE)]))
+      tmp$method <- factor(tmp$method, 
+                           levels = unique(tmp$method[order(tmp$tstat_median, decreasing = TRUE)]))
       p <- tmp %>% 
         ggplot(aes(x = method, y = sign(tstat) * sqrt(abs(tstat)), col = method)) + 
         geom_boxplot(outlier.size = -1) +
@@ -144,11 +145,14 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
   ## -------------------------- Final summary plots ------------------------- ##
   for (k0 in unique(concordances$k)) {
     pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, ".pdf"), width = 12, height = 12)
-    p <- plot_grid(plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + theme(legend.position = "none"), 
-                             plots[[paste0("auc_mock_comb_TPM_1_25p_", k0)]] + theme(legend.position = "none"),
+    p <- plot_grid(plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + 
+                               theme(legend.position = "none"), 
+                             plots[[paste0("auc_mock_comb_TPM_1_25p_", k0)]] + 
+                               theme(legend.position = "none"),
                              labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                    plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + theme(legend.position = "none"),
-                   get_legend(plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + theme(legend.position = "bottom") + 
+                   get_legend(plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] +
+                                theme(legend.position = "bottom") + 
                                 guides(colour = FALSE,
                                        shape = 
                                          guide_legend(nrow = 2,
@@ -160,6 +164,19 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                                       keywidth = 1, default.unit = "cm"))),
                    rel_heights = c(1.7, 1.7, 0.1), ncol = 1, labels = c("", "C", ""))
     print(p)
+    dev.off()
+  }  
+  
+  for (k0 in unique(concordances$k)) {
+    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds.pdf"), 
+        width = 10, height = 14)
+    print(plot_grid(
+      plots[[paste0("auc_signal_sep_TPM_1_25p_", k0)]] + 
+        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1),
+      plots[[paste0("auc_mock_sep_TPM_1_25p_", k0)]] + 
+        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1),
+      ncol = 2, rel_widths = c(1, 1)
+    ))
     dev.off()
   }  
 }
