@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(Seurat))
 
-run_Seuratnofilt <- function(L) {
-  message("Seurat")
+run_SeuratTobitnofilt <- function(L) {
+  message("SeuratTobit")
   session_info <- sessionInfo()
   tryCatch({
     timing <- system.time({
@@ -13,7 +13,7 @@ run_Seuratnofilt <- function(L) {
                     names.delim = "__")
       res <- FindMarkers(seur, ident.1 = levels(factor(L$condt))[1], 
                          ident.2 = levels(factor(L$condt))[2], thresh.use = -Inf, 
-                         test.use = "bimod", min.pct = 0, min.cells = 0)
+                         test.use = "tobit", min.pct = 0, min.cells = 0)
     })
     
     hist(res$p_val, 50)
