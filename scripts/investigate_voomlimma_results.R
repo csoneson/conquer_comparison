@@ -135,33 +135,44 @@ df4 <- Reduce(function(...) dplyr::full_join(..., by = "nm"),
   tidyr::separate(nm, into = c("dataset", "filt", "ncells", "repl"), sep = "_") %>%
   dplyr::mutate(dataset = gsub("mock$", "null", dataset))
 
-p41 <- ggplot(df4, aes(x = peak_height, y = FPR, shape = dataset)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + geom_point() + 
-  geom_smooth() + theme_bw() + xlab("Peak height in the voom plot")
+p41 <- ggplot(df4, aes(x = peak_height, y = FPR)) + 
+  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
+  geom_point(aes(shape = dataset)) + 
+  geom_smooth() + theme_bw() + xlab("Peak height in the voom plot") +
+  ylab("True FPR (fraction of genes with p < 0.05)") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
-p42 <- ggplot(df4, aes(x = frac_below_peak, y = FPR, shape = dataset)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + geom_point() + 
+p42 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
+  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
+  geom_point(aes(shape = dataset)) + 
   geom_smooth() + theme_bw() + 
   xlab("Fraction of genes to the left of the peak in the voom plot") + 
+  ylab("True FPR (fraction of genes with p < 0.05)") + 
+  scale_shape_discrete(name = "Data set") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
-p43 <- ggplot(df4, aes(x = frac_below_peak, y = FPR, shape = dataset)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + geom_point() + 
+p43 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
+  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
+  geom_point(aes(shape = dataset)) + 
   geom_smooth() + ylim(0, 0.2) + theme_bw() + 
   xlab("Fraction of genes to the left of the peak in the voom plot") + 
+  ylab("True FPR (fraction of genes with p < 0.05)") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
-p44 <- ggplot(df4, aes(x = peak_dist_to_min, y = FPR, shape = dataset)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + geom_point() + 
+p44 <- ggplot(df4, aes(x = peak_dist_to_min, y = FPR)) + 
+  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
+  geom_point(aes(shape = dataset)) + 
   geom_smooth() + theme_bw() + 
   xlab("Distance between peak and leftmost point in the voom plot") + 
+  ylab("True FPR (fraction of genes with p < 0.05)") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
-p45 <- ggplot(df4, aes(x = peak_rel_dist_to_min, y = FPR, shape = dataset)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + geom_point() + 
+p45 <- ggplot(df4, aes(x = peak_rel_dist_to_min, y = FPR)) + 
+  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
+  geom_point(aes(shape = dataset)) + 
   geom_smooth() + theme_bw() + 
   xlab("Relative position of the peak between the leftmost and rightmost points in the voom plot") + 
+  ylab("True FPR (fraction of genes with p < 0.05)") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
 

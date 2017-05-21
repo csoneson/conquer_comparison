@@ -198,13 +198,13 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
     ggplot(timing, aes(x = ncells, y = timing, group = ngenes_cat, col = ngenes_cat)) + 
     facet_wrap(~ method, scales = "free") + geom_point(size = 0.5, alpha = 0.5) + 
     geom_line(data = tmp3, aes(x = x, y = y), size = 1.25) + 
-    theme(legend.position = c(0.8, 0.075),
+    theme(legend.position = "bottom", #c(0.8, 0.075),
           axis.title = element_text(size = 13),
           axis.text = element_text(size = 12)) + 
     scale_color_manual(values = c("#332288", "#88CCEE", "#44AA99", "#117733",
                                   "#999933", "#DDCC77", "#661100", "#CC6677",
                                   "#882255", "#AA4499")) + 
-    guides(color = guide_legend(ncol = 2, title = "Number of genes")) + 
+    guides(color = guide_legend(nrow = 2, title = "Number of genes")) + 
     xlab("Number of cells per group") + 
     ylab("Computational time requirement")
   print(plots[["timing_dependence_permethod"]])
@@ -253,7 +253,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   print(p)
   dev.off()
   
-  pdf(paste0(figdir, "/timing_final_ncellsdep", dtpext, ".pdf"), width = 14, height = 9)
+  pdf(paste0(figdir, "/timing_final_ncellsdep", dtpext, ".pdf"), width = 14, height = 9.5)
   print(plots[["timing_dependence_permethod"]])
   dev.off()
 }
