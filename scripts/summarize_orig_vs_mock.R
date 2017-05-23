@@ -123,6 +123,29 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       print(p)
       plots[[paste0("tstat_auc_", f, "_", k0)]] <- p
       
+      ## Scale t-statistics to max value = 1 within each data set/nbr cells
+      tmp2 <- tmp %>% dplyr::group_by(dataset, ncells) %>% 
+        dplyr::mutate(tstat_rel = tstat/max(tstat)) %>% 
+        dplyr::mutate(method = as.character(method)) %>%
+        dplyr::group_by(method) %>% 
+        dplyr::mutate(tstat_rel_median = median(tstat_rel, na.rm = TRUE)) %>% dplyr::ungroup()
+      tmp2$method <- factor(tmp2$method, 
+                            levels = unique(tmp2$method[order(tmp2$tstat_rel_median, decreasing = TRUE)]))
+      p <- tmp2 %>% 
+        ggplot(aes(x = method, y = tstat_rel, col = method)) + 
+        geom_boxplot(outlier.size = -1) +
+        geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
+        theme_bw() + xlab("") + ylab("relative t-statistic, area under \nconcordance curve (signal - null)") + 
+        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                                 "", names(cols))), name = "") + 
+        scale_shape_discrete(name = "") +
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        ggtitle(paste0(f, ", top-", k0, " genes"))
+      print(p)
+      plots[[paste0("rel_tstat_auc_", f, "_", k0)]] <- p
+      
       p <- concsum %>% 
         ggplot(aes(x = method, y = mediandiff, col = method)) + 
         geom_boxplot(outlier.size = -1) +
@@ -152,6 +175,29 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                              labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                    plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + theme(legend.position = "none"),
                    get_legend(plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] +
+                                theme(legend.position = "bottom") + 
+                                guides(colour = FALSE,
+                                       shape = 
+                                         guide_legend(nrow = 2,
+                                                      title = "",
+                                                      title.theme = element_text(size = 12,
+                                                                                 angle = 0),
+                                                      label.theme = element_text(size = 12,
+                                                                                 angle = 0),
+                                                      keywidth = 1, default.unit = "cm"))),
+                   rel_heights = c(1.7, 1.7, 0.1), ncol = 1, labels = c("", "C", ""))
+    print(p)
+    dev.off()
+    
+    ## Alternative, with relative t-statistics
+    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_reltstat.pdf"), width = 12, height = 12)
+    p <- plot_grid(plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + 
+                               theme(legend.position = "none"), 
+                             plots[[paste0("auc_mock_comb_TPM_1_25p_", k0)]] + 
+                               theme(legend.position = "none"),
+                             labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                   plots[[paste0("rel_tstat_auc_TPM_1_25p_", k0)]] + theme(legend.position = "none"),
+                   get_legend(plots[[paste0("rel_tstat_auc_TPM_1_25p_", k0)]] +
                                 theme(legend.position = "bottom") + 
                                 guides(colour = FALSE,
                                        shape = 

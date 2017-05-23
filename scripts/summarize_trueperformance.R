@@ -72,6 +72,19 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
   
+  ## Add categorization of methods into "liberal", "inrange", "conservative"
+  getcat <- function(FDR, thr) {
+    fracover <- length(which(FDR > thr))/length(FDR)
+    fracunder <- length(which(FDR < thr))/length(FDR)
+    if (fracover >= 0.75) "liberal"
+    else if (fracunder >= 0.75) "conservative"
+    else "inrange"
+  }
+  fdrtpr <- fdrtpr %>%
+    dplyr::group_by(thr, method, filt) %>% 
+    dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
+    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("liberal", "inrange", "conservative")))
+  
   ## Set plot symbols for number of cells per group
   ncells <- sort(as.numeric(as.character(unique(fdrtpr$n_samples))))
   pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
@@ -100,6 +113,26 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         ggtitle(f)
       plots[[paste0(asp, "_all_", f)]] <- p1
       print(plots[[paste0(asp, "_all_", f)]])
+      
+      ## Same, but stratified by FDR control
+      p15 <- tmp %>%
+        ggplot(aes_string(x = "method", y = asp, color = "method"))
+      if (asp == "FDR") p15 <- p15 + geom_hline(yintercept = 0.05)
+      p15 <- p15 + 
+        geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
+        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at\nadj.p = 0.05 cutoff")) + 
+        scale_color_manual(values = cols) + 
+        scale_shape_manual(values = pch) + 
+        facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggtitle(f)
+      plots[[paste0(asp, "_all_byfdrcontrol_", f)]] <- p15
+      print(plots[[paste0(asp, "_all_byfdrcontrol_", f)]])
       
       p2 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
         dplyr::group_by(dataset, n_samples, method) %>% 
@@ -147,6 +180,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+  
+  ## Add information regarding the FDR control at adjp = 0.05 level
+  auroc <- dplyr::full_join(auroc, fdrtpr %>% dplyr::ungroup() %>% dplyr::filter(thr == "thr0.05") %>%
+                              dplyr::select(method, n_samples, repl, dataset, filt, fdrcontrol))
 
   asp <- "AUROC"
   for (f in unique(auroc$filt)) {
@@ -168,7 +205,24 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
              shape = guide_legend(ncol = 1, title = "")) + 
       ggtitle(f)
     print(plots[[paste0("auroc_all_", f)]])
-  
+    
+    ## Same, but stratified by FDR control
+    plots[[paste0("auroc_all_byfdrcontrol_", f)]] <- tmp %>%
+      ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+      geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
+      theme_bw() + xlab("") + ylab("Area under\nROC curve") + 
+      scale_color_manual(values = cols) + 
+      scale_shape_manual(values = pch) + 
+      facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      guides(color = guide_legend(ncol = 2, title = ""),
+             shape = guide_legend(ncol = 1, title = "")) + 
+      ggtitle(f)
+    print(plots[[paste0("auroc_all_byfdrcontrol_", f)]])
+
     plots[[paste0("auroc_byncells_sep_", f)]] <- auroc %>% dplyr::filter(filt == f) %>% 
       dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
       dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
@@ -219,7 +273,40 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                  rel_heights = c(1.7, 1.7, 1.7, 0.1), ncol = 1)
   print(p)
   dev.off()
-    
+
+  pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol", dtpext, ".pdf"), width = 12, height = 12)
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_byfdrcontrol_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("FDR_all_byfdrcontrol_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("TPR_all_byfdrcontrol_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("TPR_all_byfdrcontrol_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("auroc_all_byfdrcontrol_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("auroc_all_byfdrcontrol_TPM_1_25p")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("E", "F"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots[[paste0("FDR_all_byfdrcontrol_")]] + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 1.7, 1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+  
   for (asp in c("FDR", "TPR", "auroc")) {
     pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 14, height = 6)
     p <- plot_grid(plot_grid(plots[[paste0(asp, "_byncells_sep_")]] + theme(legend.position = "none") + 
