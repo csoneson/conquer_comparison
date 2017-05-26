@@ -38,7 +38,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
       scale_shape_manual(values = pch) + 
       facet_wrap(~dataset, scales = "free_y") + 
       guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
+             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 
@@ -69,11 +69,11 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     geom_boxplot(outlier.size = -1) +
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
     facet_wrap(~ filt, nrow = 1) + 
-    theme_bw() + xlab("") + ylab("Relative number of genes \nwith adjusted p-value below 0.05") + 
+    theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
     scale_color_manual(values = cols) + 
     scale_shape_manual(values = pch) + 
     guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
+           shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13))
@@ -87,11 +87,11 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
              aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
       geom_boxplot(outlier.size = -1) +
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-      theme_bw() + xlab("") + ylab("Relative number of genes \nwith adjusted p-value below 0.05") + 
+      theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       scale_color_manual(values = cols) + 
       scale_shape_manual(values = pch) + 
       guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
+             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 
@@ -112,11 +112,11 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
              aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
       geom_boxplot(outlier.size = -1) +
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-      theme_bw() + xlab("") + ylab("Relative number of genes \nwith adjusted p-value below 0.05") + 
+      theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       scale_color_manual(values = cols) + 
       scale_shape_manual(values = pch) + 
       guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
+             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 

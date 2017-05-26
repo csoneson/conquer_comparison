@@ -5,11 +5,11 @@ run_SeuratTobitnofilt <- function(L) {
   session_info <- sessionInfo()
   tryCatch({
     timing <- system.time({
-      tmpcount <- L$count
-      colnames(tmpcount) <- paste0(L$condt, "__", 1:ncol(L$count))
-      seur <- new("seurat", raw.data = tmpcount)
+      tmptpm <- L$tpm
+      colnames(tmptpm) <- paste0(L$condt, "__", 1:ncol(L$tpm))
+      seur <- new("seurat", raw.data = tmptpm)
       seur <- Setup(seur, project = "scrnaseq", min.cells = 1, min.genes = 0, 
-                    do.logNormalize = TRUE, total.expr = 1e4, names.field = 1, 
+                    do.logNormalize = FALSE, total.expr = 1e4, names.field = 1, 
                     names.delim = "__")
       res <- FindMarkers(seur, ident.1 = levels(factor(L$condt))[1], 
                          ident.2 = levels(factor(L$condt))[2], thresh.use = -Inf, 

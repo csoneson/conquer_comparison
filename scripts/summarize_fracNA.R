@@ -50,21 +50,6 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
     print(plots[[paste0("fracna_sep_", f)]])
   }
   
-  plots[["fracna_comb"]] <- 
-    ggplot(nbrgenes, aes(x = method, y = fracNA, color = method)) + 
-    geom_boxplot(outlier.size = -1) +
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    facet_wrap(~ filt, nrow = 1) + 
-    theme_bw() + xlab("") + ylab("Fraction of NA adjusted p-values") + 
-    scale_color_manual(values = cols) + 
-    scale_shape_manual(values = pch) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 4, title = "Number of \ncells per group")) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
-  print(plots[["fracna_comb"]])
-  
   for (f in unique(nbrgenes$filt)) {
     tmp <- nbrgenes %>% dplyr::filter(filt == f) %>%
       dplyr::group_by(method) %>% dplyr::mutate(fracNAmedian = median(fracNA, na.rm = TRUE)) %>%

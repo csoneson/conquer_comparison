@@ -1,4 +1,5 @@
 suppressPackageStartupMessages(library(monocle))
+suppressPackageStartupMessages(library(edgeR))
 
 calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   ## Census counts
@@ -48,6 +49,12 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   fraczerocensus <- data.frame(fraczerocensus = apply(censuscounts, 1, function(x) mean(x == 0)),
                                gene = rownames(censuscounts))
   
+  ## CPMs
+  cpms <- edgeR::cpm(L$count, lib.size = colSums(L$count) * edgeR::calcNormFactors(L$count))
+  avecpm <- data.frame(avecpm = apply(cpms, 1, mean), gene = rownames(cpms))
+  varcpm <- data.frame(varcpm = apply(cpms, 1, var), gene = rownames(cpms))
+  cvcpm <- data.frame(cvcpm = apply(cpms, 1, sd)/apply(cpms, 1, mean), gene = rownames(cpms))
+  
   ## Average raw count
   avecount <- data.frame(avecount = apply(L$count, 1, mean), gene = rownames(L$count))
   
@@ -71,7 +78,8 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   
   ## Put all together
   df2 <- Reduce(function(...) merge(..., by = "gene", all = TRUE), 
-                list(vartpm, fraczero, avecount, avetpm, cvtpm, avecensuscount, fraczerocensus))
+                list(vartpm, fraczero, avecount, avetpm, cvtpm, avecensuscount, 
+                     fraczerocensus, avecpm, varcpm, cvcpm))
   
   ## Add column "tested", which is TRUE for all genes (all genes are sent into the test)
   df2$tested <- TRUE

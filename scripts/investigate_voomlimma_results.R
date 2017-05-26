@@ -18,12 +18,11 @@ suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 source("scripts/prepare_mae.R")
-source(paste0("scripts/apply_voomlimma.R"))
+source("scripts/apply_voomlimma.R")
 
 ## First, an example (GSE48968-GPL13112mock, 24 cells per group, repl 1)
 
-config_file <- "config/GSE48968-GPL13112mock.json"
-config <- fromJSON(file = config_file)
+config <- fromJSON(file = "config/GSE48968-GPL13112mock.json")
 mae <- readRDS(config$mae)
 groupid <- config$groupid
 mae <- clean_mae(mae = mae, groupid = groupid)
@@ -35,6 +34,7 @@ i <- 1
 
 plots <- list()
 for (flt in c("", "count_15_25p")) {
+  ## Subset data set and apply voom/limma
   L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt)
   dge <- DGEList(L$count, group = L$condt)
   dge <- calcNormFactors(dge)
@@ -44,6 +44,7 @@ for (flt in c("", "count_15_25p")) {
   fit <- eBayes(fit)
   tt <- topTable(fit, n = Inf, adjust.method = "BH")
   
+  ## Prepare plots
   stopifnot(abs(cor(fit$Amean, vm$voom.xy$x) - 1) <= 1e-15)
   df <- data.frame(Amean = vm$voom.xy$x, 
                    logfc = fit$coefficients[, ncol(fit$coefficients)])
@@ -88,13 +89,9 @@ datasets <- structure(c("GSE45719mock", "GSE74596mock", "EMTAB2805mock",
                                 "UsoskinGSE59739mock"))
 FPR <- c()
 frac_below_peak <- c()
-peak_height <- c()
-peak_dist_to_min <- c()
-peak_rel_dist_to_min <- c()
 for (ds in datasets) {
   message(ds)
-  config_file <- paste0("config/", ds, ".json")
-  config <- fromJSON(file = config_file)
+  config <- fromJSON(file = paste0("config/", ds, ".json"))
   mae <- readRDS(config$mae)
   groupid <- config$groupid
   mae <- clean_mae(mae = mae, groupid = groupid)
@@ -112,37 +109,20 @@ for (ds in datasets) {
         fit <- lmFit(vm, design = design)
         fit <- eBayes(fit)
         tt <- topTable(fit, n = Inf, adjust.method = "BH")
-        FPR[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- mean(tt$P.Value <= 0.05)
+        FPR[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- mean(tt$P.Value < 0.05)
         frac_below_peak[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- 
           mean(vm$voom.line$x <= vm$voom.line$x[which.max(vm$voom.line$y)])
-        peak_height[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- 
-          max(vm$voom.line$y) - vm$voom.line$y[1]
-        peak_dist_to_min[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- 
-          vm$voom.line$x[which.max(vm$voom.line$y)] - min(vm$voom.line$x)
-        peak_rel_dist_to_min[paste0(ds, "_", gsub("_", ".", flt), "_", sz, "_", i)] <- 
-          (vm$voom.line$x[which.max(vm$voom.line$y)] - min(vm$voom.line$x))/
-          (max(vm$voom.line$x) - min(vm$voom.line$x))
       }
     }
   }  
 }
 df4 <- Reduce(function(...) dplyr::full_join(..., by = "nm"), 
-              list(data.frame(nm = names(peak_height), peak_height),
-                   data.frame(nm = names(FPR), FPR),
-                   data.frame(nm = names(frac_below_peak), frac_below_peak),
-                   data.frame(nm = names(peak_dist_to_min), peak_dist_to_min),
-                   data.frame(nm = names(peak_rel_dist_to_min), peak_rel_dist_to_min))) %>%
+              list(data.frame(nm = names(FPR), FPR),
+                   data.frame(nm = names(frac_below_peak), frac_below_peak))) %>%
   tidyr::separate(nm, into = c("dataset", "filt", "ncells", "repl"), sep = "_") %>%
   dplyr::mutate(dataset = gsub("mock$", "null", dataset))
 
-p41 <- ggplot(df4, aes(x = peak_height, y = FPR)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
-  geom_point(aes(shape = dataset)) + 
-  geom_smooth() + theme_bw() + xlab("Peak height in the voom plot") +
-  ylab("True FPR (fraction of genes with p < 0.05)") + 
-  theme(axis.title = element_text(size = 13),
-        axis.text = element_text(size = 12))
-p42 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
+p3 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
   geom_hline(yintercept = 0.05, color = "red", size = 2) + 
   geom_point(aes(shape = dataset)) + 
   geom_smooth() + theme_bw() + 
@@ -151,36 +131,12 @@ p42 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) +
   scale_shape_discrete(name = "Data set") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
-p43 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
-  geom_point(aes(shape = dataset)) + 
-  geom_smooth() + ylim(0, 0.2) + theme_bw() + 
-  xlab("Fraction of genes to the left of the peak in the voom plot") + 
-  ylab("True FPR (fraction of genes with p < 0.05)") + 
-  theme(axis.title = element_text(size = 13),
-        axis.text = element_text(size = 12))
-p44 <- ggplot(df4, aes(x = peak_dist_to_min, y = FPR)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
-  geom_point(aes(shape = dataset)) + 
-  geom_smooth() + theme_bw() + 
-  xlab("Distance between peak and leftmost point in the voom plot") + 
-  ylab("True FPR (fraction of genes with p < 0.05)") + 
-  theme(axis.title = element_text(size = 13),
-        axis.text = element_text(size = 12))
-p45 <- ggplot(df4, aes(x = peak_rel_dist_to_min, y = FPR)) + 
-  geom_hline(yintercept = 0.05, color = "red", size = 2) + 
-  geom_point(aes(shape = dataset)) + 
-  geom_smooth() + theme_bw() + 
-  xlab("Relative position of the peak between the leftmost and rightmost points in the voom plot") + 
-  ylab("True FPR (fraction of genes with p < 0.05)") + 
-  theme(axis.title = element_text(size = 13),
-        axis.text = element_text(size = 12))
 
 pdf(paste0(figdir, "/voomlimma_investigation.pdf"), width = 12, height = 18)
 print(plot_grid(plot_grid(titles[["flt_"]], plots[["flt_"]], ncol = 1, rel_heights = c(0.1, 1)),
                 plot_grid(titles[["flt_count_15_25p"]], plots[["flt_count_15_25p"]], 
                           ncol = 1, rel_heights = c(0.1, 1)),
-                p42, ncol = 1, rel_heights = c(1, 1), labels = c("", "", "E")))
+                p3, ncol = 1, rel_heights = c(1, 1, 1), labels = c("", "", "E")))
 dev.off()
 
 saveRDS(NULL, file = paste0(figdir, "/voomlimma_investigation.rds"))

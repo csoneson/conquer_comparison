@@ -14,6 +14,7 @@ snr <- function(x, y, lmin) {
 }
 
 mediandiff <- function(x, y, lmin) {
+  ## Calculate the difference between medians if x and y are both longer than lmin
   if (length(x) >= lmin & length(y) >= lmin) median(x, na.rm = TRUE) - median(y, na.rm = TRUE)
   else NA
 }
@@ -53,8 +54,8 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     
     ## Determine which characteristics to logtransform
     allasp <- c("avetpm", "avecount", "vartpm", "fraczero", "fraczeroround",
-                "fraczerodiff", "cvtpm")
-    dolog2 <- c("avetpm", "avecount", "vartpm")
+                "fraczerodiff", "cvtpm", "avecpm", "varcpm", "cvcpm")
+    dolog2 <- c("avetpm", "avecount", "vartpm", "avecpm", "varcpm")
 
     ## For each gene characteristic, populate summary_data with statistics
     ## comparing significant and non-significant genes
@@ -62,12 +63,15 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
       message(y)
       nn <- switch(y,
                    avetpm = "average TPM",
+                   avecpm = "average CPM",
                    avecount = "average count",
                    vartpm = "variance(TPM)",
+                   varcpm = "variance(CPM)",
                    fraczero = "Fraction zeros",
                    fraczeroround = "Fraction zeros after rounding",
                    fraczerodiff = "Difference in fraction zeros between conditions",
-                   cvtpm = "coefficient of variation (TPM)")
+                   cvtpm = "coefficient of variation (TPM)",
+                   cvcpm = "coefficient of variation (CPM)")
       
       ## Log2-transform if necessary
       if (y %in% dolog2) 

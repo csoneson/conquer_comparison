@@ -5,10 +5,10 @@ run_SeuratTobit <- function(L) {
   session_info <- sessionInfo()
   tryCatch({
     timing <- system.time({
-      tmpcount <- L$count
-      colnames(tmpcount) <- paste0(L$condt, "__", 1:ncol(L$count))
-      seur <- new("seurat", raw.data = tmpcount)
-      seur <- Setup(seur, project = "scrnaseq", do.logNormalize = TRUE, 
+      tmptpm <- L$tpm
+      colnames(tmptpm) <- paste0(L$condt, "__", 1:ncol(L$tpm))
+      seur <- new("seurat", raw.data = tmptpm)
+      seur <- Setup(seur, project = "scrnaseq", do.logNormalize = FALSE, 
                     names.field = 1, names.delim = "__")
       res <- FindMarkers(seur, ident.1 = levels(factor(L$condt))[1], 
                          ident.2 = levels(factor(L$condt))[2], test.use = "tobit")

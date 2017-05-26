@@ -91,6 +91,13 @@ $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MT),$(
 $(addsuffix .rds, $(addprefix results/, $(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M))))) \
 $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M)_$(F))))))
 
+tmprule: $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(DS),$(Y)_SeuratTobit))) \
+$(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach Y,$(DS),$(Y)_SeuratTobit_$(F))))) \
+
+tmprule2: $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(DS),$(Y)_SeuratTobitnofilt))) \
+$(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach Y,$(DS),$(Y)_SeuratTobitnofilt_$(F))))) \
+
+
 ## Simulate data
 sim: $(addsuffix .rds, $(addprefix data/, $(foreach Y,$(DSforsim),$(Y)sim123))) \
 $(addsuffix .rds, $(addprefix data/, $(foreach Y,$(DSforsim),$(Y)sim123mock)))
@@ -299,7 +306,6 @@ $(eval $(call summaryrule_truefpr,_bulk,$(DSbulkmock),${DSbulkmockc},$(FILT),${F
 
 define summaryrule_de_characteristics
 $(multidsfigdir)/de_characteristics/summary_de_characteristics$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_characterization/, $(foreach Y,$(2),$(Y)_results_characterization))) \
-$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_characterization/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_results_characterization)))) \
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_de_characteristics.R include_datasets.mk include_filterings.mk scripts/plot_setup.R
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='de_characteristics' dtpext='$(1)' figdir='$(multidsfigdir)/de_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_de_characteristics$(1).Rout
 endef

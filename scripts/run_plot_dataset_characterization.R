@@ -210,24 +210,27 @@ print(ggplot(char_cells_s %>% dplyr::filter(!is.na(condition)),
         theme_bw() + scale_x_log10() + facet_wrap(~forcats::as_factor(replicate)) +
         xlab("Library size") + ylab("Fraction zeros per cell"))
 
-for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount")) {
+for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount", "avecpm", "varcpm")) {
   nn <- switch(tp,
                vartpm = "Variance of TPM values per gene",
                avecount = "Average count per gene",
                avecensuscount = "Average census count per gene",
-               avetpm = "Average TPM per gene")
+               avetpm = "Average TPM per gene",
+               avecpm = "Average CPM per gene",
+               varcpm = "Variance of CPM values per gene")
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 
           geom_density() + scale_x_log10() + facet_wrap(~ncells) + 
           theme_bw() + xlab(nn))
 }
-for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround")) {
+for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround", "cvcpm")) {
   nn <- switch(tp, 
                fraczero = "Fraction zeros per gene",
                fraczeroround = "Fraction zeros per gene after rounding",
                fraczerodiff = "Difference (between conditions) of zero fraction per gene",
                cvtpm = "Coefficient of variation (TPM)",
+               cvcpm = "Coefficient of variation (CPM)",
                fraczerocensus = "Fraction zeros per gene, census counts")
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +

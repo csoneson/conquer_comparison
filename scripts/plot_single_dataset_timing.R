@@ -1,10 +1,12 @@
 plot_timing <- function(timinglist, colvec, exts = exts, summary_data = list()) {
   ## Extract elapsed time for each method and data set instance
-  timings <- sapply(timinglist, function(i) i["elapsed"])
+  timings <- sapply(timinglist, function(i) {
+    i["user.self"] + i["sys.self"] + i["user.child"] + i["sys.child"]
+    })
   
   ## Create data frame with all timing information
   timings_full <- data.frame(method = names(timings), timing = timings) %>%
-    tidyr::separate(method, into = c("method", "ncells", "repl", "elapsed"), sep = "\\.") %>%
+    tidyr::separate(method, into = c("method", "ncells", "repl", "user", "self"), sep = "\\.") %>%
     dplyr::mutate(ncells = as.numeric(as.character(ncells))) %>%
     dplyr::mutate(method = gsub(exts, "", method))
 

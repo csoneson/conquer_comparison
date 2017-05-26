@@ -4,7 +4,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   plots <- list()
   
   charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
-                log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))")
+                log2_avetpm = "log2(average TPM)", log2_vartpm = "log2(variance(TPM))",
+                cvcpm = "CV(CPM)", log2_avecpm = "log2(average CPM)",
+                log2_varcpm = "log2(variance(CPM))")
   
   pdf(paste0(figdir, "/summary_de_characteristics", dtpext, ".pdf"), 
       width = 12, height = 7)
@@ -30,6 +32,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(charac != "fraczerodiff") %>%
         dplyr::filter(charac != "fraczeroround") %>%
         dplyr::filter(charac != "log2_avecount") %>%
+        dplyr::filter(charac != "log2_avetpm") %>%
+        dplyr::filter(charac != "log2_vartpm") %>%
+        dplyr::filter(charac != "cvtpm") %>%
         tidyr::separate(Var2, into = c("method", "ncells", "repl"), sep = "\\.") %>%
         dplyr::mutate(charac = charname[charac]) %>%
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
@@ -92,7 +97,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   for (f in unique(charac$filt)) {
     for (stat in c("tstat", "snr")) {
       pdf(paste0(figdir, "/de_characteristics_final", ifelse(f == "", f, paste0("_", f)),
-                 dtpext, "_", stat, ".pdf"), width = 10, height = 6)
+                 dtpext, "_", stat, ".pdf"), width = 10, height = 8)
       p <- plots[[paste0(stat, "_bystat_", f)]] + 
         theme(legend.position = "bottom") + 
         guides(colour = FALSE,
