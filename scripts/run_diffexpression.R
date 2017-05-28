@@ -24,8 +24,8 @@ suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
-source("/home/Shared/data/seq/conquer/comparison/scripts/prepare_mae.R")
-source(paste0("/home/Shared/data/seq/conquer/comparison/scripts/apply_", demethod, ".R"))
+source("scripts/prepare_mae.R")
+source(paste0("scripts/apply_", demethod, ".R"))
 
 config <- fromJSON(file = config_file)
 

@@ -18,7 +18,7 @@ suppressPackageStartupMessages(library(edgeR))
 suppressPackageStartupMessages(library(rjson))
 suppressPackageStartupMessages(library(powsim))
 
-source("/home/Shared/data/seq/conquer/comparison/scripts/powsim_modified_functions.R")
+source("scripts/powsim_modified_functions.R")
 
 config <- fromJSON(file = config_file)
 
@@ -102,7 +102,5 @@ mae <- MultiAssayExperiment(experiments = list(gene = generse),
                                                sample = colnames(sims$counts), 
                                                row.names = colnames(sims$counts)))
 
-saveRDS(mae, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
-                           dataset, "sim", seed, ".rds"))
-saveRDS(truth, file = paste0("/home/Shared/data/seq/conquer/comparison/data/", 
-                             dataset, "sim", seed, "_truth.rds"))
+saveRDS(mae, file = paste0("data/", dataset, "sim", seed, ".rds"))
+saveRDS(truth, file = paste0("data/", dataset, "sim", seed, "_truth.rds"))

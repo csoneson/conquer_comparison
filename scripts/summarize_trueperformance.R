@@ -76,8 +76,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   getcat <- function(FDR, thr) {
     fracover <- length(which(FDR > thr))/length(FDR)
     fracunder <- length(which(FDR < thr))/length(FDR)
-    if (fracover >= 0.75) "liberal"
-    else if (fracunder >= 0.75) "conservative"
+    fracoverx3 <- length(which(FDR > 3*thr))/length(FDR)
+    fracunderx3 <- length(which(FDR < thr/3))/length(FDR)
+    if (fracover >= 0.75 | fracoverx3 >= 0.5) "liberal"
+    else if (fracunder >= 0.75 | fracunderx3 >= 0.5) "conservative"
     else "inrange"
   }
   fdrtpr <- fdrtpr %>%

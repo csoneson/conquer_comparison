@@ -18,7 +18,7 @@ run_NODES <- function(L) {
          df = data.frame(padj = nodes$qvalues,
                          row.names = rownames(nodes)))
   }, error = function(e) {
-    "NODESnofilt results could not be calculated"
+    "NODES results could not be calculated"
     list(session_info = session_info)
   })
 }

@@ -45,8 +45,11 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                          snr = "signal-to-noise statistic comparing\nsignificant and non-significant genes",
                          mediandiff = "median difference between\nsignificant and non-significant genes")
       p <- x %>% 
-        ggplot(aes_string(x = "method", y = stat, color = "method", shape = "dataset")) + 
-        geom_hline(yintercept = 0) + geom_point() + theme_bw() + 
+        ggplot(aes_string(x = "method", y = stat, color = "method")) + 
+        geom_hline(yintercept = 0) + 
+        geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
+        theme_bw() + 
         facet_wrap(~charac, scales = "free_y") + xlab("") + ylab(statname) + 
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
               axis.text.y = element_text(size = 12),

@@ -167,13 +167,17 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     
   ## -------------------------- Final summary plots ------------------------- ##
   for (k0 in unique(concordances$k)) {
-    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, ".pdf"), width = 12, height = 12)
-    p <- plot_grid(plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + 
-                               theme(legend.position = "none"), 
+    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, ".pdf"), width = 12, height = 13)
+    p <- plot_grid(ggdraw() + 
+                     draw_label(paste0("After filtering, top-", k0, " genes"),
+                                fontface = "bold"),
+                   plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + 
+                               theme(legend.position = "none") + ggtitle(""), 
                              plots[[paste0("auc_mock_comb_TPM_1_25p_", k0)]] + 
-                               theme(legend.position = "none"),
+                               theme(legend.position = "none") + ggtitle(""),
                              labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                   plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + theme(legend.position = "none"),
+                   plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + 
+                     theme(legend.position = "none") + ggtitle(""),
                    get_legend(plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] +
                                 theme(legend.position = "bottom") + 
                                 guides(colour = FALSE,
@@ -185,7 +189,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                                       label.theme = element_text(size = 12,
                                                                                  angle = 0),
                                                       keywidth = 1, default.unit = "cm"))),
-                   rel_heights = c(1.7, 1.7, 0.1), ncol = 1, labels = c("", "C", ""))
+                   rel_heights = c(0.1, 1.7, 1.7, 0.1), ncol = 1, labels = c("", "", "C", ""))
     print(p)
     dev.off()
     
@@ -215,13 +219,19 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
   
   for (k0 in unique(concordances$k)) {
     pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds.pdf"), 
-        width = 10, height = 14)
-    print(plot_grid(
-      plots[[paste0("auc_signal_sep_TPM_1_25p_", k0)]] + 
-        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1),
-      plots[[paste0("auc_mock_sep_TPM_1_25p_", k0)]] + 
-        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1),
-      ncol = 2, rel_widths = c(1, 1)
+        width = 10, height = 14.5)
+    print(plot_grid(ggdraw() + 
+                      draw_label(paste0("After filtering, top-", k0, " genes"),
+                                 fontface = "bold"), 
+                    plot_grid(
+                      plots[[paste0("auc_signal_sep_TPM_1_25p_", k0)]] + 
+                        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                        ggtitle(""),
+                      plots[[paste0("auc_mock_sep_TPM_1_25p_", k0)]] + 
+                        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                        ggtitle(""),
+                      ncol = 2, rel_widths = c(1, 1)
+                    ), ncol = 1, rel_heights = c(0.15, 6)
     ))
     dev.off()
   }  
