@@ -91,12 +91,9 @@ $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MT),$(
 $(addsuffix .rds, $(addprefix results/, $(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M))))) \
 $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M)_$(F))))))
 
-tmprule: $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(DS),$(Y)_SeuratTobit))) \
-$(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach Y,$(DS),$(Y)_SeuratTobit_$(F))))) \
-
-tmprule2: $(addsuffix .rds, $(addprefix results/, $(foreach Y,$(DS),$(Y)_SeuratTobitnofilt))) \
-$(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach Y,$(DS),$(Y)_SeuratTobitnofilt_$(F))))) \
-
+## List all packages
+listpackages:
+	$(R) scripts/list_packages.R Rout/list_packages.Rout
 
 ## Simulate data
 sim: $(addsuffix .rds, $(addprefix data/, $(foreach Y,$(DSforsim),$(Y)sim123))) \
