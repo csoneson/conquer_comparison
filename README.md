@@ -2,7 +2,7 @@
 
 This repository contains all the necessary code to perform the evaluation of differential expression analysis methods in single-cell RNA-seq data, available in 
 
-* C Soneson & MD Robinson: Bias, robustness and scalability in differential expression analysis of single-cell RNA-seq data. bioRxiv, submitted. 
+* C Soneson & MD Robinson: [Bias, robustness and scalability in differential expression analysis of single-cell RNA-seq data](http://biorxiv.org/content/early/2017/05/28/143289). 
 
 In this paper, we compare the performance of 30 approaches to differential gene expression analysis in the context of single-cell RNA-seq data. 
 
