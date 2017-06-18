@@ -1,6 +1,6 @@
 summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir) {
+                             dschardir, origvsmockdir, plotmethods) {
   
   ## Generate list to hold all plots
   plots <- list()
@@ -14,7 +14,8 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
                      "_nbr_called.rds")) %>%
         dplyr::mutate(repl = as.numeric(as.character(repl)),
                       ncells = as.numeric(as.character(ncells))) %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods)
     }))
   }))
   nbrgenes <- nbrgenes %>% 

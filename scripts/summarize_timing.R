@@ -1,6 +1,6 @@
 summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir) {
+                             dschardir, origvsmockdir, plotmethods) {
 
   ## Generate list to hold all plots
   plots <- list()
@@ -14,7 +14,8 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                      "_timing_summary_data.rds"))$timing_full %>%
         dplyr::mutate(repl = as.numeric(as.character(repl)),
                       ncells = as.numeric(as.character(ncells))) %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods)
     }))
   }))
   ## Calculate relative timing within each data set instance
@@ -30,7 +31,8 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::mutate(repl = as.numeric(as.character(repl)),
                       ncells = as.numeric(as.character(ncells))) %>%
         dplyr::rename(ngenes = nbr_tested) %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods)
     }))
   }))
   timing <- dplyr::full_join(timing, ngenes)

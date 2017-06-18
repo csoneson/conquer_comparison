@@ -1,6 +1,6 @@
 summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
-                                         dschardir, origvsmockdir) {
+                                         dschardir, origvsmockdir, plotmethods) {
   
   X <- do.call(rbind, lapply(datasets, function(ds) {
     keepgroups <- fromJSON(file = paste0("config/", ds, ".json"))$keepgroups

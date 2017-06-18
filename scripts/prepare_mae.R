@@ -1,4 +1,6 @@
 clean_mae <- function(mae, groupid) {
+  mae <- updateObject(mae)
+  mae@sampleMap$assay <- factor(mae@sampleMap$assay)
   ## Exclude ERCC spike-ins and rescale TPMs if needed
   mae2 <- subsetByRow(mae, grep("^ERCC-", unique(unlist(rownames(mae))), 
                                 invert = TRUE, value = TRUE))
@@ -19,6 +21,8 @@ clean_mae <- function(mae, groupid) {
   
 subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt, 
                        groupid = NULL) {
+  mae <- updateObject(mae)
+  mae@sampleMap$assay <- factor(mae@sampleMap$assay)
   s <- keep_samples[[as.character(sz)]][i, ]
   
   ## Subset and filter data matrices

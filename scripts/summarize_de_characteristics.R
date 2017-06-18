@@ -1,6 +1,6 @@
 summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
-                                         dschardir, origvsmockdir) {
+                                         dschardir, origvsmockdir, plotmethods) {
   plots <- list()
   
   charname <- c(cvtpm = "CV(TPM)", fraczero = "Fraction zeros", 
@@ -37,7 +37,8 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(charac != "cvtpm") %>%
         tidyr::separate(Var2, into = c("method", "ncells", "repl"), sep = "\\.") %>%
         dplyr::mutate(charac = charname[charac]) %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods)
       
       ## Visualize summary statistics for each characteristic
       statname <- switch(stat,

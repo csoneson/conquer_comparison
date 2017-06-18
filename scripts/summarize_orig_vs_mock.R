@@ -1,6 +1,6 @@
 summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    singledsfigdir, cobradir, concordancedir, 
-                                   dschardir, origvsmockdir) {
+                                   dschardir, origvsmockdir, plotmethods) {
   ## Generate list to hold all plots
   plots <- list()
   
@@ -20,7 +20,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       readRDS(paste0(origvsmockdir, "/", ds, e, 
                      "_orig_vs_mock_summary_data.rds"))$concordances %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods)
     }))
   }))
   

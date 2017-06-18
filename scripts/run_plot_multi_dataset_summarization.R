@@ -6,11 +6,13 @@ for (i in 1:length(args)) {
 datasets <- strsplit(datasets, ",")[[1]]
 names(datasets) <- datasets
 filt <- strsplit(filt, ",")[[1]]
+plotmethods <- strsplit(plotmethods, ",")[[1]]
 
 print(datasets)
 print(filt)
 print(dtpext)
 print(summarytype)
+print(plotmethods)
 print(singledsfigdir)
 print(cobradir)
 print(dschardir)
@@ -38,7 +40,8 @@ get(paste0("summarize_", summarytype))(figdir = figdir,
                                        cobradir = cobradir,
                                        concordancedir = concordancedir,
                                        dschardir = dschardir,
-                                       origvsmockdir = origvsmockdir)
+                                       origvsmockdir = origvsmockdir,
+                                       plotmethods = plotmethods)
 saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, 
                             ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
                             dtpext, ".rds"))

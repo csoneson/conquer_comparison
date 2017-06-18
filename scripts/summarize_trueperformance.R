@@ -1,6 +1,6 @@
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
-                                      dschardir, origvsmockdir) {
+                                      dschardir, origvsmockdir, plotmethods) {
 
   ## Generate list to hold all plots
   plots <- list()
@@ -34,6 +34,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(thr == "thr0.05") %>%
         tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods) %>%
         dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
         dplyr::select_("method", "dataset", asp) %>%
         reshape2::dcast(dataset ~ method, value.var = asp) %>%
@@ -45,8 +46,9 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       
       annotation_row = data.frame(id = rownames(y)) %>% 
         tidyr::separate(id, c("dataset", "filt", "n_samples", "repl"), sep = "\\.", remove = FALSE) %>%
-        dplyr::mutate(n_samples = factor(n_samples, 
-                                         levels = as.character(sort(unique(as.numeric(as.character(n_samples)))))))
+        dplyr::mutate(
+          n_samples = factor(n_samples, 
+                             levels = as.character(sort(unique(as.numeric(as.character(n_samples)))))))
       rownames(annotation_row) <- annotation_row$id
       
       pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
@@ -70,7 +72,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   fdrtpr <- fdrtpr %>% 
     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
-    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+    dplyr::filter(method %in% plotmethods)
   
   ## Add categorization of methods into "liberal", "inrange", "conservative"
   getcat <- function(FDR, thr) {
@@ -138,10 +141,11 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       
       p3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
         dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
-        dplyr::mutate(ncells = factor(ncells, 
-                                      levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group",
-                                                                                               "", ncells))))), 
-                                                      " cells per group"))) %>%
+        dplyr::mutate(
+          ncells = factor(ncells, 
+                          levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group",
+                                                                                   "", ncells))))), 
+                                          " cells per group"))) %>%
         ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method"))
       if (asp == "FDR") p3 <- p3 + geom_hline(yintercept = 0.05)
       p3 <- p3 + 
@@ -185,7 +189,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   auroc <- auroc %>% 
     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
-    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+    dplyr::filter(method %in% plotmethods)
   
   ## Add information regarding the FDR control at adjp = 0.05 level
   auroc <- dplyr::full_join(auroc, fdrtpr %>% dplyr::ungroup() %>% dplyr::filter(thr == "thr0.05") %>%

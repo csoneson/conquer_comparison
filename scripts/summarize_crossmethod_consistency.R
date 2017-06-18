@@ -2,7 +2,7 @@ source("scripts/help_function_crossmethod_concordance.R")
 
 summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, cols,
                                               singledsfigdir, cobradir, concordancedir, 
-                                              dschardir, origvsmockdir) {
+                                              dschardir, origvsmockdir, plotmethods) {
   plots <- list()
   
   K0 <- c(100, 1000)
@@ -17,6 +17,7 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
         dplyr::filter(k %in% K0) %>% 
         dplyr::mutate(method1 = gsub(paste(exts, collapse = "|"), "", method1)) %>%
         dplyr::mutate(method2 = gsub(paste(exts, collapse = "|"), "", method2)) %>%
+        dplyr::filter(method1 %in% plotmethods & method2 %in% plotmethods) %>% 
         dplyr::mutate(repl = as.numeric(as.character(repl))) %>%
         dplyr::mutate(ncells = as.numeric(as.character(ncells)))
     }))

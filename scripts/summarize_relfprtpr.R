@@ -1,6 +1,6 @@
 summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
                                 singledsfigdir, cobradir, concordancedir, 
-                                dschardir, origvsmockdir) {
+                                dschardir, origvsmockdir, plotmethods) {
 
   ## Generate list to hold all plots
   plots <- list()
@@ -33,6 +33,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(filt == f) %>%
         tidyr::separate(basemethod, c("method", "n_samples", "repl"), sep = "\\.") %>%
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+        dplyr::filter(method %in% plotmethods) %>% 
         dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
         dplyr::select_("method", "dataset", asp) %>% 
         reshape2::dcast(dataset ~ method, value.var = asp) %>%
@@ -44,8 +45,9 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
       
       annotation_row = data.frame(id = rownames(y)) %>% 
         tidyr::separate(id, c("dataset", "filt", "n_samples", "repl"), sep = "\\.", remove = FALSE) %>%
-        dplyr::mutate(n_samples = factor(n_samples, 
-                                         levels = as.character(sort(unique(as.numeric(as.character(n_samples)))))))
+        dplyr::mutate(
+          n_samples = factor(n_samples, 
+                             levels = as.character(sort(unique(as.numeric(as.character(n_samples)))))))
       rownames(annotation_row) <- annotation_row$id
     
       pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
@@ -70,7 +72,9 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
       tidyr::separate(basemethod, c("method", "n_samples", "repl"), sep = "\\.") %>%
       dplyr::mutate(n_samples = factor(n_samples, 
                                        levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
-      dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+      dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+      dplyr::filter(method %in% plotmethods)
+    
     ## Remove largest sample size for each data set
     for (ds in unique(x$dataset)) {
       for (f in unique(x$filt)) {

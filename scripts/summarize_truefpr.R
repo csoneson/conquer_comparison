@@ -1,6 +1,6 @@
 summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                               singledsfigdir, cobradir, concordancedir, 
-                              dschardir, origvsmockdir) {
+                              dschardir, origvsmockdir, plotmethods) {
   
   ## Generate list to hold all plots
   plots <- list()
@@ -24,6 +24,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
       dplyr::filter(filt == f) %>%
       tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
       dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+      dplyr::filter(method %in% plotmethods) %>% 
       dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
       dplyr::select(method, dataset, FPR) %>% 
       reshape2::dcast(dataset ~ method, value.var = "FPR") %>%
@@ -58,7 +59,8 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   truefpr <- truefpr %>% 
     tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
     dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
-    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
+    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+    dplyr::filter(method %in% plotmethods)
   
   for (f in unique(truefpr$filt)) {
     tmp <- truefpr %>% dplyr::filter(filt == f) %>%
@@ -103,6 +105,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
       pv <- pval(cbr)
       tmp <- reshape2::melt(pv) %>% 
         tidyr::separate(variable, into = c("method", "ncells", "repl"), sep = "\\.") %>%
+        dplyr::filter(method %in% paste0(plotmethods, e)) %>% 
         dplyr::mutate(ncells.repl = paste0(ncells, ".", repl))
       ## Remove extension from method name
       tmp$method <- gsub(paste(exts, collapse = "|"), "", tmp$method)
