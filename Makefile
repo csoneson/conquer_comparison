@@ -1,5 +1,5 @@
 ## Define the versions of R and the paths to the libraries
-R := R_LIBS=/home/Shared/Rlib/release-3.4-lib/ /usr/local/R/R-3.3.1/bin/R CMD BATCH --no-restore --no-save
+R := R_LIBS=/home/Shared/Rlib/release-3.4-lib/ /usr/local/R/R-3.3.2/bin/R CMD BATCH --no-restore --no-save
 R34 := R_LIBS=/home/Shared/Rlib/release-3.5-lib/ /usr/local/R/R-3.4.0/bin/R CMD BATCH --no-restore --no-save
 
 ## Define paths
@@ -148,7 +148,8 @@ data/UsoskinGSE59739.rds: scripts/generate_Usoskin_mae.R data/Usoskin_External_r
 ## ------------------ Define rules for differential expression ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define dgerule3.3
-results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
+results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/impute_dropouts.R \
+scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
 $(foreach M,$(MT1),$(foreach Y,$(DS),$(eval $(call dgerule3.3,$(Y),$(M),,))))
@@ -157,7 +158,8 @@ $(foreach F,$(FILT),$(foreach M,$(MT1),$(foreach Y,$(DS),$(eval $(call dgerule3.
 $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(eval $(call dgerule3.3,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.4
-results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
+results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/impute_dropouts.R \
+scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R34) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
 $(foreach M,$(MT2),$(foreach Y,$(DS),$(eval $(call dgerule3.4,$(Y),$(M),,))))

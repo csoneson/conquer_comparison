@@ -25,6 +25,7 @@ suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 source("scripts/prepare_mae.R")
+source("scripts/impute_dropouts.R")
 source(paste0("scripts/apply_", demethod, ".R"))
 
 config <- fromJSON(file = config_file)
@@ -45,7 +46,7 @@ sizes <- names(keep_samples)
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt)
+    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt, impute = config$impute)
     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)

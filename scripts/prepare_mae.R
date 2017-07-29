@@ -20,7 +20,7 @@ clean_mae <- function(mae, groupid) {
 }
   
 subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt, 
-                       groupid = NULL) {
+                       groupid = NULL, impute = NULL) {
   mae <- updateObject(mae)
   mae@sampleMap$assay <- factor(mae@sampleMap$assay)
   s <- keep_samples[[as.character(sz)]][i, ]
@@ -28,6 +28,7 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
   ## Subset and filter data matrices
   count <- assays(experiments(mae)[["gene"]])[["count_lstpm"]][, s]
   tpm <- assays(experiments(mae)[["gene"]])[["TPM"]][, s]
+  avetxlength = assays(experiments(mae)[["gene"]])[["avetxlength"]][, s]
   if (!is.null(imposed_condition)) {
     condt <- structure(imposed_condition[[as.character(sz)]][i, ],
                        names = rownames(Biobase::pData(mae)[s, ]))
@@ -35,6 +36,14 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
     if (is.null(groupid)) stop("Must provide groupid")
     condt <- structure(as.character(Biobase::pData(mae)[s, groupid]),
                        names = rownames(Biobase::pData(mae)[s, ]))
+  }
+  
+  if (!is.null(impute) && impute == "yes") {
+    imputed <- impute_dropouts(count = count, tpm = tpm, condt = condt, 
+                               avetxlength = avetxlength)
+    count <- imputed$count
+    tpm <- imputed$count
+    condt <- imputed$condt
   }
   
   if (filt == "") {

@@ -23,7 +23,7 @@ Assuming that all prerequisites are available, the comparison can be run by simp
 from the top directory (note, however, that this will take a **significant** amount of time!). The Makefile reads the three files *include_filterings.mk*, *include_datasets.mk* and *include_methods.mk* and performs the evaluation using the data sets, methods and filterings defined in these. For the code to execute properly, an *.rds* file containing a *MultiAssayExperiment* object for each data set must be provided in the `data/` directory. Such files can be downloaded, e.g., from the [`conquer`](http://imlspenticton.uzh.ch:3838/conquer/) database. 
 
 ## Adding a differential expression method
-To add a differential expression method to the evaluation, construct a script in the form of the provided `apply_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the method. Then add the name of the method to `include_methods.mk`.
+To add a differential expression method to the evaluation, construct a script in the form of the provided `apply_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the method. Then add the name of the method to `include_methods.mk`. To make it show up in the summary plots, assign it a color in `scripts/plot_setup.R`.
 
 ## Adding a data set
 To add a data set, put the *.rds* file containing the *MultiArrayExperiment* object in the `data/` folder and construct a script in the form of the provided `generate_config_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the data set. Then add the name of the dataset to `include_datasets.mk`. 

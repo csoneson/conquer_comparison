@@ -8,7 +8,7 @@ run_D3E <- function(L) {
     message(rnb)
     write.table(tmp, file = paste0("tmp/d3e_", rnb, ".txt"), row.names = FALSE,
                 col.names = TRUE, quote = FALSE, sep = "\t")
-    cmd <- sprintf("python software/D3E/D3ECmd.py %s %s %s %s -m 0 -t 0 -z 0 -n 1 -v",
+    cmd <- sprintf("python2 software/D3E/D3ECmd.py %s %s %s %s -m 0 -t 0 -z 0 -n 1 -v",
                    paste0("tmp/d3e_", rnb, ".txt"),
                    paste0("tmp/d3e_", rnb, ".out"),
                    levels(factor(make.names(L$condt)))[1], 
