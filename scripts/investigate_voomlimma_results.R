@@ -35,7 +35,8 @@ i <- 1
 plots <- list()
 for (flt in c("", "count_15_25p")) {
   ## Subset data set and apply voom/limma
-  L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt)
+  L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt, 
+                  impute = config$impute)
   dge <- DGEList(L$count, group = L$condt)
   dge <- calcNormFactors(dge)
   design <- model.matrix(~L$condt)
@@ -101,7 +102,8 @@ for (ds in datasets) {
   for (flt in c("", "TPM_1_25p", "TPM_5_25p", "TPM_11_25p")) {
     for (sz in names(imposed_condition)) {
       for (i in 1:nrow(imposed_condition[[sz]])) {
-        L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt)
+        L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt, 
+                        impute = config$impute)
         dge <- DGEList(L$count, group = L$condt)
         dge <- calcNormFactors(dge)
         design <- model.matrix(~L$condt)

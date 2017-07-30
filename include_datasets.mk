@@ -6,7 +6,7 @@ space := $(empty) $(empty)
 DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 GSE60749-GPL13112 \
 GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock UsoskinGSE59739 UsoskinGSE59739mock GSE45719sim123 \
 GSE45719sim123mock GSE74596sim123 GSE74596sim123mock GSE60749-GPL13112sim123 GSE60749-GPL13112sim123mock \
-GSE74596impute
+GSE74596impute GSE74596imputemock GSE74596sim123impute GSE74596sim123imputemock
 DSc := $(subst $(space),$(comma),$(DS))
 
 ## Real data sets for which we have both original and mock results (to compare consistency)
@@ -24,21 +24,22 @@ DSforsim := GSE45719 GSE74596 GSE48968-GPL13112 GSE60749-GPL13112
 DSrealsignal := GSE45719 GSE74596 EMTAB2805 GSE63818-GPL16791 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739 GSE74596impute
 DSrealsignalc := $(subst $(space),$(comma),$(DSrealsignal))
 ## Real mock data sets
-DSrealmock := GSE45719mock GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock UsoskinGSE59739mock
+DSrealmock := GSE45719mock GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock UsoskinGSE59739mock GSE74596imputemock
 DSrealmockc := $(subst $(space),$(comma),$(DSrealmock))
 ## All real data sets
 DSreal := GSE45719 GSE74596 EMTAB2805 GSE63818-GPL16791 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739 GSE45719mock \
-GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock UsoskinGSE59739mock GSE74596impute
+GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock UsoskinGSE59739mock GSE74596impute GSE74596imputemock
 DSrealc := $(subst $(space),$(comma),$(DSreal))
 
 ## Simulated signal data sets
-DSsimsignal := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123
+DSsimsignal := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123 GSE74596sim123impute
 DSsimsignalc := $(subst $(space),$(comma),$(DSsimsignal))
 ## Simulated mock data sets
-DSsimmock := GSE45719sim123mock GSE74596sim123mock GSE60749-GPL13112sim123mock
+DSsimmock := GSE45719sim123mock GSE74596sim123mock GSE60749-GPL13112sim123mock GSE74596sim123imputemock
 DSsimmockc := $(subst $(space),$(comma),$(DSsimmock))
 ## All simulated data sets
-DSsim := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123 GSE45719sim123mock GSE74596sim123mock GSE60749-GPL13112sim123mock
+DSsim := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123 GSE45719sim123mock GSE74596sim123mock GSE60749-GPL13112sim123mock \
+GSE74596sim123impute GSE74596sim123imputemock
 DSsim := $(subst $(space),$(comma),$(DSsim))
 
 ## Bulk signal data sets

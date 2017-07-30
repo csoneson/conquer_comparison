@@ -25,7 +25,6 @@ suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 source("scripts/prepare_mae.R")
-source("scripts/impute_dropouts.R")
 source(paste0("scripts/apply_", demethod, ".R"))
 
 config <- fromJSON(file = config_file)

@@ -82,7 +82,8 @@ truth <- list()
 for (sz in sizes) {   ## for each sample size
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {   ## for each replicate
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
+    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt,
+                    impute = config$impute)
     chars <- calculate_gene_characteristics(L)
     characs <- chars$characs
     colnames(characs)[colnames(characs) != "gene"] <- 

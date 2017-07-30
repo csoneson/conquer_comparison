@@ -93,6 +93,8 @@ $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MT),$(
 $(addsuffix .rds, $(addprefix results/, $(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M))))) \
 $(addsuffix .rds, $(addprefix results/, $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(Y)_$(M)_$(F))))))
 
+tmp: diffexp cobra plotprepare plotds plotind
+
 ## List all packages
 listpackages:
 	$(R) scripts/list_packages.R Rout/list_packages.Rout
@@ -108,6 +110,34 @@ list:
 ## Make sure no intermediate files are deleted
 .SECONDARY:
 
+## ------------------------ Dependencies between R scripts ---------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+scripts/calculate_concordances.R: scripts/concordance_functions.R
+	
+scripts/investigate_voomlimma_results.R: scripts/prepare_mae.R scripts/apply_voomlimma.R
+	
+scripts/plot_setup.R: scripts/prepare_mae.R
+	
+scripts/plot_single_dataset_consistency.R: scripts/help_function_crossmethod_concordance.R
+	
+scripts/prepare_cobra_for_evaluation.R: scripts/prepare_mae.R scripts/calculate_gene_characteristics.R
+	
+scripts/prepare_mae.R: scripts/impute_dropouts.R
+	
+scripts/run_diffexpression.R: scripts/prepare_mae.R
+	
+scripts/run_plot_dataset_characterization.R: scripts/prepare_mae.R scripts/calculate_gene_characteristics.R scripts/calculate_cell_characteristics.R
+	
+scripts/run_plot_multi_dataset_summarization.R: scripts/plot_setup.R
+	
+scripts/run_plot_single_dataset_evaluation.R: scripts/plot_setup.R
+	
+scripts/run_plot_single_dataset_origvsmock.R: scripts/plot_setup.R scripts/plot_single_dataset_origvsmock.R
+	
+scripts/simulate_data.R: scripts/powsim_modified_functions.R
+	
+scripts/summarize_crossmethod_consistency.R: scripts/help_function_crossmethod_concordance.R
+
 ## -------------------------- Generate configuration files ---------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define configrule
@@ -120,16 +150,32 @@ $(foreach Y,$(DSbulk),$(eval $(call configrule,$(Y))))
 ## --------------------------------- Simulate data ------------------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define simrule
-data/$(1)sim$(2).rds: scripts/simulate_data.R data/$(1).rds config/$(1).json scripts/powsim_modified_functions.R
+data/$(1)sim$(2).rds: scripts/simulate_data.R data/$(1).rds config/$(1).json 
 	$(R) "--args dataset='$(1)' config_file='config/$(1).json' pDE=0.1 seed=$(2)" scripts/simulate_data.R Rout/simulate_data_$(1)_$(2).Rout
 endef
 $(foreach Y,$(DSforsim),$(eval $(call simrule,$(Y),123)))
+
+define simruletruth
+data/$(1)sim$(2)_truth.rds: data/$(1)sim$(2).rds
+	
+endef
+$(foreach Y,$(DSforsim),$(eval $(call simruletruth,$(Y),123)))
 
 define simrulemock
 data/$(1)sim$(2)mock.rds: data/$(1)sim$(2).rds
 	scp data/$(1)sim$(2).rds data/$(1)sim$(2)mock.rds
 endef
 $(foreach Y,$(DSforsim),$(eval $(call simrulemock,$(Y),123)))
+
+data/GSE74596sim123impute.rds: data/GSE74596sim123.rds
+	scp $< $@
+
+data/GSE74596sim123impute_truth.rds: data/GSE74596sim123_truth.rds
+	scp $< $@
+
+data/GSE74596sim123imputemock.rds: data/GSE74596sim123mock.rds
+	scp $< $@
+
 
 ## --------------------------- Extract sample subsets --------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -148,7 +194,7 @@ data/UsoskinGSE59739.rds: scripts/generate_Usoskin_mae.R data/Usoskin_External_r
 ## ------------------ Define rules for differential expression ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define dgerule3.3
-results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/impute_dropouts.R \
+results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
@@ -158,7 +204,7 @@ $(foreach F,$(FILT),$(foreach M,$(MT1),$(foreach Y,$(DS),$(eval $(call dgerule3.
 $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(eval $(call dgerule3.3,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.4
-results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R scripts/prepare_mae.R scripts/impute_dropouts.R \
+results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R34) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
@@ -168,8 +214,8 @@ $(foreach F,$(FILT),$(foreach M,$(MT2),$(foreach Y,$(DS),$(eval $(call dgerule3.
 ## ------------------ Prepare COBRAData object for evaluation ------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define cobrarule
-$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R scripts/calculate_gene_characteristics.R \
-$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) scripts/prepare_mae.R include_methods.mk
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
+$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
 $(foreach Y,$(DS),$(eval $(call cobrarule,$(Y),,,$(MT),${MTc},)))
@@ -180,7 +226,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(eval $(call cobrarule,$(Y),$(F),_$(F
 ## ----------------------------- Calculate concordances ------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define concrule
-$(concordancedir)/$(1)$(3)_concordances.rds: scripts/calculate_concordances.R $(cobradir)/$(1)$(3)_cobra.rds scripts/concordance_functions.R
+$(concordancedir)/$(1)$(3)_concordances.rds: scripts/calculate_concordances.R $(cobradir)/$(1)$(3)_cobra.rds 
 	$(R) "--args dataset='$(1)' filt='$(2)' cobradir='$(cobradir)' outdir='$(concordancedir)'" scripts/calculate_concordances.R Rout/calculate_concordances_$(1)$(3).Rout
 endef
 $(foreach Y,$(DS),$(eval $(call concrule,$(Y),,)))
@@ -211,7 +257,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DSsimsignal),$(eval $(call trueperfrule,$(Y),$
 ## --------------------------- Plots for evaluation ----------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 define plotrule
-$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R $(cobradir)/$(1)$(4)_cobra.rds
+$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R $(cobradir)/$(1)$(4)_cobra.rds
 	$(R) "--args dataset='$(1)' filt='$(3)' plottype='$(2)' cobradir='$(cobradir)' concordancedir='$(concordancedir)' relperfdir='$(relperfdir)' realperfdir='$(realperfdir)' figdir='$(singledsfigdir)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)$(4)_$(2).Rout
 endef
 $(foreach Y,$(DS),$(foreach P,$(PLOTTYPE1),$(eval $(call plotrule,$(Y),$(P),,))))
@@ -220,8 +266,8 @@ $(foreach F,$(FILT),$(foreach Y,$(DS),$(foreach P,$(PLOTTYPE1),$(eval $(call plo
 $(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(foreach P,$(PLOTTYPE1),$(eval $(call plotrule,$(Y),$(P),$(F),_$(F))))))
 
 define plotrule2
-$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R $(cobradir)/$(1)$(4)_cobra.rds \
-$(concordancedir)/$(1)$(4)_concordances.rds scripts/help_function_crossmethod_concordance.R
+$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R $(cobradir)/$(1)$(4)_cobra.rds \
+$(concordancedir)/$(1)$(4)_concordances.rds 
 	$(R) "--args dataset='$(1)' filt='$(3)' plottype='$(2)' cobradir='$(cobradir)' concordancedir='$(concordancedir)' relperfdir='$(relperfdir)' realperfdir='$(realperfdir)' figdir='$(singledsfigdir)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)$(4)_$(2).Rout
 endef
 $(foreach Y,$(DS),$(foreach P,$(PLOTTYPE2),$(eval $(call plotrule2,$(Y),$(P),,))))
@@ -230,7 +276,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DS),$(foreach P,$(PLOTTYPE2),$(eval $(call plo
 $(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(foreach P,$(PLOTTYPE2),$(eval $(call plotrule2,$(Y),$(P),$(F),_$(F))))))
 
 define plotrule3
-$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R \
+$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R \
 $(relperfdir)/$(1)$(4)_relative_performance.rds
 	$(R) "--args dataset='$(1)' filt='$(3)' plottype='$(2)' cobradir='$(cobradir)' concordancedir='$(concordancedir)' relperfdir='$(relperfdir)' realperfdir='$(realperfdir)' figdir='$(singledsfigdir)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)$(4)_$(2).Rout
 endef
@@ -240,7 +286,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DS),$(foreach P,$(PLOTTYPE3),$(eval $(call plo
 $(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(foreach P,$(PLOTTYPE3),$(eval $(call plotrule3,$(Y),$(P),$(F),_$(F))))))
 
 define plotrule4
-$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R scripts/plot_setup.R \
+$(singledsfigdir)/$(2)/$(1)$(4)_$(2)_summary_data.rds: scripts/run_plot_single_dataset_evaluation.R scripts/plot_single_dataset_$(2).R \
 $(realperfdir)/$(1)$(4)_performance.rds
 	$(R) "--args dataset='$(1)' filt='$(3)' plottype='$(2)' cobradir='$(cobradir)' concordancedir='$(concordancedir)' relperfdir='$(relperfdir)' realperfdir='$(realperfdir)' figdir='$(singledsfigdir)'" scripts/run_plot_single_dataset_evaluation.R Rout/run_plot_single_dataset_evaluation_$(1)$(4)_$(2).Rout
 endef
@@ -250,8 +296,8 @@ $(foreach F,$(FILT),$(foreach Y,$(DSsimsignal),$(foreach P,$(PLOTTYPE4),$(eval $
 ## -------------------- Plots for characterization of data set ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define plotrule_characterization
-$(dschardir)/$(1)$(3)_dataset_characteristics_summary_data.rds: scripts/run_plot_dataset_characterization.R scripts/prepare_mae.R \
-subsets/$(1)_subsets.rds data/$(1).rds scripts/calculate_gene_characteristics.R  scripts/calculate_cell_characteristics.R
+$(dschardir)/$(1)$(3)_dataset_characteristics_summary_data.rds: scripts/run_plot_dataset_characterization.R \
+subsets/$(1)_subsets.rds data/$(1).rds
 	$(R) "--args dataset='$(1)' config_file='config/$(1).json' filt='$(2)' cell_cycle_file='data/cell_cycle_geneids.rds' figdir='$(dschardir)'" scripts/run_plot_dataset_characterization.R Rout/run_plot_dataset_characterization_$(1)$(3).Rout
 endef
 $(foreach Y,$(DS),$(eval $(call plotrule_characterization,$(Y),,)))
@@ -263,8 +309,8 @@ $(foreach F,$(FILT), $(foreach Y,$(DSbulk),$(eval $(call plotrule_characterizati
 ## ------------------------------------------------------------------------------------ ##
 define origvsmockrule
 $(figdir)/orig_vs_mock/$(1)$(3)_orig_vs_mock_summary_data.rds: $(concordancedir)/$(1)$(3)_concordances.rds \
-$(concordancedir)/$(1)mock$(3)_concordances.rds scripts/plot_setup.R  \
-scripts/run_plot_single_dataset_origvsmock.R scripts/plot_single_dataset_origvsmock.R
+$(concordancedir)/$(1)mock$(3)_concordances.rds \
+scripts/run_plot_single_dataset_origvsmock.R 
 	$(R) "--args dataset='$(1)' filt='$(2)' concordancedir='$(concordancedir)' figdir='$(figdir)/orig_vs_mock'" scripts/run_plot_single_dataset_origvsmock.R Rout/run_plot_single_dataset_origvsmock_$(1)$(3).Rout
 endef
 $(foreach Y,$(Dsb),$(eval $(call origvsmockrule,$(Y),,)))
@@ -279,7 +325,7 @@ $(foreach F,$(FILT), $(foreach Y,$(Dsbsim),$(eval $(call origvsmockrule,$(Y),$(F
 define summaryrule_timing
 $(multidsfigdir)/timing/summary_timing$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/timing/, $(foreach Y,$(2),$(Y)_timing))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/timing/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_timing)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_timing.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_timing.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='timing' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/timing' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_timing$(1).Rout
 endef
 $(eval $(call summaryrule_timing,_all,$(DS),${DSc},$(FILT),${FILTc},${MTplotc}))
@@ -287,7 +333,7 @@ $(eval $(call summaryrule_timing,_all,$(DS),${DSc},$(FILT),${FILTc},${MTplotc}))
 define summaryrule_fracNA
 $(multidsfigdir)/fracNA/summary_fracNA$(1).rds: $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(2),$(Y)))) \
 $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F))))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_fracNA.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_fracNA.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='fracNA' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/fracNA' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_fracNA$(1).Rout
 endef
 $(eval $(call summaryrule_fracNA,_real,$(DSreal),${DSrealc},$(FILT),${FILTc},${MTplotc}))
@@ -296,7 +342,7 @@ $(eval $(call summaryrule_fracNA,_bulk,$(DSbulk),${DSbulkc},$(FILT),${FILTc},${M
 define summaryrule_nbrdet
 $(multidsfigdir)/nbrdet/summary_nbrdet$(1).rds: $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(2),$(Y)))) \
 $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F))))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_nbrdet.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_nbrdet.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='nbrdet' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/nbrdet' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_nbrdet$(1).Rout
 endef
 $(eval $(call summaryrule_nbrdet,_real,$(DSrealsignal),${DSrealsignalc},$(FILT),${FILTc},${MTplotc}))
@@ -305,7 +351,7 @@ $(eval $(call summaryrule_nbrdet,_bulk,$(DSbulksignal),${DSbulksignalc},$(FILT),
 define summaryrule_truefpr
 $(multidsfigdir)/truefpr/summary_truefpr$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/truefpr/, $(foreach Y,$(2),$(Y)_truefpr))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/truefpr/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_truefpr)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_truefpr.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='truefpr' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/truefpr' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_truefpr$(1).Rout
 endef
 $(eval $(call summaryrule_truefpr,_real,$(DSrealmock),${DSrealmockc},$(FILT),${FILTc},${MTplotc}))
@@ -314,7 +360,7 @@ $(eval $(call summaryrule_truefpr,_bulk,$(DSbulkmock),${DSbulkmockc},$(FILT),${F
 
 define summaryrule_de_characteristics
 $(multidsfigdir)/de_characteristics/summary_de_characteristics$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_characterization/, $(foreach Y,$(2),$(Y)_results_characterization))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_de_characteristics.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_de_characteristics.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='de_characteristics' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/de_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_de_characteristics$(1).Rout
 endef
 $(eval $(call summaryrule_de_characteristics,_real,$(DSrealmock),${DSrealmockc},,,${MTplotc}))
@@ -323,8 +369,8 @@ $(eval $(call summaryrule_de_characteristics,_sim,$(DSsimmock),${DSsimmockc},,,$
 define summaryrule_crossmethod_consistency
 $(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency$(1).rds: $(addsuffix .rds, $(addprefix $(concordancedir)/, $(foreach Y,$(2),$(Y)_concordances))) \
 $(addsuffix .rds, $(addprefix $(concordancedir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_concordances)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_crossmethod_consistency.R scripts/help_function_crossmethod_concordance.R \
-include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_crossmethod_consistency.R \
+include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='crossmethod_consistency' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/crossmethod_consistency' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_crossmethod_consistency$(1).Rout
 endef
 $(eval $(call summaryrule_crossmethod_consistency,_real,$(DSrealsignal),${DSrealsignalc},$(FILT),${FILTc},${MTplotc}))
@@ -334,7 +380,7 @@ $(eval $(call summaryrule_crossmethod_consistency,_bulk,$(DSbulksignal),${DSbulk
 define summaryrule_relfprtpr
 $(multidsfigdir)/relfprtpr/summary_relfprtpr$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_relativetruth/, $(foreach Y,$(2),$(Y)_results_relativetruth))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_relativetruth/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_results_relativetruth)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_relfprtpr.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_relfprtpr.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='relfprtpr' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/relfprtpr' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_relfprtpr$(1).Rout
 endef
 $(eval $(call summaryrule_relfprtpr,_real,$(DSrealsignal),${DSrealsignalc},$(FILT),${FILTc},${MTplotc}))
@@ -343,8 +389,7 @@ $(eval $(call summaryrule_relfprtpr,_sim,$(DSsimsignal),${DSsimsignalc},$(FILT),
 define summaryrule_filtering
 $(multidsfigdir)/filtering/summary_filtering_$(1)$(2).rds: $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(3),$(Y)_$(1)))) \
 $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(3),$(Y)))) scripts/run_plot_multi_dataset_summarization.R scripts/summarize_filtering.R \
-include_datasets.mk include_filterings.mk $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(3),$(Y)))) \
-scripts/plot_setup.R
+include_datasets.mk include_filterings.mk $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(3),$(Y))))
 	$(R) "--args datasets='$(4)' filt='$(1)' summarytype='filtering' plotmethods='$(5)' dtpext='$(2)' figdir='$(multidsfigdir)/filtering' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_filtering_$(1)$(2).Rout
 endef
 $(foreach F,$(FILT),$(eval $(call summaryrule_filtering,$(F),_real,$(DSrealsignal),${DSrealsignalc},)))
@@ -354,7 +399,7 @@ $(foreach F,$(FILT),$(eval $(call summaryrule_filtering,$(F),_sim,$(DSsimsignal)
 define summaryrule_trueperformance
 $(multidsfigdir)/trueperformance/summary_trueperformance$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/performance_realtruth/, $(foreach Y,$(2),$(Y)_performance_realtruth))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/performance_realtruth/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_performance_realtruth)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_trueperformance.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_trueperformance.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='trueperformance' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/trueperformance' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_trueperformance$(1).Rout
 endef
 $(eval $(call summaryrule_trueperformance,_sim,$(DSsimsignal),${DSsimsignalc},$(FILT),${FILTc},${MTplotc}))
@@ -362,7 +407,7 @@ $(eval $(call summaryrule_trueperformance,_sim,$(DSsimsignal),${DSsimsignalc},$(
 define summaryrule_origvsmock
 $(multidsfigdir)/orig_vs_mock/summary_orig_vs_mock$(1).rds: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(2),$(Y)))) \
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F))))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_orig_vs_mock.R include_datasets.mk include_filterings.mk scripts/plot_setup.R plot_methods.mk
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_orig_vs_mock.R include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='orig_vs_mock' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/orig_vs_mock' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_orig_vs_mock$(1).Rout
 endef
 $(eval $(call summaryrule_origvsmock,_real,$(Dsb),${Dsbc},$(FILT),${FILTc},${MTplotc}))
@@ -371,14 +416,14 @@ $(eval $(call summaryrule_origvsmock,_bulk,$(DSbulksignal),${DSbulksignalc},$(FI
 
 define summaryrule_tsne
 $(multidsfigdir)/tsne/summary_tsne$(1).rds: $(addsuffix _dataset_characteristics_plots.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_tsne.R include_datasets.mk scripts/plot_setup.R
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_tsne.R include_datasets.mk
 	$(R) "--args datasets='$(3)' filt='$(4)' summarytype='tsne' plotmethods='$(5)' dtpext='$(1)' figdir='$(multidsfigdir)/tsne' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_tsne$(1).Rout
 endef
 $(eval $(call summaryrule_tsne,_all,$(DStsne),${DStsnec},,))
 
 define summaryrule_dschar
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics$(1).rds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_ds_characteristics.R include_datasets.mk scripts/plot_setup.R
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_ds_characteristics.R include_datasets.mk
 	$(R) "--args datasets='$(3)' filt='$(4)' summarytype='ds_characteristics' plotmethods='$(5)' dtpext='$(1)' figdir='$(multidsfigdir)/ds_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_ds_characteristics$(1).Rout
 endef
 $(eval $(call summaryrule_dschar,_real,$(DSrealsignal),${DSrealsignalc},,))
@@ -386,7 +431,7 @@ $(eval $(call summaryrule_dschar,_real,$(DSrealsignal),${DSrealsignalc},,))
 ## --------------------- Investigation of voom/limma behaviour ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 figures/misc/voomlimma_investigation.rds: $(addsuffix _subsets.rds, $(addprefix subsets/, $(foreach D,$(DSrealmock),$(D)))) \
-$(addsuffix .rds, $(addprefix data/, $(foreach D,$(DSrealmock),$(D)))) scripts/investigate_voomlimma_results.R
+$(addsuffix .rds, $(addprefix data/, $(foreach D,$(DSrealmock),$(D)))) scripts/investigate_voomlimma_results.R 
 	$(R) "--args figdir='figures/misc'" scripts/investigate_voomlimma_results.R Rout/investigate_voomlimma_results.Rout
 
 

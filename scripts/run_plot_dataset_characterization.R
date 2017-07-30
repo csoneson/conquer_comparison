@@ -97,7 +97,8 @@ char_ds <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt)
+    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt,
+                    impute = config$impute)
 
     ## Gene characteristics
     chars <- calculate_gene_characteristics(L, do.plot = TRUE, 
