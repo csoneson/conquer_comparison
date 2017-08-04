@@ -30,7 +30,8 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
   ## Subset and filter data matrices
   count <- assays(experiments(mae)[["gene"]])[["count_lstpm"]][, s]
   tpm <- assays(experiments(mae)[["gene"]])[["TPM"]][, s]
-  avetxlength = assays(experiments(mae)[["gene"]])[["avetxlength"]][, s]
+  ## Scaling factor from TPM to count_lstpm was calculated from avetxlength of all samples
+  avetxlength = assays(experiments(mae)[["gene"]])[["avetxlength"]]
   if (!is.null(imposed_condition)) {
     condt <- structure(imposed_condition[[as.character(sz)]][i, ],
                        names = rownames(Biobase::pData(mae)[s, ]))

@@ -93,9 +93,16 @@ avetxlength <- avetxlength[match(idconv$gene[match(rownames(sims$counts),
 newMat <- sims$counts/rowMeans(avetxlength)
 sim_TPM <- t(t(newMat) / colSums(newMat)) * 1e6
 
+## Generate synthetic avetxlength matrix
+sim_avetxlength <- matrix(rep(rowMeans(avetxlength), each = ncol(sims$counts)), 
+                          ncol = ncol(sims$counts), byrow = TRUE)
+rownames(sim_avetxlength) <- rownames(sims$counts)
+colnames(sim_avetxlength) <- colnames(sims$counts)
+
 ## Generate MultiAssayExperiment
 generse <- SummarizedExperiment(assays = list(TPM = sim_TPM,
-                                              count_lstpm = sims$counts))
+                                              count_lstpm = sims$counts,
+                                              avetxlength = sim_avetxlength))
 
 mae <- MultiAssayExperiment(experiments = list(gene = generse),
                             pData = data.frame(group = as.character(levels(factor(group))[sims$designs/2 + 3/2]),

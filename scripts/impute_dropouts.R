@@ -45,7 +45,6 @@ impute_dropouts <- function(count, tpm, condt, avetxlength) {
                      FUN = "*")
 
   ## Estimate TPMs
-  stopifnot(all(colnames(count_imp) == colnames(avetxlength)))
   stopifnot(all(rownames(count_imp) == rownames(avetxlength)))
   tpm_imp <- count_imp/rowMeans(avetxlength)
   tpm_imp <- t(t(tpm_imp) / colSums(tpm_imp)) * 1e6
