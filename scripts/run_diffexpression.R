@@ -49,6 +49,7 @@ for (sz in sizes) {
     message(nrow(L$count), " genes, ", ncol(L$count), " samples.")
     pdf(paste0(config$figfilebase, "_", demethod, exts, "_", sz, "_", i, ".pdf"))
     res[[paste0(demethod, exts, ".", sz, ".", i)]] <- get(paste0("run_", demethod))(L)
+    res[[paste0(demethod, exts, ".", sz, ".", i)]][["nimp"]] <- L$nimp
     dev.off()
   }
 }

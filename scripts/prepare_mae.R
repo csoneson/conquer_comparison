@@ -45,8 +45,11 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
     imputed <- impute_dropouts(count = count, tpm = tpm, condt = condt, 
                                avetxlength = avetxlength)
     count <- imputed$count
-    tpm <- imputed$count
+    tpm <- imputed$tpm
     condt <- imputed$condt
+    nimp <- imputed$nimp  ## number of imputed values
+  } else {
+    nimp <- NULL
   }
   
   if (filt == "") {
@@ -79,5 +82,9 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
   summary(rowSums(count))
   summary(rowSums(tpm))
   
-  list(count = count, tpm = tpm, condt = condt)
+  if (!is.null(nimp)) {
+    nimp <- nimp[match(rownames(count), rownames(nimp)), ]
+  }
+  
+  list(count = count, tpm = tpm, condt = condt, nimp = nimp)
 }

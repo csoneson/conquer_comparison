@@ -5,8 +5,10 @@ impute_dropouts <- function(count, tpm, condt, avetxlength) {
   stopifnot(length(unique(condt)) == 2)
   rnb <- paste0(format(Sys.time(), "%Y_%m_%d_%H_%M_%S"), "_", round(runif(1) * 1e8))
   
+  count_orig <- as.matrix(count)  ## save for later comparison
+  
   count <- as.matrix(count)
-  totalCounts_by_cell <- colSums(count)  ##library sizes
+  totalCounts_by_cell <- colSums(count)  ## library sizes
   totalCounts_by_cell[totalCounts_by_cell == 0] <- 1
   count <- sweep(count, MARGIN = 2, totalCounts_by_cell/10^6, FUN = "/")  ## cpm
   if (min(count) < 0) {
@@ -49,5 +51,14 @@ impute_dropouts <- function(count, tpm, condt, avetxlength) {
   tpm_imp <- count_imp/rowMeans(avetxlength)
   tpm_imp <- t(t(tpm_imp) / colSums(tpm_imp)) * 1e6
   
-  list(count = count_imp, tpm = tpm_imp, condt = condt)
+  ## Tabulate number of imputed values
+  stopifnot(all(colnames(count_imp) == colnames(count_orig)))
+  stopifnot(all(rownames(count_imp) == rownames(count_orig)))
+  nimp <- data.frame(gene = rownames(count_imp), 
+                     nbr_increased = rowSums(count_imp > (count_orig + 1e-6)),
+                     nbr_decreased = rowSums(count_imp < (count_orig - 1e-6))) %>%
+    dplyr::mutate(nbr_unchanged = ncol(count_imp) - nbr_increased - nbr_decreased)
+  rownames(nimp) <- nimp$gene
+  
+  list(count = count_imp, tpm = tpm_imp, condt = condt, nimp = nimp)
 }
