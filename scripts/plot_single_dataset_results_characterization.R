@@ -54,7 +54,8 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     
     ## Determine which characteristics to logtransform
     allasp <- c("avetpm", "avecount", "vartpm", "fraczero", "fraczeroround",
-                "fraczerodiff", "cvtpm", "avecpm", "varcpm", "cvcpm")
+                "fraczerodiff", "cvtpm", "avecpm", "varcpm", "cvcpm", 
+                "fracimputedup", "fracimputeddown")
     dolog2 <- c("avetpm", "avecount", "vartpm", "avecpm", "varcpm")
 
     ## For each gene characteristic, populate summary_data with statistics
@@ -71,7 +72,9 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
                    fraczeroround = "Fraction zeros after rounding",
                    fraczerodiff = "Difference in fraction zeros between conditions",
                    cvtpm = "coefficient of variation (TPM)",
-                   cvcpm = "coefficient of variation (CPM)")
+                   cvcpm = "coefficient of variation (CPM)",
+                   fracimputedup = "Fraction of values imputed upwards",
+                   fracimputeddown = "Fraction of values imputed downwards")
       
       ## Log2-transform if necessary
       if (y %in% dolog2) 

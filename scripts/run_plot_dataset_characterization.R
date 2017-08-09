@@ -225,14 +225,18 @@ for (tp in c("vartpm", "avecount", "avetpm", "avecensuscount", "avecpm", "varcpm
           geom_density() + scale_x_log10() + facet_wrap(~ncells) + 
           theme_bw() + xlab(nn))
 }
-for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround", "cvcpm")) {
+for (tp in c("fraczero", "fraczerodiff", "fraczerocensus", "cvtpm", "fraczeroround", 
+             "cvcpm", "fracimputedup", "fracimputeddown", "fracnonimputed")) {
   nn <- switch(tp, 
                fraczero = "Fraction zeros per gene",
                fraczeroround = "Fraction zeros per gene after rounding",
                fraczerodiff = "Difference (between conditions) of zero fraction per gene",
                cvtpm = "Coefficient of variation (TPM)",
                cvcpm = "Coefficient of variation (CPM)",
-               fraczerocensus = "Fraction zeros per gene, census counts")
+               fraczerocensus = "Fraction zeros per gene, census counts",
+               fracimputedup = "Fraction of values imputed upwards",
+               fracimputeddown = "Fraction of values imputed downwards",
+               fracnonimputed = "Fraction of values not imputed")
   print(char_gene_m %>% dplyr::filter(mtype == tp) %>% 
           ggplot(aes(x = value, group = repl, col = repl)) +
           scale_color_discrete(guide = FALSE) + 

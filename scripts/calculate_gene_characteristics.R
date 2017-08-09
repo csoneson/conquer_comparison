@@ -81,6 +81,20 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
                 list(vartpm, fraczero, avecount, avetpm, cvtpm, avecensuscount, 
                      fraczerocensus, avecpm, varcpm, cvcpm))
   
+  ## Number of imputed values
+  if (!is.null(L$nimp)) {
+    n <- ncol(L$count)
+    nimp <- L$nimp %>% dplyr::mutate(fracimputedup = nbr_increased/n,
+                                     fracimputeddown = nbr_decreased/n,
+                                     fracnonimputed = nbr_unchanged/n) %>%
+      dplyr::select(gene, fracimputedup, fracimputeddown, fracnonimputed)
+    df2 <- merge(df2, nimp, by = "gene", all = TRUE)
+  } else {
+    df2$fracimputedup <- 0
+    df2$fracimputeddown <- 0
+    df2$fracnonimputed <- 1
+  }
+  
   ## Add column "tested", which is TRUE for all genes (all genes are sent into the test)
   df2$tested <- TRUE
 
