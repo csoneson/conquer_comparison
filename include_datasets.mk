@@ -6,8 +6,23 @@ space := $(empty) $(empty)
 DS := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 GSE60749-GPL13112 \
 GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock UsoskinGSE59739 UsoskinGSE59739mock GSE45719sim123 \
 GSE45719sim123mock GSE74596sim123 GSE74596sim123mock GSE60749-GPL13112sim123 GSE60749-GPL13112sim123mock \
-GSE74596impute GSE74596imputemock GSE74596sim123impute GSE74596sim123imputemock
+GSE74596scimpute GSE74596scimputemock GSE74596sim123scimpute GSE74596sim123scimputemock \
+GSE74596drimpute GSE74596drimputemock GSE74596sim123drimpute GSE74596sim123drimputemock
 DSc := $(subst $(space),$(comma),$(DS))
+
+## All non-imputed single-cell data sets
+DSnonimpute := GSE45719 GSE45719mock GSE74596 GSE74596mock EMTAB2805 EMTAB2805mock GSE63818-GPL16791 GSE60749-GPL13112 \
+GSE60749-GPL13112mock GSE48968-GPL13112 GSE48968-GPL13112mock UsoskinGSE59739 UsoskinGSE59739mock GSE45719sim123 \
+GSE45719sim123mock GSE74596sim123 GSE74596sim123mock GSE60749-GPL13112sim123 GSE60749-GPL13112sim123mock
+DSnonimputec := $(subst $(space),$(comma),$(DSnonimpute))
+
+## scimpute data sets
+DSscimpute := GSE74596scimpute GSE74596scimputemock GSE74596sim123scimpute GSE74596sim123scimputemock
+DSscimputec := $(subst $(space),$(comma),$(DSscimpute))
+
+## drimpute data sets
+DSdrimpute := GSE74596drimpute GSE74596drimputemock GSE74596sim123drimpute GSE74596sim123drimputemock
+DSdrimputec := $(subst $(space),$(comma),$(DSdrimpute))
 
 ## Real data sets for which we have both original and mock results (to compare consistency)
 Dsb := GSE45719 GSE74596 EMTAB2805 GSE60749-GPL13112 GSE48968-GPL13112 UsoskinGSE59739
@@ -18,12 +33,16 @@ Dsbsim := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123
 Dsbsimc := $(subst $(space),$(comma),$(Dsbsim))
 
 ## Real imputed data sets for which we have both original and mock results
-Dsbimpute := GSE74596impute
-Dsbimputec := $(subst $(space),$(comma),$(Dsbimpute))
+Dsbscimpute := GSE74596scimpute
+Dsbscimputec := $(subst $(space),$(comma),$(Dsbscimpute))
+Dsbdrimpute := GSE74596drimpute
+Dsbdrimputec := $(subst $(space),$(comma),$(Dsbdrimpute))
 
 ## Simulated imputed data sets for which we have both original and mock results
-Dsbsimimpute := GSE74596sim123impute
-Dsbsimimputec := $(subst $(space),$(comma),$(Dsbsimimpute))
+Dsbsimscimpute := GSE74596sim123scimpute
+Dsbsimscimputec := $(subst $(space),$(comma),$(Dsbsimscimpute))
+Dsbsimdrimpute := GSE74596sim123drimpute
+Dsbsimdrimputec := $(subst $(space),$(comma),$(Dsbsimdrimpute))
 
 ## Data sets to simulate from
 DSforsim := GSE45719 GSE74596 GSE48968-GPL13112 GSE60749-GPL13112
@@ -40,14 +59,20 @@ GSE74596mock EMTAB2805mock GSE60749-GPL13112mock GSE48968-GPL13112mock UsoskinGS
 DSrealc := $(subst $(space),$(comma),$(DSreal))
 
 ## Real signal imputed data sets
-DSrealsignalimpute := GSE74596impute
-DSrealsignalimputec := $(subst $(space),$(comma),$(DSrealsignalimpute))
+DSrealsignalscimpute := GSE74596scimpute
+DSrealsignalscimputec := $(subst $(space),$(comma),$(DSrealsignalscimpute))
+DSrealsignaldrimpute := GSE74596drimpute
+DSrealsignaldrimputec := $(subst $(space),$(comma),$(DSrealsignaldrimpute))
 ## Real mock imputed data sets
-DSrealmockimpute := GSE74596imputemock
-DSrealmockimputec := $(subst $(space),$(comma),$(DSrealmockimpute))
+DSrealmockscimpute := GSE74596scimputemock
+DSrealmockscimputec := $(subst $(space),$(comma),$(DSrealmockscimpute))
+DSrealmockdrimpute := GSE74596drimputemock
+DSrealmockdrimputec := $(subst $(space),$(comma),$(DSrealmockdrimpute))
 ## All real imputed data sets
-DSrealimpute := GSE74596impute GSE74596imputemock
-DSrealimputec := $(subst $(space),$(comma),$(DSrealimpute))
+DSrealscimpute := GSE74596scimpute GSE74596scimputemock
+DSrealscimputec := $(subst $(space),$(comma),$(DSrealscimpute))
+DSrealdrimpute := GSE74596drimpute GSE74596drimputemock
+DSrealdrimputec := $(subst $(space),$(comma),$(DSrealdrimpute))
 
 ## Simulated signal data sets
 DSsimsignal := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123
@@ -60,14 +85,20 @@ DSsim := GSE45719sim123 GSE74596sim123 GSE60749-GPL13112sim123 GSE45719sim123moc
 DSsimc := $(subst $(space),$(comma),$(DSsim))
 
 ## Simulated signal imputed data sets 
-DSsimsignalimpute := GSE74596sim123impute
-DSsimsignalimputec := $(subst $(space),$(comma),$(DSsimsignalimpute))
+DSsimsignalscimpute := GSE74596sim123scimpute
+DSsimsignalscimputec := $(subst $(space),$(comma),$(DSsimsignalscimpute))
+DSsimsignaldrimpute := GSE74596sim123drimpute
+DSsimsignaldrimputec := $(subst $(space),$(comma),$(DSsimsignaldrimpute))
 ## Simulated mock imputed data sets
-DSsimmockimpute := GSE74596sim123imputemock
-DSsimmockimputec := $(subst $(space),$(comma),$(DSsimmockimpute))
+DSsimmockscimpute := GSE74596sim123scimputemock
+DSsimmockscimputec := $(subst $(space),$(comma),$(DSsimmockscimpute))
+DSsimmockdrimpute := GSE74596sim123drimputemock
+DSsimmockdrimputec := $(subst $(space),$(comma),$(DSsimmockdrimpute))
 ## All simulated imputed data sets
-DSsimimpute := GSE74596sim123impute GSE74596sim123imputemock
-DSsimimputec := $(subst $(space),$(comma),$(DSsimimpute))
+DSsimscimpute := GSE74596sim123scimpute GSE74596sim123scimputemock
+DSsimscimputec := $(subst $(space),$(comma),$(DSsimscimpute))
+DSsimdrimpute := GSE74596sim123drimpute GSE74596sim123drimputemock
+DSsimdrimputec := $(subst $(space),$(comma),$(DSsimdrimpute))
 
 ## Bulk signal data sets
 DSbulksignal := EGEUV1

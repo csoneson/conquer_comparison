@@ -8,7 +8,7 @@ MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma Seur
 SeuratBimodnofilt SeuratBimodIsExpr2 SeuratTobit DESeq2census edgeRLRTcensus monoclecensus \
 monocle D3E limmatrend ROTSvoom ROTScpm ROTStpm metagenomeSeq ttest
 ## Methods run with R 3.4
-MT2 := scDD zingeRedgeR zingeRedgeRnofilt DEsingle
+MT2 := scDD DEsingle# zingeRedgeR zingeRedgeRnofilt 
 
 ## All methods
 MT := $(MT1) $(MT2)

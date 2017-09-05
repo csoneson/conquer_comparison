@@ -1,4 +1,4 @@
-source("scripts/impute_dropouts.R")
+source("scripts/imputation_scripts.R")
 
 clean_mae <- function(mae, groupid) {
   mae <- updateObject(mae)
@@ -41,9 +41,10 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
                        names = rownames(Biobase::pData(mae)[s, ]))
   }
   
-  if (!is.null(impute) && impute == "yes") {
+  if (!is.null(impute) && impute != "no" && !is.na(impute)) {
     imputed <- impute_dropouts(count = count, tpm = tpm, condt = condt, 
-                               avetxlength = avetxlength)
+                               avetxlength = avetxlength, 
+                               imputationmethod = impute)
     count <- imputed$count
     tpm <- imputed$tpm
     condt <- imputed$condt
