@@ -35,15 +35,22 @@ drimpute_dropouts <- function(count, tpm, condt, avetxlength) {
   ## Go back to original count scale
   normcount_imp <- exp(lognormcount_imp) - 1
   count_imp <- sweep(normcount_imp, 2, sf, "*")
+  colnames(count_imp) <- colnames(count_orig)
   
   ## Estimate TPMs
+  stopifnot(!is.null(colnames(count_imp)))
+  stopifnot(!is.null(rownames(count_imp)))
   stopifnot(all(rownames(count_imp) == rownames(avetxlength)))
   tpm_imp <- count_imp/rowMeans(avetxlength)
   tpm_imp <- t(t(tpm_imp) / colSums(tpm_imp)) * 1e6
   
   ## Tabulate number of imputed values
+  stopifnot(!is.null(colnames(tpm_imp)))
+  stopifnot(!is.null(rownames(tpm_imp)))
   stopifnot(all(colnames(count_imp) == colnames(count_orig)))
   stopifnot(all(rownames(count_imp) == rownames(count_orig)))
+  stopifnot(all(colnames(tpm_imp) == colnames(count_orig)))
+  stopifnot(all(rownames(tpm_imp) == rownames(count_orig)))
   nimp <- data.frame(gene = rownames(count_imp), 
                      nbr_increased = rowSums(count_imp > (count_orig + 1e-6)),
                      nbr_decreased = rowSums(count_imp < (count_orig - 1e-6))) %>%

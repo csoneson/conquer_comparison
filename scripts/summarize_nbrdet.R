@@ -208,4 +208,8 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     ggtitle("After filtering")
   print(p)
   dev.off()
+  
+  plots[c("nbrdet_comb__sorted", "nbrdet_comb_TPM_1_25p_sorted", 
+          "nbrdet_sep_", "nbrdet_sep_TPM_1_25p", "nbrdet_sep_line_", 
+          "nbrdet_sep_line_TPM_1_25p")]
 }

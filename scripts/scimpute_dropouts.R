@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(scImpute))
 
 ## Impute dropouts with the scImpute package
-impute_dropouts <- function(count, tpm, condt, avetxlength) {
+scimpute_dropouts <- function(count, tpm, condt, avetxlength) {
   stopifnot(length(unique(condt)) == 2)
   rnb <- paste0(format(Sys.time(), "%Y_%m_%d_%H_%M_%S"), "_", round(runif(1) * 1e8))
   

@@ -27,9 +27,9 @@ PLOTTYPE4 := performance_realtruth
 SUMMARYTYPE1 := truefpr crossmethod_consistency orig_vs_mock
 SUMMARYTYPE2 := de_characteristics relfprtpr
 SUMMARYTYPE3 := fracNA nbrdet
-DSTYPE1 := real sim bulk realscimpute simscimpute realdrimpute simdrimpute
-DSTYPE2 := real sim realscimpute simscimpute realdrimpute simdrimpute
-DSTYPE3 := real bulk realscimpute realdrimpute
+DSTYPE1 := real sim bulk realdrimpute simdrimpute# realscimpute simscimpute
+DSTYPE2 := real sim realdrimpute simdrimpute# realscimpute simscimpute
+DSTYPE3 := real bulk realdrimpute# realscimpute
 
 .PHONY: all
 
@@ -41,13 +41,13 @@ $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_
 $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/tsne/summary_tsne_all.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
-$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics_real.rds \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE1),$(foreach S,$(SUMMARYTYPE1),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE2),$(foreach S,$(SUMMARYTYPE2),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE3),$(foreach S,$(SUMMARYTYPE3),$(S)/summary_$(S)_$(D))))) \
 figures/misc/voomlimma_investigation.rds
+#$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 
 ## Plot original vs mock comparison
 plotorigmock: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsb),$(Y)))) \

@@ -258,4 +258,6 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   pdf(paste0(figdir, "/timing_final_ncellsdep", dtpext, ".pdf"), width = 14, height = 9.5)
   print(plots[["timing_dependence_permethod"]])
   dev.off()
+  
+  plots[c("rel_timing_boxplot_comb_log", "timing_exponent_ncells")]
 }

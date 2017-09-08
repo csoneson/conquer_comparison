@@ -235,5 +235,11 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                     ), ncol = 1, rel_heights = c(0.15, 6)
     ))
     dev.off()
-  }  
+  }
+  
+  plots[c(paste0("auc_signal_comb_TPM_1_25p_", unique(concordances$k)),
+          paste0("auc_mock_comb_TPM_1_25p_", unique(concordances$k)),
+          paste0("tstat_auc_TPM_1_25p_", unique(concordances$k)),
+          paste0("auc_signal_sep_TPM_1_25p_", unique(concordances$k)),
+          paste0("auc_mock_sep_TPM_1_25p_", unique(concordances$k)))]
 }

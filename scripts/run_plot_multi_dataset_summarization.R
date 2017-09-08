@@ -33,17 +33,17 @@ exts <- unique(c("", exts))
 cols <- structure(rep(cols, length(exts)), 
                   names = paste0(names(cols), rep(exts, each = length(cols))))
 
-get(paste0("summarize_", summarytype))(figdir = figdir, 
-                                       datasets = datasets, exts = exts, 
-                                       dtpext = dtpext, cols = cols,
-                                       singledsfigdir = singledsfigdir,
-                                       cobradir = cobradir,
-                                       concordancedir = concordancedir,
-                                       dschardir = dschardir,
-                                       origvsmockdir = origvsmockdir,
-                                       plotmethods = plotmethods)
-saveRDS(NULL, file = paste0(figdir, "/summary_", summarytype, 
-                            ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
-                            dtpext, ".rds"))
+plots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
+                                                datasets = datasets, exts = exts, 
+                                                dtpext = dtpext, cols = cols,
+                                                singledsfigdir = singledsfigdir,
+                                                cobradir = cobradir,
+                                                concordancedir = concordancedir,
+                                                dschardir = dschardir,
+                                                origvsmockdir = origvsmockdir,
+                                                plotmethods = plotmethods)
+saveRDS(plots, file = paste0(figdir, "/summary_", summarytype, 
+                             ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
+                             dtpext, ".rds"))
 sessionInfo()
 

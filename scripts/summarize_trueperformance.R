@@ -308,4 +308,11 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     print(p)
     dev.off()
   }
+  
+  plots[c("FDR_all_byfdrcontrol_", "FDR_all_byfdrcontrol_TPM_1_25p", 
+          "TPR_all_byfdrcontrol_", "TPR_all_byfdrcontrol_TPM_1_25p",
+          "auroc_all_byfdrcontrol_", "auroc_all_byfdrcontrol_TPM_1_25p",
+          "FDR_byncells_sep_", "FDR_byncells_sep_TPM_1_25p",
+          "TPR_byncells_sep_", "TPR_byncells_sep_TPM_1_25p",
+          "auroc_byncells_sep_", "auroc_byncells_sep_TPM_1_25p")]
 }

@@ -11,6 +11,8 @@ summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
   print(plot_grid(plotlist = lapply(X, function(x) x$tsne + guides(color = guide_legend(nrow = 2))), 
                   ncol = 3, labels = LETTERS[1:length(datasets)], align = "h"))
   dev.off()
+  
+  lapply(X, function(x) x$tsne)
 }
 
 

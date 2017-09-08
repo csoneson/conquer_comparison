@@ -165,4 +165,6 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
             ggtitle("EMTAB2805null_TPM_1_25p.48.1"))
     dev.off()
   }  
+  
+  plots[c("truefpr_sep_", "truefpr_sep_TPM_1_25p")]
 }

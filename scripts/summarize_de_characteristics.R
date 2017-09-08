@@ -115,4 +115,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
       dev.off()
     }
   }
+  
+  plots[c(paste0("tstat_bystat_", unique(charac$filt)),
+          paste0("snr_bystat_", unique(charac$filt)))]
 }
