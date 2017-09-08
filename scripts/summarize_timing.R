@@ -47,6 +47,10 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
   
+  ## Add colors and plot characters to the data frame
+  timing$plot_color <- cols[as.character(timing$method)]
+  timing$plot_char <- pch[as.character(timing$ncells_fact)]
+  
   ## Boxplots
   plots[["rel_timing_boxplot_comb"]] <- 
     ggplot(timing, aes(x = method, y = rel_timing, color = method)) + 

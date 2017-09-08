@@ -40,6 +40,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
         dplyr::filter(method %in% plotmethods)
       
+      ## Add colors and plot characters to the data frame
+      x$plot_color <- cols[as.character(x$method)]
+      
       ## Visualize summary statistics for each characteristic
       statname <- switch(stat,
                          tstat = "t-statistic comparing significant\nand non-significant genes",

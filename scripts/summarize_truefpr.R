@@ -62,14 +62,16 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods)
   
+  ## Add colors and plot characters to the data frame
+  truefpr$plot_color <- cols[as.character(truefpr$method)]
+  
   for (f in unique(truefpr$filt)) {
     tmp <- truefpr %>% dplyr::filter(filt == f) %>%
       dplyr::group_by(method) %>% dplyr::mutate(FPRmedian = median(FPR)) %>%
       dplyr::ungroup()
     tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$FPRmedian, decreasing = TRUE)]))
     plots[[paste0("truefpr_sep_", f)]] <- 
-      ggplot(tmp,
-             aes(x = method, y = FPR, color = method)) + 
+      ggplot(tmp, aes(x = method, y = FPR, color = method)) + 
       geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
       geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
       theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
@@ -84,8 +86,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   }
   
   plots[["truefpr_comb"]] <- 
-    ggplot(truefpr,
-           aes(x = method, y = FPR, color = method)) + 
+    ggplot(truefpr, aes(x = method, y = FPR, color = method)) + 
     geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
     theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 

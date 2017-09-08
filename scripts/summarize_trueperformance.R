@@ -95,6 +95,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   
+  ## Add colors and plot characters to the data frame
+  fdrtpr$plot_color <- cols[as.character(fdrtpr$method)]
+  fdrtpr$plot_char <- pch[as.character(fdrtpr$n_samples)]
+  
   for (f in unique(fdrtpr$filt)) {
     for (asp in c("FDR", "TPR")) {
       tmp <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
@@ -196,6 +200,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   auroc <- dplyr::full_join(auroc, fdrtpr %>% dplyr::ungroup() %>% dplyr::filter(thr == "thr0.05") %>%
                               dplyr::select(method, n_samples, repl, dataset, filt, fdrcontrol))
 
+  ## Add colors and plot characters to the data frame
+  auroc$plot_color <- cols[as.character(auroc$method)]
+  auroc$plot_char <- pch[as.character(auroc$n_samples)]
+  
   asp <- "AUROC"
   for (f in unique(auroc$filt)) {
     tmp <- auroc %>% dplyr::filter(filt == f) %>%

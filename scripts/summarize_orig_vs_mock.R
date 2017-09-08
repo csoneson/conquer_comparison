@@ -32,6 +32,9 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       nbr_keep <- unique(intersect(subset(concs, tp == "signal")$ncells,
                                    subset(concs, tp == "mock")$ncells))
       
+      ## Add colors and plot characters to the data frame
+      concs$plot_color <- cols[as.character(concs$method)]
+
       concsum <- concs %>% as.data.frame() %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
         dplyr::group_by(dataset, ncells, method) %>% 

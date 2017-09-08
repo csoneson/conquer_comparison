@@ -200,6 +200,13 @@ $(foreach Y,$(DSbulk),$(eval $(call subsetrule,$(Y))))
 data/UsoskinGSE59739.rds: scripts/generate_Usoskin_mae.R data/Usoskin_External_resources_Table_1.txt
 	$(R) scripts/generate_Usoskin_mae.R Rout/generate_Usoskin_mae.Rout
 
+## --------------------- Generate GSE62270-GPL17021 data set -------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+data/GSE62270-GPL17021.rds: scripts/generate_GSE62270_mae.R data/GSE62270-GPL17021-orig.rds
+	$(R) scripts/generate_GSE62270_mae.R Rout/generate_GSE62270_mae.Rout
+
+data/GSE62270-GPL17021mock.rds: data/GSE62270-GPL17021.rds
+	
 ## ------------------ Define rules for differential expression ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
 define dgerule3.3

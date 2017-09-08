@@ -28,6 +28,10 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
   
+  ## Add colors and plot characters to the data frame
+  nbrgenes$plot_color <- cols[as.character(nbrgenes$method)]
+  nbrgenes$plot_char <- pch[as.character(nbrgenes$ncells_fact)]
+  
   for (f in unique(nbrgenes$filt)) {
     plots[[paste0("nbrdet_sep_", f)]] <- 
       ggplot(nbrgenes %>% dplyr::filter(filt == f), 
