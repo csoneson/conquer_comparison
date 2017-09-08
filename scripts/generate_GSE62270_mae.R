@@ -20,8 +20,11 @@ summary(colSums(assays(experiments(mae)[["gene"]])[["count_lstpm"]]))
 summary(colSums(assays(experiments(mae)[["gene"]])[["TPM"]]))
 table(pData(mae)$source_name_ch1)
 
-save(mae, file = "data/GSE62270-GPL17021.rds")
-save(mae, file = "data/GSE62270-GPL17021mock.rds")
+## Remove transcript counts
+experiments(mae)[["tx"]] <- NULL
+
+saveRDS(mae, file = "data/GSE62270-GPL17021.rds")
+saveRDS(mae, file = "data/GSE62270-GPL17021mock.rds")
 
 sessionInfo()
 date()

@@ -27,9 +27,9 @@ PLOTTYPE4 := performance_realtruth
 SUMMARYTYPE1 := truefpr crossmethod_consistency orig_vs_mock
 SUMMARYTYPE2 := de_characteristics relfprtpr
 SUMMARYTYPE3 := fracNA nbrdet
-DSTYPE1 := real sim bulk realdrimpute simdrimpute# realscimpute simscimpute
-DSTYPE2 := real sim realdrimpute simdrimpute# realscimpute simscimpute
-DSTYPE3 := real bulk realdrimpute# realscimpute
+DSTYPE1 := real sim bulk realdrimpute simdrimpute realscimpute simscimpute
+DSTYPE2 := real sim realdrimpute simdrimpute realscimpute simscimpute
+DSTYPE3 := real bulk realdrimpute realscimpute
 
 .PHONY: all
 
