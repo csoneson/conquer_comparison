@@ -1,7 +1,11 @@
 plot_performance_realtruth <- function(cobraperf, colvec, exts = exts, summary_data = list()) {
-  summary_data$FDRTPR <- fdrtpr(cobraperf)
-  summary_data$AUROC <- cobraperf@roc %>% dplyr::group_by(method) %>%
+  summary_data$FDRTPR <- fdrtpr(cobraperf[["cobraperf"]])
+  summary_data$AUROC <- cobraperf[["cobraperf"]]@roc %>% dplyr::group_by(method) %>%
     dplyr::summarize(AUROC = max(AUC, na.rm = TRUE))
+  summary_data$FDRTPR_IHW <- fdrtpr(cobraperf[["cobraperf_ihw"]])
+  
+  cobraperf_ihw <- cobraperf[["cobraperf_ihw"]]
+  cobraperf <- cobraperf[["cobraperf"]]
   
   sizes_ncells <- unique(paste(get_nsamples(basemethods(cobraperf)), 
                                get_repl(basemethods(cobraperf)), sep = "."))

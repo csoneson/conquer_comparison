@@ -89,7 +89,28 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_signal_sep_", f, "_", k0)]] <- p
-    
+      
+      ## Subset of the data sets
+      if (all(c("GSE60749-GPL13112", "10XMonoCytoT") %in% concs$dataset)) {
+        p <- concs %>% dplyr::filter(tp == "signal") %>%
+          dplyr::filter(ncells %in% nbr_keep) %>%
+          dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
+          ggplot(aes(x = method, y = AUCs, col = method)) + 
+          geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
+          geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
+          facet_wrap(~dataset) + 
+          theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
+          scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                                   "", names(cols))), name = "") + 
+          scale_shape_discrete(name = "") +
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                axis.text.y = element_text(size = 12),
+                axis.title.y = element_text(size = 13)) + 
+          ggtitle(paste0(f, ", top-", k0, " genes"))
+        print(p)
+        plots[[paste0("auc_signal_sep_sub_", f, "_", k0)]] <- p
+      }
+      
       p <- concs %>% dplyr::filter(tp == "mock") %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
         ggplot(aes(x = method, y = AUCs, col = method)) + 
@@ -106,7 +127,27 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_mock_sep_", f, "_", k0)]] <- p
-    
+      
+      if (all(c("GSE60749-GPL13112", "10XMonoCytoT") %in% concs$dataset)) {
+        p <- concs %>% dplyr::filter(tp == "mock") %>%
+          dplyr::filter(ncells %in% nbr_keep) %>%
+          dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
+          ggplot(aes(x = method, y = AUCs, col = method)) + 
+          geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
+          geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
+          facet_wrap(~dataset) + 
+          theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
+          scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                                   "", names(cols))), name = "") + 
+          scale_shape_discrete(name = "") +
+          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+                axis.text.y = element_text(size = 12),
+                axis.title.y = element_text(size = 13)) + 
+          ggtitle(paste0(f, ", top-", k0, " genes"))
+        print(p)
+        plots[[paste0("auc_mock_sep_sub_", f, "_", k0)]] <- p
+      }
+      
       tmp <- concsum %>% dplyr::mutate(method = as.character(method)) %>%
         dplyr::group_by(method) %>% 
         dplyr::mutate(tstat_median = median(tstat, na.rm = TRUE)) %>% dplyr::ungroup()
@@ -222,6 +263,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
   }  
   
   for (k0 in unique(concordances$k)) {
+    ## Split by data set
     pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds.pdf"), 
         width = 10, height = 14.5)
     print(plot_grid(ggdraw() + 
@@ -238,6 +280,28 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                     ), ncol = 1, rel_heights = c(0.15, 6)
     ))
     dev.off()
+    
+    ## Only a subset of the data sets
+    if (all(c(paste0("auc_signal_sep_sub_TPM_1_25p_", k0),
+              paste0("auc_mock_sep_sub_TPM_1_25p_", k0)) %in% 
+            names(plots))) {
+      pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds_sub.pdf"), 
+          width = 12, height = 7.2)
+      print(plot_grid(ggdraw() + 
+                        draw_label(paste0("After filtering, top-", k0, " genes"),
+                                   fontface = "bold"), 
+                      plot_grid(
+                        plots[[paste0("auc_signal_sep_sub_TPM_1_25p_", k0)]] + 
+                          theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                          ggtitle(""),
+                        plots[[paste0("auc_mock_sep_sub_TPM_1_25p_", k0)]] + 
+                          theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                          ggtitle(""),
+                        ncol = 2, rel_widths = c(1, 1)
+                      ), ncol = 1, rel_heights = c(0.3, 6)
+      ))
+      dev.off()
+    }
   }
   
   plots[c(paste0("auc_signal_comb_TPM_1_25p_", unique(concordances$k)),

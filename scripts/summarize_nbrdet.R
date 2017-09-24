@@ -23,7 +23,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   
   ## Set plot symbols for number of cells per group
   ncells <- levels(nbrgenes$ncells_fact)
-  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
@@ -142,7 +142,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                               theme(legend.position = "bottom") + 
                               guides(colour = FALSE,
                                      shape = 
-                                       guide_legend(nrow = 1,
+                                       guide_legend(nrow = 2,
                                                     title = "Number of cells per group",
                                                     override.aes = list(size = 1.5),
                                                     title.theme = element_text(size = 12,
@@ -155,7 +155,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## Split by data set
-  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds.pdf"), width = 18, height = 10)
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds.pdf"), width = 19, height = 10)
   p <- plots[["nbrdet_sep_"]] + 
     theme(legend.position = "bottom") + 
     guides(colour = FALSE,
@@ -169,7 +169,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     ggtitle("Without filtering")
   print(p)
   dev.off()
-  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds_filtered.pdf"), width = 18, height = 10)
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds_filtered.pdf"), width = 19, height = 10)
   p <- plots[["nbrdet_sep_TPM_1_25p"]] + 
     theme(legend.position = "bottom") + 
     guides(colour = FALSE,

@@ -27,7 +27,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   
   ## Set plot symbols for number of cells per group
   ncells <- levels(nbrgenes$ncells_fact)
-  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   ## Define colors for plotting
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
@@ -89,7 +89,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
                               theme(legend.position = "bottom") + 
                               guides(colour = FALSE,
                                      shape = 
-                                       guide_legend(nrow = 1,
+                                       guide_legend(nrow = 2,
                                                     title = "Number of cells per group",
                                                     override.aes = list(size = 1.5),
                                                     title.theme = element_text(size = 12,

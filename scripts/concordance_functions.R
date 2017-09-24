@@ -3,6 +3,7 @@
 ## For a given row, interpret as follows: among the top-k genes from each 
 ## method, nbr_genes occur exactly nbr_occ times. 
 calculate_nbr_occurrences <- function(mtx, maxrank) {
+  maxrank <- min(maxrank, nrow(mtx))
   if (ncol(mtx) > 1) {
     M <- matrix(0, max(mtx[1:maxrank, ]), maxrank)
     for (i in 1:ncol(mtx)) {

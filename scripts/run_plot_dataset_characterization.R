@@ -122,24 +122,26 @@ for (sz in sizes) {
     
     ## Plot expression of cell cycle genes
     if (!is.null(cell_cycle_ids)) {
-      tpm_cell_cycle <- L$tpm[match(cell_cycle_ids, rownames(L$tpm)), ]
-      tpm_cell_cycle <- tpm_cell_cycle[!is.na(rownames(tpm_cell_cycle)), ]
-      tpm_cell_cycle_m <- reshape2::melt(tpm_cell_cycle)
-      tpm_cell_cycle_m$condition <- L$condt[match(tpm_cell_cycle_m$Var2, names(L$condt))]
-      tpm_cell_cycle_m$Var2 <- factor(tpm_cell_cycle_m$Var2, levels = names(sort(L$condt)))
-      nr <- nrow(tpm_cell_cycle)
-      vargroup <- data.frame(gene = unique(tpm_cell_cycle_m$Var1), group = rep(1:25, ceiling(nr/25))[1:nr])
-      tpm_cell_cycle_m$plot_group <- vargroup$group[match(tpm_cell_cycle_m$Var1, vargroup$gene)]
-      tpm_cell_cycle_m <- tpm_cell_cycle_m %>% dplyr::group_by(plot_group) %>% 
-        dplyr::mutate(plot_color = paste0("p", as.numeric(as.factor(Var1))))
-      print(ggplot(tpm_cell_cycle_m, aes(x = Var2, y = value + 1)) + 
-              geom_line(aes(group = Var1, color = plot_color)) + geom_point(aes(shape = condition)) + 
-              guides(color = FALSE) + scale_y_log10() + 
-              ggtitle(paste0("Cell cycle-associated genes, ", sz, " cells per group, repl ", i)) + 
-              scale_shape_discrete(name = "") + xlab("Cell") + ylab("TPM + 1") + 
-              facet_wrap(~plot_group, scales = "free_y") + theme_bw() + 
-              theme(legend.position = "bottom", 
-                    axis.text.x = element_blank()))
+      tryCatch({
+        tpm_cell_cycle <- L$tpm[match(cell_cycle_ids, rownames(L$tpm)), ]
+        tpm_cell_cycle <- tpm_cell_cycle[!is.na(rownames(tpm_cell_cycle)), ]
+        tpm_cell_cycle_m <- reshape2::melt(tpm_cell_cycle)
+        tpm_cell_cycle_m$condition <- L$condt[match(tpm_cell_cycle_m$Var2, names(L$condt))]
+        tpm_cell_cycle_m$Var2 <- factor(tpm_cell_cycle_m$Var2, levels = names(sort(L$condt)))
+        nr <- nrow(tpm_cell_cycle)
+        vargroup <- data.frame(gene = unique(tpm_cell_cycle_m$Var1), group = rep(1:25, ceiling(nr/25))[1:nr])
+        tpm_cell_cycle_m$plot_group <- vargroup$group[match(tpm_cell_cycle_m$Var1, vargroup$gene)]
+        tpm_cell_cycle_m <- tpm_cell_cycle_m %>% dplyr::group_by(plot_group) %>% 
+          dplyr::mutate(plot_color = paste0("p", as.numeric(as.factor(Var1))))
+        print(ggplot(tpm_cell_cycle_m, aes(x = Var2, y = value + 1)) + 
+                geom_line(aes(group = Var1, color = plot_color)) + geom_point(aes(shape = condition)) + 
+                guides(color = FALSE) + scale_y_log10() + 
+                ggtitle(paste0("Cell cycle-associated genes, ", sz, " cells per group, repl ", i)) + 
+                scale_shape_discrete(name = "") + xlab("Cell") + ylab("TPM + 1") + 
+                facet_wrap(~plot_group, scales = "free_y") + theme_bw() + 
+                theme(legend.position = "bottom", 
+                      axis.text.x = element_blank()))
+      }, error = function(e) e)
     }
   }
 }

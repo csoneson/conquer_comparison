@@ -41,7 +41,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                                  unique(sort(as.numeric(as.character(timing$ncells)))))
   ## Set plot symbols for number of cells per group
   ncells <- levels(timing$ncells_fact)
-  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   
   ## Define colors for plotting
@@ -196,7 +196,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   tmp3 <- do.call(rbind, lapply(1:nrow(tmp2), function(i) {
     data.frame(method = tmp2[i, "method"], 
                ngenes_cat = tmp2[i, "ngenes_cat"], 
-               x = 6:100, 
+               x = 6:400, 
                stringsAsFactors = FALSE) %>%
       dplyr::mutate(y = as.numeric(tmp2[i, "mult"]) * (x ^ as.numeric(tmp2[i, "expn"])))
   }))

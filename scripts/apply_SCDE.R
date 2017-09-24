@@ -8,7 +8,7 @@ run_SCDE <- function(L) {
     o.ifm <- scde.error.models(counts = intcount, groups = L$condt, n.cores = 1,
                                threshold.segmentation = TRUE, 
                                save.crossfit.plots = FALSE, save.model.plots = FALSE,
-                               verbose = 0)
+                               verbose = 0, min.size.entries = min(2000, nrow(L$count) - 1))
     valid.cells <- o.ifm$corr.a > 0
     table(valid.cells)
     o.ifm <- o.ifm[valid.cells, ]

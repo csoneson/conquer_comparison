@@ -133,9 +133,9 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/truefpr_final", dtpext, ".pdf"), width = 12, height = 6)
   p <- plot_grid(plot_grid(plots$truefpr_sep_ + theme(legend.position = "none") + 
-                             ggtitle("Without filtering"), 
+                             ggtitle("Without filtering") + scale_y_sqrt(), 
                            plots$truefpr_sep_TPM_1_25p + theme(legend.position = "none") + 
-                             ggtitle("After filtering"),
+                             ggtitle("After filtering") + scale_y_sqrt(),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  get_legend(plots$truefpr_sep_ + 
                               theme(legend.position = "bottom") + 

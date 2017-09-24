@@ -1,3 +1,7 @@
+aspmod <- function(x) {
+  if (x == "FDR") "FDP"
+  else if (x == "TPR") "TPR"
+}
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
                                       dschardir, origvsmockdir, plotmethods) {
@@ -16,6 +20,12 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                      "_performance_realtruth_summary_data.rds"))$FDRTPR
     }))
   }))
+  fdrtpr_ihw <- do.call(rbind, lapply(datasets, function(ds) {
+    do.call(rbind, lapply(exts, function(e) {
+      readRDS(paste0(singledsfigdir, "/performance_realtruth/", ds, e, 
+                     "_performance_realtruth_summary_data.rds"))$FDRTPR_IHW
+    }))
+  }))
   ## Read all true AUROC information
   auroc <- do.call(rbind, lapply(datasets, function(ds) {
     do.call(rbind, lapply(exts, function(e) {
@@ -23,6 +33,19 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                      "_performance_realtruth_summary_data.rds"))$AUROC
     }))
   }))
+  ## Read all information about number of detected genes, fracNA etc
+  nbrgenes <- do.call(rbind, lapply(datasets, function(ds) {
+    do.call(rbind, lapply(exts, function(e) {
+      readRDS(paste0(cobradir, "/", ds, e, 
+                     "_nbr_called.rds")) %>%
+        dplyr::mutate(method = paste(method, ncells, repl, sep = ".")) %>%
+        dplyr::mutate(fracNA = nbr_NA/nbr_tested) %>%
+        dplyr::select(method, dataset, filt, fracNA)
+    }))
+  }))
+  fdrtpr <- dplyr::left_join(fdrtpr, nbrgenes)
+  fdrtpr_ihw <- dplyr::left_join(fdrtpr_ihw, nbrgenes)
+  auroc <- dplyr::left_join(auroc, nbrgenes)
   
   cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
   
@@ -52,7 +75,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       rownames(annotation_row) <- annotation_row$id
       
       pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
-               main = paste0("True ", asp, " at adj.p=0.05 cutoff, ", f),
+               main = paste0(aspmod(asp), " at adj.p=0.05 cutoff, ", f),
                display_numbers = TRUE, 
                color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
                breaks = seq(0, 1, length.out = 101), 
@@ -75,6 +98,12 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods)
   
+  fdrtpr_ihw <- fdrtpr_ihw %>% 
+    tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
+    dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
+    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+    dplyr::filter(method %in% plotmethods)
+  
   ## Add categorization of methods into "liberal", "inrange", "conservative"
   getcat <- function(FDR, thr) {
     fracover <- length(which(FDR > thr))/length(FDR)
@@ -89,29 +118,38 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::group_by(thr, method, filt) %>% 
     dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
     dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("liberal", "inrange", "conservative")))
+  fdrtpr_ihw <- fdrtpr_ihw %>%
+    dplyr::group_by(thr, method, filt) %>% 
+    dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
+    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("liberal", "inrange", "conservative")))
   
   ## Set plot symbols for number of cells per group
   ncells <- sort(as.numeric(as.character(unique(fdrtpr$n_samples))))
-  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14)[1:length(ncells)]
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   
   ## Add colors and plot characters to the data frame
   fdrtpr$plot_color <- cols[as.character(fdrtpr$method)]
   fdrtpr$plot_char <- pch[as.character(fdrtpr$n_samples)]
+  fdrtpr_ihw$plot_color <- cols[as.character(fdrtpr_ihw$method)]
+  fdrtpr_ihw$plot_char <- pch[as.character(fdrtpr_ihw$n_samples)]
   
   for (f in unique(fdrtpr$filt)) {
     for (asp in c("FDR", "TPR")) {
       tmp <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
-        dplyr::group_by(method) %>% dplyr::mutate_(med = paste0("stats::median(", asp, ", na.rm = TRUE)")) %>%
+        dplyr::group_by(method) %>% 
+        dplyr::mutate_(med = paste0("stats::median(", asp, ", na.rm = TRUE)")) %>%
+        dplyr::mutate(medfracna = median(fracNA)) %>%
         dplyr::ungroup()
       tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$med, decreasing = TRUE)]))
+      tmp$methodfracna <- factor(tmp$method, levels = unique(tmp$method[order(tmp$medfracna, decreasing = TRUE)]))
       p1 <- tmp %>%
         ggplot(aes_string(x = "method", y = asp, color = "method"))
       if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
       p1 <- p1 + 
         geom_boxplot(outlier.size = -1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at\nadj.p = 0.05 cutoff")) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
         scale_color_manual(values = cols) + 
         scale_shape_manual(values = pch) + 
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -123,6 +161,48 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(asp, "_all_", f)]] <- p1
       print(plots[[paste0(asp, "_all_", f)]])
       
+      tmp_ihw <- fdrtpr_ihw %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
+        dplyr::group_by(method) %>% dplyr::mutate_(med = paste0("stats::median(", asp, ", na.rm = TRUE)")) %>%
+        dplyr::ungroup()
+      tmp_ihw$method <- factor(tmp_ihw$method, 
+                               levels = unique(tmp_ihw$method[order(tmp_ihw$med, decreasing = TRUE)]))
+      p1_ihw <- tmp_ihw %>%
+        ggplot(aes_string(x = "method", y = asp, color = "method"))
+      if (asp == "FDR") p1_ihw <- p1_ihw + geom_hline(yintercept = 0.05)
+      p1_ihw <- p1_ihw + 
+        geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
+        scale_color_manual(values = cols) + 
+        scale_shape_manual(values = pch) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggtitle(paste0(f, ", IHW"))
+      plots[[paste0(asp, "_all_", f, "_ihw")]] <- p1_ihw
+      print(plots[[paste0(asp, "_all_", f, "_ihw")]])
+      
+      ## Same, but ordered by fracNA
+      p12 <- tmp %>%
+        ggplot(aes_string(x = "methodfracna", y = asp, color = "methodfracna"))
+      if (asp == "FDR") p12 <- p12 + geom_hline(yintercept = 0.05)
+      p12 <- p12 + 
+        geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
+        scale_color_manual(values = cols) + 
+        scale_shape_manual(values = pch) + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggtitle(paste0(f, ", ordered by fraction NA"))
+      plots[[paste0(asp, "_all_fracnaorder_", f)]] <- p12
+      print(plots[[paste0(asp, "_all_fracnaorder_", f)]])
+      
       ## Same, but stratified by FDR control
       p15 <- tmp %>%
         ggplot(aes_string(x = "method", y = asp, color = "method"))
@@ -130,7 +210,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       p15 <- p15 + 
         geom_boxplot(outlier.size = -1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at\nadj.p = 0.05 cutoff")) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
         scale_color_manual(values = cols) + 
         scale_shape_manual(values = pch) + 
         facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
@@ -142,6 +222,25 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         ggtitle(f)
       plots[[paste0(asp, "_all_byfdrcontrol_", f)]] <- p15
       print(plots[[paste0(asp, "_all_byfdrcontrol_", f)]])
+      
+      p15_ihw <- tmp_ihw %>%
+        ggplot(aes_string(x = "method", y = asp, color = "method"))
+      if (asp == "FDR") p15_ihw <- p15_ihw + geom_hline(yintercept = 0.05)
+      p15_ihw <- p15_ihw + 
+        geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
+        scale_color_manual(values = cols) + 
+        scale_shape_manual(values = pch) + 
+        facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.y = element_text(size = 13)) + 
+        guides(color = guide_legend(ncol = 2, title = ""),
+               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggtitle(paste0(f, ", IHW"))
+      plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]] <- p15_ihw
+      print(plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]])
       
       p3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
         dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
@@ -155,7 +254,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       p3 <- p3 + 
         geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
         facet_wrap(~dataset, scales = "free_x") + 
-        theme_bw() + xlab("") + ylab(paste0("True ", asp, " at adj.p = 0.05 cutoff")) + 
+        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at adj.p = 0.05 cutoff")) + 
         scale_color_manual(values = cols) + 
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
               axis.text.y = element_text(size = 12),
@@ -165,6 +264,26 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         ggtitle(f)
       plots[[paste0(asp, "_byncells_sep_", f)]] <- p3
       print(plots[[paste0(asp, "_byncells_sep_", f)]])
+      
+      ## fracNA vs asp
+      p0 <- tmp %>% dplyr::group_by(method, dataset, n_samples) %>% 
+        dplyr::summarize(fracNA = median(fracNA), TPR = median(TPR), FDR = median(FDR)) %>%
+        dplyr::ungroup() %>%
+        dplyr::arrange(dataset, as.numeric(as.character(n_samples))) %>%
+        dplyr::mutate(ds = paste(dataset, n_samples, sep = ".")) %>%
+        dplyr::mutate(ds = factor(ds, levels = unique(ds))) %>%
+        ggplot(aes_string(x = "fracNA", y = asp, color = "method")) + 
+        geom_point(size = 3) + facet_wrap(~ds, scales = "free_y") + 
+        theme_bw() + xlab("Fraction of NA adjusted p-values") + 
+        ylab(paste0(aspmod(asp), " at adj.p = 0.05 cutoff")) + 
+        scale_color_manual(values = cols) + 
+        theme(axis.text = element_text(size = 12),
+              axis.title = element_text(size = 13),
+              legend.position = "bottom") + 
+        guides(color = guide_legend(nrow = 4, title = "")) + 
+        ggtitle(f)
+      plots[[paste0(asp, "_vs_fracna_", f)]] <- p0
+      print(plots[[paste0(asp, "_vs_fracna_", f)]])
     }  
     
     ## FDR vs TPR
@@ -175,8 +294,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       ggplot(aes_string(x = "FDR", y = "TPR", color = "method", label = "method")) + 
       geom_point(size = 2) + 
       #geom_label_repel(size = 1) + 
-      theme_bw() + xlab(paste0("True FDR at adj.p = 0.05 cutoff")) + 
-      ylab(paste0("True TPR at adj.p = 0.05 cutoff")) +
+      theme_bw() + xlab(paste0("FDP at adj.p = 0.05 cutoff")) + 
+      ylab(paste0("TPR at adj.p = 0.05 cutoff")) +
       facet_wrap(~dataset + n_samples) + 
       scale_color_manual(values = cols) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -263,9 +382,11 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol", dtpext, ".pdf"), width = 12, height = 12)
   p <- plot_grid(plot_grid(plots[[paste0("FDR_all_byfdrcontrol_")]] + theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(), 
                            plots[[paste0("FDR_all_byfdrcontrol_TPM_1_25p")]] + theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1),
+                             ggtitle("After filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  plot_grid(plots[[paste0("TPR_all_byfdrcontrol_")]] + theme(legend.position = "none") + 
                              ggtitle("Without filtering") + ylim(-0.01, 1), 
@@ -293,6 +414,72 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                  rel_heights = c(1.7, 1.7, 1.7, 0.1), ncol = 1)
   print(p)
   dev.off()
+  
+  ## Ordered by fracNA
+  pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol_fracnaorder", dtpext, ".pdf"), width = 12, height = 8)
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_fracnaorder_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(), 
+                           plots[[paste0("FDR_all_fracnaorder_TPM_1_25p")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("TPR_all_fracnaorder_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("TPR_all_fracnaorder_TPM_1_25p")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots[[paste0("FDR_all_fracnaorder_")]] + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+  
+  ## IHW
+  pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol_ihw", dtpext, ".pdf"), width = 12, height = 8)
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_byfdrcontrol_ihw_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(), 
+                           plots[[paste0("FDR_all_byfdrcontrol_ihw_TPM_1_25p")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1) + 
+                             scale_y_sqrt(),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 plot_grid(plots[[paste0("TPR_all_byfdrcontrol_ihw_")]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                           plots[[paste0("TPR_all_byfdrcontrol_ihw_TPM_1_25p")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("After filtering") + ylim(-0.01, 1),
+                           labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots[[paste0("FDR_all_byfdrcontrol_ihw_")]] + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+  
+  
   
   for (asp in c("FDR", "TPR", "auroc")) {
     pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 14, height = 6)

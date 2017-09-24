@@ -42,12 +42,12 @@ $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/tsne/summary_tsne_all.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
+$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics_real.rds \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE1),$(foreach S,$(SUMMARYTYPE1),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE2),$(foreach S,$(SUMMARYTYPE2),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE3),$(foreach S,$(SUMMARYTYPE3),$(S)/summary_$(S)_$(D))))) \
-figures/misc/voomlimma_investigation.rds
-#$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
+figures/misc/voomlimma_investigation.rds figures/misc/performance_summary.rds
 
 ## Plot original vs mock comparison
 plotorigmock: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsb),$(Y)))) \
@@ -115,28 +115,40 @@ list:
 ## ------------------------ Dependencies between R scripts ---------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
 scripts/calculate_concordances.R: scripts/concordance_functions.R
+	touch $@
 	
 scripts/investigate_voomlimma_results.R: scripts/prepare_mae.R scripts/apply_voomlimma.R
+	touch $@
 	
 scripts/plot_setup.R: scripts/prepare_mae.R
+	touch $@
 	
 scripts/plot_single_dataset_consistency.R: scripts/help_function_crossmethod_concordance.R
+	touch $@
 	
 scripts/prepare_cobra_for_evaluation.R: scripts/prepare_mae.R scripts/calculate_gene_characteristics.R
+	touch $@
 	
 scripts/run_diffexpression.R: scripts/prepare_mae.R
+	touch $@
 	
 scripts/run_plot_dataset_characterization.R: scripts/prepare_mae.R scripts/calculate_gene_characteristics.R scripts/calculate_cell_characteristics.R
+	touch $@
 	
 scripts/run_plot_multi_dataset_summarization.R: scripts/plot_setup.R
+	touch $@
 	
 scripts/run_plot_single_dataset_evaluation.R: scripts/plot_setup.R
+	touch $@
 	
 scripts/run_plot_single_dataset_origvsmock.R: scripts/plot_setup.R scripts/plot_single_dataset_origvsmock.R
+	touch $@
 	
 scripts/simulate_data.R: scripts/powsim_modified_functions.R
+	touch $@
 	
 scripts/summarize_crossmethod_consistency.R: scripts/help_function_crossmethod_concordance.R
+	touch $@
 
 ## -------------------------- Generate configuration files ---------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -206,6 +218,13 @@ data/GSE62270-GPL17021.rds: scripts/generate_GSE62270_mae.R data/GSE62270-GPL170
 	$(R) scripts/generate_GSE62270_mae.R Rout/generate_GSE62270_mae.Rout
 
 data/GSE62270-GPL17021mock.rds: data/GSE62270-GPL17021.rds
+
+## ------------------------ Generate 10XMonoCytoT data set ---------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+data/10XMonoCytoT.rds: scripts/generate_10XMonoCytoT_mae.R 
+	$(R) scripts/generate_10XMonoCytoT_mae.R Rout/generate_10XMonoCytoT_mae.Rout
+
+data/10XMonoCytoTmock.rds: data/10XMonoCytoT.rds
 	
 ## ------------------ Define rules for differential expression ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##
@@ -542,7 +561,7 @@ $(eval $(call summaryrule_origvsmock,_realdrimpute,$(Dsbdrimpute),${Dsbdrimputec
 $(eval $(call summaryrule_origvsmock,_simdrimpute,$(Dsbsimdrimpute),${Dsbsimdrimputec},$(FILT),${FILTc},${MTplotc}))
 
 define summaryrule_tsne
-$(multidsfigdir)/tsne/summary_tsne$(1).rds: $(addsuffix _dataset_characteristics_plots.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
+$(multidsfigdir)/tsne/summary_tsne$(1).rds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_tsne.R include_datasets.mk
 	$(R) "--args datasets='$(3)' filt='$(4)' summarytype='tsne' plotmethods='$(5)' dtpext='$(1)' figdir='$(multidsfigdir)/tsne' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_tsne$(1).Rout
 endef
@@ -560,5 +579,14 @@ $(eval $(call summaryrule_dschar,_real,$(DSrealsignal),${DSrealsignalc},,))
 figures/misc/voomlimma_investigation.rds: $(addsuffix _subsets.rds, $(addprefix subsets/, $(foreach D,$(DSrealmock),$(D)))) \
 $(addsuffix .rds, $(addprefix data/, $(foreach D,$(DSrealmock),$(D)))) scripts/investigate_voomlimma_results.R 
 	$(R) "--args figdir='figures/misc'" scripts/investigate_voomlimma_results.R Rout/investigate_voomlimma_results.Rout
+
+## ------------------------- Summarization of performance ----------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+figures/misc/performance_summary.rds: $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
+$(multidsfigdir)/truefpr/summary_truefpr_real.rds \
+$(multidsfigdir)/timing/summary_timing_all.rds \
+$(multidsfigdir)/de_characteristics/summary_de_characteristics_real.rds \
+scripts/summarize_all_performances.R
+	$(R) "--args trueperformancerds='$(word 1,$^)' truefprrds='$(word 2,$^)' timingrds='$(word 3,$^)' fprbiasrds='$(word 4,$^)' outrds='$@'" scripts/summarize_all_performances.R Rout/summarize_all_performances.Rout
 
 

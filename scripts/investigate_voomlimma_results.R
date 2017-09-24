@@ -61,7 +61,7 @@ for (flt in c("", "count_15_25p")) {
           axis.text = element_text(size = 12))
   p2 <- ggplot(df, aes(x = Amean, y = logfc)) + 
     geom_point(size = 0.5) + geom_hline(yintercept = 0, color = "black") + 
-    geom_smooth(se = FALSE, size = 2) + xlab("log2(count + 0.5)") + 
+    geom_smooth(se = FALSE, size = 2, method = "loess") + xlab("log2(count + 0.5)") + 
     ylab("log-fold-change") + theme_bw() + 
     theme(axis.title = element_text(size = 13),
           axis.text = element_text(size = 12))
@@ -127,7 +127,7 @@ df4 <- Reduce(function(...) dplyr::full_join(..., by = "nm"),
 p3 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
   geom_hline(yintercept = 0.05, color = "red", size = 2) + 
   geom_point(aes(shape = dataset)) + 
-  geom_smooth() + theme_bw() + 
+  geom_smooth(method = "loess") + theme_bw() + 
   xlab("Fraction of genes to the left of the peak in the voom plot") + 
   ylab("True FPR (fraction of genes with p < 0.05)") + 
   scale_shape_discrete(name = "Data set") + 

@@ -29,8 +29,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   cmcons <- dcast(cmcons, method1 ~ method2, value.var = "meanAUCs")
   rownames(cmcons) <- cmcons$method1
   cmcons$method1 <- NULL
-  stopifnot(all(rownames(cmcons)==colnames(cmcons)))
-  stopifnot(all(cmcons == t(cmcons)))
+  stopifnot(all(rownames(cmcons) == colnames(cmcons)))
+  stopifnot(all((cmcons == t(cmcons))[!is.na(cmcons == t(cmcons))]))
   
   phm <- pheatmap(cmcons, cluster_rows = TRUE, cluster_cols = TRUE,
                   main = paste0("Area under method/method concordance curve,", 

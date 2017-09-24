@@ -44,11 +44,13 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
                 axis.title = element_text(size = 13)))
 
   for (k0 in c(100, 1000)) {
-    help_function_crossmethod_concordance(concordances$concordance_betweenmethods_pairwise %>%
-                                            dplyr::ungroup() %>%
-                                            dplyr::mutate(method1 = gsub(exts, "", method1),
-                                                          method2 = gsub(exts, "", method2)),
-                                          k0 = k0)
+    if (max(concordances$concordance_betweenmethods_pairwise$k >= k0)) {
+      help_function_crossmethod_concordance(concordances$concordance_betweenmethods_pairwise %>%
+                                              dplyr::ungroup() %>%
+                                              dplyr::mutate(method1 = gsub(exts, "", method1),
+                                                            method2 = gsub(exts, "", method2)),
+                                            k0 = k0)
+    }
   }
   
   ## Plot fraction of top-k genes shared by each number of methods
