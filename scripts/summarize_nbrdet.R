@@ -1,6 +1,27 @@
 summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir, plotmethods) {
+                             dschardir, origvsmockdir, plotmethods, 
+                             dstypes) {
+  
+  gglayers <- list(
+    theme_bw(),
+    xlab(""),
+    ylab("Number of genes with adjusted p-value below 0.05"),
+    scale_color_manual(values = cols),
+    guides(color = guide_legend(ncol = 2, title = ""),
+           shape = guide_legend(ncol = 4, title = "Number of\ncells per group")),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13),
+          strip.text = element_text(size = 12))
+  )
+  gglayersp <- c(list(geom_boxplot(outlier.size = -1),
+                      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)),
+                      scale_shape_manual(values = pch)),
+                 gglayers)
+  gglayersl <- c(list(geom_point(alpha = 0.25, size = 1),
+                      geom_smooth(size = 0.75, se = FALSE, method = "loess", span = 1)),
+                 gglayers)
   
   ## Generate list to hold all plots
   plots <- list()
@@ -21,6 +42,9 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   nbrgenes <- nbrgenes %>% 
     dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells))))
   
+  ## Add information about data set type
+  nbrgenes <- dplyr::left_join(nbrgenes, dstypes, by = "dataset")
+  
   ## Set plot symbols for number of cells per group
   ncells <- levels(nbrgenes$ncells_fact)
   pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
@@ -36,34 +60,14 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     plots[[paste0("nbrdet_sep_", f)]] <- 
       ggplot(nbrgenes %>% dplyr::filter(filt == f), 
              aes(x = method, y = nbr_sign0.05, color = method)) + 
-      geom_boxplot(outlier.size = -1) +
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-      theme_bw() + xlab("") + ylab("Number of genes with adjusted p-value below 0.05") + 
-      scale_color_manual(values = cols) + 
-      scale_shape_manual(values = pch) + 
-      facet_wrap(~dataset, scales = "free_y") + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      ggtitle(f)
+      gglayersp + facet_wrap(~dataset, scales = "free_y") + ggtitle(f)
     print(plots[[paste0("nbrdet_sep_", f)]])
     
     ## Line plot
     plots[[paste0("nbrdet_sep_line_", f)]] <- 
       ggplot(nbrgenes %>% dplyr::filter(filt == f), 
              aes(x = ncells_fact, y = nbr_sign0.05, group = method, color = method)) + 
-      geom_point(alpha = 0.25, size = 1) + geom_smooth(size = 0.75, se = FALSE, 
-                                                       method = "loess", span = 1) + 
-      theme_bw() + xlab("") + ylab("Number of genes with adjusted p-value below 0.05") + 
-      scale_color_manual(values = cols) + 
-      facet_wrap(~dataset, scales = "free") + 
-      guides(color = guide_legend(ncol = 2, title = "")) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      ggtitle(f)
+      gglayersl + facet_wrap(~dataset, scales = "free") + ggtitle(f)
     print(plots[[paste0("nbrdet_sep_line_", f)]])
   }
   
@@ -71,17 +75,8 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     ggplot(nbrgenes %>% dplyr::group_by(dataset, filt, ncells_fact, repl) %>%
              dplyr::mutate(nbr_sign0.05_rel = nbr_sign0.05/max(nbr_sign0.05)), 
            aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
-    geom_boxplot(outlier.size = -1) +
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    facet_wrap(~ filt, nrow = 1) + 
-    theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
-    scale_color_manual(values = cols) + 
-    scale_shape_manual(values = pch) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+    gglayersp + facet_wrap(~ filt, nrow = 1) + 
+    ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
   print(plots[["nbrdet_comb"]])
   
   for (f in unique(nbrgenes$filt)) {
@@ -90,16 +85,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                dplyr::group_by(dataset, filt, ncells_fact, repl) %>%
                dplyr::mutate(nbr_sign0.05_rel = nbr_sign0.05/max(nbr_sign0.05)), 
              aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
-      geom_boxplot(outlier.size = -1) +
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-      theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
-      scale_color_manual(values = cols) + 
-      scale_shape_manual(values = pch) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
+      gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       ggtitle(f)
     print(plots[[paste0("nbrdet_comb_", f)]])
     
@@ -115,18 +101,16 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     plots[[paste0("nbrdet_comb_", f, "_sorted")]] <-
       ggplot(tmp, 
              aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
-      geom_boxplot(outlier.size = -1) +
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-      theme_bw() + xlab("") + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
-      scale_color_manual(values = cols) + 
-      scale_shape_manual(values = pch) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 4, title = "Number of\ncells per group")) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
+      gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       ggtitle(f)
     print(plots[[paste0("nbrdet_comb_", f, "_sorted")]])
+    
+    plots[[paste0("nbrdet_comb_", f, "_sorted_bydtype")]] <-
+      ggplot(tmp, 
+             aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
+      gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
+      ggtitle(f) + facet_wrap(~ dtype, ncol = 1)
+    print(plots[[paste0("nbrdet_comb_", f, "_sorted_bydtype")]])
   }
   
   dev.off()
@@ -139,6 +123,28 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                              ggtitle("After filtering"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  get_legend(plots[["nbrdet_comb__sorted"]] + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 2,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+  
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_bydtype.pdf"), width = 12, height = 9)
+  p <- plot_grid(plot_grid(plots[["nbrdet_comb__sorted_bydtype"]] + theme(legend.position = "none") + 
+                             ggtitle("Without filtering"), 
+                           plots[["nbrdet_comb_TPM_1_25p_sorted_bydtype"]] + theme(legend.position = "none") + 
+                             ggtitle("After filtering"),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots[["nbrdet_comb__sorted_bydtype"]] + 
                               theme(legend.position = "bottom") + 
                               guides(colour = FALSE,
                                      shape = 

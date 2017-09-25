@@ -1,6 +1,22 @@
 summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                               singledsfigdir, cobradir, concordancedir, 
-                              dschardir, origvsmockdir, plotmethods) {
+                              dschardir, origvsmockdir, plotmethods, 
+                              dstypes) {
+  
+  gglayers <- list(
+    geom_hline(yintercept = 0.05),
+    geom_boxplot(outlier.size = -1),
+    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)), 
+    theme_bw(),
+    xlab(""),
+    ylab("True FPR (fraction of genes with p < 0.05)"),
+    scale_color_manual(values = cols),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13)),
+    guides(color = guide_legend(ncol = 2, title = ""),
+           shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+  )
   
   ## Generate list to hold all plots
   plots <- list()
@@ -62,6 +78,9 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods)
   
+  ## Add information about data set type
+  truefpr <- dplyr::left_join(truefpr, dstypes, by = "dataset")
+  
   ## Add colors and plot characters to the data frame
   truefpr$plot_color <- cols[as.character(truefpr$method)]
   
@@ -72,31 +91,18 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$FPRmedian, decreasing = TRUE)]))
     plots[[paste0("truefpr_sep_", f)]] <- 
       ggplot(tmp, aes(x = method, y = FPR, color = method)) + 
-      geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-      theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
-      scale_color_manual(values = cols) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-      ggtitle(f)
+      gglayers + ggtitle(f)
     print(plots[[paste0("truefpr_sep_", f)]])
+    
+    plots[[paste0("truefpr_sep_bydtype_", f)]] <- 
+      ggplot(tmp, aes(x = method, y = FPR, color = method)) + 
+      gglayers + ggtitle(f) + facet_wrap(~ dtype, ncol = 1)
+    print(plots[[paste0("truefpr_sep_bydtype_", f)]])
   }
   
   plots[["truefpr_comb"]] <- 
     ggplot(truefpr, aes(x = method, y = FPR, color = method)) + 
-    geom_hline(yintercept = 0.05) + geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-    theme_bw() + xlab("") + ylab("True FPR (fraction of genes with p < 0.05)") + 
-    facet_wrap(~ filt) + 
-    scale_color_manual(values = cols) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+    gglayers + facet_wrap(~ filt) 
   print(plots[["truefpr_comb"]])
   
   ## P-value distributions
@@ -138,6 +144,28 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                              ggtitle("After filtering") + scale_y_sqrt(),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  get_legend(plots$truefpr_sep_ + 
+                              theme(legend.position = "bottom") + 
+                              guides(colour = FALSE,
+                                     shape = 
+                                       guide_legend(nrow = 1,
+                                                    title = "Number of cells per group",
+                                                    override.aes = list(size = 1.5),
+                                                    title.theme = element_text(size = 12,
+                                                                               angle = 0),
+                                                    label.theme = element_text(size = 10,
+                                                                               angle = 0),
+                                                    keywidth = 1, default.unit = "cm"))),
+                 rel_heights = c(1.7, 0.1), ncol = 1)
+  print(p)
+  dev.off()
+
+  pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 9)
+  p <- plot_grid(plot_grid(plots$truefpr_sep_bydtype_ + theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + scale_y_sqrt(), 
+                           plots$truefpr_sep_bydtype_TPM_1_25p + theme(legend.position = "none") + 
+                             ggtitle("After filtering") + scale_y_sqrt(),
+                           labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                 get_legend(plots$truefpr_sep_bydtype_ + 
                               theme(legend.position = "bottom") + 
                               guides(colour = FALSE,
                                      shape = 

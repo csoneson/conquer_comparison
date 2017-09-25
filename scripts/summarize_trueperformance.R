@@ -4,8 +4,24 @@ aspmod <- function(x) {
 }
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
-                                      dschardir, origvsmockdir, plotmethods) {
-
+                                      dschardir, origvsmockdir, plotmethods, 
+                                      dstypes) {
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)),
+    theme_bw(),
+    xlab(""),
+    scale_color_manual(values = cols),
+    scale_shape_manual(values = pch), 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13)),
+    guides(color = guide_legend(ncol = 2, title = ""),
+           shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+  )
+  gglayersfdr <- c(list(geom_hline(yintercept = 0.05)), 
+                   gglayers)
+  
   ## Generate list to hold all plots
   plots <- list()
   
@@ -128,6 +144,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(ncells)]
   names(pch) <- as.character(ncells)
   
+  ## Add information about data set type
+  fdrtpr <- dplyr::left_join(fdrtpr, dstypes, by = "dataset")
+  fdrtpr_ihw <- dplyr::left_join(fdrtpr_ihw, dstypes, by = "dataset")
+  
   ## Add colors and plot characters to the data frame
   fdrtpr$plot_color <- cols[as.character(fdrtpr$method)]
   fdrtpr$plot_char <- pch[as.character(fdrtpr$n_samples)]
@@ -144,20 +164,10 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$med, decreasing = TRUE)]))
       tmp$methodfracna <- factor(tmp$method, levels = unique(tmp$method[order(tmp$medfracna, decreasing = TRUE)]))
       p1 <- tmp %>%
-        ggplot(aes_string(x = "method", y = asp, color = "method"))
-      if (asp == "FDR") p1 <- p1 + geom_hline(yintercept = 0.05)
-      p1 <- p1 + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
-        scale_color_manual(values = cols) + 
-        scale_shape_manual(values = pch) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-        ggtitle(f)
+        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff"))
+      if (asp == "FDR") p1 <- p1 + gglayersfdr + ggtitle(f)
+      else p1 <- p1 + gglayers
       plots[[paste0(asp, "_all_", f)]] <- p1
       print(plots[[paste0(asp, "_all_", f)]])
       
@@ -167,78 +177,65 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       tmp_ihw$method <- factor(tmp_ihw$method, 
                                levels = unique(tmp_ihw$method[order(tmp_ihw$med, decreasing = TRUE)]))
       p1_ihw <- tmp_ihw %>%
-        ggplot(aes_string(x = "method", y = asp, color = "method"))
-      if (asp == "FDR") p1_ihw <- p1_ihw + geom_hline(yintercept = 0.05)
-      p1_ihw <- p1_ihw + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
-        scale_color_manual(values = cols) + 
-        scale_shape_manual(values = pch) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-        ggtitle(paste0(f, ", IHW"))
+        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + ggtitle(paste0(f, ", IHW"))
+      if (asp == "FDR") p1_ihw <- p1_ihw + gglayersfdr
+      else p1_ihw <- p1_ihw + gglayers
       plots[[paste0(asp, "_all_", f, "_ihw")]] <- p1_ihw
       print(plots[[paste0(asp, "_all_", f, "_ihw")]])
       
       ## Same, but ordered by fracNA
       p12 <- tmp %>%
-        ggplot(aes_string(x = "methodfracna", y = asp, color = "methodfracna"))
-      if (asp == "FDR") p12 <- p12 + geom_hline(yintercept = 0.05)
-      p12 <- p12 + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
-        scale_color_manual(values = cols) + 
-        scale_shape_manual(values = pch) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        ggplot(aes_string(x = "methodfracna", y = asp, color = "methodfracna")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
         ggtitle(paste0(f, ", ordered by fraction NA"))
+      if (asp == "FDR") p12 <- p12 + gglayersfdr
+      else p12 <- p12 + gglayers
       plots[[paste0(asp, "_all_fracnaorder_", f)]] <- p12
       print(plots[[paste0(asp, "_all_fracnaorder_", f)]])
       
       ## Same, but stratified by FDR control
       p15 <- tmp %>%
-        ggplot(aes_string(x = "method", y = asp, color = "method"))
-      if (asp == "FDR") p15 <- p15 + geom_hline(yintercept = 0.05)
-      p15 <- p15 + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
-        scale_color_manual(values = cols) + 
-        scale_shape_manual(values = pch) + 
-        facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-        ggtitle(f)
+        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + ggtitle(f) + 
+        facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x")
+      if (asp == "FDR") p15 <- p15 + gglayersfdr
+      else p15 <- p15 + gglayers
       plots[[paste0(asp, "_all_byfdrcontrol_", f)]] <- p15
       print(plots[[paste0(asp, "_all_byfdrcontrol_", f)]])
       
+      if ("full-length" %in% tmp$dtype) {
+        p15fl <- tmp %>% dplyr::filter(dtype == "full-length") %>%
+          ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+          ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + ggtitle(f) + 
+          facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x")
+        if (asp == "FDR") p15fl <- p15fl + gglayersfdr
+        else p15fl <- p15fl + gglayers
+        plots[[paste0(asp, "_all_byfdrcontrol_full-length_", f)]] <- p15fl
+        print(plots[[paste0(asp, "_all_byfdrcontrol_full-length_", f)]])
+      } else {
+        plots[[paste0(asp, "_all_byfdrcontrol_full-length_", f)]] <- NULL
+      }
+      
+      if ("UMI" %in% tmp$dtype) {
+        p15umi <- tmp %>% dplyr::filter(dtype == "UMI") %>%
+          ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+          ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + ggtitle(f) + 
+          facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x")
+        if (asp == "FDR") p15umi <- p15umi + gglayersfdr
+        else p15umi <- p15umi + gglayers
+        plots[[paste0(asp, "_all_byfdrcontrol_umi_", f)]] <- p15umi
+        print(plots[[paste0(asp, "_all_byfdrcontrol_umi_", f)]])
+      } else {
+        plots[[paste0(asp, "_all_byfdrcontrol_umi_", f)]] <- NULL
+      } 
+      
       p15_ihw <- tmp_ihw %>%
-        ggplot(aes_string(x = "method", y = asp, color = "method"))
-      if (asp == "FDR") p15_ihw <- p15_ihw + geom_hline(yintercept = 0.05)
-      p15_ihw <- p15_ihw + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
-        scale_color_manual(values = cols) + 
-        scale_shape_manual(values = pch) + 
-        facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-        ggtitle(paste0(f, ", IHW"))
+        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + 
+        ggtitle(paste0(f, ", IHW")) + facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") 
+      if (asp == "FDR") p15_ihw <- p15_ihw + gglayersfdr
+      else p15_ihw <- p15_ihw + gglayers
       plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]] <- p15_ihw
       print(plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]])
       
@@ -319,6 +316,9 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   auroc <- dplyr::full_join(auroc, fdrtpr %>% dplyr::ungroup() %>% dplyr::filter(thr == "thr0.05") %>%
                               dplyr::select(method, n_samples, repl, dataset, filt, fdrcontrol))
 
+  ## Add information about data set type
+  auroc <- dplyr::left_join(auroc, dstypes, by = "dataset")
+  
   ## Add colors and plot characters to the data frame
   auroc$plot_color <- cols[as.character(auroc$method)]
   auroc$plot_char <- pch[as.character(auroc$n_samples)]
@@ -331,34 +331,14 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$med, decreasing = TRUE)]))
     plots[[paste0("auroc_all_", f)]] <- tmp %>%
       ggplot(aes_string(x = "method", y = asp, color = "method")) + 
-      geom_boxplot(outlier.size = -1) + 
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-      theme_bw() + xlab("") + ylab("Area under\nROC curve") + 
-      scale_color_manual(values = cols) + 
-      scale_shape_manual(values = pch) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 1, title = "")) + 
-      ggtitle(f)
+      ylab("Area under\nROC curve") + gglayers + ggtitle(f)
     print(plots[[paste0("auroc_all_", f)]])
     
     ## Same, but stratified by FDR control
     plots[[paste0("auroc_all_byfdrcontrol_", f)]] <- tmp %>%
       ggplot(aes_string(x = "method", y = asp, color = "method")) + 
-      geom_boxplot(outlier.size = -1) + 
-      geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)) + 
-      theme_bw() + xlab("") + ylab("Area under\nROC curve") + 
-      scale_color_manual(values = cols) + 
-      scale_shape_manual(values = pch) + 
-      facet_grid(~fdrcontrol, scales = "free_x", space = "free_x") + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 1, title = "")) + 
-      ggtitle(f)
+      ylab("Area under\nROC curve") + gglayers + ggtitle(f) + 
+      facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x")
     print(plots[[paste0("auroc_all_byfdrcontrol_", f)]])
 
     plots[[paste0("auroc_byncells_sep_", f)]] <- auroc %>% dplyr::filter(filt == f) %>% 
@@ -478,7 +458,47 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                  rel_heights = c(1.7, 1.7, 0.1), ncol = 1)
   print(p)
   dev.off()
-  
+
+  for (dt in c("full-length", "umi")) {
+    if (all(!is.null(c(plots[[paste0("FDR_all_byfdrcontrol_", dt, "_")]],
+                       plots[[paste0("FDR_all_byfdrcontrol_", dt, "_TPM_1_25p")]],
+                       plots[[paste0("TPR_all_byfdrcontrol_", dt, "_")]],
+                       plots[[paste0("TPR_all_byfdrcontrol_", dt, "_TPM_1_25p")]])))) {
+      pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol_ihw", dtpext, "_", dt, ".pdf"), 
+          width = 12, height = 8)
+      p <- plot_grid(plot_grid(plots[[paste0("FDR_all_byfdrcontrol_", dt, "_")]] + 
+                                 theme(legend.position = "none") + 
+                                 ggtitle("Without filtering") + ylim(-0.01, 1) + 
+                                 scale_y_sqrt(), 
+                               plots[[paste0("FDR_all_byfdrcontrol_", dt, "_TPM_1_25p")]] + 
+                                 theme(legend.position = "none") + 
+                                 ggtitle("After filtering") + ylim(-0.01, 1) + 
+                                 scale_y_sqrt(),
+                               labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                     plot_grid(plots[[paste0("TPR_all_byfdrcontrol_", dt, "_")]] + 
+                                 theme(legend.position = "none") + 
+                                 ggtitle("Without filtering") + ylim(-0.01, 1), 
+                               plots[[paste0("TPR_all_byfdrcontrol_", dt, "_TPM_1_25p")]] + 
+                                 theme(legend.position = "none") + 
+                                 ggtitle("After filtering") + ylim(-0.01, 1),
+                               labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                     get_legend(plots[[paste0("FDR_all_byfdrcontrol_", dt, "_")]] + 
+                                  theme(legend.position = "bottom") + 
+                                  guides(colour = FALSE,
+                                         shape = 
+                                           guide_legend(nrow = 1,
+                                                        title = "Number of cells per group",
+                                                        override.aes = list(size = 1.5),
+                                                        title.theme = element_text(size = 12,
+                                                                                   angle = 0),
+                                                        label.theme = element_text(size = 10,
+                                                                                   angle = 0),
+                                                        keywidth = 1, default.unit = "cm"))),
+                     rel_heights = c(1.7, 1.7, 0.1), ncol = 1)
+      print(p)
+      dev.off()
+    }
+  }  
   
   
   for (asp in c("FDR", "TPR", "auroc")) {

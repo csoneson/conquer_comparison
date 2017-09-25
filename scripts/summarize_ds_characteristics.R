@@ -1,6 +1,14 @@
 summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
-                                         dschardir, origvsmockdir, plotmethods) {
+                                         dschardir, origvsmockdir, plotmethods, 
+                                         dstypes) {
+  
+  thm <- function() {
+    theme_bw() + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13))
+  }
   
   X <- do.call(rbind, lapply(datasets, function(ds) {
     keepgroups <- fromJSON(file = paste0("config/", ds, ".json"))$keepgroups
@@ -19,30 +27,21 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
     guides(color = FALSE) + 
-    theme_bw() + xlab("") + ylab("Fraction zeros per cell") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+    xlab("") + ylab("Fraction zeros per cell") + thm()
   p2 <- ggplot(X %>% dplyr::filter(mtype == "libsize"), 
                aes(x = dataset, y = value)) + 
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
     guides(color = FALSE) + scale_y_log10() + 
-    theme_bw() + xlab("") + ylab("Library size per cell") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+    xlab("") + ylab("Library size per cell") + thm()
   p3 <- ggplot(X %>% dplyr::filter(mtype == "silhouette"), 
                aes(x = dataset, y = value)) + 
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
     guides(color = FALSE) + 
-    theme_bw() + xlab("") + ylab("Silhouette width per cell") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+    xlab("") + ylab("Silhouette width per cell") + thm() 
 
   print(plot_grid(p1, p2, p3, labels = c("A", "B", "C"), align = "h", 
                   rel_widths = c(1, 1, 1), nrow = 1))

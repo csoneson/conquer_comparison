@@ -18,6 +18,7 @@ print(cobradir)
 print(dschardir)
 print(concordancedir)
 print(origvsmockdir)
+print(dstypetxt)
 print(figdir)
 
 suppressPackageStartupMessages(library(cowplot))
@@ -33,6 +34,8 @@ exts <- unique(c("", exts))
 cols <- structure(rep(cols, length(exts)), 
                   names = paste0(names(cols), rep(exts, each = length(cols))))
 
+dstypes <- read.delim(dstypetxt, header = TRUE, as.is = TRUE)
+
 plots <- get(paste0("summarize_", summarytype))(figdir = figdir, 
                                                 datasets = datasets, exts = exts, 
                                                 dtpext = dtpext, cols = cols,
@@ -41,7 +44,8 @@ plots <- get(paste0("summarize_", summarytype))(figdir = figdir,
                                                 concordancedir = concordancedir,
                                                 dschardir = dschardir,
                                                 origvsmockdir = origvsmockdir,
-                                                plotmethods = plotmethods)
+                                                plotmethods = plotmethods, 
+                                                dstypes = dstypes)
 saveRDS(plots, file = paste0(figdir, "/summary_", summarytype, 
                              ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
                              dtpext, ".rds"))

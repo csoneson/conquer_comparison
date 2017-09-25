@@ -1,7 +1,21 @@
 summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
                                 singledsfigdir, cobradir, concordancedir, 
-                                dschardir, origvsmockdir, plotmethods) {
+                                dschardir, origvsmockdir, plotmethods, 
+                                dstypes) {
 
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)),
+    theme_bw(),
+    xlab(""),
+    scale_color_manual(values = cols),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13)),
+    guides(color = guide_legend(ncol = 2, title = ""),
+           shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+  )
+  
   ## Generate list to hold all plots
   plots <- list()
   
@@ -90,15 +104,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(asp, "_sep_", f)]] <- 
         ggplot(X[[asp]] %>% dplyr::filter(filt == f),
                aes_string(x = "method", y = asp, color = "method")) + 
-        geom_boxplot(outlier.size = -1) + 
-        geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
-        theme_bw() + xlab("") + ylab(paste0("Relative ", asp, ", ", f)) + 
-        scale_color_manual(values = cols) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        guides(color = guide_legend(ncol = 2, title = ""),
-               shape = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+        gglayers + ylab(paste0("Relative ", asp, ", ", f)) + 
         ggtitle(f)
       print(plots[[paste0(asp, "_sep_", f)]])
     }
@@ -106,16 +112,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
     plots[[paste0(asp, "_comb")]] <- 
       ggplot(X[[asp]],
              aes_string(x = "method", y = asp, color = "method")) + 
-      geom_boxplot(outlier.size = -1) + 
-      geom_point(position = position_jitter(width = 0.2), aes(shape = n_samples)) + 
-      theme_bw() + xlab("") + ylab(paste0("Relative ", asp)) + 
-      scale_color_manual(values = cols) + 
-      facet_wrap(~ filt) + 
-      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-            axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13)) + 
-      guides(color = guide_legend(ncol = 2, title = ""),
-             shape = guide_legend(ncol = 2, title = "Number of \ncells per group"))
+      gglayers + ylab(paste0("Relative ", asp)) + facet_wrap(~ filt)
     print(plots[[paste0(asp, "_comb")]])
   }  
   dev.off()

@@ -1,7 +1,26 @@
 summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir, plotmethods) {
+                             dschardir, origvsmockdir, plotmethods, 
+                             dstypes) {
 
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    theme_bw(),
+    xlab(""),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13))
+  )
+  
+  gglayersp <- c(gglayers, 
+                 list(geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)),
+                      ylab("Relative computational \ntime requirement"),
+                      scale_color_manual(values = cols),
+                      scale_shape_manual(values = pch), 
+                      guides(color = guide_legend(ncol = 2, title = ""),
+                             shape = guide_legend(ncol = 3, title = "Number of \ncells per group", 
+                                                  override.aes = list(size = 1.5)))))
+  
   ## Generate list to hold all plots
   plots <- list()
   
@@ -54,33 +73,12 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   ## Boxplots
   plots[["rel_timing_boxplot_comb"]] <- 
     ggplot(timing, aes(x = method, y = rel_timing, color = method)) + 
-    geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    theme_bw() + xlab("") + ylab("Relative computational \ntime requirement") + 
-    scale_color_manual(values = cols) +
-    scale_shape_manual(values = pch) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 3, title = "Number of \ncells per group", 
-                                override.aes = list(size = 1.5)))
+    gglayersp
   print(plots[["rel_timing_boxplot_comb"]])
 
   plots[["rel_timing_boxplot_sep"]] <- 
     ggplot(timing, aes(x = method, y = rel_timing, color = method)) + 
-    geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    theme_bw() + xlab("") + ylab("Relative computational \ntime requirement") + 
-    scale_color_manual(values = cols) +
-    scale_shape_manual(values = pch) + 
-    facet_wrap(~ncells_fact) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 3, title = "Number of \ncells per group", 
-                                override.aes = list(size = 1.5)))
+    gglayersp + facet_wrap(~ncells_fact)
   print(plots[["rel_timing_boxplot_sep"]])
 
   tmp <- timing %>% dplyr::mutate(method = as.character(method)) %>% 
@@ -91,34 +89,12 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                                                                     decreasing = TRUE)]))
   plots[["rel_timing_boxplot_comb_log"]] <- 
     ggplot(tmp, aes(x = method, y = rel_timing, color = method)) + 
-    geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    theme_bw() + xlab("") + ylab("Relative computational \ntime requirement") + 
-    scale_color_manual(values = cols) +
-    scale_shape_manual(values = pch) + 
-    scale_y_log10() + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 3, title = "Number of \ncells per group", 
-                                override.aes = list(size = 1.5)))
+    gglayersp + scale_y_log10()
   print(plots[["rel_timing_boxplot_comb_log"]])
 
   plots[["rel_timing_boxplot_sep_log"]] <- 
     ggplot(timing, aes(x = method, y = rel_timing, color = method)) + 
-    geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)) + 
-    theme_bw() + xlab("") + ylab("Relative computational \ntime requirement") + 
-    scale_color_manual(values = cols) +
-    scale_shape_manual(values = pch) + 
-    scale_y_log10() + facet_wrap(~ncells_fact) + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)) + 
-    guides(color = guide_legend(ncol = 2, title = ""),
-           shape = guide_legend(ncol = 3, title = "Number of \ncells per group", 
-                                override.aes = list(size = 1.5)))
+    gglayersp + scale_y_log10() + facet_wrap(~ncells_fact)
   print(plots[["rel_timing_boxplot_sep_log"]])
 
   ## Barplots
@@ -158,14 +134,9 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
     timing %>% group_by(method, ncells) %>% 
     dplyr::summarise(expn = calc_expn(timing, ngenes)) %>%
     ggplot(aes(x = method, y = expn, color = method)) + 
-    geom_boxplot(outlier.size = -1) + 
-    geom_point(position = position_jitter(width = 0.2), size = 1) + 
-    theme_bw() + xlab("") + 
+    gglayers + geom_point(position = position_jitter(width = 0.2), size = 1) + 
     ylab("Exponent in power model of \ntiming vs number of genes") + 
-    scale_color_manual(values = cols, name = "") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+    scale_color_manual(values = cols, name = "")
   print(plots[["timing_exponent_ngenes"]])
   
   tmp <- timing %>% dplyr::group_by(method, ngenes_cat) %>% 
@@ -176,15 +147,12 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   tmp$method = factor(tmp$method, levels = unique(tmp$method[order(tmp$expn_median, 
                                                                    decreasing = TRUE)]))
   plots[["timing_exponent_ncells"]] <- 
-    ggplot(tmp, aes(x = method, y = expn, color = method)) + geom_boxplot(outlier.size = -1) + 
+    ggplot(tmp, aes(x = method, y = expn, color = method)) + 
+    gglayers + 
     geom_point(position = position_jitter(width = 0.2), size = 1) + 
-    theme_bw() + xlab("") + 
     ylab("Exponent in power model of \ntiming vs number of cells") + 
     scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"), 
-                                                             "", names(cols))), name = "") + 
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+                                                             "", names(cols))), name = "")
   print(plots[["timing_exponent_ncells"]])
   
   ## Plot dependence on number of cells for each method

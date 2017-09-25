@@ -1,6 +1,30 @@
 summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    singledsfigdir, cobradir, concordancedir, 
-                                   dschardir, origvsmockdir, plotmethods) {
+                                   dschardir, origvsmockdir, plotmethods, 
+                                   dstypes) {
+  
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    theme_bw(),
+    xlab(""),
+    scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                             "", names(cols))), name = ""),
+    scale_shape_discrete(name = ""),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13))
+  )
+  gglayers1 <- c(list(geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)),
+                      ylim(0, 1)),
+                 gglayers)
+  gglayersw <- c(list(geom_point(position = position_jitter(width = 0.2), size = 0.5), 
+                      facet_wrap(~ dataset),
+                      ylim(0, 1)),
+                 gglayers)
+  gglayersb <- c(list(geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset))), 
+                 gglayers)
+  
+  
   ## Generate list to hold all plots
   plots <- list()
   
@@ -43,16 +67,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       
       p <- concs %>% dplyr::filter(tp == "signal") %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
-        ggplot(aes(x = method, y = AUCs, col = method)) + 
-        geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
+        ggplot(aes(x = method, y = AUCs, col = method)) + gglayers1 + 
+        ylab("Area under concordance curve, signal data set") + 
         ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_signal_comb_", f, "_", k0)]] <- p
@@ -60,15 +76,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       p <- concs %>% dplyr::filter(tp == "mock") %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
         ggplot(aes(x = method, y = AUCs, col = method)) + 
-        geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
+        ylab("Area under concordance curve, null data set") + gglayers1 + 
         ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_mock_comb_", f, "_", k0)]] <- p
@@ -76,17 +84,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       p <- concs %>% dplyr::filter(tp == "signal") %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
         ggplot(aes(x = method, y = AUCs, col = method)) + 
-        geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
-        facet_wrap(~dataset) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
+        ylab("Area under concordance curve, signal data set") + 
+        gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_signal_sep_", f, "_", k0)]] <- p
       
@@ -96,17 +95,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
           dplyr::filter(ncells %in% nbr_keep) %>%
           dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-          geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
-          facet_wrap(~dataset) + 
-          theme_bw() + xlab("") + ylab("Area under concordance curve, signal data set") + 
-          scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                   "", names(cols))), name = "") + 
-          scale_shape_discrete(name = "") +
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          ggtitle(paste0(f, ", top-", k0, " genes"))
+          ylab("Area under concordance curve, signal data set") + 
+          gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
         print(p)
         plots[[paste0("auc_signal_sep_sub_", f, "_", k0)]] <- p
       }
@@ -114,17 +104,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       p <- concs %>% dplyr::filter(tp == "mock") %>%
         dplyr::filter(ncells %in% nbr_keep) %>%
         ggplot(aes(x = method, y = AUCs, col = method)) + 
-        geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-        geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
-        facet_wrap(~dataset) + 
-        theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
+        ylab("Area under concordance curve, null data set") + 
+        gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("auc_mock_sep_", f, "_", k0)]] <- p
       
@@ -133,17 +114,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
           dplyr::filter(ncells %in% nbr_keep) %>%
           dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          geom_boxplot(outlier.size = -1) + ylim(0, 1) + 
-          geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
-          facet_wrap(~dataset) + 
-          theme_bw() + xlab("") + ylab("Area under concordance curve, null data set") + 
-          scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                   "", names(cols))), name = "") + 
-          scale_shape_discrete(name = "") +
-          theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                axis.text.y = element_text(size = 12),
-                axis.title.y = element_text(size = 13)) + 
-          ggtitle(paste0(f, ", top-", k0, " genes"))
+          ylab("Area under concordance curve, null data set") + 
+          gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
         print(p)
         plots[[paste0("auc_mock_sep_sub_", f, "_", k0)]] <- p
       }
@@ -155,16 +127,8 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                            levels = unique(tmp$method[order(tmp$tstat_median, decreasing = TRUE)]))
       p <- tmp %>% 
         ggplot(aes(x = method, y = sign(tstat) * sqrt(abs(tstat)), col = method)) + 
-        geom_boxplot(outlier.size = -1) +
-        geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
-        theme_bw() + xlab("") + ylab("sqrt(t-statistic, area under\nconcordance curve (signal - null))") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
+        ylab("sqrt(t-statistic, area under\nconcordance curve (signal - null))") + 
+        gglayersb + ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("tstat_auc_", f, "_", k0)]] <- p
       
@@ -178,32 +142,15 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                             levels = unique(tmp2$method[order(tmp2$tstat_rel_median, decreasing = TRUE)]))
       p <- tmp2 %>% 
         ggplot(aes(x = method, y = tstat_rel, col = method)) + 
-        geom_boxplot(outlier.size = -1) +
-        geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
-        theme_bw() + xlab("") + ylab("relative t-statistic, area under\nconcordance curve (signal - null)") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
+        ylab("relative t-statistic, area under\nconcordance curve (signal - null)") + 
+        gglayersb + ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("rel_tstat_auc_", f, "_", k0)]] <- p
       
       p <- concsum %>% 
         ggplot(aes(x = method, y = mediandiff, col = method)) + 
-        geom_boxplot(outlier.size = -1) +
-        geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset)) +
-        theme_bw() + xlab("") + 
         ylab("difference between median area under\nconcordance curve (signal - null)") + 
-        scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                                 "", names(cols))), name = "") + 
-        scale_shape_discrete(name = "") +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.y = element_text(size = 13)) + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
+        gglayersb + ggtitle(paste0(f, ", top-", k0, " genes"))
       print(p)
       plots[[paste0("mediandiff_auc_", f, "_", k0)]] <- p
     }

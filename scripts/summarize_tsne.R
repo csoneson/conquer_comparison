@@ -1,6 +1,7 @@
 summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
                            singledsfigdir, cobradir, concordancedir, 
-                           dschardir, origvsmockdir, plotmethods) {
+                           dschardir, origvsmockdir, plotmethods, 
+                           dstypes) {
   
   X <- list()
   for (ds in datasets) {
@@ -8,8 +9,11 @@ summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
                               "_dataset_characteristics_plots.rds"))
   }
   pdf(paste0(figdir, "/tsne_final", dtpext, ".pdf"), width = 13.5, height = 16.5)
-  print(plot_grid(plotlist = lapply(X, function(x) x$tsne + guides(color = guide_legend(nrow = 2))), 
-                  ncol = 3, labels = LETTERS[1:length(datasets)], align = "h"))
+  print(plot_grid(plotlist = lapply(
+    X, function(x) {
+      x$tsne + guides(color = guide_legend(nrow = 2))
+    }), 
+  ncol = 3, labels = LETTERS[seq_len(length(datasets))], align = "h"))
   dev.off()
   
   lapply(X, function(x) x$tsne)
