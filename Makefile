@@ -49,7 +49,8 @@ $(multidsfigdir)/ds_characteristics/summary_ds_characteristics_real.rds \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE1),$(foreach S,$(SUMMARYTYPE1),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE2),$(foreach S,$(SUMMARYTYPE2),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE3),$(foreach S,$(SUMMARYTYPE3),$(S)/summary_$(S)_$(D))))) \
-figures/misc/voomlimma_investigation.rds figures/misc/performance_summary.rds
+figures/misc/voomlimma_investigation.rds figures/misc/performance_summary.rds \
+$(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final_real_100_hclust_annot.rds
 
 ## Plot original vs mock comparison
 plotorigmock: $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsb),$(Y)))) \
@@ -510,6 +511,14 @@ $(eval $(call summaryrule_crossmethod_consistency,_realscimpute,$(DSrealsignalsc
 $(eval $(call summaryrule_crossmethod_consistency,_simscimpute,$(DSsimsignalscimpute),${DSsimsignalscimputec},$(FILT),${FILTc},${MTplotc}))
 $(eval $(call summaryrule_crossmethod_consistency,_realdrimpute,$(DSrealsignaldrimpute),${DSrealsignaldrimputec},$(FILT),${FILTc},${MTplotc}))
 $(eval $(call summaryrule_crossmethod_consistency,_simdrimpute,$(DSsimsignaldrimpute),${DSsimsignaldrimputec},$(FILT),${FILTc},${MTplotc}))
+
+define clustannotrule
+$(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final$(1)_$(2)_hclust_annot.rds: \
+$(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency$(1).rds \
+DEmethod_characteristics.txt scripts/annotate_method_clustering.R
+	$(R34) "--args hclustrds='$(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final$(1)_$(2)_plots.rds' chartxt='DEmethod_characteristics.txt' outrds='$$(@)'" scripts/annotate_method_clustering.R Rout/annotate_method_clustering$(1)_$(2).Rout
+endef
+$(eval $(call clustannotrule,_real,100))
 
 define summaryrule_relfprtpr
 $(multidsfigdir)/relfprtpr/summary_relfprtpr$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_relativetruth/, $(foreach Y,$(2),$(Y)_results_relativetruth))) \

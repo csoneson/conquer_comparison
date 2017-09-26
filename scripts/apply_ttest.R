@@ -8,10 +8,10 @@ run_ttest <- function(L) {
     tmm <- edgeR::calcNormFactors(L$tpm)
     tpmtmm <- edgeR::cpm(L$tpm, lib.size = tmm * colSums(L$tpm))
     logtpm <- log2(tpmtmm + 1)
-    idx <- seq_len(nrow(tpmtmm))
-    names(idx) <- rownames(tpmtmm)
+    idx <- seq_len(nrow(logtpm))
+    names(idx) <- rownames(logtpm)
     ttest_p <- sapply(idx, function(i) {
-      t.test(tpmtmm[i, ] ~ L$condt)$p.value
+      t.test(logtpm[i, ] ~ L$condt)$p.value
     })
   })
   

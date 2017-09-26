@@ -290,7 +290,9 @@ pdf(gsub("rds$", "pdf", outrds), width = 12, height = 8)
 pheatmap(allperf, cluster_rows = FALSE, cluster_cols = FALSE, 
          color = c("#E8601C", "#F6C141", "#90C987"), breaks = c(-0.5, 0.5, 1.5, 2.5), 
          scale = "none", legend_breaks = c(0, 1, 2), 
-         legend_labels = c("poor", "intermediate", "good"), fontsize = 14)
+         legend_labels = c("poor", "intermediate", "good"), fontsize = 14, 
+         gaps_col = seq_len(ncol(allperf)),
+         gaps_row = seq_len(nrow(allperf)))
 dev.off()
 
 saveRDS(NULL, file = outrds)

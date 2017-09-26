@@ -6,11 +6,12 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   gglayers <- list(
     geom_hline(yintercept = 0.05),
     geom_boxplot(outlier.size = -1),
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)), 
+    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples_fact)), 
     theme_bw(),
     xlab(""),
     ylab("True FPR (fraction of genes with p < 0.05)"),
     scale_color_manual(values = cols),
+    scale_shape_manual(values = pch),
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13)),
@@ -81,8 +82,16 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   ## Add information about data set type
   truefpr <- dplyr::left_join(truefpr, dstypes, by = "dataset")
   
+  truefpr$n_samples_fact <- factor(truefpr$n_samples, levels =
+                                 unique(sort(as.numeric(as.character(truefpr$n_samples)))))
+  ## Set plot symbols for number of cells per group
+  n_samples <- levels(truefpr$n_samples_fact)
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[seq_len(length(n_samples))]
+  names(pch) <- as.character(n_samples)
+
   ## Add colors and plot characters to the data frame
   truefpr$plot_color <- cols[as.character(truefpr$method)]
+  truefpr$plot_char <- pch[as.character(truefpr$n_samples_fact)]
   
   for (f in unique(truefpr$filt)) {
     tmp <- truefpr %>% dplyr::filter(filt == f) %>%

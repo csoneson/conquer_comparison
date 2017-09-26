@@ -8,7 +8,8 @@ run_monocle <- function(L) {
     mon <- newCellDataSet(as.matrix(L$tpm), 
                           phenoData = new("AnnotatedDataFrame", 
                                           data = data.frame(condition = L$condt, 
-                                                            row.names = colnames(L$tpm))))
+                                                            row.names = colnames(L$tpm))),
+                          expressionFamily = tobit())
     monres <- differentialGeneTest(mon, fullModelFormulaStr = " ~ condition")
   })
   

@@ -26,7 +26,7 @@ from the top directory (note, however, that this will take a **significant** amo
 To add a differential expression method to the evaluation, construct a script in the form of the provided `apply_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the method. Then add the name of the method to `include_methods.mk`. To make it show up in the summary plots, assign it a color in `scripts/plot_setup.R`.
 
 ## Adding a data set
-To add a data set, put the *.rds* file containing the *MultiArrayExperiment* object in the `data/` folder and construct a script in the form of the provided `generate_config_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the data set. Then add the name of the dataset to `include_datasets.mk`. 
+To add a data set, put the *.rds* file containing the *MultiArrayExperiment* object in the `data/` folder and construct a script in the form of the provided `generate_config_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the data set. Then add the name of the dataset to the appropriate variables in `include_datasets.mk`. Also, add the data set to the `data/dataset_type.txt` file, indicating the type of values in each data set.
 
 ## A note on the data sets
 Most data sets in the published evaluation are obtained from the [`conquer`](http://imlspenticton.uzh.ch:3838/conquer/) repository. The RPM values for the Usoskin dataset was downloaded from [http://linnarssonlab.org/drg/](http://linnarssonlab.org/drg/) on December 18, 2016. 
