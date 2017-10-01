@@ -128,13 +128,20 @@ getextrfpr <- function(maxfpr, minfpr) {
   })
 }
 fpr <- fpr$truefpr_sep_TPM_1_25p$data %>% 
-  dplyr::group_by(method) %>% 
+  dplyr::group_by(method, dtype) %>% 
   dplyr::summarise(medianFPR = median(FPR),
                    maxFPR = max(FPR),
                    minFPR = min(FPR)) %>%
   dplyr::mutate(MedianFPR = sapply(medianFPR, getfpr),
-                MaxFPR = getextrfpr(maxFPR, minFPR)) %>%
-  dplyr::select(method, MedianFPR, MaxFPR)
+                MaxFPR = getextrfpr(maxFPR, minFPR))
+fprumi <- fpr %>% dplyr::filter(dtype == "UMI") %>%
+  dplyr::select(method, MedianFPR, MaxFPR) %>%
+  dplyr::rename(MedianFPR_UMI = MedianFPR,
+                MaxFPR_UMI = MaxFPR)
+fprfl <- fpr %>% dplyr::filter(dtype == "full-length") %>%
+  dplyr::select(method, MedianFPR, MaxFPR) %>%
+  dplyr::rename(MedianFPR_FL = MedianFPR,
+                MaxFPR_FL = MaxFPR)
 
 ## ========================================================================== ##
 ## Timing
@@ -263,7 +270,8 @@ complex <- data.frame(ComplexDesign = c(voomlimma = "good", Wilcoxon = "bad",
 ## ========================================================================== ##
 allperf <- dplyr::full_join(fdrcontrol, power) %>%
   dplyr::full_join(auroc) %>%
-  dplyr::full_join(fpr) %>%
+  dplyr::full_join(fprumi) %>%
+  dplyr::full_join(fprfl) %>%
   dplyr::full_join(scaling) %>%
   dplyr::full_join(speed) %>%
   dplyr::full_join(bias) %>%

@@ -84,10 +84,12 @@ titles <- list(
 ## the left of the peak of the smoothing line in the voom plot.
 datasets <- structure(c("GSE45719mock", "GSE74596mock", "EMTAB2805mock", 
                         "GSE60749-GPL13112mock", "GSE48968-GPL13112mock",
-                        "UsoskinGSE59739mock"), 
+                        "UsoskinGSE59739mock", "GSE62270-GPL17021mock", 
+                        "10XMonoCytoTmock"), 
                       names = c("GSE45719mock", "GSE74596mock", "EMTAB2805mock", 
                                 "GSE60749-GPL13112mock", "GSE48968-GPL13112mock", 
-                                "UsoskinGSE59739mock"))
+                                "UsoskinGSE59739mock", "GSE62270-GPL17021mock", 
+                                "10XMonoCytoTmock"))
 FPR <- c()
 frac_below_peak <- c()
 for (ds in datasets) {
@@ -124,13 +126,16 @@ df4 <- Reduce(function(...) dplyr::full_join(..., by = "nm"),
   tidyr::separate(nm, into = c("dataset", "filt", "ncells", "repl"), sep = "_") %>%
   dplyr::mutate(dataset = gsub("mock$", "null", dataset))
 
+pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(unique(df4$dataset))]
+names(pch) <- unique(df4$dataset)
+
 p3 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) + 
   geom_hline(yintercept = 0.05, color = "red", size = 2) + 
   geom_point(aes(shape = dataset)) + 
+  scale_shape_manual(values = pch, name = "Data set") + 
   geom_smooth(method = "loess") + theme_bw() + 
   xlab("Fraction of genes to the left of the peak in the voom plot") + 
   ylab("True FPR (fraction of genes with p < 0.05)") + 
-  scale_shape_discrete(name = "Data set") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
 

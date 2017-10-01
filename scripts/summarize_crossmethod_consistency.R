@@ -67,7 +67,7 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
     
     pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_", k0, "_clust.pdf"), 
         width = 12, height = 6)
-    plot(plots[[paste0("TPM_1_25p_", k0)]]$average_auc_clustering$tree_row)
+    plot(plots[[paste0("TPM_1_25p_", k0)]]$clustering_average)
     dev.off()
     
     saveRDS(plots[[paste0("TPM_1_25p_", k0)]], 

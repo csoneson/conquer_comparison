@@ -168,7 +168,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   print(p)
   dev.off()
 
-  pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 9)
+  pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
   p <- plot_grid(plot_grid(plots$truefpr_sep_bydtype_ + theme(legend.position = "none") + 
                              ggtitle("Without filtering") + scale_y_sqrt(), 
                            plots$truefpr_sep_bydtype_TPM_1_25p + theme(legend.position = "none") + 

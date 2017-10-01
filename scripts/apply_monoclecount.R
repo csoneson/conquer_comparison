@@ -1,23 +1,14 @@
-suppressPackageStartupMessages(library(edgeR))
-suppressPackageStartupMessages(library(DESeq2))
 suppressPackageStartupMessages(library(monocle))
 
-run_monoclecensus <- function(L) {
-  message("monoclecensus")
+run_monoclecount <- function(L) {
+  message("monoclecount")
   session_info <- sessionInfo()
   tryCatch({
     timing <- system.time({
-      mon <- newCellDataSet(as.matrix(L$tpm), 
+      mon <- newCellDataSet(as.matrix(L$count), 
                             phenoData = new("AnnotatedDataFrame", 
                                             data = data.frame(condition = L$condt, 
-                                                              row.names = colnames(L$tpm))),
-                            lowerDetectionLimit = 0.1,
-                            expressionFamily = tobit(Lower = 0.1))
-      rpc_matrix <- relative2abs(mon, method = "num_genes")
-      mon <- newCellDataSet(cellData = as.matrix(rpc_matrix), 
-                            phenoData = new("AnnotatedDataFrame", 
-                                            data = data.frame(condition = L$condt, 
-                                                              row.names = colnames(L$tpm))),
+                                                              row.names = colnames(L$count))),
                             lowerDetectionLimit = 0.5,
                             expressionFamily = negbinomial.size())
       mon <- estimateSizeFactors(mon)
@@ -35,7 +26,7 @@ run_monoclecensus <- function(L) {
                          padj = monres$qval,
                          row.names = rownames(monres)))
   }, error = function(e) {
-    "monoclecensus results could not be calculated"
+    "monoclecount results could not be calculated"
     list(session_info = session_info)
   })
 }

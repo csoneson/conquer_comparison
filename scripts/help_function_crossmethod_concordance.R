@@ -5,6 +5,22 @@ suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(pheatmap))
 suppressPackageStartupMessages(library(RColorBrewer))
 
+## Get all subclusters from an hclust object
+get_subclusters <- function(hcl) {
+  m <- hcl$merge
+  labs <- hcl$labels
+  L <- list()
+  for (i in seq_len(nrow(m))) {
+    tmp <- c()
+    if (m[i, 1] < 1) tmp <- c(tmp, labs[-m[i, 1]])
+    else tmp <- c(tmp, L[[m[i, 1]]])
+    if (m[i, 2] < 1) tmp <- c(tmp, labs[-m[i, 2]])
+    else tmp <- c(tmp, L[[m[i, 2]]])
+    L[[i]] <- sort(tmp)
+  }
+  L
+}
+
 ## Visualize cross-method consistency (average pairwise AUCC between methods for
 ## top-k0 genes)
 help_function_crossmethod_concordance <- function(concordance_betweenmethods_pairwise, 
@@ -31,6 +47,39 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   cmcons$method1 <- NULL
   stopifnot(all(rownames(cmcons) == colnames(cmcons)))
   stopifnot(all((cmcons == t(cmcons))[!is.na(cmcons == t(cmcons))]))
+  
+  ## Hierarchical clustering based on 1 - cmcons
+  tmpdist <- 1 - cmcons
+  tmpdist[is.na(tmpdist)] <- 1
+  hcl_average <- hclust(as.dist(tmpdist))
+  plot(hcl_average)
+  ## Get all subclusters
+  subclusters_average <- get_subclusters(hcl_average)
+  
+  ## Get all subclusters for individual data set instances
+  cmtmp <- cm %>% dplyr::filter(k == k0) %>% dplyr::mutate(grp = paste(dataset, filt, ncells, repl, sep = "."))
+  uniqvals <- unique(cmtmp$grp)
+  subclusters_all <- lapply(uniqvals, function(i) {
+    cmtmp2 <- cmtmp %>% dplyr::filter(grp == i) %>% dplyr::select(method1, method2, AUCs)
+    cmtmp2 <- rbind(cmtmp2, data.frame(method1 = unique(c(cmtmp2$method1, cmtmp2$method2)),
+                                       method2 = unique(c(cmtmp2$method1, cmtmp2$method2)),
+                                       AUCs = 1, stringsAsFactors = FALSE))
+    cmtmp2 <- dcast(cmtmp2, method1 ~ method2, value.var = "AUCs")
+    rownames(cmtmp2) <- cmtmp2$method1
+    cmtmp2$method1 <- NULL
+    stopifnot(all(rownames(cmtmp2) == colnames(cmtmp2)))
+    stopifnot(all((cmtmp2 == t(cmtmp2))[!is.na(cmtmp2 == t(cmtmp2))]))
+    get_subclusters(hclust(as.dist(1 - cmtmp2)))
+  })
+  
+  ## Get stability values
+  stability_scores <- rowMeans(sapply(subclusters_all, function(w) {
+    subclusters_average %in% w
+  }))
+  
+  plots[["stability_scores"]] <- stability_scores
+  plots[["subclusters_average"]] <- subclusters_average
+  plots[["clustering_average"]] <- hcl_average
   
   phm <- pheatmap(cmcons, cluster_rows = TRUE, cluster_cols = TRUE,
                   main = paste0("Area under method/method concordance curve,", 
@@ -83,7 +132,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   
   ## Order methods by hierarchical clustering result and visualize distributions
   ## of AUCs in color code
-  hclord <- rev(phm$tree_row$labels[phm$tree_row$order])
+  ## hclord <- rev(phm$tree_row$labels[phm$tree_row$order])
+  hclord <- rev(hcl_average$labels[hcl_average$order])
   ## Order AUCs in increasing order for each method pair
   cmdist2 <- cmdist %>% dplyr::group_by(method1, method2) %>%
     dplyr::arrange(AUCs) %>% dplyr::mutate(ordr = 1:length(AUCs), ycoord = 1)

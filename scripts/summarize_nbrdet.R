@@ -195,7 +195,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     theme(legend.position = "bottom") + 
     guides(shape = FALSE,
            colour = 
-             guide_legend(nrow = 3,
+             guide_legend(nrow = 4,
                           title = "",
                           override.aes = list(size = 1.5),
                           title.theme = element_text(size = 12, angle = 0),
@@ -209,7 +209,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     theme(legend.position = "bottom") + 
     guides(shape = FALSE,
            colour = 
-             guide_legend(nrow = 3,
+             guide_legend(nrow = 4,
                           title = "",
                           override.aes = list(size = 1.5),
                           title.theme = element_text(size = 12, angle = 0),

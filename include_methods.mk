@@ -6,7 +6,7 @@ space := $(empty) $(empty)
 MT1 := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt BPSC DESeq2 DESeq2nofilt edgeRLRTdeconv \
 MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma SeuratBimod \
 SeuratBimodnofilt SeuratBimodIsExpr2 SeuratTobit DESeq2census edgeRLRTcensus monoclecensus \
-monocle D3E limmatrend ROTSvoom ROTScpm ROTStpm metagenomeSeq ttest
+monocle D3E limmatrend ROTSvoom ROTScpm ROTStpm metagenomeSeq ttest monoclecount
 ## Methods run with R 3.4
 MT2 := scDD DEsingle# zingeRedgeR zingeRedgeRnofilt 
 

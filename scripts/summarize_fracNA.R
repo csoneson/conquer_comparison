@@ -113,7 +113,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## Split by data type
-  pdf(paste0(figdir, "/fracNA_final", dtpext, "_bydtype.pdf"), width = 12, height = 9)
+  pdf(paste0(figdir, "/fracNA_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
   p <- plot_grid(plot_grid(plots[["fracna_comb_bydtype_"]] + theme(legend.position = "none") + 
                              ggtitle("Without filtering"), 
                            plots[["fracna_comb_bydtype_TPM_1_25p"]] + theme(legend.position = "none") + 

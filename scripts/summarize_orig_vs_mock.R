@@ -3,28 +3,6 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    dschardir, origvsmockdir, plotmethods, 
                                    dstypes) {
   
-  gglayers <- list(
-    geom_boxplot(outlier.size = -1),
-    theme_bw(),
-    xlab(""),
-    scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                             "", names(cols))), name = ""),
-    scale_shape_discrete(name = ""),
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
-  )
-  gglayers1 <- c(list(geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)),
-                      ylim(0, 1)),
-                 gglayers)
-  gglayersw <- c(list(geom_point(position = position_jitter(width = 0.2), size = 0.5), 
-                      facet_wrap(~ dataset),
-                      ylim(0, 1)),
-                 gglayers)
-  gglayersb <- c(list(geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset))), 
-                 gglayers)
-  
-  
   ## Generate list to hold all plots
   plots <- list()
   
@@ -49,6 +27,31 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     }))
   }))
   
+  dss <- levels(as.factor(concordances$dataset))
+  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(dss)]
+  names(pch) <- as.character(dss)
+  
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    theme_bw(),
+    xlab(""),
+    scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                             "", names(cols))), name = ""),
+    scale_shape_manual(values = pch, name = ""),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13))
+  )
+  gglayers1 <- c(gglayers, 
+                 list(geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)),
+                      ylim(0, 1)))
+  gglayersw <- c(gglayers, 
+                 list(geom_point(position = position_jitter(width = 0.2), size = 0.5), 
+                      facet_wrap(~ dataset),
+                      ylim(0, 1)))
+  gglayersb <- c(gglayers, 
+                 list(geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset))))
+  
   for (f in unique(concordances$filt)) {
     for (k0 in unique(concordances$k)) {
       concs <- concordances %>% dplyr::filter(filt == f) %>%
@@ -58,6 +61,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
       
       ## Add colors and plot characters to the data frame
       concs$plot_color <- cols[as.character(concs$method)]
+      concs$plot_char <- pch[as.character(concs$dataset)]
 
       concsum <- concs %>% as.data.frame() %>%
         dplyr::filter(ncells %in% nbr_keep) %>%

@@ -120,24 +120,24 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods)
   
-  ## Add categorization of methods into "liberal", "inrange", "conservative"
+  ## Add categorization of methods into "low FDP", "in range", "high FDP"
   getcat <- function(FDR, thr) {
     fracover <- length(which(FDR > thr))/length(FDR)
     fracunder <- length(which(FDR < thr))/length(FDR)
     fracoverx3 <- length(which(FDR > 3*thr))/length(FDR)
     fracunderx3 <- length(which(FDR < thr/3))/length(FDR)
-    if (fracover >= 0.75 | fracoverx3 >= 0.5) "liberal"
-    else if (fracunder >= 0.75 | fracunderx3 >= 0.5) "conservative"
-    else "inrange"
+    if (fracover >= 0.75 | fracoverx3 >= 0.5) "high FDP"
+    else if (fracunder >= 0.75 | fracunderx3 >= 0.5) "low FDP"
+    else "in range"
   }
   fdrtpr <- fdrtpr %>%
     dplyr::group_by(thr, method, filt) %>% 
     dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
-    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("liberal", "inrange", "conservative")))
+    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("high FDP", "in range", "low FDP")))
   fdrtpr_ihw <- fdrtpr_ihw %>%
     dplyr::group_by(thr, method, filt) %>% 
     dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
-    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("liberal", "inrange", "conservative")))
+    dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("high FDP", "in range", "low FDP")))
   
   ## Set plot symbols for number of cells per group
   ncells <- sort(as.numeric(as.character(unique(fdrtpr$n_samples))))
@@ -511,7 +511,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                    get_legend(plots[[paste0(asp, "_byncells_sep_")]] + 
                                 theme(legend.position = "bottom") + 
                                 guides(colour = 
-                                         guide_legend(nrow = 3,
+                                         guide_legend(nrow = 4,
                                                       title = "",
                                                       override.aes = list(size = 1.5),
                                                       title.theme = element_text(size = 12,
