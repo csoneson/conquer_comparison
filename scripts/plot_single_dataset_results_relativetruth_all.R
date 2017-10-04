@@ -3,7 +3,7 @@
 #' of the methods' results as truth and represented in matrix form
 #' 
 plot_results_relativetruth_all <- function(cobra, relperf_alltruths, colvec, 
-                                           exts = exts, summary_data = list()) {
+                                           exts, summary_data = list()) {
 
   ## Get unique set of sample sizes
   ttmp <- unique(as.numeric(get_nsamples(colnames(padj(cobra)))))

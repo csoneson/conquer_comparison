@@ -4,8 +4,8 @@ aspmod <- function(x) {
 }
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
-                                      dschardir, origvsmockdir, plotmethods, 
-                                      dstypes) {
+                                      dschardir, origvsmockdir, distrdir, 
+                                      plotmethods, dstypes) {
   gglayers <- list(
     geom_boxplot(outlier.size = -1),
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)),

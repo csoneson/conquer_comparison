@@ -1,6 +1,6 @@
 summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
                                 singledsfigdir, cobradir, concordancedir, 
-                                dschardir, origvsmockdir, plotmethods, 
+                                dschardir, origvsmockdir, distrdir, plotmethods, 
                                 dstypes) {
   exts <- setdiff(exts, "")
   

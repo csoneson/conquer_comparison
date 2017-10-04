@@ -1,4 +1,4 @@
-plot_timing <- function(timinglist, colvec, exts = exts, summary_data = list()) {
+plot_timing <- function(timinglist, colvec, exts, summary_data = list()) {
   ## Extract elapsed time for each method and data set instance
   timings <- sapply(timinglist, function(i) {
     i["user.self"] + i["sys.self"] + i["user.child"] + i["sys.child"]

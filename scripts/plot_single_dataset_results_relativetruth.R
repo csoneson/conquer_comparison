@@ -45,7 +45,7 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
 #' Plot performance using each method's results with the largest sample size as
 #' truth
 #' 
-plot_results_relativetruth <- function(cobra, colvec, exts = exts, summary_data = list()) {
+plot_results_relativetruth <- function(cobra, colvec, exts, summary_data = list()) {
   ## Generate a new cobradata object where the truth of each method is 
   ## considered to be the results obtained with the largest sample size.
   cobratmp <- cobra

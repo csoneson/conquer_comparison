@@ -1,4 +1,4 @@
-plot_performance_realtruth <- function(cobraperf, colvec, exts = exts, summary_data = list()) {
+plot_performance_realtruth <- function(cobraperf, colvec, exts, summary_data = list()) {
   summary_data$FDRTPR <- fdrtpr(cobraperf[["cobraperf"]])
   summary_data$AUROC <- cobraperf[["cobraperf"]]@roc %>% dplyr::group_by(method) %>%
     dplyr::summarize(AUROC = max(AUC, na.rm = TRUE))

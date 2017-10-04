@@ -8,10 +8,10 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
   ## possible
   m <- min(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m)) 
-    overlap(cobraplot) <- overlap(cobraplot)[, c(m, setdiff(1:ncol(overlap(cobraplot)), m))]
+    overlap(cobraplot) <- overlap(cobraplot)[, c(m, setdiff(1:ncol(overlap(cobraplot)), m)), drop = FALSE]
   m <- max(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m))
-    overlap(cobraplot) <- overlap(cobraplot)[, c(setdiff(1:ncol(overlap(cobraplot)), m), m)]
+    overlap(cobraplot) <- overlap(cobraplot)[, c(setdiff(1:ncol(overlap(cobraplot)), m), m), drop = FALSE]
   tryCatch(plot_upset(cobraplot, order.by = "freq", decreasing = TRUE, nintersects = nintersects, ...),
            error = function(e) NULL)
 }

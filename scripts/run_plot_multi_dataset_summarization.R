@@ -18,6 +18,7 @@ print(cobradir)
 print(dschardir)
 print(concordancedir)
 print(origvsmockdir)
+print(distrdir)
 print(dstypetxt)
 print(figdir)
 
@@ -44,6 +45,7 @@ plots <- get(paste0("summarize_", summarytype))(figdir = figdir,
                                                 concordancedir = concordancedir,
                                                 dschardir = dschardir,
                                                 origvsmockdir = origvsmockdir,
+                                                distrdir = distrdir,
                                                 plotmethods = plotmethods, 
                                                 dstypes = dstypes)
 saveRDS(plots, file = paste0(figdir, "/summary_", summarytype, 

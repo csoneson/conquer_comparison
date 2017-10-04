@@ -1,7 +1,7 @@
 summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
-                                         dschardir, origvsmockdir, plotmethods, 
-                                         dstypes) {
+                                         dschardir, origvsmockdir, distrdir, 
+                                         plotmethods, dstypes) {
   
   gglayers <- list(
     geom_hline(yintercept = 0), 
@@ -86,7 +86,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   for (f in unique(charac$filt)) {
     for (stat in c("snr")) {
       pdf(paste0(figdir, "/de_characteristics_final", ifelse(f == "", f, paste0("_", f)),
-                 dtpext, "_", stat, ".pdf"), width = 10, height = 8)
+                 dtpext, "_", stat, ".pdf"), width = 10, height = 7)
       p <- plots[[paste0(stat, "_bystat_", f)]] + 
         theme(legend.position = "bottom") + 
         guides(colour = FALSE,

@@ -1,6 +1,6 @@
 summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
                            singledsfigdir, cobradir, concordancedir, 
-                           dschardir, origvsmockdir, plotmethods, 
+                           dschardir, origvsmockdir, distrdir, plotmethods, 
                            dstypes) {
   
   X <- list()

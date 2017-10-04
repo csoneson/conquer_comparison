@@ -1,4 +1,4 @@
-plot_truefpr <- function(cobra, colvec, exts = exts, summary_data = list()) {
+plot_truefpr <- function(cobra, colvec, exts, summary_data = list()) {
   pvs <- pval(cobra)
   fpr <- apply(pvs, 2, function(x) length(which(x <= 0.05))/length(x[!is.na(x)]))
   nsign <- apply(pvs, 2, function(x) length(which(x <= 0.05)))

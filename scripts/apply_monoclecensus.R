@@ -11,9 +11,8 @@ run_monoclecensus <- function(L) {
                             phenoData = new("AnnotatedDataFrame", 
                                             data = data.frame(condition = L$condt, 
                                                               row.names = colnames(L$tpm))),
-                            lowerDetectionLimit = 0.1,
-                            expressionFamily = tobit(Lower = 0.1))
-      rpc_matrix <- relative2abs(mon, method = "num_genes")
+                            expressionFamily = tobit())
+      rpc_matrix <- relative2abs(mon)
       mon <- newCellDataSet(cellData = as.matrix(rpc_matrix), 
                             phenoData = new("AnnotatedDataFrame", 
                                             data = data.frame(condition = L$condt, 

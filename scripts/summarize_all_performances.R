@@ -260,7 +260,8 @@ complex <- data.frame(ComplexDesign = c(voomlimma = "good", Wilcoxon = "bad",
                                         BPSC = "good", ROTScpm = "bad", 
                                         scDD = "bad", DESeq2census = "good", 
                                         SCDE = "bad", SeuratBimod = "bad", 
-                                        SeuratBimodIsExpr2 = "bad"),
+                                        SeuratBimodIsExpr2 = "bad",
+                                        monoclecount = "good"),
                       stringsAsFactors = FALSE) %>% 
   tibble::rownames_to_column(var = "method")
 

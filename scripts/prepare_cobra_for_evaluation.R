@@ -36,6 +36,7 @@ if (filt == "") {
 file.exists(resfiles)
 cobra <- NULL
 timings <- list()
+runstatus <- list()
 for (rfn in resfiles) {   ## for each DE method
   rf <- readRDS(rfn)
   for (nm in names(rf)) {   ## for each data set instance (nm = method.ncells.repl)
@@ -44,6 +45,12 @@ for (rfn in resfiles) {   ## for each DE method
     ## Get stored timing information and results
     timings[[nm]] <- rf[[nm]]$timing
     df <- rf[[nm]]$df
+    
+    if (!is.null(df)) {
+      runstatus[[nm]] <- "success"
+    } else {
+      runstatus[[nm]] <- "failure"
+    }
     
     ## Add to iCOBRA object
     if ("pval" %in% colnames(df)) {
@@ -144,6 +151,7 @@ nbr_called$nbr_NA <- nbr_called$nbr_tested - nbr_called$nbr_called
 
 ## --------------------- Save output files ---------------------------------- ##
 saveRDS(timings, file = paste0(outdir, "/", dataset, exts, "_timings.rds"))
+saveRDS(runstatus, file = paste0(outdir, "/", dataset, exts, "_runstatus.rds"))
 saveRDS(nbr_called, file = paste0(outdir, "/", dataset, exts, "_nbr_called.rds"))
 saveRDS(cobra, file = paste0(outdir, "/", dataset, exts, "_cobra.rds"))
 

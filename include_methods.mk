@@ -15,6 +15,6 @@ MT := $(MT1) $(MT2)
 MTc := $(subst $(space),$(comma),$(MT))
 
 ## Methods to apply to bulk RNA-seq data sets
-MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES NODESnofilt DESeq2 DESeq2nofilt edgeRLRTdeconv \
+MTbulk := edgeRLRT SAMseq Wilcoxon edgeRQLF NODES DESeq2 DESeq2nofilt edgeRLRTdeconv \
 edgeRLRTrobust voomlimma limmatrend ttest
 MTcbulk := $(subst $(space),$(comma),$(MTbulk))

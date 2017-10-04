@@ -1,6 +1,6 @@
 summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    singledsfigdir, cobradir, concordancedir, 
-                                   dschardir, origvsmockdir, plotmethods, 
+                                   dschardir, origvsmockdir, distrdir, plotmethods, 
                                    dstypes) {
   
   ## Generate list to hold all plots

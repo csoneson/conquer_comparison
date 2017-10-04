@@ -1,6 +1,6 @@
 summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir, plotmethods, 
+                             dschardir, origvsmockdir, distrdir, plotmethods, 
                              dstypes) {
   
   ## Define layers to reuse across ggplots

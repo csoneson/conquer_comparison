@@ -1,6 +1,6 @@
 summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
-                             dschardir, origvsmockdir, plotmethods, 
+                             dschardir, origvsmockdir, distrdir, plotmethods, 
                              dstypes) {
 
   gglayers <- list(

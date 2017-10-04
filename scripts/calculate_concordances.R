@@ -84,10 +84,15 @@ all_repl <- unique(get_repl(colnames(pconc)))
 
 ## Across all instances (all sample sizes, all replicates), for given method
 nbrshared <- do.call(rbind, lapply(all_methods, function(mth) {
-  tmp <- calculate_nbr_occurrences(mtx = pconc[, which(get_method(colnames(pconc)) == mth)], 
+  tmp <- calculate_nbr_occurrences(mtx = pconc[, which(get_method(colnames(pconc)) == mth), 
+                                               drop = FALSE], 
                                    maxrank = maxrank)
-  tmp$method <- mth
-  tmp
+  if (!is.null(tmp)) {
+    tmp$method <- mth
+    tmp
+  } else {
+    NULL
+  }
 })) %>% dplyr::mutate(dataset = dataset, filt = filt)
 concvals <- nbrshared %>% 
   dplyr::filter(nbr_occ == nbr_cols) %>%
