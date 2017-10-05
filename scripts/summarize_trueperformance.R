@@ -204,6 +204,16 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(asp, "_all_byfdrcontrol_", f)]] <- p15
       print(plots[[paste0(asp, "_all_byfdrcontrol_", f)]])
       
+      ## Stratified by data set
+      p15str <- tmp %>%
+        ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp), " at\nadj.p = 0.05 cutoff")) + ggtitle(f) + 
+        facet_grid(dataset ~ fdrcontrol, scales = "free_x", space = "free_x")
+      if (asp == "FDR") p15str <- p15str + gglayersfdr
+      else p15str <- p15str + gglayers
+      plots[[paste0(asp, "_all_byfdrcontrol_byds", f)]] <- p15str
+      print(plots[[paste0(asp, "_all_byfdrcontrol_byds", f)]])
+      
       if ("full-length" %in% tmp$dtype) {
         p15fl <- tmp %>% dplyr::filter(dtype == "full-length") %>%
           ggplot(aes_string(x = "method", y = asp, color = "method")) + 
@@ -509,6 +519,29 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                ggtitle("After filtering") + ylim(-0.01, 1),
                              labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                    get_legend(plots[[paste0(asp, "_byncells_sep_")]] + 
+                                theme(legend.position = "bottom") + 
+                                guides(colour = 
+                                         guide_legend(nrow = 4,
+                                                      title = "",
+                                                      override.aes = list(size = 1.5),
+                                                      title.theme = element_text(size = 12,
+                                                                                 angle = 0),
+                                                      label.theme = element_text(size = 10,
+                                                                                 angle = 0),
+                                                      keywidth = 1, default.unit = "cm"))),
+                   rel_heights = c(1.7, 0.3), ncol = 1)
+    print(p)
+    dev.off()
+    
+    pdf(paste0(figdir, "/true", asp, "_final_sepbydsbox", dtpext, ".pdf"), width = 12, height = 18)
+    p <- plot_grid(plot_grid(plots[[paste0(asp, "_all_byfdrcontrol_byds_")]] + 
+                               theme(legend.position = "none") + 
+                               ggtitle("Without filtering") + ylim(-0.01, 1), 
+                             plots[[paste0(asp, "_all_byfdrcontrol_byds_TPM_1_25p")]] + 
+                               theme(legend.position = "none") + 
+                               ggtitle("After filtering") + ylim(-0.01, 1),
+                             labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                   get_legend(plots[[paste0(asp, "_all_byfdrcontrol_byds_")]] + 
                                 theme(legend.position = "bottom") + 
                                 guides(colour = 
                                          guide_legend(nrow = 4,
