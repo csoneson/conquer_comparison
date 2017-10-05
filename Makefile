@@ -37,7 +37,7 @@ DSTYPE3 := real bulk realdrimpute realscimpute
 .PHONY: all
 
 ## Define the default rule
-all: plotds plotind plotorigmock \
+all: plotds plotind plotorigmock plotdistr \
 $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
@@ -48,6 +48,8 @@ $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics_real.rds \
+$(multidsfigdir)/ds_characteristics/summary_ds_characteristics_sim.rds \
+$(multidsfigdir)/ds_characteristics/summary_ds_characteristics_bulk.rds \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE1),$(foreach S,$(SUMMARYTYPE1),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE2),$(foreach S,$(SUMMARYTYPE2),$(S)/summary_$(S)_$(D))))) \
 $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE3),$(foreach S,$(SUMMARYTYPE3),$(S)/summary_$(S)_$(D))))) \
@@ -614,10 +616,14 @@ $(eval $(call summaryrule_tsne,_all,$(DStsne),${DStsnec},,))
 
 define summaryrule_dschar
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics$(1).rds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
-scripts/run_plot_multi_dataset_summarization.R scripts/summarize_ds_characteristics.R include_datasets.mk
-	$(R) "--args datasets='$(3)' filt='$(4)' summarytype='ds_characteristics' dstypetxt='$(dstypetxt)' plotmethods='$(5)' dtpext='$(1)' figdir='$(multidsfigdir)/ds_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_ds_characteristics$(1).Rout
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_ds_characteristics.R include_datasets.mk \
+$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(6),$(Y)))) \
+$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(4),$(foreach Y,$(6),$(Y)_$(F)))))
+	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='ds_characteristics' dstypetxt='$(dstypetxt)' plotmethods='$(7)' dtpext='$(1)' figdir='$(multidsfigdir)/ds_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_ds_characteristics$(1).Rout
 endef
-$(eval $(call summaryrule_dschar,_real,$(DSrealsignal),${DSrealsignalc},${FILTc},))
+$(eval $(call summaryrule_dschar,_real,$(DSrealsignal),${DSrealsignalc},$(FILT),${FILTc},$(DSrealmock),))
+$(eval $(call summaryrule_dschar,_sim,$(DSsimsignal),${DSsimsignalc},$(FILT),${FILTc},$(DSsimmock),))
+$(eval $(call summaryrule_dschar,_bulk,$(DSbulksignal),${DSbulksignalc},$(FILT),${FILTc},$(DSbulkmock),))
 
 ## --------------------- Investigation of voom/limma behaviour ------------------------ ##
 ## ------------------------------------------------------------------------------------ ##

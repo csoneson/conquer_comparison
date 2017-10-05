@@ -2,7 +2,7 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
                                          dschardir, origvsmockdir, distrdir, 
                                          plotmethods, dstypes) {
-  
+ 
   thm <- function() {
     theme_bw() + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
@@ -51,7 +51,7 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     expand_limits(y = c(min(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
                         1.1 * max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
   
-  pdf(paste0(figdir, "/ds_characteristics_final", dtpext, ".pdf"), width = 18, height = 12)
+  pdf(paste0(figdir, "/ds_characteristics_final", dtpext, ".pdf"), width = 18, height = 15.6)
   
   p1 <- ggplot(X %>% dplyr::filter(mtype == "fraczero"), 
                aes(x = dataset, y = value)) + 
@@ -77,7 +77,7 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
 
   print(plot_grid(plot_grid(p1, p2, p3, labels = c("A", "B", "C"), align = "h", 
                             rel_widths = c(1, 1, 1), nrow = 1),
-                  p0, labels = c("", "D"), rel_heights = c(1, 1), ncol = 1))
+                  p0, labels = c("", "D"), rel_heights = c(1, 1.3), ncol = 1))
   
   dev.off()
 }
