@@ -12,7 +12,27 @@ print(trueperformancerds)
 print(truefprrds)
 print(timingrds) 
 print(fprbiasrds)
+print(failureraterds)
 print(outrds)
+
+## ========================================================================== ##
+## Failure rate
+## ========================================================================== ##
+## Evaluate across all data sets. 
+## Criteria:
+## - Good: average failure rate < 0.01
+## - Intermediate: 0.01 < failure rate < 0.25
+## - Bad: failure rate > 0.25
+## 
+failurerate <- readRDS(failureraterds)
+getfailurerate <- function(failurerate) {
+  if (failurerate < 0.01) "good"
+  else if (failurerate < 0.25) "intermediate"
+  else "bad"
+}
+failurerate <- data.frame(method = rownames(failurerate),
+                          FailureRate = sapply(apply(failurerate, 1, mean), getfailurerate),
+                          stringsAsFactors = FALSE)
 
 ## ========================================================================== ##
 ## FDR control
@@ -278,6 +298,7 @@ allperf <- dplyr::full_join(fdrcontrol, power) %>%
   dplyr::full_join(bias) %>%
   dplyr::full_join(consist) %>%
   dplyr::full_join(complex) %>% 
+  dplyr::left_join(failurerate) %>%
   dplyr::mutate(BiasDEG = replace(BiasDEG, is.na(BiasDEG), "good"))
 
 ## ========================================================================== ##

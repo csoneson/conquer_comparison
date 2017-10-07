@@ -54,11 +54,7 @@ names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus",
 
 ## Write color definitions to file
 s <- sapply(1:length(cols), function(x) {
-  if (length(grep("^#", cols[x])) > 0) {
-    paste0("\\", "definecolor{", names(cols)[x], "}{HTML}{", gsub("#", "", cols[x]), "}")
-  } else {
-    paste0("\\", "definecolor{", names(cols)[x], "}{HTML}{", gsub("#", "", cols[x]), "}")
-  }
+  paste0("\\", "definecolor{", names(cols)[x], "}{HTML}{", gsub("#", "", cols[x]), "}")
 })
 write.table(s, file = "color_definitions.txt", quote = FALSE, 
             sep = "\n", row.names = FALSE, col.names = FALSE)

@@ -6,7 +6,8 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
   cds <- newCellDataSet(L$tpm, 
                         phenoData = new("AnnotatedDataFrame", 
                                         data = data.frame(condition = L$condt, 
-                                                          row.names = colnames(L$tpm))))
+                                                          row.names = colnames(L$tpm))),
+                        expressionFamily = tobit())
   censuscounts <- relative2abs(cds)
   
   ## Plot
@@ -31,17 +32,6 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
             ggplot(aes(x = value, group = Var2, color = condition)) + 
             geom_density() + scale_x_log10() + theme_bw() + 
             xlab("Count, zeros excluded") + ggtitle(paste0("Count distribution per cell", title.ext)))
-    
-    ## Count distributions, after rounding
-    print(reshape2::melt(round(L$count) + 1) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
-            ggplot(aes(x = value, group = Var2, color = condition)) + 
-            geom_density() + scale_x_log10() + theme_bw() + 
-            xlab("Count + 1, rounded") + ggtitle(paste0("Count distribution per cell", title.ext)))
-    print(reshape2::melt(round(L$count)) %>% dplyr::mutate(condition = L$condt[Var2]) %>% 
-            ggplot(aes(x = value, group = Var2, color = condition)) + 
-            geom_density() + scale_x_log10() + theme_bw() + 
-            xlab("Count, rounded, zeros excluded") +
-            ggtitle(paste0("Count distribution per cell", title.ext)))
   }
   
   avecensuscount <- data.frame(avecensuscount = apply(censuscounts, 1, mean), 
@@ -67,7 +57,8 @@ calculate_gene_characteristics <- function(L, do.plot = FALSE, title.ext = "") {
                          fraczero1 = apply(L$count[, L$condt == levels(factor(L$condt))[1]], 
                                            1, function(x) mean(x == 0)),
                          fraczero2 = apply(L$count[, L$condt == levels(factor(L$condt))[2]], 
-                                           1, function(x) mean(x == 0)), gene = rownames(L$count))
+                                           1, function(x) mean(x == 0)), 
+                         gene = rownames(L$count))
   fraczero$fraczerodiff <- abs(fraczero$fraczero1 - fraczero$fraczero2)
   
   ## Variance of TPMs

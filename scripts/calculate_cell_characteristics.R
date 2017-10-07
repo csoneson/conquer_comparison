@@ -6,7 +6,8 @@ calculate_cell_characteristics <- function(L) {
   cds <- newCellDataSet(L$tpm, 
                         phenoData = new("AnnotatedDataFrame", 
                                         data = data.frame(condition = L$condt, 
-                                                          row.names = colnames(L$tpm))))
+                                                          row.names = colnames(L$tpm))),
+                        expressionFamily = tobit())
   censuscounts <- relative2abs(cds)
   
   libsize <- data.frame(libsize = colSums(L$count), cell = colnames(L$count))

@@ -251,9 +251,9 @@ results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT1),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.3,$(Y),$(M),,))))
+$(foreach M,$(MT3.3),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.3,$(Y),$(M),,))))
 $(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(eval $(call dgerule3.3,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT1),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.3,$(Y),$(M),$(F),_$(F))))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.3),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.3,$(Y),$(M),$(F),_$(F))))))
 $(foreach F,$(FILT),$(foreach M,$(MTbulk),$(foreach Y,$(DSbulk),$(eval $(call dgerule3.3,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.3scimpute
@@ -261,16 +261,16 @@ results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds scripts/scimpute_dropouts.R
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT1),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.3scimpute,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT1),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.3scimpute,$(Y),$(M),$(F),_$(F))))))
+$(foreach M,$(MT3.3),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.3scimpute,$(Y),$(M),,))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.3),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.3scimpute,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.3drimpute
 results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds scripts/drimpute_dropouts.R
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT1),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.3drimpute,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT1),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.3drimpute,$(Y),$(M),$(F),_$(F))))))
+$(foreach M,$(MT3.3),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.3drimpute,$(Y),$(M),,))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.3),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.3drimpute,$(Y),$(M),$(F),_$(F))))))
 
 
 define dgerule3.4
@@ -278,24 +278,24 @@ results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	$(R34) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT2),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.4,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT2),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.4,$(Y),$(M),$(F),_$(F))))))
+$(foreach M,$(MT3.4),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.4,$(Y),$(M),,))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.4),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.4,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.4scimpute
 results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds scripts/scimpute_dropouts.R
 	$(R34) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT2),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.4scimpute,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT2),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.4scimpute,$(Y),$(M),$(F),_$(F))))))
+$(foreach M,$(MT3.4),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.4scimpute,$(Y),$(M),,))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.4),$(foreach Y,$(DSscimpute),$(eval $(call dgerule3.4scimpute,$(Y),$(M),$(F),_$(F))))))
 
 define dgerule3.4drimpute
 results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds scripts/drimpute_dropouts.R
 	$(R34) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
-$(foreach M,$(MT2),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.4drimpute,$(Y),$(M),,))))
-$(foreach F,$(FILT),$(foreach M,$(MT2),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.4drimpute,$(Y),$(M),$(F),_$(F))))))
+$(foreach M,$(MT3.4),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.4drimpute,$(Y),$(M),,))))
+$(foreach F,$(FILT),$(foreach M,$(MT3.4),$(foreach Y,$(DSdrimpute),$(eval $(call dgerule3.4drimpute,$(Y),$(M),$(F),_$(F))))))
 
 ## ------------------ Prepare COBRAData object for evaluation ------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -633,11 +633,13 @@ $(addsuffix .rds, $(addprefix data/, $(foreach D,$(DSrealmock),$(D)))) scripts/i
 
 ## ------------------------- Summarization of performance ----------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
-figures/misc/performance_summary.rds: $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
+figures/misc/performance_summary.rds: \
+$(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(multidsfigdir)/truefpr/summary_truefpr_real.rds \
 $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/de_characteristics/summary_de_characteristics_real.rds \
+$(multidsfigdir)/runfailure/summary_runfailure_all.rds \
 scripts/summarize_all_performances.R
-	$(R) "--args trueperformancerds='$(word 1,$^)' truefprrds='$(word 2,$^)' timingrds='$(word 3,$^)' fprbiasrds='$(word 4,$^)' outrds='$@'" scripts/summarize_all_performances.R Rout/summarize_all_performances.Rout
+	$(R) "--args trueperformancerds='$(word 1,$^)' truefprrds='$(word 2,$^)' timingrds='$(word 3,$^)' fprbiasrds='$(word 4,$^)' failureraterds='$(word 5,$^)' outrds='$@'" scripts/summarize_all_performances.R Rout/summarize_all_performances.Rout
 
 

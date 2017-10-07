@@ -30,4 +30,5 @@ summarize_runfailure <- function(figdir, datasets, exts, dtpext, cols,
                      color = colorRampPalette(brewer.pal(n = 7, name = "PuBuGn"))(100))
   dev.off()
 
+  runstatus
 }

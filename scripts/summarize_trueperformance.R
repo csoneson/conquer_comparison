@@ -6,6 +6,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
                                       dschardir, origvsmockdir, distrdir, 
                                       plotmethods, dstypes) {
+  
   gglayers <- list(
     geom_boxplot(outlier.size = -1),
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = n_samples)),
@@ -211,8 +212,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         facet_grid(dataset ~ fdrcontrol, scales = "free_x", space = "free_x")
       if (asp == "FDR") p15str <- p15str + gglayersfdr
       else p15str <- p15str + gglayers
-      plots[[paste0(asp, "_all_byfdrcontrol_byds", f)]] <- p15str
-      print(plots[[paste0(asp, "_all_byfdrcontrol_byds", f)]])
+      plots[[paste0(asp, "_all_byfdrcontrol_byds_", f)]] <- p15str
+      print(plots[[paste0(asp, "_all_byfdrcontrol_byds_", f)]])
       
       if ("full-length" %in% tmp$dtype) {
         p15fl <- tmp %>% dplyr::filter(dtype == "full-length") %>%
@@ -249,14 +250,13 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]] <- p15_ihw
       print(plots[[paste0(asp, "_all_byfdrcontrol_ihw_", f)]])
       
-      p3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
-        dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
-        dplyr::mutate(
-          ncells = factor(ncells, 
-                          levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group",
-                                                                                   "", ncells))))), 
-                                          " cells per group"))) %>%
-        ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method"))
+      tmp3 <- fdrtpr %>% dplyr::filter(filt == f) %>% dplyr::filter(thr == "thr0.05") %>%
+        dplyr::mutate(ncells = paste0(n_samples, " cells per group"))
+      tmp3$ncells <- factor(tmp3$ncells, 
+                            levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group",
+                                                                                     "", tmp3$ncells))))), 
+                                            " cells per group"))
+      p3 <- tmp3 %>% ggplot(aes_string(x = "ncells", y = asp, color = "method", group = "method"))
       if (asp == "FDR") p3 <- p3 + geom_hline(yintercept = 0.05)
       p3 <- p3 + 
         geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
@@ -350,7 +350,14 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       ylab("Area under\nROC curve") + gglayers + ggtitle(f) + 
       facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x")
     print(plots[[paste0("auroc_all_byfdrcontrol_", f)]])
-
+    
+    ## Also stratified by data set
+    plots[[paste0("auroc_all_byfdrcontrol_byds_", f)]] <- tmp %>%
+      ggplot(aes_string(x = "method", y = asp, color = "method")) + 
+      ylab("Area under\nROC curve") + gglayers + ggtitle(f) + 
+      facet_grid(dataset ~ fdrcontrol, scales = "free_x", space = "free_x")
+    print(plots[[paste0("auroc_all_byfdrcontrol_byds_", f)]])
+    
     plots[[paste0("auroc_byncells_sep_", f)]] <- auroc %>% dplyr::filter(filt == f) %>% 
       dplyr::mutate(ncells = paste0(n_samples, " cells per group")) %>%
       dplyr::mutate(ncells = factor(ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group", "", ncells))))), " cells per group"))) %>%
@@ -533,26 +540,14 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     print(p)
     dev.off()
     
-    pdf(paste0(figdir, "/true", asp, "_final_sepbydsbox", dtpext, ".pdf"), width = 12, height = 18)
-    p <- plot_grid(plot_grid(plots[[paste0(asp, "_all_byfdrcontrol_byds_")]] + 
-                               theme(legend.position = "none") + 
-                               ggtitle("Without filtering") + ylim(-0.01, 1), 
-                             plots[[paste0(asp, "_all_byfdrcontrol_byds_TPM_1_25p")]] + 
-                               theme(legend.position = "none") + 
-                               ggtitle("After filtering") + ylim(-0.01, 1),
-                             labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                   get_legend(plots[[paste0(asp, "_all_byfdrcontrol_byds_")]] + 
-                                theme(legend.position = "bottom") + 
-                                guides(colour = 
-                                         guide_legend(nrow = 4,
-                                                      title = "",
-                                                      override.aes = list(size = 1.5),
-                                                      title.theme = element_text(size = 12,
-                                                                                 angle = 0),
-                                                      label.theme = element_text(size = 10,
-                                                                                 angle = 0),
-                                                      keywidth = 1, default.unit = "cm"))),
-                   rel_heights = c(1.7, 0.3), ncol = 1)
+    pdf(paste0(figdir, "/true", asp, "_final_sepbydsbox", dtpext, ".pdf"), width = 12, height = 8)
+    p <- plot_grid(plots[[paste0(asp, "_all_byfdrcontrol_byds_")]] + 
+                     theme(legend.position = "none") + 
+                     ggtitle("Without filtering") + ylim(-0.01, 1), 
+                   plots[[paste0(asp, "_all_byfdrcontrol_byds_TPM_1_25p")]] + 
+                     theme(legend.position = "none") + 
+                     ggtitle("After filtering") + ylim(-0.01, 1),
+                   labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
     print(p)
     dev.off()
   }

@@ -18,7 +18,6 @@ suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 source("scripts/prepare_mae.R")
-source("scripts/apply_voomlimma.R")
 
 ## First, an example (GSE48968-GPL13112mock, 24 cells per group, repl 1)
 
@@ -35,7 +34,8 @@ i <- 1
 plots <- list()
 for (flt in c("", "count_15_25p")) {
   ## Subset data set and apply voom/limma
-  L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt, 
+  L <- subset_mae(mae = mae, keep_samples = keep_samples, sz = sz, i = i,
+                  imposed_condition = imposed_condition, filt = flt, 
                   impute = config$impute)
   dge <- DGEList(L$count, group = L$condt)
   dge <- calcNormFactors(dge)
@@ -104,7 +104,8 @@ for (ds in datasets) {
   for (flt in c("", "TPM_1_25p", "TPM_5_25p", "TPM_11_25p")) {
     for (sz in names(imposed_condition)) {
       for (i in 1:nrow(imposed_condition[[sz]])) {
-        L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, flt, 
+        L <- subset_mae(mae = mae, keep_samples = keep_samples, sz = sz, i = i, 
+                        imposed_condition = imposed_condition, filt = flt, 
                         impute = config$impute)
         dge <- DGEList(L$count, group = L$condt)
         dge <- calcNormFactors(dge)
@@ -135,7 +136,7 @@ p3 <- ggplot(df4, aes(x = frac_below_peak, y = FPR)) +
   scale_shape_manual(values = pch, name = "Data set") + 
   geom_smooth(method = "loess") + theme_bw() + 
   xlab("Fraction of genes to the left of the peak in the voom plot") + 
-  ylab("True FPR (fraction of genes with p < 0.05)") + 
+  ylab("FPR (fraction of genes with p < 0.05)") + 
   theme(axis.title = element_text(size = 13),
         axis.text = element_text(size = 12))
 

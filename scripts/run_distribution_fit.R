@@ -31,20 +31,26 @@ keep_samples <- subsets$keep_samples
 imposed_condition <- subsets$out_condition
 sizes <- names(keep_samples)
 
-sz <- max(as.numeric(as.character(sizes)))
+(sz <- max(as.numeric(as.character(sizes))))
 i <- 1
 
-L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt,
+L <- subset_mae(mae = mae, keep_samples = keep_samples, sz = sz, i = i, 
+                imposed_condition = imposed_condition, filt = filt,
                 impute = config$impute)
 
 distfit <- powsim::evaluateDist(cnts = round(L$count), RNAseq = "singlecell", 
-                                ncores = 10, nsims = 1, frac.genes = 1, 
+                                ncores = 1, nsims = 1, frac.genes = 1, 
                                 min.meancount = 0.1, min.libsize = 1000)
 
-pdf(paste0(figdir, "/", dataset, exts, "_distr_fit_distribution_fit_summary_data.pdf"), 
+pdf(paste0(figdir, "/", dataset, exts, "_distribution_fit_summary_data.pdf"), 
     width = 10, height = 10)
 powsim::plotEvalDist(evalDist = distfit, annot = FALSE)
 dev.off()
+
+distfit$GOF_res$dataset <- dataset
+distfit$GOF_res$filt <- filt
+distfit$GOF_res$ncells <- sz
+distfit$GOF_res$repl <- i
 
 saveRDS(distfit, file = paste0(figdir, "/", dataset, exts, "_distribution_fit_summary_data.rds"))
 
