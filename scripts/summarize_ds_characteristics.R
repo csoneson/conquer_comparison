@@ -1,7 +1,7 @@
 summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
                                          dschardir, origvsmockdir, distrdir, 
-                                         plotmethods, dstypes) {
+                                         plotmethods, dstypes, pch_ncells) {
  
   thm <- function() {
     theme_bw() + 

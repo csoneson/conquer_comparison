@@ -44,6 +44,7 @@ $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_
 $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/runfailure/summary_runfailure_all.rds \
 $(multidsfigdir)/tsne/summary_tsne_all.rds \
+$(multidsfigdir)/pvalhist/summary_pvalhist_real.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
@@ -302,7 +303,7 @@ $(foreach F,$(FILT),$(foreach M,$(MT3.4),$(foreach Y,$(DSdrimpute),$(eval $(call
 define cobrarule
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk
-	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
 $(foreach Y,$(DSnonimpute),$(eval $(call cobrarule,$(Y),,,$(MT),${MTc},)))
 $(foreach Y,$(DSbulk),$(eval $(call cobrarule,$(Y),,,$(MTbulk),${MTcbulk},_bulk)))
@@ -312,7 +313,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(eval $(call cobrarule,$(Y),$(F),_$(F
 define cobrarulescimpute
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/scimpute_dropouts.R
-	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
 $(foreach Y,$(DSscimpute),$(eval $(call cobrarulescimpute,$(Y),,,$(MT),${MTc},)))
 $(foreach F,$(FILT),$(foreach Y,$(DSscimpute),$(eval $(call cobrarulescimpute,$(Y),$(F),_$(F),$(MT),${MTc},))))
@@ -320,7 +321,7 @@ $(foreach F,$(FILT),$(foreach Y,$(DSscimpute),$(eval $(call cobrarulescimpute,$(
 define cobraruledrimpute
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/drimpute_dropouts.R
-	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
 $(foreach Y,$(DSdrimpute),$(eval $(call cobraruledrimpute,$(Y),,,$(MT),${MTc},)))
 $(foreach F,$(FILT),$(foreach Y,$(DSdrimpute),$(eval $(call cobraruledrimpute,$(Y),$(F),_$(F),$(MT),${MTc},))))
@@ -520,6 +521,14 @@ $(eval $(call summaryrule_truefpr,_realscimpute,$(DSrealmockscimpute),${DSrealmo
 $(eval $(call summaryrule_truefpr,_simscimpute,$(DSsimmockscimpute),${DSsimmockscimputec},$(FILT),${FILTc},${MTplotc}))
 $(eval $(call summaryrule_truefpr,_realdrimpute,$(DSrealmockdrimpute),${DSrealmockdrimputec},$(FILT),${FILTc},${MTplotc}))
 $(eval $(call summaryrule_truefpr,_simdrimpute,$(DSsimmockdrimpute),${DSsimmockdrimputec},$(FILT),${FILTc},${MTplotc}))
+
+define summaryrule_pvalhist
+$(multidsfigdir)/pvalhist/summary_pvalhist$(1).rds: $(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach Y,$(2),$(Y)))) \
+$(addsuffix _cobra.rds, $(addprefix $(cobradir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F))))) \
+scripts/run_plot_multi_dataset_summarization.R scripts/summarize_pvalhist.R include_datasets.mk include_filterings.mk plot_methods.mk
+	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='pvalhist' dstypetxt='$(dstypetxt)' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/pvalhist' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_pvalhist$(1).Rout
+endef
+$(eval $(call summaryrule_pvalhist,_real,$(DSrealmock),${DSrealmockc},$(FILT),${FILTc},${MTplotc}))
 
 define summaryrule_de_characteristics
 $(multidsfigdir)/de_characteristics/summary_de_characteristics$(1).rds: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/results_characterization/, $(foreach Y,$(2),$(Y)_results_characterization))) \

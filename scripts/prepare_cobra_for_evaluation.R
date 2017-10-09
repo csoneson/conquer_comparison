@@ -23,6 +23,7 @@ print(resdir)  ## Directory from which to fetch the DE results
 print(dataset)  ## Data set
 print(config_file)  ## Configuration file
 print(filt)  ## Filtering
+print(distrdir)  ## Directory from which to fetch the distribution fit results
 print(outdir)  ## Directory where the output will be written
 
 if (filt == "") { 
@@ -33,7 +34,7 @@ if (filt == "") {
 
 ## Create iCOBRA object from the result files for the different methods
 (resfiles <- paste0(resdir, "/", dataset, "_", demethods, exts, ".rds"))
-file.exists(resfiles)
+stopifnot(all(file.exists(resfiles)))
 cobra <- NULL
 timings <- list()
 runstatus <- list()
@@ -63,11 +64,6 @@ for (rfn in resfiles) {   ## for each DE method
                                                     row.names = rownames(df)), nm),
                          object_to_extend = cobra)
     }
-    if ("score" %in% colnames(df)) {
-      cobra <- COBRAData(score = setNames(data.frame(mt = df$score,
-                                                     row.names = rownames(df)), nm),
-                         object_to_extend = cobra)
-    }
   }
 }
 
@@ -89,7 +85,8 @@ truth <- list()
 for (sz in sizes) {   ## for each sample size
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {   ## for each replicate
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt,
+    L <- subset_mae(mae = mae, keep_samples = keep_samples, sz = sz, i = i, 
+                    imposed_condition = imposed_condition, filt = filt,
                     impute = config$impute)
     chars <- calculate_gene_characteristics(L)
     characs <- chars$characs
@@ -99,6 +96,20 @@ for (sz in sizes) {   ## for each sample size
   }
 }
 truth <- Reduce(function(...) dplyr::full_join(..., by = "gene"), truth)
+
+## ------------ Add information about AIC for NB and ZINB ------------------- ##
+if (file.exists(paste0(distrdir, "/", dataset, exts, "_distribution_fit_summary_data.rds"))) {
+  Y <- readRDS(paste0(distrdir, "/", dataset, exts, "_distribution_fit_summary_data.rds"))$GOF_res %>%
+    tibble::rownames_to_column(var = "gene") %>%
+    dplyr::mutate(tmp = nbinom_standard_aic - zifnbinom_standard_aic) %>%
+    dplyr::mutate(asinh_nb_minus_zinb_aic = asinh(tmp)) %>%
+    dplyr::mutate(ncr = paste0(ncells, ".", repl)) %>%
+    dplyr::select(gene, ncr, asinh_nb_minus_zinb_aic) %>%
+    tidyr::spread(ncr, asinh_nb_minus_zinb_aic)
+  colnames(Y)[colnames(Y) != "gene"] <- paste0("asinh_nb_minus_zinb_aic.", 
+                                               colnames(Y)[colnames(Y) != "gene"])
+  truth <- dplyr::full_join(truth, Y, by = "gene")
+}
 
 ## ---------------------- Define relative truths ---------------------------- ##
 ## Define "truth" for each method as the genes that are differentially 
@@ -129,13 +140,13 @@ cobra <- COBRAData(truth = truth, object_to_extend = cobra)
 
 ## ------------ Summarize number of calls for each method ------------------- ##
 ## Make data frame with number of significant, non-significant and NA calls for
-## each method
+## each method. This is calculated based on an adjusted p-value threshold of 0.05.
 cobraperf <- calculate_performance(cobra, aspects = "fpr", 
                                    binary_truth = paste0(demethods[1],
                                                          exts, ".truth"), thrs = 0.05)
 sign_0.05 <- fpr(cobraperf) %>% dplyr::select(method, NBR, TOT_CALLED) %>%
-  dplyr::rename(nbr_sign0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
-  dplyr::mutate(nbr_nonsign0.05 = nbr_called - nbr_sign0.05) %>%
+  dplyr::rename(nbr_sign_adjp0.05 = NBR) %>% dplyr::rename(nbr_called = TOT_CALLED) %>%
+  dplyr::mutate(nbr_nonsign_adjp0.05 = nbr_called - nbr_sign_adjp0.05) %>%
   tidyr::separate(method, into = c("method", "ncells", "repl"), sep = "\\.")
 tested <- 
   data.frame(nbr_tested = 

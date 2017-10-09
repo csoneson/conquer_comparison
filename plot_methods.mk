@@ -10,6 +10,6 @@ MTplot := $(MT)
 #edgeRLRTdeconv MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma \
 #SeuratBimod SeuratBimodnofilt SeuratBimodIsExpr2 SeuratTobit DESeq2census edgeRLRTcensus \
 #monoclecensus monocle D3E limmatrend ROTSvoom ROTScpm ROTStpm metagenomeSeq scDD \
-#ttest DEsingle monoclecount
+#ttest DEsingle monoclecount edgeRQLFDetRate limmatrendDetRate
 
 MTplotc := $(subst $(space),$(comma),$(MTplot))

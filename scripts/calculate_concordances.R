@@ -53,7 +53,7 @@ addm <- setdiff(colnames(iCOBRA::score(cobra)), colnames(pconc))
 if (length(addm) > 0) {
   pconc <- dplyr::full_join(data.frame(gene = rownames(pconc), pconc),
                             data.frame(gene = rownames(iCOBRA::score(cobra)), 
-                                       iCOBRA::score(cobra)[, addm]))
+                                       iCOBRA::score(cobra)[, addm, drop = FALSE]))
   rownames(pconc) <- pconc$gene
   pconc$gene <- NULL
 }
@@ -61,7 +61,7 @@ addm <- setdiff(colnames(padj(cobra)), colnames(pconc))
 if (length(addm) > 0) {
   pconc <- dplyr::full_join(data.frame(gene = rownames(pconc), pconc),
                             data.frame(gene = rownames(padj(cobra)), 
-                                       padj(cobra)[, addm]))
+                                       padj(cobra)[, addm, drop = FALSE]))
   rownames(pconc) <- pconc$gene
   pconc$gene <- NULL
 }
@@ -100,33 +100,6 @@ concvals <- nbrshared %>%
   calc_auc()
 summary_data$concordance_fullds_bymethod <- concvals
 summary_data$nbrshared_fullds_bymethod <- nbrshared
-
-## Across all instances with the same sample size, for given method
-nbrshared_ss <- do.call(rbind, lapply(all_methods, function(mth) {
-  do.call(rbind, lapply(all_nsamples, function(i) {
-    tmp <- calculate_nbr_occurrences(
-      mtx = pconc[, intersect(which(get_method(colnames(pconc)) == mth),
-                              which(get_nsamples(colnames(pconc)) == i)), 
-                  drop = FALSE],
-      maxrank = maxrank)
-    if (!is.null(tmp)) {
-      tmp$method <- mth
-      tmp$ncells <- i
-      tmp
-    } else {
-      NULL
-    }
-  }))
-})) %>% dplyr::mutate(dataset = dataset, filt = filt)
-nbrshared_ss$ncells <- 
-  factor(nbrshared_ss$ncells,
-         levels = sort(unique(as.numeric(as.character(nbrshared_ss$ncells)))))
-concvals_ss <- nbrshared_ss %>% 
-  dplyr::filter(nbr_occ == nbr_cols) %>%
-  dplyr::group_by(method, ncells) %>%
-  calc_auc()
-summary_data$concordance_byncells_bymethod <- concvals_ss
-summary_data$nbrshared_byncells_bymethod <- nbrshared_ss
 
 ## Between pairwise instances with the same sample size, for given method
 nbrshared_pairwise <- do.call(rbind, lapply(all_methods, function(mth) {
@@ -187,28 +160,6 @@ concvals_btwmth <- nbrshared_btwmth %>%
   calc_auc()
 summary_data$concordance_betweenmethods_pairwise <- concvals_btwmth
 summary_data$nbrshared_betweenmethods_pairwise <- nbrshared_btwmth
-
-## Across all methods, for a given data set instance (fixed sample size, replicate)
-nbrshared_allmth <- do.call(rbind, lapply(all_nsamples, function(ss) {
-  do.call(rbind, lapply(all_repl, function(i) {
-    tmp <- pconc[, intersect(which(get_repl(colnames(pconc)) == i),
-                             which(get_nsamples(colnames(pconc)) == ss)), drop = FALSE]
-    if (ncol(tmp) > 1) {
-      nsr <- calculate_nbr_occurrences(mtx = tmp, maxrank = maxrank)
-      nsr$ncells <- ss
-      nsr$repl <- i
-      nsr
-    } else {
-      NULL
-    }
-  }))
-})) %>% dplyr::mutate(dataset = dataset, filt = filt)
-concvals_allmth <- nbrshared_allmth  %>%
-  dplyr::filter(nbr_occ == nbr_cols) %>%
-  dplyr::group_by(ncells, repl) %>%
-  calc_auc()
-summary_data$concordance_betweenmethods_all <- concvals_allmth
-summary_data$nbrshared_betweenmethods_all <- nbrshared_allmth
 
 ## -------------------------- Save output ----------------------------------- ##
 saveRDS(summary_data, file = paste0(outdir, "/", dataset, exts, "_concordances.rds"))

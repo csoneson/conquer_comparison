@@ -1,7 +1,7 @@
 summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
                            singledsfigdir, cobradir, concordancedir, 
                            dschardir, origvsmockdir, distrdir, plotmethods, 
-                           dstypes) {
+                           dstypes, pch_ncells) {
   
   X <- list()
   for (ds in datasets) {

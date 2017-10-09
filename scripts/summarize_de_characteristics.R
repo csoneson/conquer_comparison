@@ -1,7 +1,7 @@
 summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                                          singledsfigdir, cobradir, concordancedir, 
                                          dschardir, origvsmockdir, distrdir, 
-                                         plotmethods, dstypes) {
+                                         plotmethods, dstypes, pch_ncells) {
   
   gglayers <- list(
     geom_hline(yintercept = 0), 

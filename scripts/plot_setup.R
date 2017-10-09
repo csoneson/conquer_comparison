@@ -3,6 +3,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(ggrepel))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(forcats))
 suppressPackageStartupMessages(library(iCOBRA))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(rjson))
@@ -25,8 +26,14 @@ get_method <- function(x) sapply(strsplit(x, "\\."), .subset, 1)
 get_nsamples <- function(x) sapply(strsplit(x, "\\."), .subset, 2)
 get_repl <- function(x) sapply(strsplit(x, "\\."), .subset, 3)
 
+## Define plot characters for the different sample sizes
+pch_ncells <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18)
+names(pch_ncells) <- as.character(c(6, 12, 22, 24, 26, 36, 44, 47, 48, 50, 58, 
+                                    90, 95, 96, 120, 200, 240, 400))
+
+## Define colors for the different methods
 cols <- c("#771155", "#AA4488", "#CC99BB", 
-          "#3A0027", "#BCA2B4",
+          "#3A0027", "#BCA2B4", "#EDDAE7",
           "#000000", "#4477AA", "#BEBEBE", 
           "#117777", "#44AAAA", "#77CCCC",
           "#117744", "#44AA77", "#88CCAA", "#004120",
@@ -34,12 +41,12 @@ cols <- c("#771155", "#AA4488", "#CC99BB",
           "#774411", "#AA7744", "#827262", "#DBCDBE",
           "#771122", "#AA4455", "#DD7788", "#FFFF00",
           "#DDDD77", "#DDAA77", "#86861B",
-          "#114477", "#77AADD",
+          "#114477", "#77AADD", "#0280FF", 
           "#FFA500", "#7CFC00",
           "#00BFFF", "#00688B",
           "#FF99ED", "#3B5D93")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
-                 "edgeRQLF", "edgeRLRTrobust",
+                 "edgeRQLF", "edgeRLRTrobust", "edgeRQLFDetRate",
                  "ROTSvoom", "ROTScpm", "ROTStpm",
                  "DESeq2", "DESeq2nofilt", "DESeq2census",
                  "MASTtpm", "MASTcpm", "MASTtpmDetRate", "MASTcpmDetRate",
@@ -47,7 +54,7 @@ names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus",
                  "SeuratBimod", "SeuratBimodnofilt", "SeuratTobit", "SeuratBimodIsExpr2", 
                  "SAMseq", "Wilcoxon", "NODES", "NODESnofilt",
                  "SCDE", "BPSC", "D3E", 
-                 "voomlimma", "limmatrend",
+                 "voomlimma", "limmatrend", "limmatrendDetRate",
                  "metagenomeSeq", "scDD",
                  "zingeRedgeR", "zingeRedgeRnofilt",
                  "ttest", "DEsingle")

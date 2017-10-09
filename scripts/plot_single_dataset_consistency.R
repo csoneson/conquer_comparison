@@ -30,19 +30,6 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
           theme(axis.text = element_text(size = 12),
                 axis.title = element_text(size = 13)))
 
-  print(ggplot(concordances$concordance_byncells_bymethod %>%
-                 dplyr::ungroup() %>% 
-                 dplyr::mutate(method = gsub(exts, "", method)), 
-               aes(x = k, y = nbr_genes, group = method, color = method)) +
-          geom_line() + 
-          scale_color_manual(values = structure(
-            colvec, names = gsub(exts, "", names(colvec))), name = "") +
-          theme_bw() + facet_wrap(~ncells) + theme(legend.position = "bottom") + 
-          xlab("Number of top-ranked genes") + 
-          ylab("Number of genes shared between all instances") + 
-          theme(axis.text = element_text(size = 12),
-                axis.title = element_text(size = 13)))
-
   for (k0 in c(100, 1000)) {
     if (max(concordances$concordance_betweenmethods_pairwise$k) >= k0) {
       help_function_crossmethod_concordance(concordances$concordance_betweenmethods_pairwise %>%
@@ -52,21 +39,6 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
                                             k0 = k0)
     }
   }
-  
-  ## Plot fraction of top-k genes shared by each number of methods
-  k0 <- 100
-  print(concordances$nbrshared_betweenmethods_all %>% 
-          dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
-          dplyr::filter(k == k0) %>% dplyr::group_by(ncells, repl) %>%
-          dplyr::mutate(tot_nbr_unique_genes = sum(nbr_genes)) %>%
-          dplyr::mutate(frac_genes = nbr_genes/tot_nbr_unique_genes) %>%
-          dplyr::mutate(m = sapply(1:length(frac_genes), function(i) sum(frac_genes[i:length(frac_genes)]))) %>%
-          dplyr::mutate(ncells_repl = interaction(ncells, repl)) %>%
-          ggplot(aes(x = nbr_occ, y = m, group = ncells_repl, color = ncells)) + 
-          geom_line() + theme_bw() + xlab("Number of DE methods (M)") + 
-          ylab(paste0("Fraction of top ", k0, " genes shared by at least M DE methods")) + 
-          scale_color_discrete(name = "Number of \ncells per group"))
-  
   
   ## ------------------------------ Overlaps -------------------------------- ##
   cobratmp <- cobra

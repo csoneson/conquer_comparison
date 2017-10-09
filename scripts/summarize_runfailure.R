@@ -1,9 +1,9 @@
 summarize_runfailure <- function(figdir, datasets, exts, dtpext, cols,
                                  singledsfigdir, cobradir, concordancedir, 
                                  dschardir, origvsmockdir, distrdir, plotmethods, 
-                                 dstypes) {
+                                 dstypes, pch_ncells) {
   
-  ## Generate list to hold all plots
+  ## Initialize list to hold all plots
   plots <- list()
   
   ## Read all runstatus information

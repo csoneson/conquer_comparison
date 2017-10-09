@@ -47,7 +47,8 @@ plots <- get(paste0("summarize_", summarytype))(figdir = figdir,
                                                 origvsmockdir = origvsmockdir,
                                                 distrdir = distrdir,
                                                 plotmethods = plotmethods, 
-                                                dstypes = dstypes)
+                                                dstypes = dstypes,
+                                                pch_ncells = pch_ncells)
 saveRDS(plots, file = paste0(figdir, "/summary_", summarytype, 
                              ifelse(summarytype == "filtering", setdiff(exts, ""), ""), 
                              dtpext, ".rds"))

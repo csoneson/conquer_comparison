@@ -47,10 +47,9 @@ if (plottype == "timing") {
   summary_data <- get(paste0("plot_", plottype))(
     cobraperf = cobraperf, colvec = cols, exts = exts, summary_data = summary_data)
 } else if (plottype == "runfailure") {
-  cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
   runstatus <- readRDS(paste0(cobradir, "/", dataset, exts, "_runstatus.rds"))
   summary_data <- get(paste0("plot_", plottype))(
-    cobra = cobra, runstatuslist = runstatus, colvec = cols, exts = exts, summary_data = summary_data)
+    runstatuslist = runstatus, colvec = cols, exts = exts, summary_data = summary_data)
 } else {
   cobra <- readRDS(paste0(cobradir, "/", dataset, exts, "_cobra.rds"))
   summary_data <- get(paste0("plot_", plottype))(

@@ -3,7 +3,7 @@ source("scripts/help_function_crossmethod_concordance.R")
 summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, cols,
                                               singledsfigdir, cobradir, concordancedir, 
                                               dschardir, origvsmockdir, distrdir,
-                                              plotmethods, dstypes) {
+                                              plotmethods, dstypes, pch_ncells) {
   plots <- list()
   
   K0 <- c(100, 1000)

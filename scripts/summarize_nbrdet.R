@@ -1,7 +1,7 @@
 summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                              singledsfigdir, cobradir, concordancedir, 
                              dschardir, origvsmockdir, distrdir, plotmethods, 
-                             dstypes) {
+                             dstypes, pch_ncells) {
   
   gglayers <- list(
     theme_bw(),
@@ -59,22 +59,22 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   for (f in unique(nbrgenes$filt)) {
     plots[[paste0("nbrdet_sep_", f)]] <- 
       ggplot(nbrgenes %>% dplyr::filter(filt == f), 
-             aes(x = method, y = nbr_sign0.05, color = method)) + 
+             aes(x = method, y = nbr_sign_adjp0.05, color = method)) + 
       gglayersp + facet_wrap(~dataset, scales = "free_y") + ggtitle(f)
     print(plots[[paste0("nbrdet_sep_", f)]])
     
     ## Line plot
     plots[[paste0("nbrdet_sep_line_", f)]] <- 
       ggplot(nbrgenes %>% dplyr::filter(filt == f), 
-             aes(x = ncells_fact, y = nbr_sign0.05, group = method, color = method)) + 
+             aes(x = ncells_fact, y = nbr_sign_adjp0.05, group = method, color = method)) + 
       gglayersl + facet_wrap(~dataset, scales = "free") + ggtitle(f)
     print(plots[[paste0("nbrdet_sep_line_", f)]])
   }
   
   plots[["nbrdet_comb"]] <- 
     ggplot(nbrgenes %>% dplyr::group_by(dataset, filt, ncells_fact, repl) %>%
-             dplyr::mutate(nbr_sign0.05_rel = nbr_sign0.05/max(nbr_sign0.05)), 
-           aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
+             dplyr::mutate(nbr_sign_adjp0.05_rel = nbr_sign_adjp0.05/max(nbr_sign_adjp0.05)), 
+           aes(x = method, y = nbr_sign_adjp0.05_rel, color = method)) + 
     gglayersp + facet_wrap(~ filt, nrow = 1) + 
     ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
   print(plots[["nbrdet_comb"]])
@@ -83,31 +83,31 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     plots[[paste0("nbrdet_comb_", f)]] <-
       ggplot(nbrgenes %>% dplyr::filter(filt == f) %>% 
                dplyr::group_by(dataset, filt, ncells_fact, repl) %>%
-               dplyr::mutate(nbr_sign0.05_rel = nbr_sign0.05/max(nbr_sign0.05)), 
-             aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
+               dplyr::mutate(nbr_sign_adjp0.05_rel = nbr_sign_adjp0.05/max(nbr_sign_adjp0.05)), 
+             aes(x = method, y = nbr_sign_adjp0.05_rel, color = method)) + 
       gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       ggtitle(f)
     print(plots[[paste0("nbrdet_comb_", f)]])
     
     tmp <- nbrgenes %>% dplyr::filter(filt == f) %>% 
       dplyr::group_by(dataset, filt, ncells_fact, repl) %>%
-      dplyr::mutate(nbr_sign0.05_rel = nbr_sign0.05/max(nbr_sign0.05)) %>%
+      dplyr::mutate(nbr_sign_adjp0.05_rel = nbr_sign_adjp0.05/max(nbr_sign_adjp0.05)) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(method) %>%
-      dplyr::mutate(nbr_sign0.05_rel_median = median(nbr_sign0.05_rel)) %>%
+      dplyr::mutate(nbr_sign_adjp0.05_rel_median = median(nbr_sign_adjp0.05_rel)) %>%
       dplyr::ungroup()
-    tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$nbr_sign0.05_rel_median, 
+    tmp$method <- factor(tmp$method, levels = unique(tmp$method[order(tmp$nbr_sign_adjp0.05_rel_median, 
                                                                       decreasing = TRUE)]))
     plots[[paste0("nbrdet_comb_", f, "_sorted")]] <-
       ggplot(tmp, 
-             aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
+             aes(x = method, y = nbr_sign_adjp0.05_rel, color = method)) + 
       gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       ggtitle(f)
     print(plots[[paste0("nbrdet_comb_", f, "_sorted")]])
     
     plots[[paste0("nbrdet_comb_", f, "_sorted_bydtype")]] <-
       ggplot(tmp, 
-             aes(x = method, y = nbr_sign0.05_rel, color = method)) + 
+             aes(x = method, y = nbr_sign_adjp0.05_rel, color = method)) + 
       gglayersp + ylab("Relative number of genes\nwith adjusted p-value below 0.05") + 
       ggtitle(f) + facet_wrap(~ dtype, ncol = 1)
     print(plots[[paste0("nbrdet_comb_", f, "_sorted_bydtype")]])

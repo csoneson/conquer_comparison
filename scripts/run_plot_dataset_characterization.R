@@ -97,7 +97,8 @@ char_ds <- list()
 for (sz in sizes) {
   for (i in 1:nrow(keep_samples[[as.character(sz)]])) {
     message(sz, ".", i)
-    L <- subset_mae(mae, keep_samples, sz, i, imposed_condition, filt = filt,
+    L <- subset_mae(mae = mae, keep_samples = keep_samples, sz = sz, i = i, 
+                    imposed_condition = imposed_condition, filt = filt,
                     impute = config$impute)
 
     ## Gene characteristics
@@ -159,16 +160,14 @@ char_ds_m <- data.frame(ds = names(char_ds),
 print(char_ds_m %>% ggplot(aes(x = ds, y = n_genes, fill = n_cells)) + geom_bar(stat = "identity") + 
         theme_bw() + xlab("Data set") + ylab("Number of genes") + 
         scale_fill_discrete(name = "Number of cells") + 
-        stat_summary(fun.data = function(x) {return(c(y = x,
-                                                      label = x))}, 
+        stat_summary(fun.data = function(x) {return(c(y = x, label = x))}, 
                      geom = "text", alpha = 1, size = 2, vjust = -1, 
                      position = position_dodge(width = 0.75)))
 print(char_ds_m %>% ggplot(aes(x = ds, y = round(silhouette_avg, 4), fill = n_cells)) + 
         geom_bar(stat = "identity") + 
         theme_bw() + xlab("Data set") + ylab("Average silhouette width") + 
         scale_fill_discrete(name = "Number of cells") + 
-        stat_summary(fun.data = function(x) {return(c(y = x,
-                                                      label = x))}, 
+        stat_summary(fun.data = function(x) {return(c(y = x, label = x))}, 
                      geom = "text", alpha = 1, size = 2, vjust = -1, 
                      position = position_dodge(width = 0.75)))
 

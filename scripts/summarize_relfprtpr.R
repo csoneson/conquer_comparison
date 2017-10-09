@@ -1,7 +1,7 @@
 summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
                                 singledsfigdir, cobradir, concordancedir, 
                                 dschardir, origvsmockdir, distrdir, plotmethods, 
-                                dstypes) {
+                                dstypes, pch_ncells) {
 
   gglayers <- list(
     geom_boxplot(outlier.size = -1),
@@ -20,7 +20,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
   plots <- list()
   
   pdf(paste0(figdir, "/summary_relfprtpr", dtpext, "_1.pdf"),
-      width = 10, height = 4 * length(datasets))
+      width = 15, height = 4 * length(datasets))
   
   X <- list()
   ## Read all relative FPR information
@@ -37,17 +37,20 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
                      "_results_relativetruth_summary_data.rds"))$tpr_relative
     }))
   }))
-  
-  cols <- structure(cols, names = gsub(paste(exts, collapse = "|"), "", names(cols)))
+  X <- lapply(X, function(x) {
+    x %>%
+      tidyr::separate(basemethod, c("method", "n_samples", "repl"), sep = "\\.") %>%
+      dplyr::mutate(n_samples = factor(n_samples, 
+                                       levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
+      dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
+      dplyr::filter(method %in% plotmethods)
+  })  
   
   ## Heatmap of true FPRs/TPRs
   for (asp in c("FPR", "TPR")) {
     for (f in unique(X[[asp]]$filt)) {
       y <- X[[asp]] %>% 
         dplyr::filter(filt == f) %>%
-        tidyr::separate(basemethod, c("method", "n_samples", "repl"), sep = "\\.") %>%
-        dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
-        dplyr::filter(method %in% plotmethods) %>% 
         dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
         dplyr::select_("method", "dataset", asp) %>% 
         reshape2::dcast(dataset ~ method, value.var = asp) %>%
@@ -82,14 +85,7 @@ summarize_relfprtpr <- function(figdir, datasets, exts, dtpext, cols,
       width = 10, height = 7)
   
   X <- lapply(X, function(x) {
-    x <- x %>% 
-      tidyr::separate(basemethod, c("method", "n_samples", "repl"), sep = "\\.") %>%
-      dplyr::mutate(n_samples = factor(n_samples, 
-                                       levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
-      dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
-      dplyr::filter(method %in% plotmethods)
-    
-    ## Remove largest sample size for each data set
+   ## Remove largest sample size for each data set
     for (ds in unique(x$dataset)) {
       for (f in unique(x$filt)) {
         maxc <- max(as.numeric(as.character(x$n_samples))[x$dataset == ds & x$filt == f])

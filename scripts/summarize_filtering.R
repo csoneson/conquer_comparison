@@ -1,7 +1,7 @@
 summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
                                 singledsfigdir, cobradir, concordancedir, 
                                 dschardir, origvsmockdir, distrdir, plotmethods, 
-                                dstypes) {
+                                dstypes, pch_ncells) {
   exts <- setdiff(exts, "")
   
   for (e in exts) {
@@ -21,18 +21,63 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
       dplyr::mutate(method = gsub(e, "", method)) %>%
       dplyr::filter(method == method[1]) %>%
       dplyr::group_by(dataset, ncells, repl) %>%
-      dplyr::summarize(retain = nbr_tested[filt == gsub("^_", "", e)]/nbr_tested[filt == ""]) %>%
+      dplyr::summarize(filtered = nbr_tested[filt == gsub("^_", "", e)],
+                       unfiltered = nbr_tested[filt == ""],
+                       retain = filtered/unfiltered) %>% 
       dplyr::ungroup() %>%
       dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells))))))
     
-    print(ggplot(L, aes(x = dataset, y = retain)) + geom_boxplot(outlier.size = -1) + 
-            geom_point(position = position_jitter(width = 0.2), aes(color = ncells)) + 
-            theme_bw() + xlab("") + 
-            ylab("Retained fraction of original set of genes after filtering") + 
-            guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-                  axis.text.y = element_text(size = 12),
-                  axis.title.y = element_text(size = 13)))
+    gg_color_hue <- function(n) {
+      hues = seq(15, 375, length = n + 1)
+      hcl(h = hues, l = 65, c = 100)[1:n]
+    }
+    
+    ncells_col <- gg_color_hue(n = length(unique(L$ncells)))
+    names(ncells_col) <- sort(unique(L$ncells))
+    
+    p1 <- ggplot(L, aes(x = dataset, y = retain)) + geom_boxplot(outlier.size = -1) + 
+      geom_point(position = position_jitter(width = 0.2), aes(color = ncells)) + 
+      theme_bw() + xlab("") + 
+      scale_color_manual(values = ncells_col) + 
+      ylab("Retained fraction of original set of genes after filtering") + 
+      guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13))
+    
+    p2 <- ggplot(L %>% dplyr::select(-retain) %>%
+                   tidyr::gather(dst, nbrgenes, filtered, unfiltered) %>% 
+                   dplyr::mutate(dst = factor(dst, levels = c("unfiltered", "filtered"))),
+                 aes(x = dataset, y = nbrgenes, alpha = dst)) + 
+      geom_boxplot(outlier.size = -1) + 
+      geom_point(aes(color = ncells, group = dst), 
+                 position = position_jitterdodge(jitter.width = 0.7)) + 
+      scale_color_manual(values = ncells_col) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.y = element_text(size = 13)) + 
+      ylab("Number of retained genes") + xlab("") + 
+      guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
+      scale_alpha_manual(values = c(filtered = 0.3, unfiltered = 0.8)) + 
+      geom_vline(xintercept = 0.5 + seq_len(length(unique(L$dataset)) - 1),
+                 linetype = "dashed", alpha = 0.3) + 
+      guides(alpha = FALSE, fill = FALSE)
+    
+    pcomb <- plot_grid(plot_grid(p1 + theme(legend.position = "none"), 
+                                 p2 + theme(legend.position = "none"),
+                                 labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
+                       get_legend(p1 + theme(legend.position = "bottom") + 
+                                    guides(color = 
+                                             guide_legend(nrow = 2,
+                                                          title = "Number of cells per group",
+                                                          override.aes = list(size = 1.5),
+                                                          title.theme = element_text(size = 12,
+                                                                                     angle = 0),
+                                                          label.theme = element_text(size = 10,
+                                                                                     angle = 0),
+                                                          keywidth = 1, default.unit = "cm"))),
+                       rel_heights = c(1.7, 0.15), ncol = 1)
+    print(pcomb)
     
     ## Plot library size vs fraction zeros across all data sets
     summary_data_list <- lapply(datasets, function(ds) {
@@ -68,6 +113,10 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
             theme(axis.text = element_text(size = 12), 
                   axis.title = element_text(size = 13)))
     
+    dev.off()
+    
+    pdf(paste0(figdir, "/filtering_final", e, dtpext, ".pdf"), width = 12, height = 7)
+    print(pcomb)
     dev.off()
   }
 }
