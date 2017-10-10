@@ -10,7 +10,7 @@ plot_res_subset <- function(cobrares, keepmethods, type, colvec, nsamp = 1) {
   fpr(cobraplot) <- fpr(cobraplot) %>% 
     dplyr::mutate(method = paste0(get_method(method), ".", get_nsamples(method)))
   if (type == "method") {
-    tmpvec <- colvec[1:length(unique(tpr(cobraplot)$method))]
+    tmpvec <- colvec[seq_len(length(unique(tpr(cobraplot)$method)))]
     names(tmpvec) <- unique(tpr(cobraplot)$method)
   } else if (type == "number") {
     tmpvec <- colvec[sapply(strsplit(unique(tpr(cobraplot)$method), "\\."), .subset, 1)]

@@ -1,12 +1,12 @@
-ttestmod <- function(x, y, lmin) {
-  ## Perform t-test only if x and y are both longer than lmin
-  if (length(x) >= lmin & length(y) >= lmin) t.test(x, y)$statistic
+tstatmod <- function(x, y, lmin) {
+  ## Perform t-test only if x and y both have more than lmin non-NA elements
+  if (length(x[!is.na(x)]) >= lmin & length(y[!is.na(y)]) >= lmin) t.test(x, y)$statistic
   else NA
 }
 
 snr <- function(x, y, lmin) {
-  ## Calculate SNR if x and y are both longer than lmin
-  if (length(x) >= lmin & length(y) >= lmin) {
+  ## Calculate SNR if x and y both have more than lmin non-NA elements
+  if (length(x[!is.na(x)]) >= lmin & length(y[!is.na(y)]) >= lmin) {
     (mean(x, na.rm = TRUE) - mean(y, na.rm = TRUE))/(sd(x, na.rm = TRUE) + sd(y, na.rm = TRUE))
   } else {
     NA
@@ -14,8 +14,9 @@ snr <- function(x, y, lmin) {
 }
 
 mediandiff <- function(x, y, lmin) {
-  ## Calculate the difference between medians if x and y are both longer than lmin
-  if (length(x) >= lmin & length(y) >= lmin) median(x, na.rm = TRUE) - median(y, na.rm = TRUE)
+  ## Calculate the difference between medians if x and y both have more than lmin non-NA elements
+  if (length(x[!is.na(x)]) >= lmin & length(y[!is.na(y)]) >= lmin) 
+    median(x, na.rm = TRUE) - median(y, na.rm = TRUE)
   else NA
 }
 
@@ -27,7 +28,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     pvals <- pval(cobra)[, grep(paste0("\\.", szi, "$"), colnames(pval(cobra)))]
     padjs <- padj(cobra)[, grep(paste0("\\.", szi, "$"), colnames(padj(cobra)))]
     tth <- truth(cobra)[, grep(paste0("\\.", szi, "$"), colnames(truth(cobra)))]
-    colnames(tth) <- gsub(paste0("\\.", szi), "", colnames(tth))
+    colnames(tth) <- gsub(paste0("\\.", szi, "$"), "", colnames(tth))
     
     ## Subset to only the genes that were tested
     tth <- subset(tth, !is.na(tested))
@@ -49,14 +50,17 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
     df2$sign <- df2$value <= 0.05
     
     ## Remove extension and data set information from DE method name
-    df2$method <- gsub(exts, "", gsub(paste0(".", szi), "", df2$Var2))
+    df2$method <- gsub(exts, "", gsub(paste0("\\.", szi, "$"), "", df2$Var2))
     names(colvec) <- gsub(exts, "", names(colvec))
     
     ## Determine which characteristics to logtransform
-    allasp <- c("avetpm", "avecount", "vartpm", "fraczero", "fraczeroround",
-                "fraczerodiff", "cvtpm", "avecpm", "varcpm", "cvcpm", 
-                "fracimputedup", "fracimputeddown", "asinh_nb_minus_zinb_aic")
-    dolog2 <- c("avetpm", "avecount", "vartpm", "avecpm", "varcpm")
+    allasp <- intersect(
+      c("avetpm", "avecount", "vartpm", "fraczero", "fraczeroround",
+        "fraczerodiff", "cvtpm", "avecpm", "varcpm", "cvcpm", 
+        "fracimputedup", "fracimputeddown", "asinh_nb_minus_zinb_aic"),
+      colnames(df2))
+    dolog2 <- intersect(c("avetpm", "avecount", "vartpm", "avecpm", "varcpm"),
+                        colnames(df2))
 
     ## For each gene characteristic, populate summary_data with statistics
     ## comparing significant and non-significant genes
@@ -86,7 +90,7 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
       ## Calculate differences between significant and non-significant genes
       df3 <- df3 %>% dplyr::group_by(Var2) %>% 
         dplyr::summarise(
-          tstat = tryCatch(ttestmod(newy[sign], newy[!sign], lmin = 5), 
+          tstat = tryCatch(tstatmod(newy[sign], newy[!sign], lmin = 5), 
                            error = function(e) NA),
           snr = tryCatch(snr(newy[sign], newy[!sign], lmin = 5),
                          error = function(e) NA),

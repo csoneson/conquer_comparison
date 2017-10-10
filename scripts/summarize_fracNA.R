@@ -6,7 +6,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   ## Define layers to reuse across ggplots
   gglayers <- list(
     geom_boxplot(outlier.size = -1),
-    geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = ncells_fact)),
+    geom_point(position = position_jitter(width = 0.2), size = 0.5),
     theme_bw(),
     xlab(""),
     scale_color_manual(values = cols), 

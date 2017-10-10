@@ -22,7 +22,7 @@ include include_datasets.mk
 include include_filterings.mk
 
 ## Plot types
-PLOTTYPE := timing results_characterization results_relativetruth consistency results_relativetruth_all truefpr
+PLOTTYPE := timing results_characterization results_relativetruth consistency results_relativetruth_all truefpr runfailure
 PLOTTYPE1 := timing results_characterization results_relativetruth truefpr runfailure
 PLOTTYPE2 := consistency
 PLOTTYPE3 := results_relativetruth_all
@@ -136,7 +136,7 @@ list:
 scripts/calculate_concordances.R: scripts/concordance_functions.R
 	touch $@
 	
-scripts/investigate_voomlimma_results.R: scripts/prepare_mae.R scripts/apply_voomlimma.R
+scripts/investigate_voomlimma_results.R: scripts/prepare_mae.R
 	touch $@
 	
 scripts/plot_setup.R: scripts/prepare_mae.R
@@ -149,6 +149,9 @@ scripts/prepare_cobra_for_evaluation.R: scripts/prepare_mae.R scripts/calculate_
 	touch $@
 	
 scripts/run_diffexpression.R: scripts/prepare_mae.R
+	touch $@
+
+scripts/run_distribution_fit.R: scripts/prepare_mae.R
 	touch $@
 	
 scripts/run_plot_dataset_characterization.R: scripts/prepare_mae.R scripts/calculate_gene_characteristics.R scripts/calculate_cell_characteristics.R

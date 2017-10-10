@@ -39,7 +39,7 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
       geom_point(position = position_jitter(width = 0.2), aes(color = ncells)) + 
       theme_bw() + xlab("") + 
       scale_color_manual(values = ncells_col) + 
-      ylab("Retained fraction of original set of genes after filtering") + 
+      ylab("Retained fraction of original\nset of genes after filtering") + 
       guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
@@ -48,17 +48,17 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
     p2 <- ggplot(L %>% dplyr::select(-retain) %>%
                    tidyr::gather(dst, nbrgenes, filtered, unfiltered) %>% 
                    dplyr::mutate(dst = factor(dst, levels = c("unfiltered", "filtered"))),
-                 aes(x = dataset, y = nbrgenes, alpha = dst)) + 
-      geom_boxplot(outlier.size = -1) + 
+                 aes(x = dataset, y = nbrgenes, fill = dst)) + 
+      geom_boxplot(outlier.size = -1, alpha = 0.3) + 
       geom_point(aes(color = ncells, group = dst), 
                  position = position_jitterdodge(jitter.width = 0.7)) + 
-      scale_color_manual(values = ncells_col) + 
+      scale_color_manual(values = ncells_col) + theme_bw() + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
             axis.title.y = element_text(size = 13)) + 
       ylab("Number of retained genes") + xlab("") + 
       guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
-      scale_alpha_manual(values = c(filtered = 0.3, unfiltered = 0.8)) + 
+      scale_fill_manual(values = c(filtered = "lightblue", unfiltered = "pink")) + 
       geom_vline(xintercept = 0.5 + seq_len(length(unique(L$dataset)) - 1),
                  linetype = "dashed", alpha = 0.3) + 
       guides(alpha = FALSE, fill = FALSE)
@@ -96,23 +96,16 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
                         levels = paste0(sort(unique(
                           as.numeric(as.character(gsub(" cells per group", "", ncells))))), 
                           " cells per group")))
-    print(ggplot(L, aes(x = libsize, y = fraczeroround, color = dataset, shape = ncells)) + 
-            geom_point() + theme_bw() + xlab("Library size") + 
-            ylab("Fraction zeros after rounding") + 
-            scale_shape_manual(values = 1:length(unique(L$ncells)), name = "") + 
-            scale_color_discrete(name = "") + 
-            theme(axis.text = element_text(size = 12), 
-                  axis.title = element_text(size = 13)))
-    
-    print(ggplot(L, aes(x = libsize, y = fraczeroround, color = dataset, shape = ncells)) + 
-            geom_point() + theme_bw() + xlab("Library size") + 
-            ylab("Fraction zeros after rounding") + 
-            scale_shape_manual(values = 1:length(unique(L$ncells)), name = "") + 
-            scale_color_discrete(name = "") + 
-            scale_x_log10() + 
-            theme(axis.text = element_text(size = 12), 
-                  axis.title = element_text(size = 13)))
-    
+    pp <- ggplot(L, aes(x = libsize, y = fraczeroround, color = dataset, shape = ncells)) + 
+      geom_point() + theme_bw() + xlab("Library size") + 
+      ylab("Fraction zeros after rounding") + 
+      scale_shape_manual(values = seq_len(length(unique(L$ncells))), name = "") + 
+      scale_color_discrete(name = "") + 
+      theme(axis.text = element_text(size = 12), 
+            axis.title = element_text(size = 13))
+    print(pp)
+    print(pp + scale_x_log10())
+
     dev.off()
     
     pdf(paste0(figdir, "/filtering_final", e, dtpext, ".pdf"), width = 12, height = 7)

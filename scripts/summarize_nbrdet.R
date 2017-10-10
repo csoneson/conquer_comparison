@@ -23,7 +23,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
                       geom_smooth(size = 0.75, se = FALSE, method = "loess", span = 1)),
                  gglayers)
   
-  ## Generate list to hold all plots
+  ## Initialize list to hold all plots
   plots <- list()
   
   pdf(paste0(figdir, "/summary_nbrdet", dtpext, ".pdf"), width = 14, height = 7)

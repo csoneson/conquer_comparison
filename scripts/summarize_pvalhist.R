@@ -16,7 +16,7 @@ summarize_pvalhist <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(method %in% paste0(plotmethods, e)) %>%
         dplyr::mutate(ncells.repl = paste0(ncells, ".", repl)) %>%
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method))
-
+      
       for (i in c("48.1")) {
         p <- tmp %>% subset(ncells.repl == i) %>%
           ggplot(aes(x = value, fill = method)) + geom_histogram() +
@@ -30,6 +30,7 @@ summarize_pvalhist <- function(figdir, datasets, exts, dtpext, cols,
           ggtitle(paste0(ds, e, ".", i))
         print(p)
         plots[[paste0("pvalues_", ds, e, "_", i)]] <- p
+      }
     }
   }
   

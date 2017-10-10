@@ -27,8 +27,8 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                      "_truefpr_summary_data.rds"))$fracpbelow0.05
     }))
   })) %>%
-    tidyr::separate(method, c("method", "n_samples", "repl"), sep = "\\.") %>%
-    dplyr::mutate(n_samples = factor(n_samples, levels = sort(unique(as.numeric(as.character(n_samples)))))) %>%
+    tidyr::separate(method, c("method", "ncells", "repl"), sep = "\\.") %>%
+    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods) %>%
     dplyr::left_join(dstypes, by = "dataset") %>%
@@ -41,26 +41,26 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   for (f in unique(truefpr$filt)) {
     y <- truefpr %>% 
       dplyr::filter(filt == f) %>%
-      dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", n_samples, ".", repl)) %>%
+      dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", ncells, ".", repl)) %>%
       dplyr::select(method, dataset, FPR) %>% 
       reshape2::dcast(dataset ~ method, value.var = "FPR") %>%
-      tidyr::separate(dataset, c("ds", "filt", "n_samples", "repl"), sep = "\\.", remove = FALSE) %>%
-      dplyr::arrange(ds, as.numeric(as.character(n_samples))) %>% 
-      dplyr::select(-ds, -filt, -n_samples, -repl)  %>% as.data.frame()
+      tidyr::separate(dataset, c("ds", "filt", "ncells", "repl"), sep = "\\.", remove = FALSE) %>%
+      dplyr::arrange(ds, as.numeric(as.character(ncells))) %>% 
+      dplyr::select(-ds, -filt, -ncells, -repl)  %>% as.data.frame()
     rownames(y) <- y$dataset
     y$dataset <- NULL
-  
+    
     annotation_row = data.frame(id = rownames(y)) %>% 
-      tidyr::separate(id, c("dataset", "filt", "n_samples", "repl"), sep = "\\.", remove = FALSE) %>%
-      dplyr::mutate(n_samples = factor(n_samples, 
-                                       levels = as.character(sort(unique(as.numeric(as.character(n_samples)))))))
+      tidyr::separate(id, c("dataset", "filt", "ncells", "repl"), sep = "\\.", remove = FALSE) %>%
+      dplyr::mutate(ncells = factor(ncells, 
+                                    levels = as.character(sort(unique(as.numeric(as.character(ncells)))))))
     rownames(annotation_row) <- annotation_row$id
-  
+    
     pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
              main = paste0("FPR, ", f), display_numbers = TRUE, 
              color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
              breaks = seq(0, 1, length.out = 101), 
-             annotation_row = dplyr::select(annotation_row, n_samples, dataset), 
+             annotation_row = dplyr::select(annotation_row, ncells, dataset), 
              show_rownames = FALSE, 
              annotation_col = data.frame(method = colnames(y), row.names = colnames(y)),
              annotation_colors = list(method = cols[colnames(y)]),
@@ -71,12 +71,12 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   ## ------------------------------- Performance ------------------------------ ##
   pdf(paste0(figdir, "/summary_truefpr", dtpext, "_2.pdf"),
       width = 10, height = 7)
-
+  
   for (f in unique(truefpr$filt)) {
     plots[[paste0("truefpr_sep_", f)]] <- 
       ggplot(truefpr %>% dplyr::filter(filt == f) %>% 
                dplyr::mutate(method = forcats::fct_reorder(method, FPR, 
-                                                           fun = function(x) median(x, na.rm = TRUE),
+                                                           fun = median, na.rm = TRUE,
                                                            .desc = TRUE)),
              aes(x = method, y = FPR, color = method)) + 
       gglayers + ggtitle(f)
@@ -96,7 +96,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
-
+  
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
   p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dtype, ncol = 1) + theme(legend.position = "none") + 
                    ggtitle("Without filtering") + scale_y_sqrt(), 

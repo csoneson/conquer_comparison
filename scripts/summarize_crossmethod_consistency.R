@@ -45,30 +45,31 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
   }
   dev.off()
   
+  print(names(plots))
+  
   ## -------------------------- Final summary plots ------------------------- ##
   for (k0 in K0) {
     pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_", k0, ".pdf"), 
-        width = 14, height = 10)
+        width = 12, height = 12)
     print(plots[[paste0("TPM_1_25p_", k0)]]$concordancedistr_color + 
             ggtitle("After filtering"))
     dev.off()
     
-    pdf(paste0(figdir, "/crossmethod_consistency_ncellsdep_final", dtpext, "_", k0, ".pdf"), 
-        width = 14, height = 10)
-    print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_ncells + 
-            ggtitle("After filtering"))
-    dev.off()
+    if ("concordance_dep_ncells_color" %in% names(plots[[paste0("TPM_1_25p_", k0)]])) {
+      pdf(paste0(figdir, "/crossmethod_consistency_ncellsdep_final", dtpext, "_", k0, ".pdf"), 
+          width = 12, height = 12)
+      print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_ncells_color + 
+              ggtitle("After filtering"))
+      dev.off()
+    }
     
-    pdf(paste0(figdir, "/crossmethod_consistency_silhouettedep_final", dtpext, "_", k0, ".pdf"), 
-        width = 14, height = 10)
-    print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_silhouette + 
-            ggtitle("After filtering"))
-    dev.off()
-    
-    pdf(paste0(figdir, "/crossmethod_consistency_final", dtpext, "_", k0, "_clust.pdf"), 
-        width = 12, height = 6)
-    plot(plots[[paste0("TPM_1_25p_", k0)]]$clustering_average)
-    dev.off()
+    if ("concordance_dep_silhouette_color" %in% names(plots[[paste0("TPM_1_25p_", k0)]])) {
+      pdf(paste0(figdir, "/crossmethod_consistency_silhouettedep_final", dtpext, "_", k0, ".pdf"), 
+          width = 12, height = 12)
+      print(plots[[paste0("TPM_1_25p_", k0)]]$concordance_dep_silhouette_color + 
+              ggtitle("After filtering"))
+      dev.off()
+    }
     
     saveRDS(plots[[paste0("TPM_1_25p_", k0)]], 
             file = paste0(figdir, "/crossmethod_consistency_final", dtpext,

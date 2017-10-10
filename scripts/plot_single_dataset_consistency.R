@@ -8,10 +8,10 @@ plot_upset_with_reordering <- function(cobraplot, nintersects, ...) {
   ## possible
   m <- min(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m)) 
-    overlap(cobraplot) <- overlap(cobraplot)[, c(m, setdiff(1:ncol(overlap(cobraplot)), m)), drop = FALSE]
+    overlap(cobraplot) <- overlap(cobraplot)[, c(m, setdiff(seq_len(ncol(overlap(cobraplot))), m)), drop = FALSE]
   m <- max(which(colSums(overlap(cobraplot)) > 0))
   if (is.finite(m))
-    overlap(cobraplot) <- overlap(cobraplot)[, c(setdiff(1:ncol(overlap(cobraplot)), m), m), drop = FALSE]
+    overlap(cobraplot) <- overlap(cobraplot)[, c(setdiff(seq_len(ncol(overlap(cobraplot))), m), m), drop = FALSE]
   tryCatch(plot_upset(cobraplot, order.by = "freq", decreasing = TRUE, nintersects = nintersects, ...),
            error = function(e) NULL)
 }
@@ -47,7 +47,7 @@ plot_consistency <- function(cobra, concordances, colvec, exts, summary_data = l
   
   cobraperf <- calculate_performance(cobratmp, aspects = "overlap", 
                                      type_venn = "adjp", thr_venn = 0.05)
-  overlap(cobraperf) <- overlap(cobraperf)[, order(colnames(overlap(cobraperf)))]
+  overlap(cobraperf) <- overlap(cobraperf)[, order(colnames(overlap(cobraperf))), drop = FALSE]
   ol <- as.matrix(overlap(cobraperf))
   ol[is.na(ol)] <- 0
   

@@ -17,6 +17,8 @@ suppressPackageStartupMessages(library(cowplot))
 suppressPackageStartupMessages(library(Biobase))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(limma))
+suppressPackageStartupMessages(library(edgeR))
 source("scripts/prepare_mae.R")
 
 ## First, an example (GSE48968-GPL13112mock, 24 cells per group, repl 1)

@@ -103,7 +103,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   plots[["rel_timing_boxplot_comb"]] <- 
     ggplot(timing %>% 
              dplyr::mutate(method = forcats::fct_reorder(method, rel_timing, 
-                                                         fun = function(x) median(x, na.rm = TRUE),
+                                                         fun = median, na.rm = TRUE,
                                                          .desc = TRUE)), 
            aes(x = method, y = rel_timing, color = method)) + gglayersp
   print(plots[["rel_timing_boxplot_comb"]])
@@ -121,7 +121,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   plots[["timing_exponent_ngenes"]] <- 
     ggplot(timing_ngenedep %>%
              dplyr::mutate(method = forcats::fct_reorder(method, expn, 
-                                                         fun = function(x) median(x, na.rm = TRUE), 
+                                                         fun = median, na.rm = TRUE, 
                                                          .desc = TRUE)), 
            aes(x = method, y = expn, color = method)) + 
     gglayers + geom_point(position = position_jitter(width = 0.2), size = 1) + 
@@ -133,7 +133,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   plots[["timing_exponent_ncells"]] <- 
     ggplot(timing_ncelldep %>%
              dplyr::mutate(method = forcats::fct_reorder(method, expn, 
-                                                         fun = function(x) median(x, na.rm = TRUE),
+                                                         fun = median, na.rm = TRUE,
                                                          .desc = TRUE)), 
            aes(x = method, y = expn, color = method)) + 
     gglayers + geom_point(position = position_jitter(width = 0.2), size = 1) + 

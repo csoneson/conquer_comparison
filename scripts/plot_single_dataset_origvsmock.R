@@ -17,7 +17,7 @@ plot_compare_orig_mock <- function(concordances, colvec, K0, summary_data = list
       print(concs %>% dplyr::filter(k == k0) %>% dplyr::filter(ncells == nbrsamples) %>%
               ggplot(aes(x = method, y = AUCs, color = method, shape = tp)) + 
               geom_point(size = 5) + theme_bw() + xlab("") + 
-              ylab(paste0("Area under concordance curve between data set instances, top ", k0, " genes")) + 
+              ylab(paste0("Area under concordance curve between data set instances, top-", k0, " genes")) + 
               scale_color_manual(values = colvec, name = "") + 
               scale_shape_discrete(name = "") + 
               theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) + 

@@ -12,9 +12,9 @@ get_subclusters <- function(hcl) {
   L <- list()
   for (i in seq_len(nrow(m))) {
     tmp <- c()
-    if (m[i, 1] < 1) tmp <- c(tmp, labs[-m[i, 1]])
+    if (m[i, 1] < 0) tmp <- c(tmp, labs[-m[i, 1]])
     else tmp <- c(tmp, L[[m[i, 1]]])
-    if (m[i, 2] < 1) tmp <- c(tmp, labs[-m[i, 2]])
+    if (m[i, 2] < 0) tmp <- c(tmp, labs[-m[i, 2]])
     else tmp <- c(tmp, L[[m[i, 2]]])
     L[[i]] <- sort(tmp)
   }
@@ -28,8 +28,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   plots <- list()
   
   ## Make sure that both combinations of each method pair are represented
-  cm1 <- concordance_betweenmethods_pairwise
-  cm2 <- concordance_betweenmethods_pairwise
+  cm1 <- concordance_betweenmethods_pairwise %>% dplyr::ungroup()
+  cm2 <- concordance_betweenmethods_pairwise %>% dplyr::ungroup()
   cm2[, c("method1", "method2")] <- cm2[, c("method2", "method1")]
   cm <- rbind(cm1, cm2)
   
@@ -72,7 +72,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
     get_subclusters(hclust(as.dist(1 - cmtmp2)))
   })
   
-  ## Get stability values
+  ## Get stability values for ech subcluster in subclusters_average
   stability_scores <- rowMeans(sapply(subclusters_all, function(w) {
     subclusters_average %in% w
   }))
@@ -81,15 +81,15 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   plots[["subclusters_average"]] <- subclusters_average
   plots[["clustering_average"]] <- hcl_average
   
-  phm <- pheatmap(cmcons, cluster_rows = TRUE, cluster_cols = TRUE,
+  phm <- pheatmap(cmcons, clustering_distance_rows = as.dist(tmpdist), 
+                  clustering_distance_cols = as.dist(tmpdist), clustering_method = "complete", 
                   main = paste0("Area under method/method concordance curve,", 
                                 "\naveraged across all data set instances, top-", 
                                 k0, " genes, ", titleext), 
                   color = colorRampPalette(rev(brewer.pal(n = 7, name =
                                                             "RdYlBu")))(100),
                   breaks = seq(0, 1, length.out = 101))
-  plots[["average_auc_clustering"]] <- phm
-  
+
   ## Visualize full distributions of cross-method consistencies across data set
   ## instances
   cmdist <- cm %>% dplyr::filter(k == k0) %>% as.data.frame()
@@ -98,7 +98,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   allm <- unique(c(cmdist$method1, cmdist$method2))
   tmp <- cmdist %>% dplyr::group_by(dataset, filt, ncells, repl) %>%
     dplyr::filter(row_number() == 1) %>% ungroup()
-  tmp <- tmp[rep(1:nrow(tmp), length(allm)), ] %>%
+  tmp <- tmp[rep(seq_len(nrow(tmp)), length(allm)), ] %>%
     dplyr::mutate(method1 = rep(allm, each = nrow(tmp)), 
                   method2 = rep(allm, each = nrow(tmp)), 
                   AUCs = 1, AUC = k^2/2) %>% as.data.frame()
@@ -106,33 +106,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   
   cmdist <- cmdist %>% dplyr::filter(method1 <= method2)
   
-  p <- ggplot(cmdist, aes(x = AUCs)) + geom_line(stat = "density") +
-    facet_grid(method1 ~ method2, scales = "free") + theme_bw() +
-    theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-          axis.ticks = element_blank(), 
-          strip.text.x = element_text(size = 12, angle = 90),
-          strip.text.y = element_text(size = 12, angle = 0), 
-          panel.grid = element_blank()) +
-    xlim(0, 1) + ggtitle(titleext) + 
-    xlab(paste0("Area under method/method concordance curve, top-", k0, " genes"))
-  plots[["concordancedistr_density"]] <- p
-  print(p)
-  
-  p <- ggplot(cmdist, aes(x = AUCs)) + geom_histogram() +
-    facet_grid(method1 ~ method2, scales = "free") + theme_bw() +
-    theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
-          axis.ticks = element_blank(), 
-          strip.text.x = element_text(size = 12, angle = 90),
-          strip.text.y = element_text(size = 12, angle = 0), 
-          panel.grid = element_blank()) +
-    xlim(0, 1) + ggtitle(titleext) + 
-    xlab(paste0("Area under method/method concordance curve, top-", k0, " genes"))
-  plots[["concordancedistr_hist"]] <- p
-  print(p)
-  
   ## Order methods by hierarchical clustering result and visualize distributions
   ## of AUCs in color code
-  ## hclord <- rev(phm$tree_row$labels[phm$tree_row$order])
   hclord <- rev(hcl_average$labels[hcl_average$order])
   ## Order AUCs in increasing order for each method pair
   cmdist2 <- cmdist %>% dplyr::group_by(method1, method2) %>%
@@ -178,6 +153,32 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   plots[["concordance_dep_ncells"]] <- p
   print(p)
   
+  ## Plot Spearman correlation between number of cells per group and AUCs, for
+  ## each pair of methods
+  p <- ggplot(cmdist2 %>% dplyr::group_by(method1, method2) %>%
+                dplyr::summarize(spearman = cor(ncells, AUCs, method = "spearman")) %>%
+                dplyr::ungroup() %>%
+                dplyr::mutate(method1 = factor(method1, levels = hclord[hclord %in% method1]),
+                              method2 = factor(method2, levels = hclord[hclord %in% method2])),
+              aes(x = 1, y = 1)) + geom_raster(aes(fill = spearman)) +
+    facet_grid(method1 ~ method2, scales = "free_x") + theme_bw() +
+    theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
+          axis.ticks = element_blank(), 
+          strip.text.x = element_text(size = 12, angle = 90),
+          strip.text.y = element_text(size = 12, angle = 0), 
+          panel.grid = element_blank(),
+          panel.border = element_blank(), 
+          strip.background = element_rect(colour = "white"),
+          legend.position = c(0.1, 0.3),
+          panel.spacing = unit(0.15, "lines")) +
+    xlab("") + ylab("") + ggtitle(titleext) + 
+    scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                          name = paste0("Spearman\ncorrelation\nbetween\nnumber of cells\nand AUCC,\ntop-",
+                                        k0, " genes"), 
+                          limits = c(-1, 1))
+  plots[["concordance_dep_ncells_color"]] <- p
+  print(p)
+  
   ## Plot dependence of AUC on average silhouette width, for each pair of
   ## methods
   if ("silhouette_avg" %in% colnames(cmdist2)) {
@@ -191,6 +192,32 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
             panel.spacing = unit(0.1, "lines")) +
       xlab("Average silhouette width") + ylab(paste0("AUCC, top-", k0, " genes"))
     plots[["concordance_dep_silhouette"]] <- p
+    print(p)
+    
+    ## Plot Spearman correlation between silhouette width and AUCs, for
+    ## each pair of methods
+    p <- ggplot(cmdist2 %>% dplyr::group_by(method1, method2) %>%
+                  dplyr::summarize(spearman = cor(silhouette_avg, AUCs, method = "spearman")) %>%
+                  dplyr::ungroup() %>%
+                  dplyr::mutate(method1 = factor(method1, levels = hclord[hclord %in% method1]),
+                                method2 = factor(method2, levels = hclord[hclord %in% method2])),
+                aes(x = 1, y = 1)) + geom_raster(aes(fill = spearman)) +
+      facet_grid(method1 ~ method2, scales = "free_x") + theme_bw() +
+      theme(axis.text.x = element_blank(), axis.text.y = element_blank(),
+            axis.ticks = element_blank(), 
+            strip.text.x = element_text(size = 12, angle = 90),
+            strip.text.y = element_text(size = 12, angle = 0), 
+            panel.grid = element_blank(),
+            panel.border = element_blank(), 
+            strip.background = element_rect(colour = "white"),
+            legend.position = c(0.1, 0.3),
+            panel.spacing = unit(0.15, "lines")) +
+      xlab("") + ylab("") + ggtitle(titleext) + 
+      scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                           name = paste0("Spearman\ncorrelation\nbetween\naverage\nsilhouette ", 
+                                         "width\nand AUCC,\ntop-", k0, " genes"), 
+                           limits = c(-1, 1))
+    plots[["concordance_dep_silhouette_color"]] <- p
     print(p)
   }
   

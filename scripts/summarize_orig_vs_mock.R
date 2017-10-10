@@ -3,7 +3,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    dschardir, origvsmockdir, distrdir, plotmethods, 
                                    dstypes, pch_ncells) {
   
-  ## Generate list to hold all plots
+  ## Initialize list to hold all plots
   plots <- list()
   
   ttest <- function(x, y) {
