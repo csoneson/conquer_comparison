@@ -3,6 +3,7 @@ aspmod <- function(x) {
   else if (x == "TPR") "TPR at\nadj.p = 0.05 cutoff"
   else if (x == "AUROC") "Area under ROC curve"
 }
+
 summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                                       singledsfigdir, cobradir, concordancedir, 
                                       dschardir, origvsmockdir, distrdir, 
@@ -65,53 +66,45 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::select(method, dataset, filt, fracNA)
     }))
   }))
-  fdrtpr <- dplyr::left_join(fdrtpr, nbrgenes) %>% 
+  fdrtprauc <- fdrtpr %>% dplyr::filter(thr == "thr0.05") %>%
+    dplyr::left_join(nbrgenes) %>% 
     dplyr::left_join(dstypes, by = "dataset") %>% 
+    dplyr::full_join(auroc) %>%
     tidyr::separate(method, c("method", "ncells", "repl"), sep = "\\.") %>%
-    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
+    dplyr::mutate(ncells = as.numeric(as.character(ncells))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods) %>%
     dplyr::group_by(thr, method, filt) %>% 
     dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
     dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("high FDP", "in range", "low FDP"))) %>%
-    dplyr::mutate(plot_color = cols[as.character(method)]) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(thr == "thr0.05") %>%
-    dplyr::select(thr, method, ncells, repl, TPR, FDR, dataset, filt, fracNA, dtype, fdrcontrol, plot_color)
-  fdrtpr_ihw <- dplyr::left_join(fdrtpr_ihw, nbrgenes) %>% 
+    dplyr::mutate(plot_color = cols[as.character(method)]) %>%
+    dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells)))) %>%
+    dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, thr, TPR, FDR, AUROC, fracNA, fdrcontrol)
+  fdrtpr_ihw <- fdrtpr_ihw %>% dplyr::filter(thr == "thr0.05") %>%
+    dplyr::left_join(nbrgenes) %>% 
     dplyr::left_join(dstypes, by = "dataset") %>% 
     tidyr::separate(method, c("method", "ncells", "repl"), sep = "\\.") %>%
-    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
+    dplyr::mutate(ncells = as.numeric(as.character(ncells))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods) %>%
     dplyr::group_by(thr, method, filt) %>% 
     dplyr::mutate(fdrcontrol = getcat(FDR, as.numeric(gsub("^thr", "", thr[1]))))  %>%
     dplyr::mutate(fdrcontrol = factor(fdrcontrol, levels = c("high FDP", "in range", "low FDP"))) %>%
-    dplyr::mutate(plot_color = cols[as.character(method)]) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(thr == "thr0.05") %>%
-    dplyr::select(thr, method, ncells, repl, TPR, FDR, dataset, filt, fracNA, dtype, fdrcontrol, plot_color)
-  auroc <- dplyr::left_join(auroc, nbrgenes) %>% 
-    dplyr::left_join(dstypes, by = "dataset") %>% 
-    tidyr::separate(method, c("method", "ncells", "repl"), sep = "\\.") %>%
-    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
-    dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
-    dplyr::filter(method %in% plotmethods) %>%
-    dplyr::left_join(fdrtpr %>% dplyr::ungroup() %>% 
-                       dplyr::select(method, ncells, repl, dataset, filt, FDR, fdrcontrol)) %>%
-    dplyr::mutate(plot_color = cols[as.character(method)])
-  
-  datas = list(FDR = fdrtpr, TPR = fdrtpr, AUROC = auroc)
-  
+    dplyr::mutate(plot_color = cols[as.character(method)]) %>%
+    dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells)))) %>%
+    dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, thr, TPR, FDR, fracNA, fdrcontrol)
+
   ## ----------------------------- Heatmaps --------------------------------- ##
   pdf(paste0(figdir, "/summary_trueperformance", dtpext, "_1.pdf"),
       width = 15, height = 4 * length(datasets))
   
-  for (f in unique(fdrtpr$filt)) {
+  for (f in unique(fdrtprauc$filt)) {
     for (asp in c("FDR", "TPR", "AUROC")) {
-      y <- datas[[asp]] %>% 
+      y <- fdrtprauc %>% 
         dplyr::filter(filt == f) %>%
-        dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", ncells, ".", repl)) %>%
+        dplyr::mutate(dataset = paste0(dataset, ".", filt, ".", ncells_fact, ".", repl)) %>%
         dplyr::select_("method", "dataset", asp) %>%
         reshape2::dcast(dataset ~ method, value.var = asp) %>%
         tidyr::separate(dataset, c("ds", "filt", "ncells", "repl"), sep = "\\.", remove = FALSE) %>%
@@ -145,22 +138,21 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   pdf(paste0(figdir, "/summary_trueperformance", dtpext, "_2.pdf"),
       width = 10, height = 7)
   
-  for (f in unique(fdrtpr$filt)) {
+  for (f in unique(fdrtprauc$filt)) {
     for (asp in c("FDR", "TPR", "AUROC")) {
       ## All methods, order by median FDP
-      p <- ggplot(datas[[asp]] %>% dplyr::filter(filt == f) %>%
+      p <- ggplot(fdrtprauc %>% dplyr::filter(filt == f) %>%
                     dplyr::mutate(method = forcats::fct_reorder(
                       method, FDR, fun = median, na.rm = TRUE, .desc = TRUE)),
                   aes_string(x = "method", y = asp, color = "method")) + 
-        ylab(paste0(aspmod(asp))) + 
-        ggtitle(f)
+        ylab(paste0(aspmod(asp))) + ggtitle(f)
       if (asp == "FDR") p <- p + gglayersfdr
       else p <- p + gglayers
       plots[[paste0(asp, "_all_", f)]] <- p
       print(plots[[paste0(asp, "_all_", f)]] + guides(color = FALSE))
       
       ## All methods, order by fraction NA
-      p <- ggplot(datas[[asp]] %>% dplyr::filter(filt == f) %>%
+      p <- ggplot(fdrtprauc %>% dplyr::filter(filt == f) %>%
                     dplyr::mutate(method = forcats::fct_reorder(method, fracNA, 
                                                                 fun = median, na.rm = TRUE,
                                                                 .desc = TRUE)),
@@ -198,28 +190,24 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       
       ## Split by number of cells
       plots[[paste0(asp, "_byncells_sep_", f)]] <- 
-        ggplot(datas[[asp]] %>% dplyr::filter(filt == f) %>%
-                 dplyr::mutate(ncells = paste0(ncells, " cells per group")) %>%
-                 dplyr::mutate(ncells = forcats::fct_relevel(
-                   ncells, levels = paste0(sort(unique(as.numeric(as.character(gsub(" cells per group",
-                                                                                    "", ncells))))), 
-                                           " cells per group"))),
-               aes_string(x = "ncells", y = asp, color = "method", group = "method")) + 
+        ggplot(fdrtprauc %>% dplyr::filter(filt == f),
+               aes_string(x = "ncells_fact", y = asp, color = "method", group = "method")) + 
         geom_point(alpha = 0.25) + geom_smooth(se = FALSE) + 
         facet_wrap(~ dataset, scales = "free_x") + ylab(paste0(aspmod(asp))) + 
         gglayers0 + guides(color = guide_legend(ncol = 2, title = "")) + 
-        ggtitle(f)
+        ggtitle(f) + xlab("Number of cells per group")
+      print(plots[[paste0(asp, "_byncells_sep_", f)]])
     }
     
     ## FDR vs TPR
-    p2 <- fdrtpr %>% dplyr::filter(filt == f) %>% 
-      dplyr::group_by(dataset, ncells, method) %>% 
+    p2 <- fdrtprauc %>% dplyr::filter(filt == f) %>% 
+      dplyr::group_by(dataset, ncells_fact, method) %>% 
       dplyr::summarize(TPR = median(TPR), FDR = median(FDR)) %>% 
       dplyr::ungroup() %>%
       ggplot(aes(x = FDR, y = TPR, color = method, label = method)) + 
       geom_point(size = 2) + 
       ylab(paste0("TPR at adj.p = 0.05 cutoff")) +
-      facet_wrap(~dataset + ncells) + gglayers0 + 
+      facet_wrap(~ dataset + ncells_fact) + gglayers0 + 
       xlab(paste0("FDP at adj.p = 0.05 cutoff")) + 
       guides(color = guide_legend(ncol = 2, title = "")) + 
       ggtitle(f)
@@ -346,5 +334,5 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dev.off()
   }
   
-  list(fdrtpr = fdrtpr, auroc = auroc)
+  fdrtprauc
 }

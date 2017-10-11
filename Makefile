@@ -7,12 +7,11 @@ cobradir := output/cobra_data
 concordancedir := output/concordances
 relperfdir := output/relative_performance
 realperfdir := output/performance_realtruth
+distrdir := output/distribution_fit
 figdir := figures
 singledsfigdir := figures/single_dataset
 multidsfigdir := figures/multi_dataset
 dschardir := figures/dataset_characteristics
-distrdir := output/distribution_fit
-
 dstypetxt := data/dataset_type.txt
 
 ## Define the active datasets and methods
@@ -22,11 +21,13 @@ include include_datasets.mk
 include include_filterings.mk
 
 ## Plot types
-PLOTTYPE := timing results_characterization results_relativetruth consistency results_relativetruth_all truefpr runfailure
-PLOTTYPE1 := timing results_characterization results_relativetruth truefpr runfailure
-PLOTTYPE2 := consistency
-PLOTTYPE3 := results_relativetruth_all
-PLOTTYPE4 := performance_realtruth
+PLOTTYPE := timing results_characterization results_relativetruth consistency results_relativetruth_all truefpr runfailure  ## done for all data sets
+PLOTTYPE1 := timing results_characterization results_relativetruth truefpr runfailure  ## depends on COBRA object
+PLOTTYPE2 := consistency  ## depends on COBRA object and concordances
+PLOTTYPE3 := results_relativetruth_all  ## depends on relative performances
+PLOTTYPE4 := performance_realtruth  ## depends on true performances, only done for simulated signal data sets
+
+## Summary types and corresponding data types where they should be performed
 SUMMARYTYPE1 := truefpr crossmethod_consistency orig_vs_mock
 SUMMARYTYPE2 := de_characteristics relfprtpr
 SUMMARYTYPE3 := fracNA nbrdet
@@ -37,13 +38,14 @@ DSTYPE3 := real bulk realdrimpute realscimpute
 .PHONY: all
 
 ## Define the default rule
-all: plotds plotind plotorigmock plotdistr \
+all: plotds plotind plotorigmock plotdistr plotprepare plotprepareII cobra diffexp sim \
 $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/runfailure/summary_runfailure_all.rds \
-$(multidsfigdir)/tsne/summary_tsne_all.rds \
+$(multidsfigdir)/tsne/summary_tsne_real.rds \
+$(multidsfigdir)/tsne/summary_tsne_sim.rds \
 $(multidsfigdir)/pvalhist/summary_pvalhist_real.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
 $(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
@@ -63,15 +65,27 @@ $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/,
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsbsim),$(Y)))) \
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(Dsbsim),$(Y)_$(F))))) \
 $(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(DSbulksignal),$(Y)))) \
-$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(DSbulksignal),$(Y)_$(F)))))
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(DSbulksignal),$(Y)_$(F))))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsbscimpute),$(Y)))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(Dsbscimpute),$(Y)_$(F))))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsbsimscimpute),$(Y)))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(Dsbsimscimpute),$(Y)_$(F))))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsbdrimpute),$(Y)))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(Dsbdrimpute),$(Y)_$(F))))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach Y,$(Dsbsimdrimpute),$(Y)))) \
+$(addsuffix _orig_vs_mock_summary_data.rds, $(addprefix $(figdir)/orig_vs_mock/, $(foreach F,$(FILT),$(foreach Y,$(Dsbsimdrimpute),$(Y)_$(F)))))
 
 ## Plot individual data set results
 plotind: $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach Y,$(DS),$(P)/$(Y)_$(P))))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach F,$(FILT),$(foreach Y,$(DS),$(P)/$(Y)_$(F)_$(P)))))) \
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach Y,$(DSbulk),$(P)/$(Y)_$(P))))) \
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(P)/$(Y)_$(F)_$(P)))))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach Y,$(DSsimsignal),$(P)/$(Y)_$(P))))) \
 $(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach F,$(FILT),$(foreach Y,$(DSsimsignal),$(P)/$(Y)_$(F)_$(P)))))) \
-$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach Y,$(DSbulk),$(P)/$(Y)_$(P))))) \
-$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE),$(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(P)/$(Y)_$(F)_$(P))))))
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach Y,$(DSsimsignalscimpute),$(P)/$(Y)_$(P))))) \
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach F,$(FILT),$(foreach Y,$(DSsimsignalscimpute),$(P)/$(Y)_$(F)_$(P)))))) \
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach Y,$(DSsimsignaldrimpute),$(P)/$(Y)_$(P))))) \
+$(addsuffix _summary_data.rds, $(addprefix $(singledsfigdir)/, $(foreach P,$(PLOTTYPE4),$(foreach F,$(FILT),$(foreach Y,$(DSsimsignaldrimpute),$(P)/$(Y)_$(F)_$(P))))))
 
 ## Plot distribution fits
 plotdistr: $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(DSrealmock),$(Y)))) \
@@ -80,6 +94,10 @@ $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(fore
 $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(FILT),$(foreach Y,$(DSsimmock),$(Y)_$(F))))) \
 $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(DSbulkmock),$(Y)))) \
 $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(FILT),$(foreach Y,$(DSbulkmock),$(Y)_$(F)))))
+#$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(DSrealmockscimpute),$(Y)))) \
+#$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(FILT),$(foreach Y,$(DSrealmockscimpute),$(Y)_$(F))))) \
+#$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(DSrealmockdrimpute),$(Y)))) \
+#$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(FILT),$(foreach Y,$(DSrealmockdrimpute),$(Y)_$(F)))))
 
 ## Plot data set characteristics
 plotds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(DS),$(Y)))) \
@@ -243,7 +261,10 @@ data/GSE62270-GPL17021mock.rds: data/GSE62270-GPL17021.rds
 
 ## ------------------------ Generate 10XMonoCytoT data set ---------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
-data/10XMonoCytoT.rds: scripts/generate_10XMonoCytoT_mae.R 
+data/10XMonoCytoT.rds: scripts/generate_10XMonoCytoT_mae.R data/10xGenomics/cd14_monocytes_matrices_mex/hg19/barcodes.tsv \
+data/10xGenomics/cd14_monocytes_matrices_mex/hg19/genes.tsv data/10xGenomics/cd14_monocytes_matrices_mex/hg19/matrix.mtx \
+data/10xGenomics/cytotoxic_t_matrices_mex/hg19/barcodes.tsv data/10xGenomics/cytotoxic_t_matrices_mex/hg19/genes.tsv \
+data/10xGenomics/cytotoxic_t_matrices_mex/hg19/matrix.mtx
 	$(R) scripts/generate_10XMonoCytoT_mae.R Rout/generate_10XMonoCytoT_mae.Rout
 
 data/10XMonoCytoTmock.rds: data/10XMonoCytoT.rds
@@ -303,31 +324,70 @@ $(foreach F,$(FILT),$(foreach M,$(MT3.4),$(foreach Y,$(DSdrimpute),$(eval $(call
 
 ## ------------------ Prepare COBRAData object for evaluation ------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
-define cobrarule
-$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
+define cobrarulemock
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
+$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk \
+$(distrdir)/$(1)$(3)_distribution_fit_summary_data.rds
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+endef
+$(foreach Y,$(DSrealmock),$(eval $(call cobrarulemock,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimmock),$(eval $(call cobrarulemock,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSbulkmock),$(eval $(call cobrarulemock,$(Y),,,$(MTbulk),${MTcbulk},_bulk)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealmock),$(eval $(call cobrarulemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimmock),$(eval $(call cobrarulemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSbulkmock),$(eval $(call cobrarulemock,$(Y),$(F),_$(F),$(MTbulk),${MTcbulk},_bulk))))
+
+define cobrarulesignal
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
-$(foreach Y,$(DSnonimpute),$(eval $(call cobrarule,$(Y),,,$(MT),${MTc},)))
-$(foreach Y,$(DSbulk),$(eval $(call cobrarule,$(Y),,,$(MTbulk),${MTcbulk},_bulk)))
-$(foreach F,$(FILT),$(foreach Y,$(DSnonimpute),$(eval $(call cobrarule,$(Y),$(F),_$(F),$(MT),${MTc},))))
-$(foreach F,$(FILT),$(foreach Y,$(DSbulk),$(eval $(call cobrarule,$(Y),$(F),_$(F),$(MTbulk),${MTcbulk},_bulk))))
+$(foreach Y,$(DSrealsignal),$(eval $(call cobrarulesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimsignal),$(eval $(call cobrarulesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSbulksignal),$(eval $(call cobrarulesignal,$(Y),,,$(MTbulk),${MTcbulk},_bulk)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealsignal),$(eval $(call cobrarulesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimsignal),$(eval $(call cobrarulesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSbulksignal),$(eval $(call cobrarulesignal,$(Y),$(F),_$(F),$(MTbulk),${MTcbulk},_bulk))))
 
-define cobrarulescimpute
-$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
+define cobrarulescimputesignal
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/scimpute_dropouts.R
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
-$(foreach Y,$(DSscimpute),$(eval $(call cobrarulescimpute,$(Y),,,$(MT),${MTc},)))
-$(foreach F,$(FILT),$(foreach Y,$(DSscimpute),$(eval $(call cobrarulescimpute,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach Y,$(DSrealsignalscimpute),$(eval $(call cobrarulescimputesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimsignalscimpute),$(eval $(call cobrarulescimputesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealsignalscimpute),$(eval $(call cobrarulescimputesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimsignalscimpute),$(eval $(call cobrarulescimputesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
 
-define cobraruledrimpute
-$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R  \
+define cobrarulescimputemock
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
+$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/scimpute_dropouts.R
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+endef
+$(foreach Y,$(DSrealmockscimpute),$(eval $(call cobrarulescimputemock,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimmockscimpute),$(eval $(call cobrarulescimputemock,$(Y),,,$(MT),${MTc},)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealmockscimpute),$(eval $(call cobrarulescimputemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimmockscimpute),$(eval $(call cobrarulescimputemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
+
+define cobraruledrimputesignal
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/drimpute_dropouts.R
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
-$(foreach Y,$(DSdrimpute),$(eval $(call cobraruledrimpute,$(Y),,,$(MT),${MTc},)))
-$(foreach F,$(FILT),$(foreach Y,$(DSdrimpute),$(eval $(call cobraruledrimpute,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach Y,$(DSrealsignaldrimpute),$(eval $(call cobraruledrimputesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimsignaldrimpute),$(eval $(call cobraruledrimputesignal,$(Y),,,$(MT),${MTc},)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealsignaldrimpute),$(eval $(call cobraruledrimputesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimsignaldrimpute),$(eval $(call cobraruledrimputesignal,$(Y),$(F),_$(F),$(MT),${MTc},))))
+
+define cobraruledrimputemock
+$(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
+$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk scripts/drimpute_dropouts.R
+	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
+endef
+$(foreach Y,$(DSrealmockdrimpute),$(eval $(call cobraruledrimputemock,$(Y),,,$(MT),${MTc},)))
+$(foreach Y,$(DSsimmockdrimpute),$(eval $(call cobraruledrimputemock,$(Y),,,$(MT),${MTc},)))
+$(foreach F,$(FILT),$(foreach Y,$(DSrealmockdrimpute),$(eval $(call cobraruledrimputemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
+$(foreach F,$(FILT),$(foreach Y,$(DSsimmockdrimpute),$(eval $(call cobraruledrimputemock,$(Y),$(F),_$(F),$(MT),${MTc},))))
 
 ## ----------------------------- Calculate concordances ------------------------------- ##
 ## ------------------------------------------------------------------------------------ ##
@@ -418,13 +478,17 @@ endef
 $(foreach Y,$(DSrealmock),$(eval $(call plotrule_distr,$(Y),,)))
 $(foreach Y,$(DSsimmock),$(eval $(call plotrule_distr,$(Y),,)))
 $(foreach Y,$(DSbulkmock),$(eval $(call plotrule_distr,$(Y),,)))
+$(foreach Y,$(DSrealmockscimpute),$(eval $(call plotrule_distr,$(Y),,)))
+$(foreach Y,$(DSrealmockdrimpute),$(eval $(call plotrule_distr,$(Y),,)))
 $(foreach F,$(FILT), $(foreach Y,$(DSrealmock),$(eval $(call plotrule_distr,$(Y),$(F),_$(F)))))
 $(foreach F,$(FILT), $(foreach Y,$(DSsimmock),$(eval $(call plotrule_distr,$(Y),$(F),_$(F)))))
 $(foreach F,$(FILT), $(foreach Y,$(DSbulkmock),$(eval $(call plotrule_distr,$(Y),$(F),_$(F)))))
+$(foreach F,$(FILT), $(foreach Y,$(DSrealmockscimpute),$(eval $(call plotrule_distr,$(Y),$(F),_$(F)))))
+$(foreach F,$(FILT), $(foreach Y,$(DSrealmockdrimpute),$(eval $(call plotrule_distr,$(Y),$(F),_$(F)))))
 
 define plotrule_characterization
 $(dschardir)/$(1)$(3)_dataset_characteristics_summary_data.rds: scripts/run_plot_dataset_characterization.R \
-subsets/$(1)_subsets.rds data/$(1).rds
+subsets/$(1)_subsets.rds data/$(1).rds data/cell_cycle_geneids.rds
 	$(R) "--args dataset='$(1)' config_file='config/$(1).json' filt='$(2)' cell_cycle_file='data/cell_cycle_geneids.rds' figdir='$(dschardir)'" scripts/run_plot_dataset_characterization.R Rout/run_plot_dataset_characterization_$(1)$(3).Rout
 endef
 $(foreach Y,$(DSnonimpute),$(eval $(call plotrule_characterization,$(Y),,)))
@@ -434,7 +498,7 @@ $(foreach F,$(FILT), $(foreach Y,$(DSbulk),$(eval $(call plotrule_characterizati
 
 define plotrule_characterizationscimpute
 $(dschardir)/$(1)$(3)_dataset_characteristics_summary_data.rds: scripts/run_plot_dataset_characterization.R \
-subsets/$(1)_subsets.rds data/$(1).rds scripts/scimpute_dropouts.R
+subsets/$(1)_subsets.rds data/$(1).rds scripts/scimpute_dropouts.R data/cell_cycle_geneids.rds
 	$(R) "--args dataset='$(1)' config_file='config/$(1).json' filt='$(2)' cell_cycle_file='data/cell_cycle_geneids.rds' figdir='$(dschardir)'" scripts/run_plot_dataset_characterization.R Rout/run_plot_dataset_characterization_$(1)$(3).Rout
 endef
 $(foreach Y,$(DSscimpute),$(eval $(call plotrule_characterizationscimpute,$(Y),,)))
@@ -442,7 +506,7 @@ $(foreach F,$(FILT), $(foreach Y,$(DSscimpute),$(eval $(call plotrule_characteri
 
 define plotrule_characterizationdrimpute
 $(dschardir)/$(1)$(3)_dataset_characteristics_summary_data.rds: scripts/run_plot_dataset_characterization.R \
-subsets/$(1)_subsets.rds data/$(1).rds scripts/drimpute_dropouts.R
+subsets/$(1)_subsets.rds data/$(1).rds scripts/drimpute_dropouts.R data/cell_cycle_geneids.rds
 	$(R) "--args dataset='$(1)' config_file='config/$(1).json' filt='$(2)' cell_cycle_file='data/cell_cycle_geneids.rds' figdir='$(dschardir)'" scripts/run_plot_dataset_characterization.R Rout/run_plot_dataset_characterization_$(1)$(3).Rout
 endef
 $(foreach Y,$(DSdrimpute),$(eval $(call plotrule_characterizationdrimpute,$(Y),,)))
@@ -546,8 +610,11 @@ $(eval $(call summaryrule_de_characteristics,_realdrimpute,$(DSrealmockdrimpute)
 $(eval $(call summaryrule_de_characteristics,_simdrimpute,$(DSsimmockdrimpute),${DSsimmockdrimputec},,,${MTplotc}))
 
 define summaryrule_crossmethod_consistency
-$(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency$(1).rds: $(addsuffix .rds, $(addprefix $(concordancedir)/, $(foreach Y,$(2),$(Y)_concordances))) \
+$(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency$(1).rds: \
+$(addsuffix .rds, $(addprefix $(concordancedir)/, $(foreach Y,$(2),$(Y)_concordances))) \
 $(addsuffix .rds, $(addprefix $(concordancedir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_concordances)))) \
+$(addsuffix .rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)_dataset_characteristics_summary_data))) \
+$(addsuffix .rds, $(addprefix $(dschardir)/, $(foreach F,$(4),$(foreach Y,$(2),$(Y)_$(F)_dataset_characteristics_summary_data)))) \
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_crossmethod_consistency.R \
 include_datasets.mk include_filterings.mk plot_methods.mk
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='crossmethod_consistency' dstypetxt='$(dstypetxt)' plotmethods='$(6)' dtpext='$(1)' figdir='$(multidsfigdir)/crossmethod_consistency' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_crossmethod_consistency$(1).Rout
@@ -624,7 +691,8 @@ $(multidsfigdir)/tsne/summary_tsne$(1).rds: $(addsuffix _dataset_characteristics
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_tsne.R include_datasets.mk
 	$(R) "--args datasets='$(3)' filt='$(4)' summarytype='tsne' dstypetxt='$(dstypetxt)' plotmethods='$(5)' dtpext='$(1)' figdir='$(multidsfigdir)/tsne' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_tsne$(1).Rout
 endef
-$(eval $(call summaryrule_tsne,_all,$(DStsne),${DStsnec},,))
+$(eval $(call summaryrule_tsne,_real,$(DStsne),${DStsnec},,))
+$(eval $(call summaryrule_tsne,_sim,$(DSsimsignal),${DSsimsignalc},,))
 
 define summaryrule_dschar
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics$(1).rds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \

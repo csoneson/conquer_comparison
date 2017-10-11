@@ -8,7 +8,7 @@ summarize_tsne <- function(figdir, datasets, exts, dtpext, cols,
     X[[ds]] <- readRDS(paste0(dschardir, "/", ds,
                               "_dataset_characteristics_plots.rds"))
   }
-  pdf(paste0(figdir, "/tsne_final", dtpext, ".pdf"), width = 13.5, height = 16.5)
+  pdf(paste0(figdir, "/tsne_final", dtpext, ".pdf"), width = 13.5, height = 4.25 * ceiling(length(X)/3))
   print(plot_grid(plotlist = lapply(
     X, function(x) {
       x$tsne + guides(color = guide_legend(nrow = 2))

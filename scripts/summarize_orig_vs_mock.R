@@ -2,18 +2,25 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
                                    singledsfigdir, cobradir, concordancedir, 
                                    dschardir, origvsmockdir, distrdir, plotmethods, 
                                    dstypes, pch_ncells) {
+
+  gglayers <- list(
+    geom_boxplot(outlier.size = -1),
+    theme_bw(),
+    xlab(""),
+    scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
+                                                             "", names(cols))), name = ""),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
+          axis.text.y = element_text(size = 12),
+          axis.title.y = element_text(size = 13),
+          legend.position = "none"),
+    geom_point(position = position_jitter(width = 0.2), size = 0.5),
+    ylim(0, 1),
+    facet_wrap(~ dataset)
+  )
   
   ## Initialize list to hold all plots
   plots <- list()
-  
-  ttest <- function(x, y) {
-    tryCatch({
-      t.test(y[x == "signal"], y[x == "mock"], var.equal = FALSE)$stat
-    }, error = function(e) NA)
-  }
-  
-  plots <- list()
-  
+
   pdf(paste0(figdir, "/summary_orig_vs_mock", dtpext, ".pdf"), 
       width = 10, height = 7)
   
@@ -25,201 +32,77 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
         dplyr::filter(method %in% plotmethods)
     }))
-  }))
+  })) %>% dplyr::mutate(plot_color = cols[as.character(method)]) %>%
+    dplyr::left_join(dstypes, by = "dataset") %>%
+    dplyr::select(method, dataset, dtype, filt, ncells, replicate1, replicate2, 
+                  k, AUCs, tp)
   
-  dss <- levels(as.factor(concordances$dataset))
-  pch <- c(16, 17, 15, 3, 7, 8, 4, 6, 9, 10, 11, 12, 13, 14, 1, 2, 5, 18, 19, 20)[1:length(dss)]
-  names(pch) <- as.character(dss)
-  
-  gglayers <- list(
-    geom_boxplot(outlier.size = -1),
-    theme_bw(),
-    xlab(""),
-    scale_color_manual(values = structure(cols, names = gsub(paste(exts, collapse = "|"),
-                                                             "", names(cols))), name = ""),
-    scale_shape_manual(values = pch, name = ""),
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
-          axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13))
+  dslist <- lapply(list(all = unique(concordances$dataset),
+                        sub = c("GSE60749-GPL13112", "10XMonoCytoT")), 
+                   function(x) intersect(x, concordances$dataset)
   )
-  gglayers1 <- c(gglayers, 
-                 list(geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(shape = dataset)),
-                      ylim(0, 1)))
-  gglayersw <- c(gglayers, 
-                 list(geom_point(position = position_jitter(width = 0.2), size = 0.5), 
-                      facet_wrap(~ dataset),
-                      ylim(0, 1)))
-  gglayersb <- c(gglayers, 
-                 list(geom_point(position = position_jitter(width = 0.2), size = 1.5, aes(shape = dataset))))
+  (dslist <- dslist[sapply(dslist, length) > 0])
   
   for (f in unique(concordances$filt)) {
     for (k0 in unique(concordances$k)) {
-      concs <- concordances %>% dplyr::filter(filt == f) %>%
+      concs0 <- concordances %>% dplyr::filter(filt == f) %>%
         dplyr::filter(k == k0)
-      nbr_keep <- unique(intersect(subset(concs, tp == "signal")$ncells,
-                                   subset(concs, tp == "mock")$ncells))
+      for (nm in names(dslist)) {
+        concs <- concs0  %>%
+        dplyr::filter(dataset %in% dslist[[nm]]) %>%
+        dplyr::group_by(method, dataset, filt, ncells, replicate1, replicate2, k) %>%
+        dplyr::mutate(tokeep = length(AUCs) == 2) %>%
+        dplyr::filter(tokeep) %>% 
+        dplyr::mutate(signal_vs_mock = AUCs[tp == "signal"] - AUCs[tp == "mock"]) %>%
+        dplyr::ungroup()
       
-      ## Add colors and plot characters to the data frame
-      concs$plot_color <- cols[as.character(concs$method)]
-      concs$plot_char <- pch[as.character(concs$dataset)]
-
-      concsum <- concs %>% as.data.frame() %>%
-        dplyr::filter(ncells %in% nbr_keep) %>%
-        dplyr::group_by(dataset, ncells, method) %>% 
-        dplyr::summarize(tstat = ttest(tp, AUCs),
-                         mediandiff = median(AUCs[tp == "signal"]) - median(AUCs[tp == "mock"]))
-      
-      p <- concs %>% dplyr::filter(tp == "signal") %>%
-        dplyr::filter(ncells %in% nbr_keep) %>%
-        ggplot(aes(x = method, y = AUCs, col = method)) + gglayers1 + 
-        ylab("Area under concordance curve, signal data set") + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("auc_signal_comb_", f, "_", k0)]] <- p
-    
-      p <- concs %>% dplyr::filter(tp == "mock") %>%
-        dplyr::filter(ncells %in% nbr_keep) %>%
-        ggplot(aes(x = method, y = AUCs, col = method)) + 
-        ylab("Area under concordance curve, null data set") + gglayers1 + 
-        ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("auc_mock_comb_", f, "_", k0)]] <- p
-      
-      p <- concs %>% dplyr::filter(tp == "signal") %>%
-        dplyr::filter(ncells %in% nbr_keep) %>%
-        ggplot(aes(x = method, y = AUCs, col = method)) + 
-        ylab("Area under concordance curve, signal data set") + 
-        gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("auc_signal_sep_", f, "_", k0)]] <- p
-      
-      ## Subset of the data sets
-      if (all(c("GSE60749-GPL13112", "10XMonoCytoT") %in% concs$dataset)) {
         p <- concs %>% dplyr::filter(tp == "signal") %>%
-          dplyr::filter(ncells %in% nbr_keep) %>%
-          dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
+          dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
+                                                      fun = median, na.rm = TRUE,
+                                                      .desc = TRUE)) %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          ylab("Area under concordance curve, signal data set") + 
-          gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
+          ylab("Area under concordance curve,\nsignal data set") + 
+          gglayers + ggtitle(paste0(f, ", top-", k0, " genes"))
         print(p)
-        plots[[paste0("auc_signal_sep_sub_", f, "_", k0)]] <- p
-      }
-      
-      p <- concs %>% dplyr::filter(tp == "mock") %>%
-        dplyr::filter(ncells %in% nbr_keep) %>%
-        ggplot(aes(x = method, y = AUCs, col = method)) + 
-        ylab("Area under concordance curve, null data set") + 
-        gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("auc_mock_sep_", f, "_", k0)]] <- p
-      
-      if (all(c("GSE60749-GPL13112", "10XMonoCytoT") %in% concs$dataset)) {
+        plots[[paste0("auc_signal_sep_", nm, "_", f, "_", k0)]] <- p
+        
         p <- concs %>% dplyr::filter(tp == "mock") %>%
-          dplyr::filter(ncells %in% nbr_keep) %>%
-          dplyr::filter(dataset %in% c("GSE60749-GPL13112", "10XMonoCytoT")) %>% 
+          dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
+                                                      fun = median, na.rm = TRUE,
+                                                      .desc = TRUE)) %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          ylab("Area under concordance curve, null data set") + 
-          gglayersw + ggtitle(paste0(f, ", top-", k0, " genes"))
+          ylab("Area under concordance curve,\nnull data set") + 
+          gglayers + ggtitle(paste0(f, ", top-", k0, " genes"))
         print(p)
-        plots[[paste0("auc_mock_sep_sub_", f, "_", k0)]] <- p
+        plots[[paste0("auc_mock_sep_", nm, "_", f, "_", k0)]] <- p
       }
-      
-      tmp <- concsum %>% dplyr::mutate(method = as.character(method)) %>%
-        dplyr::group_by(method) %>% 
-        dplyr::mutate(tstat_median = median(tstat, na.rm = TRUE)) %>% dplyr::ungroup()
-      tmp$method <- factor(tmp$method, 
-                           levels = unique(tmp$method[order(tmp$tstat_median, decreasing = TRUE)]))
-      p <- tmp %>% 
-        ggplot(aes(x = method, y = sign(tstat) * sqrt(abs(tstat)), col = method)) + 
-        ylab("sqrt(t-statistic, area under\nconcordance curve (signal - null))") + 
-        gglayersb + ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("tstat_auc_", f, "_", k0)]] <- p
-      
-      p <- concsum %>% 
-        ggplot(aes(x = method, y = mediandiff, col = method)) + 
-        ylab("difference between median area under\nconcordance curve (signal - null)") + 
-        gglayersb + ggtitle(paste0(f, ", top-", k0, " genes"))
-      print(p)
-      plots[[paste0("mediandiff_auc_", f, "_", k0)]] <- p
     }
   }
   dev.off()
     
   ## -------------------------- Final summary plots ------------------------- ##
-  for (k0 in unique(concordances$k)) {
-    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, ".pdf"), width = 12, height = 13)
-    p <- plot_grid(ggdraw() + 
-                     draw_label(paste0("After filtering, top-", k0, " genes"),
-                                fontface = "bold"),
-                   plot_grid(plots[[paste0("auc_signal_comb_TPM_1_25p_", k0)]] + 
-                               theme(legend.position = "none") + ggtitle(""), 
-                             plots[[paste0("auc_mock_comb_TPM_1_25p_", k0)]] + 
-                               theme(legend.position = "none") + ggtitle(""),
-                             labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                   plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] + 
-                     theme(legend.position = "none") + ggtitle(""),
-                   get_legend(plots[[paste0("tstat_auc_TPM_1_25p_", k0)]] +
-                                theme(legend.position = "bottom") + 
-                                guides(colour = FALSE,
-                                       shape = 
-                                         guide_legend(nrow = 2,
-                                                      title = "",
-                                                      title.theme = element_text(size = 12,
-                                                                                 angle = 0),
-                                                      label.theme = element_text(size = 12,
-                                                                                 angle = 0),
-                                                      keywidth = 1, default.unit = "cm"))),
-                   rel_heights = c(0.1, 1.7, 1.7, 0.1), ncol = 1, labels = c("", "", "C", ""))
-    print(p)
-    dev.off()
-  }
 
   for (k0 in unique(concordances$k)) {
-    ## Split by data set
-    pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds.pdf"), 
-        width = 10, height = 14.5)
-    print(plot_grid(ggdraw() + 
-                      draw_label(paste0("After filtering, top-", k0, " genes"),
-                                 fontface = "bold"), 
-                    plot_grid(
-                      plots[[paste0("auc_signal_sep_TPM_1_25p_", k0)]] + 
-                        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
-                        ggtitle(""),
-                      plots[[paste0("auc_mock_sep_TPM_1_25p_", k0)]] + 
-                        theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
-                        ggtitle(""),
-                      ncol = 2, rel_widths = c(1, 1)
-                    ), ncol = 1, rel_heights = c(0.15, 6)
-    ))
-    dev.off()
-    
-    ## Only a subset of the data sets
-    if (all(c(paste0("auc_signal_sep_sub_TPM_1_25p_", k0),
-              paste0("auc_mock_sep_sub_TPM_1_25p_", k0)) %in% 
-            names(plots))) {
-      pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds_sub.pdf"), 
-          width = 12, height = 7.2)
+    for (nm in names(dslist)) {
+      ## Split by data set
+      pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds_", nm, ".pdf"), 
+          width = 12, height = length(dslist[[nm]]) * 2 + 3)
       print(plot_grid(ggdraw() + 
                         draw_label(paste0("After filtering, top-", k0, " genes"),
                                    fontface = "bold"), 
                       plot_grid(
-                        plots[[paste0("auc_signal_sep_sub_TPM_1_25p_", k0)]] + 
-                          theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                        plots[[paste0("auc_signal_sep_", nm, "_TPM_1_25p_", k0)]] + 
+                          facet_wrap(~dataset, ncol = 1) + 
                           ggtitle(""),
-                        plots[[paste0("auc_mock_sep_sub_TPM_1_25p_", k0)]] + 
-                          theme(legend.position = "none") + facet_wrap(~dataset, ncol = 1) + 
+                        plots[[paste0("auc_mock_sep_", nm, "_TPM_1_25p_", k0)]] + 
+                          facet_wrap(~dataset, ncol = 1) + 
                           ggtitle(""),
                         ncol = 2, rel_widths = c(1, 1)
-                      ), ncol = 1, rel_heights = c(0.3, 6)
+                      ), ncol = 1, rel_heights = c(0.25, 6)
       ))
       dev.off()
     }
   }
   
-  plots[c(paste0("auc_signal_comb_TPM_1_25p_", unique(concordances$k)),
-          paste0("auc_mock_comb_TPM_1_25p_", unique(concordances$k)),
-          paste0("tstat_auc_TPM_1_25p_", unique(concordances$k)),
-          paste0("auc_signal_sep_TPM_1_25p_", unique(concordances$k)),
-          paste0("auc_mock_sep_TPM_1_25p_", unique(concordances$k)))]
+  concordances
 }

@@ -13,8 +13,8 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     scale_color_manual(values = cols),
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
-          axis.title.y = element_text(size = 13)),
-    guides(color = guide_legend(ncol = 2, title = ""))
+          axis.title.y = element_text(size = 13),
+          legend.position = "none")
   )
   
   ## Initialize list to hold all plots
@@ -28,11 +28,12 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     }))
   })) %>%
     tidyr::separate(method, c("method", "ncells", "repl"), sep = "\\.") %>%
-    dplyr::mutate(ncells = factor(ncells, levels = sort(unique(as.numeric(as.character(ncells)))))) %>%
+    dplyr::mutate(ncells = as.numeric(as.character(ncells))) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
     dplyr::filter(method %in% plotmethods) %>%
     dplyr::left_join(dstypes, by = "dataset") %>%
-    dplyr::mutate(plot_color = cols[as.character(method)])
+    dplyr::mutate(plot_color = cols[as.character(method)]) %>%
+    dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells))))
   
   ## Heatmap of FPRs (fraction of nominal p-values below 0.05)
   pdf(paste0(figdir, "/summary_truefpr", dtpext, "_1.pdf"),
@@ -89,23 +90,20 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/truefpr_final", dtpext, ".pdf"), width = 12, height = 6)
-  p <- plot_grid(plots$truefpr_sep_ + theme(legend.position = "none") + 
-                   ggtitle("Without filtering") + scale_y_sqrt(), 
-                 plots$truefpr_sep_TPM_1_25p + theme(legend.position = "none") + 
-                   ggtitle("After filtering") + scale_y_sqrt(),
+  p <- plot_grid(plots$truefpr_sep_ + ggtitle("Without filtering") + scale_y_sqrt(), 
+                 plots$truefpr_sep_TPM_1_25p + ggtitle("After filtering") + scale_y_sqrt(),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
-  p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dtype, ncol = 1) + theme(legend.position = "none") + 
+  p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dtype, ncol = 1) + 
                    ggtitle("Without filtering") + scale_y_sqrt(), 
                  plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dtype, ncol = 1) + 
-                   theme(legend.position = "none") + 
                    ggtitle("After filtering") + scale_y_sqrt(),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
-  truefpr
+  truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR)
 }

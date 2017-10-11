@@ -9,12 +9,12 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
     geom_point(position = position_jitter(width = 0.2), size = 0.5),
     theme_bw(),
     xlab(""),
-    scale_color_manual(values = cols), 
-    guides(color = guide_legend(ncol = 2, title = "")), 
+    scale_color_manual(values = cols),
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13),
-          strip.text = element_text(size = 12))
+          strip.text = element_text(size = 12),
+          legend.position = "none")
   )
   
   ## Initialize list to hold all plots
@@ -25,8 +25,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   ## Read all necessary information, for all filterings
   nbrgenes <- do.call(rbind, lapply(datasets, function(ds) {
     do.call(rbind, lapply(exts, function(e) {
-      readRDS(paste0(cobradir, "/", ds, e, 
-                     "_nbr_called.rds")) %>%
+      readRDS(paste0(cobradir, "/", ds, e, "_nbr_called.rds")) %>%
         dplyr::mutate(repl = as.numeric(as.character(repl)),
                       ncells = as.numeric(as.character(ncells))) %>%
         dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
@@ -61,31 +60,28 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/fracNA_final", dtpext, ".pdf"), width = 12, height = 6)
-  p <- plot_grid(plots[["fracna_comb_"]] + theme(legend.position = "none") + 
-                   ggtitle("Without filtering"), 
-                 plots[["fracna_comb_TPM_1_25p"]] + theme(legend.position = "none") + 
-                   ggtitle("After filtering"),
+  p <- plot_grid(plots[["fracna_comb_"]] + ggtitle("Without filtering"), 
+                 plots[["fracna_comb_TPM_1_25p"]] + ggtitle("After filtering"),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
   ## Split by data type
   pdf(paste0(figdir, "/fracNA_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
-  p <- plot_grid(plots[["fracna_comb_"]] + facet_wrap(~ dtype, ncol = 1) + theme(legend.position = "none") + 
+  p <- plot_grid(plots[["fracna_comb_"]] + facet_wrap(~ dtype, ncol = 1) + 
                    ggtitle("Without filtering"), 
                  plots[["fracna_comb_TPM_1_25p"]] + facet_wrap(~ dtype, ncol = 1) + 
-                   theme(legend.position = "none") + 
                    ggtitle("After filtering"),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
   ## Split by data set
-  pdf(paste0(figdir, "/fracNA_final", dtpext, "_byds.pdf"), width = 18, height = 10)
+  pdf(paste0(figdir, "/fracNA_final", dtpext, "_byds.pdf"), width = 21, height = 13)
   p <- plots[["fracna_comb_"]] + facet_wrap(~ dataset) + 
     ggtitle("Without filtering")
   print(p)
   dev.off()
   
-  nbrgenes
+  nbrgenes %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, fracNA)
 }
