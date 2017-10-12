@@ -39,7 +39,8 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   })) %>% group_by(dataset, filt, ncells, repl) %>%
     dplyr::mutate(rel_timing = timing/max(timing)) %>% ungroup() %>%
     dplyr::mutate(ncells_fact = factor(ncells, levels = 
-                                         unique(sort(as.numeric(as.character(ncells))))))
+                                         unique(sort(as.numeric(as.character(ncells)))))) %>%
+    dplyr::ungroup()
   
   ## Read number of genes for each data set
   ngenes <- do.call(rbind, lapply(datasets, function(ds) {
@@ -55,6 +56,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
     }))
   }))
   timing <- dplyr::full_join(timing, ngenes) %>%
+    dplyr::left_join(dstypes, by = "dataset") %>%
     dplyr::mutate(ngenes_cat = Hmisc::cut2(ngenes, g = 10))
 
   ## Add colors to the data frame
@@ -188,5 +190,7 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
   print(plots[["timing_dependence_permethod"]])
   dev.off()
   
-  timing
+  list(timing = timing %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, 
+                                         ngenes, ngenes_cat, timing, rel_timing),
+       timing_ncelldep = timing_ncelldep)
 }

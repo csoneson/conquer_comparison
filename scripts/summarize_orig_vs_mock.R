@@ -49,13 +49,13 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         dplyr::filter(k == k0)
       for (nm in names(dslist)) {
         concs <- concs0  %>%
-        dplyr::filter(dataset %in% dslist[[nm]]) %>%
-        dplyr::group_by(method, dataset, filt, ncells, replicate1, replicate2, k) %>%
-        dplyr::mutate(tokeep = length(AUCs) == 2) %>%
-        dplyr::filter(tokeep) %>% 
-        dplyr::mutate(signal_vs_mock = AUCs[tp == "signal"] - AUCs[tp == "mock"]) %>%
-        dplyr::ungroup()
-      
+          dplyr::filter(dataset %in% dslist[[nm]]) %>%
+          dplyr::group_by(method, dataset, filt, ncells, k) %>%
+          dplyr::mutate(tokeep = length(unique(tp)) == 2) %>%
+          dplyr::filter(tokeep) %>% 
+          dplyr::mutate(signal_vs_mock = mean(AUCs[tp == "signal"]) - mean(AUCs[tp == "mock"])) %>%
+          dplyr::ungroup()
+        
         p <- concs %>% dplyr::filter(tp == "signal") %>%
           dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
                                                       fun = median, na.rm = TRUE,
@@ -104,5 +104,6 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     }
   }
   
-  concordances
+  concordances %>%
+    dplyr::mutate(ncells_fact = factor(ncells, levels = sort(unique(ncells))))
 }

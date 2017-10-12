@@ -39,6 +39,7 @@ DSTYPE3 := real bulk realdrimpute realscimpute
 
 ## Define the default rule
 all: plotds plotind plotorigmock plotdistr plotprepare plotprepareII cobra diffexp sim \
+export_results/shiny_results.rds \
 $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
@@ -719,7 +720,25 @@ $(multidsfigdir)/truefpr/summary_truefpr_real.rds \
 $(multidsfigdir)/timing/summary_timing_all.rds \
 $(multidsfigdir)/de_characteristics/summary_de_characteristics_real.rds \
 $(multidsfigdir)/runfailure/summary_runfailure_all.rds \
+$(multidsfigdir)/orig_vs_mock/summary_orig_vs_mock_real.rds \
 scripts/summarize_all_performances.R
-	$(R) "--args trueperformancerds='$(word 1,$^)' truefprrds='$(word 2,$^)' timingrds='$(word 3,$^)' fprbiasrds='$(word 4,$^)' failureraterds='$(word 5,$^)' outrds='$@'" scripts/summarize_all_performances.R Rout/summarize_all_performances.Rout
+	$(R) "--args trueperformancerds='$(word 1,$^)' truefprrds='$(word 2,$^)' timingrds='$(word 3,$^)' fprbiasrds='$(word 4,$^)' failureraterds='$(word 5,$^)' origvsmockrds='$(word 6,$^)' outrds='$@'" scripts/summarize_all_performances.R Rout/summarize_all_performances.Rout
+
+## ------------------------- Results for shiny application ---------------------------- ##
+## ------------------------------------------------------------------------------------ ##
+export_results/shiny_results.rds: \
+$(multidsfigdir)/fracNA/summary_fracNA_real.rds \
+$(multidsfigdir)/nbrdet/summary_nbrdet_real.rds \
+$(multidsfigdir)/truefpr/summary_truefpr_real.rds \
+$(multidsfigdir)/trueperformance/summary_trueperformance_sim.rds \
+$(multidsfigdir)/timing/summary_timing_all.rds \
+$(multidsfigdir)/de_characteristics/summary_de_characteristics_real.rds \
+$(multidsfigdir)/orig_vs_mock/summary_orig_vs_mock_real.rds \
+figures/misc/performance_summary.rds \
+$(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency_real.rds \
+scripts/prepare_results_for_shiny.R
+	$(R) "--args fracnards='$(word 1,$^)' nbrgenesrds='$(word 2,$^)' type1errorrds='$(word 3,$^)' trueperfrds='$(word 4,$^)' timingrds='$(word 5,$^)' decharacrds='$(word 6,$^)' origvsmockrds='$(word 7,$^)' perfsummaryrds='$(word 8,$^)' crossmethodconsrds='$(word 9,$^)' outrds='$@'" scripts/prepare_results_for_shiny.R Rout/prepare_results_for_shiny.Rout
+
+
 
 

@@ -75,4 +75,5 @@ summarize_crossmethod_consistency <- function(figdir, datasets, exts, dtpext, co
             file = paste0(figdir, "/crossmethod_consistency_final", dtpext,
                           "_", k0, "_plots.rds"))
   }  
+  concordances
 }
