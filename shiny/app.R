@@ -2,7 +2,7 @@ suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
-#suppressPackageStartupMessages(library(pheatmap))
+suppressPackageStartupMessages(library(pheatmap))
 
 trsf <- function(x) {
   if (x == "none") "."
@@ -79,11 +79,11 @@ summary_app <- function(res, aspects, aspects2) {
                        numericInput(inputId = "performance_summary_plotheight",
                                     label = "Plot height (numeric, in pixels)",
                                     value = 600, min = 200, max = 20000, step = 10)
-              ))#,
-              # fluidRow(
-              #   column(width = 12,
-              #          uiOutput("performance_summary_plot_ui"))
-              # )
+              )),
+              fluidRow(
+                column(width = 12,
+                       uiOutput("performance_summary_plot_ui"))
+              )
             )),
 
             lapply(aspects, function(w)

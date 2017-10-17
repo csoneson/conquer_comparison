@@ -132,26 +132,27 @@ crossmethodconsrds <- rbind(cm1, cm2)
   
 perfsummaryrds <- readRDS(perfsummaryrds)
 
-allmethods <- unique(c(as.character(fracnards$method), as.character(nbrgenesrds$method), 
-                       as.character(type1errorrds$method), 
-                       as.character(fdprds$method), as.character(tprrds$method), 
-                       as.character(aurocrds$method), as.character(timingrds$method),
-                       as.character(decharacrds$method), as.character(origvsmockrds$method),
-                       as.character(crossmethodconsrds$method1)))
-allncells <- unique(c(as.character(fracnards$ncells), as.character(nbrgenesrds$ncells), 
-                      as.character(type1errorrds$ncells), 
-                      as.character(fdprds$ncells), as.character(tprrds$ncells), 
-                      as.character(aurocrds$ncells), as.character(timingrds$ncells),
-                      as.character(decharacrds$ncells), as.character(origvsmockrds$ncells),
-                      as.character(crossmethodconsrds$ncells)))
-alldatasets <- unique(c(fracnards$dataset, nbrgenesrds$dataset, type1errorrds$dataset, 
-                        fdprds$dataset, tprrds$dataset, aurocrds$dataset, 
-                        timingrds$dataset, decharacrds$dataset, origvsmockrds$dataset,
-                        crossmethodconsrds$dataset))
-allfilterings <- unique(c(fracnards$filtering, nbrgenesrds$filtering, type1errorrds$filtering, 
-                          fdprds$filtering, tprrds$filtering, aurocrds$filtering, 
-                          timingrds$filtering, decharacrds$filtering, origvsmockrds$filtering,
-                          crossmethodconsrds$filtering))
+allmethods <- sort(unique(c(as.character(fracnards$method), as.character(nbrgenesrds$method), 
+                            as.character(type1errorrds$method), 
+                            as.character(fdprds$method), as.character(tprrds$method), 
+                            as.character(aurocrds$method), as.character(timingrds$method),
+                            as.character(decharacrds$method), as.character(origvsmockrds$method),
+                            as.character(crossmethodconsrds$method1))))
+allncells <- as.character(sort(as.numeric(
+  unique(c(as.character(fracnards$ncells), as.character(nbrgenesrds$ncells), 
+           as.character(type1errorrds$ncells), 
+           as.character(fdprds$ncells), as.character(tprrds$ncells), 
+           as.character(aurocrds$ncells), as.character(timingrds$ncells),
+           as.character(decharacrds$ncells), as.character(origvsmockrds$ncells),
+           as.character(crossmethodconsrds$ncells))))))
+alldatasets <- sort(unique(c(fracnards$dataset, nbrgenesrds$dataset, type1errorrds$dataset, 
+                             fdprds$dataset, tprrds$dataset, aurocrds$dataset, 
+                             timingrds$dataset, decharacrds$dataset, origvsmockrds$dataset,
+                             crossmethodconsrds$dataset)))
+allfilterings <- sort(unique(c(fracnards$filtering, nbrgenesrds$filtering, type1errorrds$filtering, 
+                               fdprds$filtering, tprrds$filtering, aurocrds$filtering, 
+                               timingrds$filtering, decharacrds$filtering, origvsmockrds$filtering,
+                               crossmethodconsrds$filtering)))
 
 saveRDS(list(fracna = list(id = "Fraction NA adj.p", 
                            data = fracnards,
