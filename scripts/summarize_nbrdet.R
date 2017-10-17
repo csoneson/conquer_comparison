@@ -65,6 +65,24 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
     print(plots[[paste0("nbrdet_sep_line_", f)]])
   }
   
+  ## Compare before and after filtering
+  plots[["nbrdet_bydtype_ratio"]] <- 
+    ggplot(nbrgenes %>%
+             dplyr::group_by(method, ncells_fact, repl, dataset, dtype, plot_color) %>%
+             dplyr::filter(length(nbr_sign_adjp0.05) == 2) %>%
+             dplyr::summarize(ratio_nbr_sign_adjp0.05 = 
+                                nbr_sign_adjp0.05[filt == "TPM_1_25p"]/nbr_sign_adjp0.05[filt == ""]) %>%
+             dplyr::ungroup() %>%
+             dplyr::mutate(ratio_nbr_sign_adjp0.05 = replace(ratio_nbr_sign_adjp0.05, 
+                                                             ratio_nbr_sign_adjp0.05 > 10, 10)) %>%
+             dplyr::mutate(method = forcats::fct_reorder(method, ratio_nbr_sign_adjp0.05, 
+                                                         fun = median, na.rm = TRUE,
+                                                         .desc = TRUE)),
+           aes(x = method, y = ratio_nbr_sign_adjp0.05, color = method)) + 
+    geom_hline(yintercept = 1) + gglayersp + facet_wrap(~ dtype) + scale_y_sqrt() + 
+    ylab("Ratio between number of genes with adjusted p-value\nbelow 0.05 for filtered and unfiltered data set instances")
+  print(plots[["nbrdet_bydtype_ratio"]])
+  
   dev.off()
   
   ## -------------------------- Final summary plots ------------------------- ##
@@ -76,6 +94,11 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   pdf(paste0(figdir, "/nbrdet_final", dtpext, "_byds_filtered.pdf"), width = 19, height = 10)
   print(plots[["nbrdet_sep_TPM_1_25p"]] + 
           guides(colour = FALSE) + ggtitle("After filtering"))
+  dev.off()
+  
+  ## Ratios
+  pdf(paste0(figdir, "/nbrdet_final", dtpext, "_ratio_bydtype.pdf"), width = 15, height = 8)
+  print(plots[["nbrdet_bydtype_ratio"]] + guides(colour = FALSE))
   dev.off()
   
   ## Line plots
