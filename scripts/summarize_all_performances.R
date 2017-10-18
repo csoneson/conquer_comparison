@@ -295,7 +295,7 @@ complex <- data.frame(ComplexDesign = c(voomlimma = "good", Wilcoxon = "bad",
                                         scDD = "bad", DESeq2census = "good",
                                         SCDE = "bad", SeuratBimod = "bad",
                                         SeuratBimodIsExpr2 = "bad",
-                                        monoclecount = "good", limmatrendDetRate = "good",
+                                        monoclecount = "good", 
                                         edgeRQLFDetRate = "good"),
                       stringsAsFactors = FALSE) %>%
   tibble::rownames_to_column(var = "method")
@@ -330,6 +330,10 @@ allperf <- as.data.frame(allperf)
 rownames(allperf) <- tmp
 ## Order by average score
 allperf <- allperf[order(rowMeans(allperf, na.rm = TRUE), decreasing = TRUE), , drop = FALSE]
+
+write.table(cbind(method = rownames(allperf), allperf), 
+            file = "export_results/Figure6.csv", row.names = FALSE, col.names = TRUE, 
+            sep = ",", quote = FALSE)
 
 pdf(gsub("rds$", "pdf", outrds), width = 12, height = 8)
 pheatmap(allperf, cluster_rows = FALSE, cluster_cols = FALSE,

@@ -10,6 +10,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
     theme_bw(),
     xlab(""),
     scale_color_manual(values = cols),
+    ylim(0, 1), 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13),
@@ -77,11 +78,17 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   ## Split by data set
-  pdf(paste0(figdir, "/fracNA_final", dtpext, "_byds.pdf"), width = 21, height = 13)
-  p <- plots[["fracna_comb_"]] + facet_wrap(~ dataset) + 
+  pdf(paste0(figdir, "/fracNA_final", dtpext, "_byds.pdf"), width = 21, height = 22)
+  p <- plots[["fracna_comb_"]] + facet_wrap(~ dataset, ncol = 4) + 
     ggtitle("Without filtering")
   print(p)
   dev.off()
+  
+  if (dtpext == "_real")
+    write.table(nbrgenes %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, fracNA) %>%
+                  dplyr::mutate(dataset = gsub("mock", "null", dataset)),
+                file = "export_results/Figure1.csv", row.names = FALSE,
+                col.names = TRUE, sep = ",", quote = FALSE)
   
   nbrgenes %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, fracNA)
 }

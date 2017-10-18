@@ -30,7 +30,12 @@ summary_app <- function(res, aspects, aspects2) {
         selectInput(inputId = "keep_methods", label = "Methods to include",
                     choices = res$allmethods,
                     selected = res$allmethods,
-                    multiple = TRUE, selectize = TRUE)
+                    multiple = TRUE, selectize = TRUE),
+        
+        selectInput(inputId = "highlight_method", label = "Method to highlight",
+                    choices = c("none", res$allmethods),
+                    selected = "none",
+                    multiple = FALSE, selectize = TRUE)
       ),
       
       shinydashboard::dashboardBody(fluidRow(
@@ -180,6 +185,20 @@ summary_app <- function(res, aspects, aspects2) {
   
   server_function <- function(input, output, session) {
     ## ====================================================================== ##
+    ## Filter results based on input selections
+    ## ====================================================================== ##
+    filtvals <- reactiveValues()
+    observe({
+      for (w in c(aspects, aspects2)) {
+        filtvals[[w]] <- 
+          res[[w]]$data %>% dplyr::filter(method %in% input$keep_methods) %>% 
+          dplyr::filter(ncells %in% input$keep_ncells) %>%
+          dplyr::filter(dataset %in% input$keep_datasets) %>%
+          dplyr::filter(filtering %in% input$keep_filterings)
+      }
+    })
+    
+    ## ====================================================================== ##
     ## Cross-method consistency plot and UI object
     ## ====================================================================== ##
     output$crossmethodcons_plot_ui <- renderUI({
@@ -231,20 +250,6 @@ summary_app <- function(res, aspects, aspects2) {
     })
     
     ## ====================================================================== ##
-    ## Filter results based on input selections
-    ## ====================================================================== ##
-    filtvals <- reactiveValues()
-    observe({
-      for (w in c(aspects, aspects2)) {
-        filtvals[[w]] <- 
-          res[[w]]$data %>% dplyr::filter(method %in% input$keep_methods) %>% 
-          dplyr::filter(ncells %in% input$keep_ncells) %>%
-          dplyr::filter(dataset %in% input$keep_datasets) %>%
-          dplyr::filter(filtering %in% input$keep_filterings)
-      }
-    })
-    
-    ## ====================================================================== ##
     ## Generate data tables with hover information
     ## ====================================================================== ##
     Map(function(w) {
@@ -279,18 +284,24 @@ summary_app <- function(res, aspects, aspects2) {
         renderPlot({
           p <- ggplot(filtvals[[w]],
                       aes_string(x = input[[paste0(w, "_xaxis")]], 
-                                 y = res[[w]]$yvar, color = "method", group = "method"))
+                                 y = res[[w]]$yvar, color = "method", 
+                                 group = "method"))
           if (input[[paste0(w, "_xaxis")]] == "method")  ## boxplot + points
             p <- p + geom_boxplot(outlier.size = -1) + 
               geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
               guides(color = "none")
           else  ## points + smooth
-            p <- p + geom_point(alpha = 0.25, size = 1) +
-              geom_smooth(size = 0.75, se = FALSE, method = "loess", span = 1, na.rm = TRUE) + 
+            p <- p + geom_point(size = 1, aes(alpha = method)) + 
+              geom_line(stat = "smooth", size = 0.75, method = "loess", span = 1, 
+                        na.rm = TRUE, aes(alpha = method)) + 
               theme(legend.position = "bottom") + 
-              guides(color = guide_legend(title = "", nrow = 4))
+              guides(color = guide_legend(title = "", nrow = 4), alpha = "none")
           p <- p + theme_bw() + xlab("") + 
             scale_color_manual(values = res$cols) + 
+            scale_alpha_manual(values = structure(
+              c(0.2, 1)[(res$allmethods == input$highlight_method) + 1] - 
+                max(c(0.2, 1)[(res$allmethods == input$highlight_method) + 1]) + 1, 
+              names = res$allmethods)) + 
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
                   axis.text.y = element_text(size = 12),
                   axis.title.y = element_text(size = 13),
@@ -320,7 +331,8 @@ summary_app <- function(res, aspects, aspects2) {
                   axis.text.y = element_text(size = 12),
                   axis.title.y = element_text(size = 13),
                   legend.position = "none") + 
-            scale_color_manual(values = res$cols) + geom_boxplot(outlier.size = -1) + 
+            scale_color_manual(values = res$cols) + 
+            geom_boxplot(outlier.size = -1) + 
             geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
             facet_wrap(as.formula(paste0("~ ", input[[paste0(w, "_facet")]])),
                        scales = "free_y") + ylab("SNR")

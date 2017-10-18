@@ -334,5 +334,9 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dev.off()
   }
   
+  if (dtpext == "_sim")
+    write.table(fdrtprauc, file = "export_results/Figure5.csv", 
+                row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+  
   fdrtprauc
 }

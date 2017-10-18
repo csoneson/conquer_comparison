@@ -33,7 +33,7 @@ names(pch_ncells) <- as.character(c(6, 12, 22, 24, 26, 36, 44, 47, 48, 50, 58,
 
 ## Define colors for the different methods
 cols <- c("#771155", "#AA4488", "#CC99BB", 
-          "#3A0027", "#BCA2B4", "#EDDAE7",
+          "#3A0027", "#BCA2B4", "#FF02AC",
           "#000000", "#4477AA", "#BEBEBE", 
           "#117777", "#44AAAA", "#77CCCC",
           "#117744", "#44AA77", "#88CCAA", "#004120",

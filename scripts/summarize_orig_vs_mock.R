@@ -86,7 +86,7 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     for (nm in names(dslist)) {
       ## Split by data set
       pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds_", nm, ".pdf"), 
-          width = 12, height = length(dslist[[nm]]) * 2 + 3)
+          width = 15, height = length(dslist[[nm]]) * 2 + 3)
       print(plot_grid(ggdraw() + 
                         draw_label(paste0("After filtering, top-", k0, " genes"),
                                    fontface = "bold"), 

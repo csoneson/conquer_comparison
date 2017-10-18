@@ -105,5 +105,11 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   print(p)
   dev.off()
   
+  if (dtpext == "_real")
+    write.table(truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR) %>%
+                  dplyr::mutate(dataset = gsub("mock", "null", dataset)), 
+                file = "export_results/Figure2.csv", 
+                row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+  
   truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR)
 }
