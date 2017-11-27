@@ -51,6 +51,22 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     expand_limits(y = c(min(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
                         1.1 * max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
   
+  p0nofilt <- ggplot(Y %>% dplyr::filter(filt == ""), 
+                     aes(x = ds, y = nbinom_minus_zifnbinom_standard_aic)) + 
+    geom_hline(yintercept = 0, linetype = "dashed") + 
+    geom_point(alpha = 0.2, position = position_jitter(width = 0.2), size = 0.25) + 
+    geom_violin(aes(color = dtype), trim = TRUE, scale = "width", draw_quantiles = 0.5, adjust = 0.5) + 
+    guides(fill = FALSE, color = FALSE) + 
+    thm() + 
+    xlab("") + ylab(expression(arcsinh(AIC[NB] - AIC[ZINB]))) + 
+    scale_color_manual(values = c("#B17BA6", "#90C987")) + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        label = paste0(round(100 * mean(x > 0), 1), "%")))}, 
+      geom = "text", alpha = 1, size = 3, vjust = -1) + 
+    expand_limits(y = c(min(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        1.1 * max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
+  
   pdf(paste0(figdir, "/ds_characteristics_final", dtpext, ".pdf"), width = 18, height = 15.6)
   
   p1 <- ggplot(X %>% dplyr::filter(mtype == "fraczero"), 
@@ -80,5 +96,17 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                   p0, labels = c("", "D"), rel_heights = c(1, 1.3), ncol = 1))
   
   dev.off()
+  
+  if (dtpext == "_real") {
+    png(paste0(figdir, "/ds_characteristics_for_slides", dtpext, "_1.png"), 
+        width = 9, height = 5.6, unit = "in", res = 500)
+    print(plot_grid(p2, p1, align = "h", rel_widths = c(1, 1), nrow = 1))
+    dev.off()
+    
+    png(paste0(figdir, "/ds_characteristics_for_slides", dtpext, "_2.png"), 
+        width = 9, height = 4.6, unit = "in", res = 500)
+    print(p0nofilt)
+    dev.off()
+  }
 }
 

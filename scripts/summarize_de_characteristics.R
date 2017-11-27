@@ -60,8 +60,9 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(stat, "_bystat_", f)]] <- p
       print(p)
       
+      ## Just a subset of the characteristics
       plots[[paste0(stat, "_bystat_", f, "_sub")]] <- 
-        x %>% dplyr::filter(charac %in% c("CV(CPM)", "Fraction zeros")) %>% 
+        x %>% dplyr::filter(charac %in% c("log2(average CPM)", "Fraction zeros")) %>% 
         ggplot(aes_string(x = "method", y = stat, color = "method")) + 
         gglayers + geom_boxplot(outlier.size = -1) + 
         geom_point(position = position_jitter(width = 0.2), size = 0.5) + 

@@ -111,5 +111,13 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
     pdf(paste0(figdir, "/filtering_final", e, dtpext, ".pdf"), width = 12, height = 7)
     print(pcomb)
     dev.off()
+    
+    if (dtpext == "_real") {
+      pdf(paste0(figdir, "/filtering_for_slides", e, dtpext, ".pdf"), width = 10, height = 5.6)
+      print(plot_grid(p1 + theme(legend.position = "none"), 
+                      p2 + theme(legend.position = "none"),
+                      align = "h", rel_widths = c(1, 1), nrow = 1))
+      dev.off()
+    }
   }
 }
