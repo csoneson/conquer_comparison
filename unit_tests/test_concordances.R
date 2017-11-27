@@ -92,30 +92,6 @@ test_that("concordance calculations are correct on real data", {
                              c(0, conc$p, 0))/(maxn^2/2)
   expect_equal(trueconc$AUCs[trueconc$k == maxn], conc_auc)
   
-  ## Single method, all instances with given nbr samples
-  mth <- "DESeq2"
-  n_cells <- 12
-  tmp <- pv[1:maxn, which(get_method(colnames(pv)) == paste0(mth, exts) & 
-                            get_nsamples(colnames(pv)) == n_cells)]
-  expect_equal(ncol(tmp), 5)
-  
-  conc <- data.frame(t(sapply(1:maxn, function(i) {
-    p <- sort(tmp[1:i, ])
-    p <- sum(table(p) == ncol(tmp))
-    c(k = i, p = p)
-  })), stringsAsFactors = FALSE)
-  
-  trueconc <- concordances$concordance_byncells_bymethod %>% 
-    dplyr::filter(method == paste0(mth, exts)) %>%
-    dplyr::filter(dataset == ds) %>%
-    dplyr::filter(ncells == n_cells)
-  expect_equal(trueconc$k[1:maxn], conc$k)
-  expect_equal(trueconc$nbr_genes[1:maxn], conc$p)
-  
-  conc_auc <- caTools::trapz(c(0, conc$k, conc$k[length(conc$k)]), 
-                             c(0, conc$p, 0))/(maxn^2/2)
-  expect_equal(trueconc$AUCs[trueconc$k == maxn], conc_auc)
-  
   ## Single method, given pair of instances
   mth <- "DESeq2"
   n_cells <- 12
@@ -138,30 +114,6 @@ test_that("concordance calculations are correct on real data", {
     dplyr::filter(ncells == n_cells) %>%
     dplyr::filter(replicate1 == inst1) %>%
     dplyr::filter(replicate2 == inst2)
-  expect_equal(trueconc$k[1:maxn], conc$k)
-  expect_equal(trueconc$nbr_genes[1:maxn], conc$p)
-  
-  conc_auc <- caTools::trapz(c(0, conc$k, conc$k[length(conc$k)]), 
-                             c(0, conc$p, 0))/(maxn^2/2)
-  expect_equal(trueconc$AUCs[trueconc$k == maxn], conc_auc)
-  
-  ## All methods, given instance
-  n_cells <- 12
-  inst1 <- 1
-  tmp <- pv[1:maxn, which(get_nsamples(colnames(pv)) == n_cells & 
-                            get_repl(colnames(pv)) == inst1)]
-  #expect_equal(ncol(tmp), 27)
-  
-  conc <- data.frame(t(sapply(1:maxn, function(i) {
-    p <- sort(tmp[1:i, ])
-    p <- sum(table(p) == ncol(tmp))
-    c(k = i, p = p)
-  })), stringsAsFactors = FALSE)
-  
-  trueconc <- concordances$concordance_betweenmethods_all %>% 
-    dplyr::filter(dataset == ds) %>%
-    dplyr::filter(ncells == n_cells) %>%
-    dplyr::filter(repl == inst1)
   expect_equal(trueconc$k[1:maxn], conc$k)
   expect_equal(trueconc$nbr_genes[1:maxn], conc$p)
   

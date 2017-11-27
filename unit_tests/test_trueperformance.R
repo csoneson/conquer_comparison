@@ -15,6 +15,9 @@ test_that("true performance is correctly calculated", {
     for (f in c("", "_TPM_1_25p")) {
       cobra <- readRDS(paste0(topdir, "/output/cobra_data/", ds, f, "_cobra.rds"))
       perf <- readRDS(paste0(topdir, "/output/performance_realtruth/", ds, f, "_performance.rds"))
+      if ("cobraperf" %in% names(perf)) {
+        perf <- perf$cobraperf
+      }
       truth <- readRDS(paste0(topdir, "/data/", ds, "_truth.rds"))
 
       for (mth in colnames(padj(cobra))) {

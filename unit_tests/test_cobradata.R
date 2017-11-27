@@ -50,7 +50,7 @@ test_that("COBRAData object is correctly assembled", {
                             filt == gsub("^_", "", f))
             expect_equal(ntested, tmp$nbr_tested)
             expect_equal(ncalled, tmp$nbr_called)
-            expect_equal(nsign, tmp$nbr_sign0.05)
+            expect_equal(nsign, tmp$nbr_sign_adjp0.05)
           }
         }
         
