@@ -13,9 +13,15 @@ clean_mae <- function(mae, groupid) {
   }
   
   if (length(groupid) > 1) {
-    Biobase::pData(mae2)[, paste(groupid, collapse = ".")] <- 
-      as.character(interaction(as.data.frame(Biobase::pData(mae2)[, groupid])))
-    groupid <- paste(groupid, collapse = ".")
+    if (paste0(R.Version()$major, ".", R.Version()$minor) < "3.4") {
+      Biobase::pData(mae2)[, paste(groupid, collapse = ".")] <- 
+        as.character(interaction(as.data.frame(Biobase::pData(mae2)[, groupid])))
+      groupid <- paste(groupid, collapse = ".")
+    } else {
+      colData(mae2)[, paste(groupid, collapse = ".")] <- 
+        as.character(interaction(as.data.frame(colData(mae2)[, groupid])))
+      groupid <- paste(groupid, collapse = ".")
+    }
   }
   
   mae2
@@ -33,12 +39,22 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
   ## Scaling factor from TPM to count_lstpm was calculated from avetxlength of all samples
   avetxlength = assays(experiments(mae)[["gene"]])[["avetxlength"]]
   if (!is.null(imposed_condition)) {
-    condt <- structure(imposed_condition[[as.character(sz)]][i, ],
-                       names = rownames(Biobase::pData(mae)[s, ]))
+    if (paste0(R.Version()$major, ".", R.Version()$minor) < "3.4") {
+      condt <- structure(imposed_condition[[as.character(sz)]][i, ],
+                         names = rownames(Biobase::pData(mae)[s, ]))
+    } else {
+      condt <- structure(imposed_condition[[as.character(sz)]][i, ],
+                         names = rownames(colData(mae)[s, ]))
+    }
   } else {
     if (is.null(groupid)) stop("Must provide groupid")
-    condt <- structure(as.character(Biobase::pData(mae)[s, groupid]),
-                       names = rownames(Biobase::pData(mae)[s, ]))
+    if (paste0(R.Version()$major, ".", R.Version()$minor) < "3.4") {
+      condt <- structure(as.character(Biobase::pData(mae)[s, groupid]),
+                         names = rownames(Biobase::pData(mae)[s, ]))
+    } else {
+      condt <- structure(as.character(colData(mae)[s, groupid]),
+                         names = rownames(colData(mae)[s, ]))
+    }
   }
   
   if (!is.null(impute) && impute != "no" && !is.na(impute)) {
