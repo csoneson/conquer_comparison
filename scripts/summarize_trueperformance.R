@@ -300,7 +300,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     pdf(paste0(figdir, "/true", asp, "_final_sepbyds", dtpext, ".pdf"), width = 14, height = 6)
     p <- plot_grid(plot_grid(plots[[paste0(asp, "_byncells_sep_")]] + theme(legend.position = "none") + 
                                ggtitle("Without filtering") + ylim(-0.01, 1), 
-                             plots[[paste0(asp, "_byncells_sep_TPM_1_25p")]] + theme(legend.position = "none") + 
+                             plots[[paste0(asp, "_byncells_sep_TPM_1_25p")]] + 
+                               theme(legend.position = "none") + 
                                ggtitle("After filtering") + ylim(-0.01, 1),
                              labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
                    get_legend(plots[[paste0(asp, "_byncells_sep_")]] + 
@@ -334,9 +335,16 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
     dev.off()
   }
   
-  if (dtpext == "_sim")
+  if (dtpext == "_sim") {
     write.table(fdrtprauc, file = "export_results/Figure5.csv", 
                 row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+    
+    pdf(paste0(figdir, "/trueFDR_for_slides", dtpext, "_filt.pdf"), width = 8, height = 4.8)
+    print(plots[["FDR_all_TPM_1_25p"]] + guides(color = FALSE) + 
+            ylab("FDP at adj.p = 0.05 cutoff") + scale_y_sqrt() + 
+            theme(legend.position = "none") + ggtitle(""))
+    dev.off()
+  }
   
   fdrtprauc
 }

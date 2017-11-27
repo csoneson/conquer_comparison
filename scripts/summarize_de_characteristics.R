@@ -60,6 +60,14 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(stat, "_bystat_", f)]] <- p
       print(p)
       
+      plots[[paste0(stat, "_bystat_", f, "_sub")]] <- 
+        x %>% dplyr::filter(charac %in% c("CV(CPM)", "Fraction zeros")) %>% 
+        ggplot(aes_string(x = "method", y = stat, color = "method")) + 
+        gglayers + geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
+        facet_wrap(~ charac, scales = "free_y") + xlab("") + ylab(statname) + 
+        ggtitle(f)
+      
       if ("arcsinh(AIC[NB]-AIC[ZINB])" %in% x$charac) {
         print(x %>% dplyr::filter(charac == "arcsinh(AIC[NB]-AIC[ZINB])") %>% 
                 ggplot(aes_string(x = "method", y = stat, color = "method")) + 
@@ -95,7 +103,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     }
   }
   
-  if (dtpext == "_real")
+  if (dtpext == "_real") {
     write.table(charac %>% dplyr::filter(filt == "") %>%
                   dplyr::filter(!is.na(snr)) %>%
                   dplyr::filter(is.finite(snr)) %>%
@@ -103,5 +111,11 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                 file = "export_results/Figure3.csv", row.names = FALSE,
                 col.names = TRUE, sep = ",", quote = FALSE)
 
+    pdf(paste0(figdir, "/de_characteristics_for_slides",
+               dtpext, "_snr.pdf"), width = 10, height = 6)
+    print(plots[["snr_bystat__sub"]] + theme(strip.text = element_text(size = 15)))
+    dev.off()
+  }
+  
   charac
 }

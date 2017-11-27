@@ -96,6 +96,15 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   print(p)
   dev.off()
   
+  pdf(paste0(figdir, "/truefpr_final", dtpext, "_byds.pdf"), width = 12, height = 18)
+  p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dataset, ncol = 1) + 
+                   ggtitle("Without filtering") + scale_y_sqrt(), 
+                 plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dataset, ncol = 1) + 
+                   ggtitle("After filtering") + scale_y_sqrt(),
+                 labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
+  print(p)
+  dev.off()
+  
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
   p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dtype, ncol = 1) + 
                    ggtitle("Without filtering") + scale_y_sqrt(), 
@@ -105,11 +114,20 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   print(p)
   dev.off()
   
-  if (dtpext == "_real")
+  if (dtpext == "_real") {
     write.table(truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR) %>%
                   dplyr::mutate(dataset = gsub("mock", "null", dataset)), 
                 file = "export_results/Figure2.csv", 
                 row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
+    
+    pdf(paste0(figdir, "/truefpr_for_slides_filt", dtpext, ".pdf"), width = 8, height = 4.8)
+    print(plots$truefpr_sep_TPM_1_25p + scale_y_sqrt() + ggtitle(""))
+    dev.off()
+    
+    pdf(paste0(figdir, "/truefpr_for_slides", dtpext, "_bydtype_filt.pdf"), width = 8, height = 5.6)
+    print(plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dtype, ncol = 1) + ggtitle("") + scale_y_sqrt())
+    dev.off()
+  }
   
   truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR)
 }
