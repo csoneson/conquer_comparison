@@ -296,7 +296,9 @@ complex <- data.frame(ComplexDesign = c(voomlimma = "good", Wilcoxon = "bad",
                                         SCDE = "bad", SeuratBimod = "bad",
                                         SeuratBimodIsExpr2 = "bad",
                                         monoclecount = "good", 
-                                        edgeRQLFDetRate = "good"),
+                                        edgeRQLFDetRate = "good",
+                                        zinbwaveedgeR = "good", zinbwaveDESeq2 = "good",
+                                        DESeq2betapFALSE = "good", DESeq2LRT = "good"),
                       stringsAsFactors = FALSE) %>%
   tibble::rownames_to_column(var = "method")
 
@@ -312,7 +314,7 @@ allperf <- dplyr::full_join(fdrcontrol, power) %>%
   dplyr::full_join(speed) %>%
   dplyr::full_join(bias) %>%
   dplyr::full_join(consist) %>%
-  dplyr::full_join(complex) %>%
+  dplyr::left_join(complex) %>%
   dplyr::left_join(failurerate) %>%
   dplyr::mutate(BiasDEG = replace(BiasDEG, is.na(BiasDEG), "good"))
 
@@ -335,11 +337,13 @@ write.table(cbind(method = rownames(allperf), allperf),
             file = "export_results/Figure6.csv", row.names = FALSE, col.names = TRUE, 
             sep = ",", quote = FALSE)
 
-pdf(gsub("rds$", "pdf", outrds), width = 12, height = 8)
+pdf(gsub("rds$", "pdf", outrds), width = 6, height = 8)
 pheatmap(allperf, cluster_rows = FALSE, cluster_cols = FALSE,
-         color = c("#E8601C", "#F6C141", "#90C987"), breaks = c(-0.5, 0.5, 1.5, 2.5),
+         color = c("#D55E00", "#F0E442", "#56B4E9"), 
+         #color = c("#E8601C", "#F6C141", "#90C987"), 
+         breaks = c(-0.5, 0.5, 1.5, 2.5),
          scale = "none", legend_breaks = c(0, 1, 2),
-         legend_labels = c("poor", "intermediate", "good"), fontsize = 14,
+         legend_labels = c("poor", "intermediate", "good"), fontsize = 11,
          gaps_col = seq_len(ncol(allperf)),
          gaps_row = seq_len(nrow(allperf)))
 dev.off()

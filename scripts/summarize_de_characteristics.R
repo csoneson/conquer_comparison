@@ -32,7 +32,8 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     }))
   })) %>% dplyr::left_join(dstypes, by = "dataset") %>%
     dplyr::mutate(dataset = gsub("mock", "null", dataset)) %>%
-    dplyr::filter(charac %in% c("cvcpm", "fraczero", "log2_avecpm", "log2_varcpm", "asinh_nb_minus_zinb_aic")) %>%
+    dplyr::filter(charac %in% c("cvcpm", "fraczero", "log2_avecpm", 
+                                "log2_varcpm", "asinh_nb_minus_zinb_aic")) %>%
     tidyr::separate(Var2, into = c("method", "ncells", "repl"), sep = "\\.") %>%
     dplyr::mutate(charac = charname[charac]) %>%
     dplyr::mutate(method = gsub(paste(exts, collapse = "|"), "", method)) %>%
@@ -60,6 +61,23 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(stat, "_bystat_", f)]] <- p
       print(p)
       
+      ## With n indicated
+      x0 <- x %>% dplyr::filter(!(charac == "arcsinh(AIC[NB]-AIC[ZINB])")) %>%
+        dplyr::filter(!is.na(stat))
+      p <- x0 %>% ggplot(aes_string(x = "method", y = stat, color = "method")) + 
+        gglayers + geom_boxplot(outlier.size = -1) + 
+        geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
+        facet_wrap(~ charac, scales = "fixed") + xlab("") + ylab(statname) + 
+        ggtitle(f) + stat_summary(fun.data = function(x) {
+          return(data.frame(y = max(x0[[stat]]),
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90) + 
+        expand_limits(y = c(min(x0[[stat]]), 1.25*max(x0[[stat]]))) + 
+        geom_hline(yintercept = max(x0[[stat]]), linetype = "dashed")
+      plots[[paste0(stat, "_bystat_", f, "_withN")]] <- p
+      print(p)
+      
       ## Just a subset of the characteristics
       plots[[paste0(stat, "_bystat_", f, "_sub")]] <- 
         x %>% dplyr::filter(charac %in% c("log2(average CPM)", "Fraction zeros")) %>% 
@@ -85,6 +103,22 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
         ylab(statname) + ggtitle(f)
       plots[[paste0(stat, "_bymethod_", f)]] <- p
       print(p)
+      
+      ## With n indicated
+      x0 <- x %>% dplyr::filter(!(charac == "arcsinh(AIC[NB]-AIC[ZINB])")) %>%
+        dplyr::filter(!is.na(stat))
+      p <- x0 %>% ggplot(aes_string(x = "charac", y = stat, color = "method")) + 
+        gglayers + geom_point(position = position_jitter(width = 0.2), alpha = 0.5) +  
+        facet_wrap(~ method, scales = "fixed") + ylab(statname) + ggtitle(f) + 
+        stat_summary(fun.data = function(x) {
+          return(data.frame(y = max(x0[["snr"]]),
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90) + 
+        expand_limits(y = 1.75*max(x0[[stat]])) + 
+        geom_hline(yintercept = max(x0[[stat]]), linetype = "dashed")
+      plots[[paste0(stat, "_bymethod_", f, "_withN")]] <- p
+      print(p)
     }
   }
   dev.off()
@@ -94,12 +128,12 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
     for (stat in c("snr")) {
       pdf(paste0(figdir, "/de_characteristics_final", ifelse(f == "", f, paste0("_", f)),
                  dtpext, "_", stat, ".pdf"), width = 10, height = 7)
-      print(plots[[paste0(stat, "_bystat_", f)]])
+      print(plots[[paste0(stat, "_bystat_", f, "_withN")]])
       dev.off()
       
       pdf(paste0(figdir, "/de_characteristics_final", ifelse(f == "", f, paste0("_", f)),
                  dtpext, "_", stat, "_bymethod.pdf"), width = 10, height = 10)
-      print(plots[[paste0(stat, "_bymethod_", f)]])
+      print(plots[[paste0(stat, "_bymethod_", f, "_withN")]])
       dev.off()
     }
   }

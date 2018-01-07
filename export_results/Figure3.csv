@@ -14,6 +14,7 @@ monoclecensus,GSE45719null,full-length,,24,1,Fraction zeros,-0.0173481601948488
 monocle,GSE45719null,full-length,,24,1,Fraction zeros,0.277620770443786
 monoclecount,GSE45719null,full-length,,24,1,Fraction zeros,0.749386662320462
 edgeRQLFDetRate,GSE45719null,full-length,,24,1,Fraction zeros,0.799021290642278
+DESeq2betapFALSE,GSE45719null,full-length,,24,1,Fraction zeros,-0.070128478819282
 DEsingle,GSE45719null,full-length,,24,1,Fraction zeros,-0.497684860200715
 BPSC,GSE45719null,full-length,,24,1,Fraction zeros,0.375772279778581
 MASTcpm,GSE45719null,full-length,,24,1,Fraction zeros,0.958430483910791
@@ -35,6 +36,7 @@ monoclecensus,GSE45719null,full-length,,24,1,log2(average CPM),0.817054534060245
 monocle,GSE45719null,full-length,,24,1,log2(average CPM),0.0108956613300646
 monoclecount,GSE45719null,full-length,,24,1,log2(average CPM),-0.114946485734634
 edgeRQLFDetRate,GSE45719null,full-length,,24,1,log2(average CPM),-0.318233136386678
+DESeq2betapFALSE,GSE45719null,full-length,,24,1,log2(average CPM),0.319685893035838
 DEsingle,GSE45719null,full-length,,24,1,log2(average CPM),0.444031144950689
 BPSC,GSE45719null,full-length,,24,1,log2(average CPM),0.165612427879155
 MASTcpm,GSE45719null,full-length,,24,1,log2(average CPM),-0.105112999968411
@@ -56,6 +58,7 @@ monoclecensus,GSE45719null,full-length,,24,1,log2(variance(CPM)),1.1250193379889
 monocle,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.0690137638507998
 monoclecount,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.0789435947144285
 edgeRQLFDetRate,GSE45719null,full-length,,24,1,log2(variance(CPM)),-0.154135331578335
+DESeq2betapFALSE,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.417211419905469
 DEsingle,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.499294209806971
 BPSC,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.331368888725769
 MASTcpm,GSE45719null,full-length,,24,1,log2(variance(CPM)),0.105602773222293
@@ -77,6 +80,7 @@ monoclecensus,GSE45719null,full-length,,24,1,CV(CPM),0.759534588482278
 monocle,GSE45719null,full-length,,24,1,CV(CPM),0.108350469775293
 monoclecount,GSE45719null,full-length,,24,1,CV(CPM),1.03626267789327
 edgeRQLFDetRate,GSE45719null,full-length,,24,1,CV(CPM),0.896524048910538
+DESeq2betapFALSE,GSE45719null,full-length,,24,1,CV(CPM),0.108801277131698
 DEsingle,GSE45719null,full-length,,24,1,CV(CPM),-0.0419460423284972
 BPSC,GSE45719null,full-length,,24,1,CV(CPM),0.548557739865975
 MASTcpm,GSE45719null,full-length,,24,1,CV(CPM),0.902363221764951
@@ -96,6 +100,7 @@ SeuratTobit,GSE45719null,full-length,,12,1,Fraction zeros,0.0428345568975345
 monocle,GSE45719null,full-length,,12,1,Fraction zeros,0.211784089512889
 metagenomeSeq,GSE45719null,full-length,,12,1,Fraction zeros,0.318043566403548
 monoclecount,GSE45719null,full-length,,12,1,Fraction zeros,0.725158053717126
+DESeq2betapFALSE,GSE45719null,full-length,,12,1,Fraction zeros,-0.0299269780889669
 DEsingle,GSE45719null,full-length,,12,1,Fraction zeros,-0.579927462995348
 BPSC,GSE45719null,full-length,,12,1,Fraction zeros,0.0831340762140738
 MASTcpmDetRate,GSE45719null,full-length,,12,1,Fraction zeros,0.64037578617297
@@ -112,6 +117,7 @@ SeuratTobit,GSE45719null,full-length,,12,1,log2(average CPM),0.0764588109836948
 monocle,GSE45719null,full-length,,12,1,log2(average CPM),0.0933069677920226
 metagenomeSeq,GSE45719null,full-length,,12,1,log2(average CPM),0.215925511398732
 monoclecount,GSE45719null,full-length,,12,1,log2(average CPM),-0.122794088578205
+DESeq2betapFALSE,GSE45719null,full-length,,12,1,log2(average CPM),0.341421793591727
 DEsingle,GSE45719null,full-length,,12,1,log2(average CPM),0.387200812967495
 BPSC,GSE45719null,full-length,,12,1,log2(average CPM),0.310185777118588
 MASTcpmDetRate,GSE45719null,full-length,,12,1,log2(average CPM),0.108690433865974
@@ -128,6 +134,7 @@ SeuratTobit,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.046785582706877
 monocle,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.148663459743339
 metagenomeSeq,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.320978634882498
 monoclecount,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.0693474749897597
+DESeq2betapFALSE,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.450904279827982
 DEsingle,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.487197144454114
 BPSC,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.424825107034387
 MASTcpmDetRate,GSE45719null,full-length,,12,1,log2(variance(CPM)),0.26801000209661
@@ -144,6 +151,7 @@ SeuratTobit,GSE45719null,full-length,,12,1,CV(CPM),-0.244730034794168
 monocle,GSE45719null,full-length,,12,1,CV(CPM),0.0363817203016145
 metagenomeSeq,GSE45719null,full-length,,12,1,CV(CPM),0.153744976306053
 monoclecount,GSE45719null,full-length,,12,1,CV(CPM),0.976038638871101
+DESeq2betapFALSE,GSE45719null,full-length,,12,1,CV(CPM),0.110083617569285
 DEsingle,GSE45719null,full-length,,12,1,CV(CPM),0.0688684080773919
 BPSC,GSE45719null,full-length,,12,1,CV(CPM),0.214395330868789
 MASTcpmDetRate,GSE45719null,full-length,,12,1,CV(CPM),0.375573197111098
@@ -159,6 +167,7 @@ SeuratTobit,GSE45719null,full-length,,12,2,Fraction zeros,0.524466154756073
 monoclecensus,GSE45719null,full-length,,12,2,Fraction zeros,-0.000273558847303105
 monocle,GSE45719null,full-length,,12,2,Fraction zeros,0.0563335339666214
 monoclecount,GSE45719null,full-length,,12,2,Fraction zeros,0.727078733680546
+DESeq2betapFALSE,GSE45719null,full-length,,12,2,Fraction zeros,0.0250458772738966
 DEsingle,GSE45719null,full-length,,12,2,Fraction zeros,-0.523742733050625
 BPSC,GSE45719null,full-length,,12,2,Fraction zeros,0.0486672239464136
 MASTcpmDetRate,GSE45719null,full-length,,12,2,Fraction zeros,0.264719221585756
@@ -175,6 +184,7 @@ SeuratTobit,GSE45719null,full-length,,12,2,log2(average CPM),0.155769691815684
 monoclecensus,GSE45719null,full-length,,12,2,log2(average CPM),0.912150659903874
 monocle,GSE45719null,full-length,,12,2,log2(average CPM),0.198068215850914
 monoclecount,GSE45719null,full-length,,12,2,log2(average CPM),-0.0568026141982274
+DESeq2betapFALSE,GSE45719null,full-length,,12,2,log2(average CPM),0.407385535536457
 DEsingle,GSE45719null,full-length,,12,2,log2(average CPM),0.555484390193426
 BPSC,GSE45719null,full-length,,12,2,log2(average CPM),0.447091405517844
 MASTcpmDetRate,GSE45719null,full-length,,12,2,log2(average CPM),0.255910662188914
@@ -191,6 +201,7 @@ SeuratTobit,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.226830946661056
 monoclecensus,GSE45719null,full-length,,12,2,log2(variance(CPM)),1.19356688522507
 monocle,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.213117528212435
 monoclecount,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.115825371443321
+DESeq2betapFALSE,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.51751585399474
 DEsingle,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.619729460700648
 BPSC,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.587439881886924
 MASTcpmDetRate,GSE45719null,full-length,,12,2,log2(variance(CPM)),0.393266756973753
@@ -207,6 +218,7 @@ SeuratTobit,GSE45719null,full-length,,12,2,CV(CPM),0.0331383188897139
 monoclecensus,GSE45719null,full-length,,12,2,CV(CPM),0.898553739295053
 monocle,GSE45719null,full-length,,12,2,CV(CPM),-0.107621111239954
 monoclecount,GSE45719null,full-length,,12,2,CV(CPM),1.04785145990619
+DESeq2betapFALSE,GSE45719null,full-length,,12,2,CV(CPM),0.211028468125101
 DEsingle,GSE45719null,full-length,,12,2,CV(CPM),-0.0290494098558823
 BPSC,GSE45719null,full-length,,12,2,CV(CPM),0.407745169250411
 MASTcpmDetRate,GSE45719null,full-length,,12,2,CV(CPM),0.299554273649192
@@ -223,6 +235,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,3,Fraction zeros,-0.1502424651052
 SeuratTobit,GSE45719null,full-length,,12,3,Fraction zeros,0.0395593367337251
 monoclecensus,GSE45719null,full-length,,12,3,Fraction zeros,-0.0170137308634464
 monocle,GSE45719null,full-length,,12,3,Fraction zeros,0.0206983713254157
+DESeq2betapFALSE,GSE45719null,full-length,,12,3,Fraction zeros,0.06161599152403
 DEsingle,GSE45719null,full-length,,12,3,Fraction zeros,-0.522189223122017
 BPSC,GSE45719null,full-length,,12,3,Fraction zeros,0.112623176099789
 MASTcpm,GSE45719null,full-length,,12,3,Fraction zeros,0.643282407184507
@@ -241,6 +254,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,3,log2(average CPM),0.13077026728
 SeuratTobit,GSE45719null,full-length,,12,3,log2(average CPM),0.274238986902799
 monoclecensus,GSE45719null,full-length,,12,3,log2(average CPM),0.902635730275128
 monocle,GSE45719null,full-length,,12,3,log2(average CPM),0.264956030004861
+DESeq2betapFALSE,GSE45719null,full-length,,12,3,log2(average CPM),0.378434294701544
 DEsingle,GSE45719null,full-length,,12,3,log2(average CPM),0.569214336431031
 BPSC,GSE45719null,full-length,,12,3,log2(average CPM),0.396078461811884
 MASTcpm,GSE45719null,full-length,,12,3,log2(average CPM),-0.055690259351517
@@ -259,6 +273,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.201090173
 SeuratTobit,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.328335681610245
 monoclecensus,GSE45719null,full-length,,12,3,log2(variance(CPM)),1.17530988227217
 monocle,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.293125501245695
+DESeq2betapFALSE,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.501191782053049
 DEsingle,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.64276999647227
 BPSC,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.538138950994457
 MASTcpm,GSE45719null,full-length,,12,3,log2(variance(CPM)),0.113385073024299
@@ -277,6 +292,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,3,CV(CPM),0.214134770262375
 SeuratTobit,GSE45719null,full-length,,12,3,CV(CPM),-0.0874169976005642
 monoclecensus,GSE45719null,full-length,,12,3,CV(CPM),0.903188154725237
 monocle,GSE45719null,full-length,,12,3,CV(CPM),-0.0709882012731474
+DESeq2betapFALSE,GSE45719null,full-length,,12,3,CV(CPM),0.261811632360451
 DEsingle,GSE45719null,full-length,,12,3,CV(CPM),0.00492431704607762
 BPSC,GSE45719null,full-length,,12,3,CV(CPM),0.443761617542506
 MASTcpm,GSE45719null,full-length,,12,3,CV(CPM),0.663238525792606
@@ -293,6 +309,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,4,Fraction zeros,-0.1336533228830
 SeuratTobit,GSE45719null,full-length,,12,4,Fraction zeros,0.198739902964735
 monocle,GSE45719null,full-length,,12,4,Fraction zeros,0.191084417100216
 monoclecount,GSE45719null,full-length,,12,4,Fraction zeros,0.722236792199017
+DESeq2betapFALSE,GSE45719null,full-length,,12,4,Fraction zeros,-0.00928666045752716
 DEsingle,GSE45719null,full-length,,12,4,Fraction zeros,-0.481637213798548
 BPSC,GSE45719null,full-length,,12,4,Fraction zeros,-0.0266341757174885
 MASTcpm,GSE45719null,full-length,,12,4,Fraction zeros,0.290211368883604
@@ -309,6 +326,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,4,log2(average CPM),0.04533638630
 SeuratTobit,GSE45719null,full-length,,12,4,log2(average CPM),-0.0480613720482923
 monocle,GSE45719null,full-length,,12,4,log2(average CPM),0.109386182901679
 monoclecount,GSE45719null,full-length,,12,4,log2(average CPM),-0.108399882695204
+DESeq2betapFALSE,GSE45719null,full-length,,12,4,log2(average CPM),0.390074377336121
 DEsingle,GSE45719null,full-length,,12,4,log2(average CPM),0.420893258464605
 BPSC,GSE45719null,full-length,,12,4,log2(average CPM),0.385313187654193
 MASTcpm,GSE45719null,full-length,,12,4,log2(average CPM),0.0122643801469816
@@ -325,6 +343,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.104342737
 SeuratTobit,GSE45719null,full-length,,12,4,log2(variance(CPM)),-0.000147438712107581
 monocle,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.157696059897141
 monoclecount,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.0672729829807842
+DESeq2betapFALSE,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.504039151387458
 DEsingle,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.517656564615813
 BPSC,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.535322839492451
 MASTcpm,GSE45719null,full-length,,12,4,log2(variance(CPM)),0.114522805371711
@@ -341,6 +360,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,12,4,CV(CPM),0.138737329939141
 SeuratTobit,GSE45719null,full-length,,12,4,CV(CPM),0.024599266599254
 monocle,GSE45719null,full-length,,12,4,CV(CPM),0.0247773934765406
 monoclecount,GSE45719null,full-length,,12,4,CV(CPM),0.973787386874902
+DESeq2betapFALSE,GSE45719null,full-length,,12,4,CV(CPM),0.146719982445882
 DEsingle,GSE45719null,full-length,,12,4,CV(CPM),0.0612060109246749
 BPSC,GSE45719null,full-length,,12,4,CV(CPM),0.253077601336718
 MASTcpm,GSE45719null,full-length,,12,4,CV(CPM),0.296957722364303
@@ -358,6 +378,7 @@ SeuratBimod,GSE45719null,full-length,,12,5,Fraction zeros,-0.342329435719832
 SeuratBimodnofilt,GSE45719null,full-length,,12,5,Fraction zeros,-0.157160554043958
 monoclecensus,GSE45719null,full-length,,12,5,Fraction zeros,-0.0397816712617578
 monocle,GSE45719null,full-length,,12,5,Fraction zeros,0.0860711889693422
+DESeq2betapFALSE,GSE45719null,full-length,,12,5,Fraction zeros,0.138669768935848
 DEsingle,GSE45719null,full-length,,12,5,Fraction zeros,-0.568496643044281
 BPSC,GSE45719null,full-length,,12,5,Fraction zeros,0.164078434308489
 MASTcpmDetRate,GSE45719null,full-length,,12,5,Fraction zeros,0.306006476395923
@@ -373,6 +394,7 @@ SeuratBimod,GSE45719null,full-length,,12,5,log2(average CPM),0.979856825997166
 SeuratBimodnofilt,GSE45719null,full-length,,12,5,log2(average CPM),0.130249744815968
 monoclecensus,GSE45719null,full-length,,12,5,log2(average CPM),0.930992130444453
 monocle,GSE45719null,full-length,,12,5,log2(average CPM),0.194618908298484
+DESeq2betapFALSE,GSE45719null,full-length,,12,5,log2(average CPM),0.267820829703956
 DEsingle,GSE45719null,full-length,,12,5,log2(average CPM),0.611226832601823
 BPSC,GSE45719null,full-length,,12,5,log2(average CPM),0.369809034658335
 MASTcpmDetRate,GSE45719null,full-length,,12,5,log2(average CPM),0.184353988692231
@@ -388,6 +410,7 @@ SeuratBimod,GSE45719null,full-length,,12,5,log2(variance(CPM)),1.16272691155028
 SeuratBimodnofilt,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.200256617523787
 monoclecensus,GSE45719null,full-length,,12,5,log2(variance(CPM)),1.22568978709176
 monocle,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.214890146191742
+DESeq2betapFALSE,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.379933764204888
 DEsingle,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.679487724992324
 BPSC,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.517948265005037
 MASTcpmDetRate,GSE45719null,full-length,,12,5,log2(variance(CPM)),0.360466429394206
@@ -403,6 +426,7 @@ SeuratBimod,GSE45719null,full-length,,12,5,CV(CPM),0.363962213379708
 SeuratBimodnofilt,GSE45719null,full-length,,12,5,CV(CPM),0.203447205773683
 monoclecensus,GSE45719null,full-length,,12,5,CV(CPM),0.924945759146125
 monocle,GSE45719null,full-length,,12,5,CV(CPM),-0.0896967104330397
+DESeq2betapFALSE,GSE45719null,full-length,,12,5,CV(CPM),0.263762023711207
 DEsingle,GSE45719null,full-length,,12,5,CV(CPM),-0.0454323675787322
 BPSC,GSE45719null,full-length,,12,5,CV(CPM),0.444458872436416
 MASTcpmDetRate,GSE45719null,full-length,,12,5,CV(CPM),0.401268058492616
@@ -414,6 +438,7 @@ SeuratBimod,GSE45719null,full-length,,6,1,Fraction zeros,-0.528192989083011
 SeuratBimodnofilt,GSE45719null,full-length,,6,1,Fraction zeros,-0.213645846325429
 monocle,GSE45719null,full-length,,6,1,Fraction zeros,-0.0371631839298782
 metagenomeSeq,GSE45719null,full-length,,6,1,Fraction zeros,0.200009147326034
+DESeq2betapFALSE,GSE45719null,full-length,,6,1,Fraction zeros,0.103744083686723
 DEsingle,GSE45719null,full-length,,6,1,Fraction zeros,-0.47897750615869
 MASTcpm,GSE45719null,full-length,,6,1,Fraction zeros,0.0638127758137094
 MASTcpmDetRate,GSE45719null,full-length,,6,1,Fraction zeros,-0.0378052072571623
@@ -426,6 +451,7 @@ SeuratBimod,GSE45719null,full-length,,6,1,log2(average CPM),0.83039499439296
 SeuratBimodnofilt,GSE45719null,full-length,,6,1,log2(average CPM),0.108384317098732
 monocle,GSE45719null,full-length,,6,1,log2(average CPM),0.289926824545463
 metagenomeSeq,GSE45719null,full-length,,6,1,log2(average CPM),0.403791877711318
+DESeq2betapFALSE,GSE45719null,full-length,,6,1,log2(average CPM),0.368016138652188
 DEsingle,GSE45719null,full-length,,6,1,log2(average CPM),0.427256941329246
 MASTcpm,GSE45719null,full-length,,6,1,log2(average CPM),0.173576214491079
 MASTcpmDetRate,GSE45719null,full-length,,6,1,log2(average CPM),0.303006231219474
@@ -438,6 +464,7 @@ SeuratBimod,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.987581767049359
 SeuratBimodnofilt,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.184774117292808
 monocle,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.311957235546724
 metagenomeSeq,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.518449148393537
+DESeq2betapFALSE,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.487435646435219
 DEsingle,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.471061381547501
 MASTcpm,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.310512191163325
 MASTcpmDetRate,GSE45719null,full-length,,6,1,log2(variance(CPM)),0.418158305083573
@@ -450,6 +477,7 @@ SeuratBimod,GSE45719null,full-length,,6,1,CV(CPM),0.117799873055279
 SeuratBimodnofilt,GSE45719null,full-length,,6,1,CV(CPM),0.248097682092233
 monocle,GSE45719null,full-length,,6,1,CV(CPM),-0.15550247386319
 metagenomeSeq,GSE45719null,full-length,,6,1,CV(CPM),0.168791944339899
+DESeq2betapFALSE,GSE45719null,full-length,,6,1,CV(CPM),0.242619424198687
 DEsingle,GSE45719null,full-length,,6,1,CV(CPM),0.0920353468226946
 MASTcpm,GSE45719null,full-length,,6,1,CV(CPM),0.309508804157858
 MASTcpmDetRate,GSE45719null,full-length,,6,1,CV(CPM),0.149011694038205
@@ -463,6 +491,7 @@ SeuratTobit,GSE45719null,full-length,,6,2,Fraction zeros,0.367826944558595
 monoclecensus,GSE45719null,full-length,,6,2,Fraction zeros,0.0593792284082331
 monocle,GSE45719null,full-length,,6,2,Fraction zeros,-0.197503408177224
 metagenomeSeq,GSE45719null,full-length,,6,2,Fraction zeros,0.0365538392281723
+DESeq2betapFALSE,GSE45719null,full-length,,6,2,Fraction zeros,0.106979657280877
 DEsingle,GSE45719null,full-length,,6,2,Fraction zeros,-0.351847625105916
 MASTcpm,GSE45719null,full-length,,6,2,Fraction zeros,0.238261054316388
 MASTcpmDetRate,GSE45719null,full-length,,6,2,Fraction zeros,0.0528476945494307
@@ -475,6 +504,7 @@ SeuratTobit,GSE45719null,full-length,,6,2,log2(average CPM),0.192547596293651
 monoclecensus,GSE45719null,full-length,,6,2,log2(average CPM),1.02224576961511
 monocle,GSE45719null,full-length,,6,2,log2(average CPM),0.431031195748614
 metagenomeSeq,GSE45719null,full-length,,6,2,log2(average CPM),0.494407477717485
+DESeq2betapFALSE,GSE45719null,full-length,,6,2,log2(average CPM),0.32481690990661
 DEsingle,GSE45719null,full-length,,6,2,log2(average CPM),0.666128179864988
 MASTcpm,GSE45719null,full-length,,6,2,log2(average CPM),0.240335816070899
 MASTcpmDetRate,GSE45719null,full-length,,6,2,log2(average CPM),0.346049240665868
@@ -487,6 +517,7 @@ SeuratTobit,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.219988561311826
 monoclecensus,GSE45719null,full-length,,6,2,log2(variance(CPM)),1.25225531878983
 monocle,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.410905242070531
 metagenomeSeq,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.585881936056444
+DESeq2betapFALSE,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.424627605136064
 DEsingle,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.729092446905683
 MASTcpm,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.375750849613526
 MASTcpmDetRate,GSE45719null,full-length,,6,2,log2(variance(CPM)),0.444937706496374
@@ -499,6 +530,7 @@ SeuratTobit,GSE45719null,full-length,,6,2,CV(CPM),-0.173967282162913
 monoclecensus,GSE45719null,full-length,,6,2,CV(CPM),0.933667869386617
 monocle,GSE45719null,full-length,,6,2,CV(CPM),-0.316592449515231
 metagenomeSeq,GSE45719null,full-length,,6,2,CV(CPM),0.112939803891459
+DESeq2betapFALSE,GSE45719null,full-length,,6,2,CV(CPM),0.248098999521612
 DEsingle,GSE45719null,full-length,,6,2,CV(CPM),-0.0080143393836208
 MASTcpm,GSE45719null,full-length,,6,2,CV(CPM),0.774431199631331
 MASTcpmDetRate,GSE45719null,full-length,,6,2,CV(CPM),0.135355168532598
@@ -514,6 +546,7 @@ SeuratTobit,GSE45719null,full-length,,6,3,Fraction zeros,0.11449674584696
 monoclecensus,GSE45719null,full-length,,6,3,Fraction zeros,0.0291028369063088
 monocle,GSE45719null,full-length,,6,3,Fraction zeros,-0.216432248353224
 metagenomeSeq,GSE45719null,full-length,,6,3,Fraction zeros,0.195615780857582
+DESeq2betapFALSE,GSE45719null,full-length,,6,3,Fraction zeros,0.0936070770726828
 DEsingle,GSE45719null,full-length,,6,3,Fraction zeros,-0.619911625311792
 MASTcpm,GSE45719null,full-length,,6,3,Fraction zeros,-0.00762851687405744
 MASTcpmDetRate,GSE45719null,full-length,,6,3,Fraction zeros,-0.0255832327356508
@@ -528,6 +561,7 @@ SeuratTobit,GSE45719null,full-length,,6,3,log2(average CPM),0.299538491714121
 monoclecensus,GSE45719null,full-length,,6,3,log2(average CPM),1.00665749321972
 monocle,GSE45719null,full-length,,6,3,log2(average CPM),0.463735390332294
 metagenomeSeq,GSE45719null,full-length,,6,3,log2(average CPM),0.24230581510488
+DESeq2betapFALSE,GSE45719null,full-length,,6,3,log2(average CPM),0.287937679590492
 DEsingle,GSE45719null,full-length,,6,3,log2(average CPM),0.790429595659677
 MASTcpm,GSE45719null,full-length,,6,3,log2(average CPM),0.525733486416266
 MASTcpmDetRate,GSE45719null,full-length,,6,3,log2(average CPM),0.427122302401144
@@ -542,6 +576,7 @@ SeuratTobit,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.310946848755365
 monoclecensus,GSE45719null,full-length,,6,3,log2(variance(CPM)),1.24270410827558
 monocle,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.446233415333265
 metagenomeSeq,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.335222092528719
+DESeq2betapFALSE,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.385670942087423
 DEsingle,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.863526792909633
 MASTcpm,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.583027090372014
 MASTcpmDetRate,GSE45719null,full-length,,6,3,log2(variance(CPM)),0.482970323806745
@@ -556,6 +591,7 @@ SeuratTobit,GSE45719null,full-length,,6,3,CV(CPM),-0.310623369446514
 monoclecensus,GSE45719null,full-length,,6,3,CV(CPM),0.856766233587492
 monocle,GSE45719null,full-length,,6,3,CV(CPM),-0.355128580137424
 metagenomeSeq,GSE45719null,full-length,,6,3,CV(CPM),0.186190714561517
+DESeq2betapFALSE,GSE45719null,full-length,,6,3,CV(CPM),0.208210420152835
 DEsingle,GSE45719null,full-length,,6,3,CV(CPM),0.124713237612152
 MASTcpm,GSE45719null,full-length,,6,3,CV(CPM),0.116747249985842
 MASTcpmDetRate,GSE45719null,full-length,,6,3,CV(CPM),0.0833925045793222
@@ -566,6 +602,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,6,4,Fraction zeros,-0.18125796337255
 SeuratTobit,GSE45719null,full-length,,6,4,Fraction zeros,0.412563348498044
 monocle,GSE45719null,full-length,,6,4,Fraction zeros,-0.013885529995007
 metagenomeSeq,GSE45719null,full-length,,6,4,Fraction zeros,0.219527044111495
+DESeq2betapFALSE,GSE45719null,full-length,,6,4,Fraction zeros,0.0990097615407326
 DEsingle,GSE45719null,full-length,,6,4,Fraction zeros,-0.33416512614679
 MASTcpmDetRate,GSE45719null,full-length,,6,4,Fraction zeros,0.0842014484361652
 DESeq2,GSE45719null,full-length,,6,4,log2(average CPM),0.384655202871231
@@ -575,6 +612,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,6,4,log2(average CPM),0.083206196576
 SeuratTobit,GSE45719null,full-length,,6,4,log2(average CPM),0.197160108527376
 monocle,GSE45719null,full-length,,6,4,log2(average CPM),0.257303556238921
 metagenomeSeq,GSE45719null,full-length,,6,4,log2(average CPM),0.203301599064624
+DESeq2betapFALSE,GSE45719null,full-length,,6,4,log2(average CPM),0.303006917436681
 DEsingle,GSE45719null,full-length,,6,4,log2(average CPM),0.460572829260788
 MASTcpmDetRate,GSE45719null,full-length,,6,4,log2(average CPM),0.199682898136304
 DESeq2,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.477564672583326
@@ -584,6 +622,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.1640945834
 SeuratTobit,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.237876738650193
 monocle,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.285568455065101
 metagenomeSeq,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.310869083324891
+DESeq2betapFALSE,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.435786154551695
 DEsingle,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.55960113133973
 MASTcpmDetRate,GSE45719null,full-length,,6,4,log2(variance(CPM)),0.250243708660249
 DESeq2,GSE45719null,full-length,,6,4,CV(CPM),0.121331602752708
@@ -593,6 +632,7 @@ SeuratBimodnofilt,GSE45719null,full-length,,6,4,CV(CPM),0.267900048439234
 SeuratTobit,GSE45719null,full-length,,6,4,CV(CPM),-0.13058135161651
 monocle,GSE45719null,full-length,,6,4,CV(CPM),-0.13084060808177
 metagenomeSeq,GSE45719null,full-length,,6,4,CV(CPM),0.282849417980446
+DESeq2betapFALSE,GSE45719null,full-length,,6,4,CV(CPM),0.318109256464118
 DEsingle,GSE45719null,full-length,,6,4,CV(CPM),-0.0667291078388853
 MASTcpmDetRate,GSE45719null,full-length,,6,4,CV(CPM),-0.0717192741265817
 edgeRLRT,GSE45719null,full-length,,6,5,Fraction zeros,0.0104162302397885
@@ -606,6 +646,7 @@ SeuratTobit,GSE45719null,full-length,,6,5,Fraction zeros,0.0244067707101898
 monocle,GSE45719null,full-length,,6,5,Fraction zeros,-0.00519148727347226
 metagenomeSeq,GSE45719null,full-length,,6,5,Fraction zeros,0.145099914730733
 monoclecount,GSE45719null,full-length,,6,5,Fraction zeros,0.679071261881778
+DESeq2betapFALSE,GSE45719null,full-length,,6,5,Fraction zeros,0.162637226007986
 DEsingle,GSE45719null,full-length,,6,5,Fraction zeros,-1.11197950195906
 MASTcpm,GSE45719null,full-length,,6,5,Fraction zeros,-0.00087099796095147
 MASTcpmDetRate,GSE45719null,full-length,,6,5,Fraction zeros,0.00111579458502158
@@ -622,6 +663,7 @@ SeuratTobit,GSE45719null,full-length,,6,5,log2(average CPM),0.243539417392008
 monocle,GSE45719null,full-length,,6,5,log2(average CPM),0.227301867382183
 metagenomeSeq,GSE45719null,full-length,,6,5,log2(average CPM),0.327061842176434
 monoclecount,GSE45719null,full-length,,6,5,log2(average CPM),-0.0720979254196919
+DESeq2betapFALSE,GSE45719null,full-length,,6,5,log2(average CPM),0.282053701356838
 DEsingle,GSE45719null,full-length,,6,5,log2(average CPM),0.770279093190204
 MASTcpm,GSE45719null,full-length,,6,5,log2(average CPM),-0.0843582761292845
 MASTcpmDetRate,GSE45719null,full-length,,6,5,log2(average CPM),0.209240327911548
@@ -638,6 +680,7 @@ SeuratTobit,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.276543241914861
 monocle,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.260425836189427
 metagenomeSeq,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.450665927579727
 monoclecount,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.112842178568765
+DESeq2betapFALSE,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.428285394491946
 DEsingle,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.83105622524305
 MASTcpm,GSE45719null,full-length,,6,5,log2(variance(CPM)),-0.00189644790731111
 MASTcpmDetRate,GSE45719null,full-length,,6,5,log2(variance(CPM)),0.297403298753343
@@ -654,6 +697,7 @@ SeuratTobit,GSE45719null,full-length,,6,5,CV(CPM),-0.198698126277719
 monocle,GSE45719null,full-length,,6,5,CV(CPM),-0.111646804623949
 metagenomeSeq,GSE45719null,full-length,,6,5,CV(CPM),0.0994384957935906
 monoclecount,GSE45719null,full-length,,6,5,CV(CPM),0.937548677379783
+DESeq2betapFALSE,GSE45719null,full-length,,6,5,CV(CPM),0.266701988303772
 DEsingle,GSE45719null,full-length,,6,5,CV(CPM),-0.215189548436654
 MASTcpm,GSE45719null,full-length,,6,5,CV(CPM),0.229928360067583
 MASTcpmDetRate,GSE45719null,full-length,,6,5,CV(CPM),0.0773238666033539
@@ -675,6 +719,7 @@ monoclecensus,GSE74596null,full-length,,22,1,Fraction zeros,-0.211398598580221
 monocle,GSE74596null,full-length,,22,1,Fraction zeros,-0.019918772606691
 metagenomeSeq,GSE74596null,full-length,,22,1,Fraction zeros,0.236971036779601
 edgeRQLFDetRate,GSE74596null,full-length,,22,1,Fraction zeros,0.366393745857188
+DESeq2betapFALSE,GSE74596null,full-length,,22,1,Fraction zeros,-0.473962522741961
 DEsingle,GSE74596null,full-length,,22,1,Fraction zeros,-0.306049997924774
 BPSC,GSE74596null,full-length,,22,1,Fraction zeros,0.125776166915353
 MASTcpm,GSE74596null,full-length,,22,1,Fraction zeros,0.404888156034767
@@ -697,6 +742,7 @@ monoclecensus,GSE74596null,full-length,,22,1,log2(average CPM),0.780528952943213
 monocle,GSE74596null,full-length,,22,1,log2(average CPM),0.326010090590421
 metagenomeSeq,GSE74596null,full-length,,22,1,log2(average CPM),0.300114036415398
 edgeRQLFDetRate,GSE74596null,full-length,,22,1,log2(average CPM),0.0615489486946949
+DESeq2betapFALSE,GSE74596null,full-length,,22,1,log2(average CPM),0.811844443345982
 DEsingle,GSE74596null,full-length,,22,1,log2(average CPM),0.501100546209894
 BPSC,GSE74596null,full-length,,22,1,log2(average CPM),0.397186274132911
 MASTcpm,GSE74596null,full-length,,22,1,log2(average CPM),0.307923417995071
@@ -719,6 +765,7 @@ monoclecensus,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.8927288190940
 monocle,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.341031831742275
 metagenomeSeq,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.347818413572534
 edgeRQLFDetRate,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.151895666482502
+DESeq2betapFALSE,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.84755910428798
 DEsingle,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.541384083871614
 BPSC,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.505058653524692
 MASTcpm,GSE74596null,full-length,,22,1,log2(variance(CPM)),0.39880762546458
@@ -741,6 +788,7 @@ monoclecensus,GSE74596null,full-length,,22,1,CV(CPM),0.208752468813324
 monocle,GSE74596null,full-length,,22,1,CV(CPM),-0.0971092167232929
 metagenomeSeq,GSE74596null,full-length,,22,1,CV(CPM),0.152747330208268
 edgeRQLFDetRate,GSE74596null,full-length,,22,1,CV(CPM),0.593868306380166
+DESeq2betapFALSE,GSE74596null,full-length,,22,1,CV(CPM),-0.160551211295045
 DEsingle,GSE74596null,full-length,,22,1,CV(CPM),0.121894178376685
 BPSC,GSE74596null,full-length,,22,1,CV(CPM),0.461795469975815
 MASTcpm,GSE74596null,full-length,,22,1,CV(CPM),0.464867807572431
@@ -763,6 +811,7 @@ monoclecensus,GSE74596null,full-length,,12,1,Fraction zeros,-0.328318267629729
 monocle,GSE74596null,full-length,,12,1,Fraction zeros,-0.183649705084133
 metagenomeSeq,GSE74596null,full-length,,12,1,Fraction zeros,0.236880396227049
 edgeRQLFDetRate,GSE74596null,full-length,,12,1,Fraction zeros,0.205541233858226
+DESeq2betapFALSE,GSE74596null,full-length,,12,1,Fraction zeros,-0.579445473404303
 DEsingle,GSE74596null,full-length,,12,1,Fraction zeros,-0.423646078248701
 BPSC,GSE74596null,full-length,,12,1,Fraction zeros,-0.143078245617516
 MASTcpm,GSE74596null,full-length,,12,1,Fraction zeros,0.352058616822692
@@ -785,6 +834,7 @@ monoclecensus,GSE74596null,full-length,,12,1,log2(average CPM),0.908847399890782
 monocle,GSE74596null,full-length,,12,1,log2(average CPM),0.387698696737295
 metagenomeSeq,GSE74596null,full-length,,12,1,log2(average CPM),0.386817280513847
 edgeRQLFDetRate,GSE74596null,full-length,,12,1,log2(average CPM),0.237728089712006
+DESeq2betapFALSE,GSE74596null,full-length,,12,1,log2(average CPM),0.895333045514515
 DEsingle,GSE74596null,full-length,,12,1,log2(average CPM),0.637653161139197
 BPSC,GSE74596null,full-length,,12,1,log2(average CPM),0.647593193296788
 MASTcpm,GSE74596null,full-length,,12,1,log2(average CPM),0.565367179215615
@@ -807,6 +857,7 @@ monoclecensus,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.9935121318889
 monocle,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.384863720771866
 metagenomeSeq,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.424667226155075
 edgeRQLFDetRate,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.306605550289482
+DESeq2betapFALSE,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.926698092324674
 DEsingle,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.703201544285049
 BPSC,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.751713143966265
 MASTcpm,GSE74596null,full-length,,12,1,log2(variance(CPM)),0.666794700036173
@@ -829,6 +880,7 @@ monoclecensus,GSE74596null,full-length,,12,1,CV(CPM),0.128924893862641
 monocle,GSE74596null,full-length,,12,1,CV(CPM),-0.190134360861447
 metagenomeSeq,GSE74596null,full-length,,12,1,CV(CPM),0.0953230137114807
 edgeRQLFDetRate,GSE74596null,full-length,,12,1,CV(CPM),0.424766696012114
+DESeq2betapFALSE,GSE74596null,full-length,,12,1,CV(CPM),-0.168852723550436
 DEsingle,GSE74596null,full-length,,12,1,CV(CPM),0.208882736613008
 BPSC,GSE74596null,full-length,,12,1,CV(CPM),0.376695747274668
 MASTcpm,GSE74596null,full-length,,12,1,CV(CPM),0.530611050487177
@@ -850,6 +902,7 @@ monoclecensus,GSE74596null,full-length,,12,2,Fraction zeros,-0.250315067326198
 monocle,GSE74596null,full-length,,12,2,Fraction zeros,-0.149528110202766
 metagenomeSeq,GSE74596null,full-length,,12,2,Fraction zeros,0.149027021092019
 edgeRQLFDetRate,GSE74596null,full-length,,12,2,Fraction zeros,0.289064516841338
+DESeq2betapFALSE,GSE74596null,full-length,,12,2,Fraction zeros,-0.566081178461936
 DEsingle,GSE74596null,full-length,,12,2,Fraction zeros,-0.454208702669334
 BPSC,GSE74596null,full-length,,12,2,Fraction zeros,-0.148865471414319
 MASTcpm,GSE74596null,full-length,,12,2,Fraction zeros,0.368802551131691
@@ -871,6 +924,7 @@ monoclecensus,GSE74596null,full-length,,12,2,log2(average CPM),0.867773225137073
 monocle,GSE74596null,full-length,,12,2,log2(average CPM),0.3787359311251
 metagenomeSeq,GSE74596null,full-length,,12,2,log2(average CPM),0.775878528709049
 edgeRQLFDetRate,GSE74596null,full-length,,12,2,log2(average CPM),0.133429266627684
+DESeq2betapFALSE,GSE74596null,full-length,,12,2,log2(average CPM),0.882534428623562
 DEsingle,GSE74596null,full-length,,12,2,log2(average CPM),0.60253615549226
 BPSC,GSE74596null,full-length,,12,2,log2(average CPM),0.62410402492929
 MASTcpm,GSE74596null,full-length,,12,2,log2(average CPM),0.466388468481359
@@ -892,6 +946,7 @@ monoclecensus,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.9682172897522
 monocle,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.376270874695404
 metagenomeSeq,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.842394477745948
 edgeRQLFDetRate,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.200865906384657
+DESeq2betapFALSE,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.914249060138052
 DEsingle,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.662630488554116
 BPSC,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.715804100235943
 MASTcpm,GSE74596null,full-length,,12,2,log2(variance(CPM)),0.584589769180159
@@ -913,6 +968,7 @@ monoclecensus,GSE74596null,full-length,,12,2,CV(CPM),0.249647161180217
 monocle,GSE74596null,full-length,,12,2,CV(CPM),-0.16881359621961
 metagenomeSeq,GSE74596null,full-length,,12,2,CV(CPM),0.0637439986337941
 edgeRQLFDetRate,GSE74596null,full-length,,12,2,CV(CPM),0.46923213317611
+DESeq2betapFALSE,GSE74596null,full-length,,12,2,CV(CPM),-0.137306785158864
 DEsingle,GSE74596null,full-length,,12,2,CV(CPM),0.204385893775205
 BPSC,GSE74596null,full-length,,12,2,CV(CPM),0.345650281569701
 MASTcpm,GSE74596null,full-length,,12,2,CV(CPM),0.649083180700759
@@ -935,6 +991,7 @@ monoclecensus,GSE74596null,full-length,,12,3,Fraction zeros,-0.21683785691332
 monocle,GSE74596null,full-length,,12,3,Fraction zeros,-0.202171061062124
 metagenomeSeq,GSE74596null,full-length,,12,3,Fraction zeros,0.0965218196274833
 edgeRQLFDetRate,GSE74596null,full-length,,12,3,Fraction zeros,0.242127161328726
+DESeq2betapFALSE,GSE74596null,full-length,,12,3,Fraction zeros,-0.614450108332658
 DEsingle,GSE74596null,full-length,,12,3,Fraction zeros,-0.465441368919517
 BPSC,GSE74596null,full-length,,12,3,Fraction zeros,-0.174678584471724
 MASTcpm,GSE74596null,full-length,,12,3,Fraction zeros,0.388681831260771
@@ -958,6 +1015,7 @@ monoclecensus,GSE74596null,full-length,,12,3,log2(average CPM),0.936477510700471
 monocle,GSE74596null,full-length,,12,3,log2(average CPM),0.379159355625357
 metagenomeSeq,GSE74596null,full-length,,12,3,log2(average CPM),0.629968585217541
 edgeRQLFDetRate,GSE74596null,full-length,,12,3,log2(average CPM),0.17009847618069
+DESeq2betapFALSE,GSE74596null,full-length,,12,3,log2(average CPM),0.906893865295325
 DEsingle,GSE74596null,full-length,,12,3,log2(average CPM),0.579160683365977
 BPSC,GSE74596null,full-length,,12,3,log2(average CPM),0.641442486529471
 MASTcpm,GSE74596null,full-length,,12,3,log2(average CPM),0.549151525518764
@@ -981,6 +1039,7 @@ monoclecensus,GSE74596null,full-length,,12,3,log2(variance(CPM)),1.0184887470840
 monocle,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.373351657618553
 metagenomeSeq,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.651368225290676
 edgeRQLFDetRate,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.235064741318886
+DESeq2betapFALSE,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.930928484285653
 DEsingle,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.630067693739309
 BPSC,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.727457032026453
 MASTcpm,GSE74596null,full-length,,12,3,log2(variance(CPM)),0.635094406824206
@@ -1004,6 +1063,7 @@ monoclecensus,GSE74596null,full-length,,12,3,CV(CPM),0.207903124698563
 monocle,GSE74596null,full-length,,12,3,CV(CPM),-0.177175593050848
 metagenomeSeq,GSE74596null,full-length,,12,3,CV(CPM),-0.0231545497619732
 edgeRQLFDetRate,GSE74596null,full-length,,12,3,CV(CPM),0.456524127243291
+DESeq2betapFALSE,GSE74596null,full-length,,12,3,CV(CPM),-0.151457105821803
 DEsingle,GSE74596null,full-length,,12,3,CV(CPM),0.190928718163815
 BPSC,GSE74596null,full-length,,12,3,CV(CPM),0.298429147481603
 MASTcpm,GSE74596null,full-length,,12,3,CV(CPM),0.520035554478895
@@ -1027,6 +1087,7 @@ monoclecensus,GSE74596null,full-length,,12,4,Fraction zeros,-0.315337609794627
 monocle,GSE74596null,full-length,,12,4,Fraction zeros,-0.176197549661089
 metagenomeSeq,GSE74596null,full-length,,12,4,Fraction zeros,0.167298404022973
 edgeRQLFDetRate,GSE74596null,full-length,,12,4,Fraction zeros,0.309866042093425
+DESeq2betapFALSE,GSE74596null,full-length,,12,4,Fraction zeros,-0.515845213299676
 DEsingle,GSE74596null,full-length,,12,4,Fraction zeros,-0.403369826930639
 BPSC,GSE74596null,full-length,,12,4,Fraction zeros,-0.120859873333579
 MASTcpm,GSE74596null,full-length,,12,4,Fraction zeros,0.350857423245656
@@ -1049,6 +1110,7 @@ monoclecensus,GSE74596null,full-length,,12,4,log2(average CPM),0.895713127176801
 monocle,GSE74596null,full-length,,12,4,log2(average CPM),0.425641364396737
 metagenomeSeq,GSE74596null,full-length,,12,4,log2(average CPM),0.710479997240415
 edgeRQLFDetRate,GSE74596null,full-length,,12,4,log2(average CPM),0.113785011023299
+DESeq2betapFALSE,GSE74596null,full-length,,12,4,log2(average CPM),0.882722162879649
 DEsingle,GSE74596null,full-length,,12,4,log2(average CPM),0.553500470200339
 BPSC,GSE74596null,full-length,,12,4,log2(average CPM),0.605839117158116
 MASTcpm,GSE74596null,full-length,,12,4,log2(average CPM),0.469555108249709
@@ -1071,6 +1133,7 @@ monoclecensus,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.9872328589522
 monocle,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.428192030231652
 metagenomeSeq,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.783633400838162
 edgeRQLFDetRate,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.184529625549006
+DESeq2betapFALSE,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.925091013303834
 DEsingle,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.607961777401848
 BPSC,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.704559223297354
 MASTcpm,GSE74596null,full-length,,12,4,log2(variance(CPM)),0.585225563343995
@@ -1093,6 +1156,7 @@ monoclecensus,GSE74596null,full-length,,12,4,CV(CPM),0.142942529132033
 monocle,GSE74596null,full-length,,12,4,CV(CPM),-0.161194477111304
 metagenomeSeq,GSE74596null,full-length,,12,4,CV(CPM),0.0603282888772973
 edgeRQLFDetRate,GSE74596null,full-length,,12,4,CV(CPM),0.492795160223021
+DESeq2betapFALSE,GSE74596null,full-length,,12,4,CV(CPM),-0.119683626373842
 DEsingle,GSE74596null,full-length,,12,4,CV(CPM),0.210046107225197
 BPSC,GSE74596null,full-length,,12,4,CV(CPM),0.366009664566806
 MASTcpm,GSE74596null,full-length,,12,4,CV(CPM),0.496165386622926
@@ -1116,6 +1180,7 @@ monoclecensus,GSE74596null,full-length,,12,5,Fraction zeros,-0.257366519848591
 monocle,GSE74596null,full-length,,12,5,Fraction zeros,-0.13254219422355
 metagenomeSeq,GSE74596null,full-length,,12,5,Fraction zeros,-0.0256559022210826
 edgeRQLFDetRate,GSE74596null,full-length,,12,5,Fraction zeros,0.30750859946449
+DESeq2betapFALSE,GSE74596null,full-length,,12,5,Fraction zeros,-0.556046988462399
 DEsingle,GSE74596null,full-length,,12,5,Fraction zeros,-0.472448073299978
 BPSC,GSE74596null,full-length,,12,5,Fraction zeros,-0.13342772188052
 MASTcpm,GSE74596null,full-length,,12,5,Fraction zeros,0.216059060340458
@@ -1139,6 +1204,7 @@ monoclecensus,GSE74596null,full-length,,12,5,log2(average CPM),0.929718529051822
 monocle,GSE74596null,full-length,,12,5,log2(average CPM),0.309332278469603
 metagenomeSeq,GSE74596null,full-length,,12,5,log2(average CPM),0.7246620991372
 edgeRQLFDetRate,GSE74596null,full-length,,12,5,log2(average CPM),0.136141723875688
+DESeq2betapFALSE,GSE74596null,full-length,,12,5,log2(average CPM),0.893466157600041
 DEsingle,GSE74596null,full-length,,12,5,log2(average CPM),0.649653865112096
 BPSC,GSE74596null,full-length,,12,5,log2(average CPM),0.617396629385041
 MASTcpm,GSE74596null,full-length,,12,5,log2(average CPM),0.499233633169445
@@ -1162,6 +1228,7 @@ monoclecensus,GSE74596null,full-length,,12,5,log2(variance(CPM)),1.0274683605697
 monocle,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.302199041793952
 metagenomeSeq,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.781836246346371
 edgeRQLFDetRate,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.206475267867035
+DESeq2betapFALSE,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.928150941407161
 DEsingle,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.726099359193225
 BPSC,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.70963454723077
 MASTcpm,GSE74596null,full-length,,12,5,log2(variance(CPM)),0.514133403107193
@@ -1185,6 +1252,7 @@ monoclecensus,GSE74596null,full-length,,12,5,CV(CPM),0.195848098711425
 monocle,GSE74596null,full-length,,12,5,CV(CPM),-0.213445566785225
 metagenomeSeq,GSE74596null,full-length,,12,5,CV(CPM),0.0119744390391127
 edgeRQLFDetRate,GSE74596null,full-length,,12,5,CV(CPM),0.506405612952905
+DESeq2betapFALSE,GSE74596null,full-length,,12,5,CV(CPM),-0.146270647291428
 DEsingle,GSE74596null,full-length,,12,5,CV(CPM),0.240220628310022
 BPSC,GSE74596null,full-length,,12,5,CV(CPM),0.356916692427575
 MASTcpm,GSE74596null,full-length,,12,5,CV(CPM),0.17702744087388
@@ -1200,6 +1268,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,1,Fraction zeros,-0.9634450919037
 monoclecensus,GSE74596null,full-length,,6,1,Fraction zeros,-0.452632020995187
 monocle,GSE74596null,full-length,,6,1,Fraction zeros,-0.465288783631235
 metagenomeSeq,GSE74596null,full-length,,6,1,Fraction zeros,-0.0933542993749027
+DESeq2betapFALSE,GSE74596null,full-length,,6,1,Fraction zeros,-0.474346837728079
 DEsingle,GSE74596null,full-length,,6,1,Fraction zeros,-0.587580492904113
 BPSC,GSE74596null,full-length,,6,1,Fraction zeros,-0.483408786515179
 MASTcpm,GSE74596null,full-length,,6,1,Fraction zeros,-0.194047971906174
@@ -1215,6 +1284,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,1,log2(average CPM),1.40926667046
 monoclecensus,GSE74596null,full-length,,6,1,log2(average CPM),1.09157209921392
 monocle,GSE74596null,full-length,,6,1,log2(average CPM),0.54160274064379
 metagenomeSeq,GSE74596null,full-length,,6,1,log2(average CPM),0.650415267189449
+DESeq2betapFALSE,GSE74596null,full-length,,6,1,log2(average CPM),0.854843195041834
 DEsingle,GSE74596null,full-length,,6,1,log2(average CPM),0.709741696950558
 BPSC,GSE74596null,full-length,,6,1,log2(average CPM),0.872213228852952
 MASTcpm,GSE74596null,full-length,,6,1,log2(average CPM),0.748738909694113
@@ -1230,6 +1300,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,1,log2(variance(CPM)),1.365806957
 monoclecensus,GSE74596null,full-length,,6,1,log2(variance(CPM)),1.15070629794871
 monocle,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.510711812847011
 metagenomeSeq,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.667013823379795
+DESeq2betapFALSE,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.88479908366037
 DEsingle,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.751378059538102
 BPSC,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.942261007281185
 MASTcpm,GSE74596null,full-length,,6,1,log2(variance(CPM)),0.81972766224488
@@ -1245,6 +1316,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,1,CV(CPM),-0.740439233842866
 monoclecensus,GSE74596null,full-length,,6,1,CV(CPM),0.0434960360116394
 monocle,GSE74596null,full-length,,6,1,CV(CPM),-0.364211022406544
 metagenomeSeq,GSE74596null,full-length,,6,1,CV(CPM),-0.0878123659399162
+DESeq2betapFALSE,GSE74596null,full-length,,6,1,CV(CPM),-0.0767850000561328
 DEsingle,GSE74596null,full-length,,6,1,CV(CPM),0.188945202410571
 BPSC,GSE74596null,full-length,,6,1,CV(CPM),0.1899066028353
 MASTcpm,GSE74596null,full-length,,6,1,CV(CPM),0.126885221046213
@@ -1260,6 +1332,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,2,Fraction zeros,-0.9539759791195
 monoclecensus,GSE74596null,full-length,,6,2,Fraction zeros,-0.446186327737121
 monocle,GSE74596null,full-length,,6,2,Fraction zeros,-0.440758269064682
 metagenomeSeq,GSE74596null,full-length,,6,2,Fraction zeros,-0.172536707750067
+DESeq2betapFALSE,GSE74596null,full-length,,6,2,Fraction zeros,-0.459554277786061
 DEsingle,GSE74596null,full-length,,6,2,Fraction zeros,-0.540603335895676
 BPSC,GSE74596null,full-length,,6,2,Fraction zeros,-0.447766447527034
 MASTcpm,GSE74596null,full-length,,6,2,Fraction zeros,-0.0507634534275337
@@ -1275,6 +1348,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,2,log2(average CPM),1.42135123157
 monoclecensus,GSE74596null,full-length,,6,2,log2(average CPM),0.988951242040649
 monocle,GSE74596null,full-length,,6,2,log2(average CPM),0.514127940995511
 metagenomeSeq,GSE74596null,full-length,,6,2,log2(average CPM),0.597188421236581
+DESeq2betapFALSE,GSE74596null,full-length,,6,2,log2(average CPM),0.859771348485758
 DEsingle,GSE74596null,full-length,,6,2,log2(average CPM),0.76826646219544
 BPSC,GSE74596null,full-length,,6,2,log2(average CPM),0.873177177889861
 MASTcpm,GSE74596null,full-length,,6,2,log2(average CPM),0.537764886432666
@@ -1290,6 +1364,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,2,log2(variance(CPM)),1.404302660
 monoclecensus,GSE74596null,full-length,,6,2,log2(variance(CPM)),1.04673790907764
 monocle,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.487569442586465
 metagenomeSeq,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.596577594178819
+DESeq2betapFALSE,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.89585710772901
 DEsingle,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.837148578214636
 BPSC,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.950997943538679
 MASTcpm,GSE74596null,full-length,,6,2,log2(variance(CPM)),0.586161072656094
@@ -1305,6 +1380,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,2,CV(CPM),-0.65072443352455
 monoclecensus,GSE74596null,full-length,,6,2,CV(CPM),0.0545864126052803
 monocle,GSE74596null,full-length,,6,2,CV(CPM),-0.340410413288502
 metagenomeSeq,GSE74596null,full-length,,6,2,CV(CPM),-0.228717563049457
+DESeq2betapFALSE,GSE74596null,full-length,,6,2,CV(CPM),-0.0601629505013956
 DEsingle,GSE74596null,full-length,,6,2,CV(CPM),0.221382662475717
 BPSC,GSE74596null,full-length,,6,2,CV(CPM),0.177169070959638
 MASTcpm,GSE74596null,full-length,,6,2,CV(CPM),0.230708419327484
@@ -1320,6 +1396,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,3,Fraction zeros,-1.0726500838761
 monoclecensus,GSE74596null,full-length,,6,3,Fraction zeros,-0.277909404821558
 monocle,GSE74596null,full-length,,6,3,Fraction zeros,-0.433408739483944
 metagenomeSeq,GSE74596null,full-length,,6,3,Fraction zeros,-0.139996431553908
+DESeq2betapFALSE,GSE74596null,full-length,,6,3,Fraction zeros,-0.436946780860199
 DEsingle,GSE74596null,full-length,,6,3,Fraction zeros,-0.567528793614727
 BPSC,GSE74596null,full-length,,6,3,Fraction zeros,-0.378833701918572
 MASTcpm,GSE74596null,full-length,,6,3,Fraction zeros,0.0303517738388887
@@ -1335,6 +1412,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,3,log2(average CPM),1.39334582477
 monoclecensus,GSE74596null,full-length,,6,3,log2(average CPM),1.07013153483717
 monocle,GSE74596null,full-length,,6,3,log2(average CPM),0.521746046079158
 metagenomeSeq,GSE74596null,full-length,,6,3,log2(average CPM),0.809064512139229
+DESeq2betapFALSE,GSE74596null,full-length,,6,3,log2(average CPM),0.835757799190861
 DEsingle,GSE74596null,full-length,,6,3,log2(average CPM),0.755086400373892
 BPSC,GSE74596null,full-length,,6,3,log2(average CPM),0.818258584711239
 MASTcpm,GSE74596null,full-length,,6,3,log2(average CPM),0.673315593024738
@@ -1350,6 +1428,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,3,log2(variance(CPM)),1.325334635
 monoclecensus,GSE74596null,full-length,,6,3,log2(variance(CPM)),1.15196478729387
 monocle,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.495719558377183
 metagenomeSeq,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.831758472712276
+DESeq2betapFALSE,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.867949680959464
 DEsingle,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.8169906502381
 BPSC,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.898193544937899
 MASTcpm,GSE74596null,full-length,,6,3,log2(variance(CPM)),0.757826790467881
@@ -1365,6 +1444,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,3,CV(CPM),-0.813616883091368
 monoclecensus,GSE74596null,full-length,,6,3,CV(CPM),0.083535419859279
 monocle,GSE74596null,full-length,,6,3,CV(CPM),-0.342120929628077
 metagenomeSeq,GSE74596null,full-length,,6,3,CV(CPM),-0.11872518859375
+DESeq2betapFALSE,GSE74596null,full-length,,6,3,CV(CPM),-0.055983384170496
 DEsingle,GSE74596null,full-length,,6,3,CV(CPM),0.249833793384753
 BPSC,GSE74596null,full-length,,6,3,CV(CPM),0.272082534753257
 MASTcpm,GSE74596null,full-length,,6,3,CV(CPM),0.369112118576837
@@ -1379,6 +1459,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,4,Fraction zeros,-1.5789216004559
 monoclecensus,GSE74596null,full-length,,6,4,Fraction zeros,-0.425532714217847
 monocle,GSE74596null,full-length,,6,4,Fraction zeros,-0.431815378385233
 metagenomeSeq,GSE74596null,full-length,,6,4,Fraction zeros,0.0456948586835349
+DESeq2betapFALSE,GSE74596null,full-length,,6,4,Fraction zeros,-0.479273996610029
 DEsingle,GSE74596null,full-length,,6,4,Fraction zeros,-0.572723562037857
 BPSC,GSE74596null,full-length,,6,4,Fraction zeros,-0.461007545323335
 MASTcpm,GSE74596null,full-length,,6,4,Fraction zeros,0.00279983677254292
@@ -1393,6 +1474,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,4,log2(average CPM),1.39442931966
 monoclecensus,GSE74596null,full-length,,6,4,log2(average CPM),1.15974883896063
 monocle,GSE74596null,full-length,,6,4,log2(average CPM),0.528333035718003
 metagenomeSeq,GSE74596null,full-length,,6,4,log2(average CPM),0.52982430668622
+DESeq2betapFALSE,GSE74596null,full-length,,6,4,log2(average CPM),0.86091056168969
 DEsingle,GSE74596null,full-length,,6,4,log2(average CPM),0.74309794446754
 BPSC,GSE74596null,full-length,,6,4,log2(average CPM),0.869617626933611
 MASTcpm,GSE74596null,full-length,,6,4,log2(average CPM),0.582044408699156
@@ -1407,6 +1489,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,4,log2(variance(CPM)),1.322109602
 monoclecensus,GSE74596null,full-length,,6,4,log2(variance(CPM)),1.21633676141841
 monocle,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.499886747702747
 metagenomeSeq,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.559227724403753
+DESeq2betapFALSE,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.887459202708118
 DEsingle,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.799988111488812
 BPSC,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.937515004182365
 MASTcpm,GSE74596null,full-length,,6,4,log2(variance(CPM)),0.644145439335356
@@ -1421,6 +1504,7 @@ SeuratBimodIsExpr2,GSE74596null,full-length,,6,4,CV(CPM),-0.690017868997292
 monoclecensus,GSE74596null,full-length,,6,4,CV(CPM),0.0761918030723277
 monocle,GSE74596null,full-length,,6,4,CV(CPM),-0.330805207622499
 metagenomeSeq,GSE74596null,full-length,,6,4,CV(CPM),0.0235940357552117
+DESeq2betapFALSE,GSE74596null,full-length,,6,4,CV(CPM),-0.0947488442581195
 DEsingle,GSE74596null,full-length,,6,4,CV(CPM),0.185848655473376
 BPSC,GSE74596null,full-length,,6,4,CV(CPM),0.214857073063698
 MASTcpm,GSE74596null,full-length,,6,4,CV(CPM),0.346431483017833
@@ -1437,6 +1521,7 @@ SeuratTobit,GSE74596null,full-length,,6,5,Fraction zeros,-0.241843180122738
 monoclecensus,GSE74596null,full-length,,6,5,Fraction zeros,-0.407222596439121
 monocle,GSE74596null,full-length,,6,5,Fraction zeros,-0.40878315478816
 metagenomeSeq,GSE74596null,full-length,,6,5,Fraction zeros,-0.12486482106072
+DESeq2betapFALSE,GSE74596null,full-length,,6,5,Fraction zeros,-0.356437529105545
 DEsingle,GSE74596null,full-length,,6,5,Fraction zeros,-0.449760923118182
 BPSC,GSE74596null,full-length,,6,5,Fraction zeros,-0.421329283076305
 MASTcpm,GSE74596null,full-length,,6,5,Fraction zeros,-0.0294198580052017
@@ -1453,6 +1538,7 @@ SeuratTobit,GSE74596null,full-length,,6,5,log2(average CPM),0.216607235134149
 monoclecensus,GSE74596null,full-length,,6,5,log2(average CPM),0.994574897347999
 monocle,GSE74596null,full-length,,6,5,log2(average CPM),0.533594607188345
 metagenomeSeq,GSE74596null,full-length,,6,5,log2(average CPM),0.856332761265636
+DESeq2betapFALSE,GSE74596null,full-length,,6,5,log2(average CPM),0.780036502342031
 DEsingle,GSE74596null,full-length,,6,5,log2(average CPM),0.726892785979301
 BPSC,GSE74596null,full-length,,6,5,log2(average CPM),0.828128314124223
 MASTcpm,GSE74596null,full-length,,6,5,log2(average CPM),0.691690049096077
@@ -1469,6 +1555,7 @@ SeuratTobit,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.163344142667055
 monoclecensus,GSE74596null,full-length,,6,5,log2(variance(CPM)),1.06583202831158
 monocle,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.508991017051136
 metagenomeSeq,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.880575387436618
+DESeq2betapFALSE,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.821249556905217
 DEsingle,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.810105267394043
 BPSC,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.91323522384791
 MASTcpm,GSE74596null,full-length,,6,5,log2(variance(CPM)),0.772497011232156
@@ -1485,6 +1572,7 @@ SeuratTobit,GSE74596null,full-length,,6,5,CV(CPM),-0.676535465986255
 monoclecensus,GSE74596null,full-length,,6,5,CV(CPM),0.132656988095643
 monocle,GSE74596null,full-length,,6,5,CV(CPM),-0.356711310909816
 metagenomeSeq,GSE74596null,full-length,,6,5,CV(CPM),-0.106147352128631
+DESeq2betapFALSE,GSE74596null,full-length,,6,5,CV(CPM),-0.0372322944523786
 DEsingle,GSE74596null,full-length,,6,5,CV(CPM),0.266021415131838
 BPSC,GSE74596null,full-length,,6,5,CV(CPM),0.237973968109682
 MASTcpm,GSE74596null,full-length,,6,5,CV(CPM),0.250659051059734
@@ -1506,6 +1594,7 @@ monocle,EMTAB2805null,full-length,,48,1,Fraction zeros,0.603476706149647
 metagenomeSeq,EMTAB2805null,full-length,,48,1,Fraction zeros,0.950003860884354
 monoclecount,EMTAB2805null,full-length,,48,1,Fraction zeros,0.60073460714739
 edgeRQLFDetRate,EMTAB2805null,full-length,,48,1,Fraction zeros,0.686124353521024
+DESeq2betapFALSE,EMTAB2805null,full-length,,48,1,Fraction zeros,-0.279516527840604
 DEsingle,EMTAB2805null,full-length,,48,1,Fraction zeros,-0.30983490747196
 BPSC,EMTAB2805null,full-length,,48,1,Fraction zeros,0.495062239639267
 edgeRLRT,EMTAB2805null,full-length,,48,1,log2(average CPM),0.289016409020024
@@ -1523,6 +1612,7 @@ monocle,EMTAB2805null,full-length,,48,1,log2(average CPM),-0.245562039409688
 metagenomeSeq,EMTAB2805null,full-length,,48,1,log2(average CPM),-0.62811877813054
 monoclecount,EMTAB2805null,full-length,,48,1,log2(average CPM),-0.0231166557438239
 edgeRQLFDetRate,EMTAB2805null,full-length,,48,1,log2(average CPM),-0.329206998271454
+DESeq2betapFALSE,EMTAB2805null,full-length,,48,1,log2(average CPM),0.433278494799892
 DEsingle,EMTAB2805null,full-length,,48,1,log2(average CPM),0.301534794083434
 BPSC,EMTAB2805null,full-length,,48,1,log2(average CPM),-0.0062922171382092
 edgeRLRT,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),0.441157836388525
@@ -1540,6 +1630,7 @@ monocle,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),-0.17478397809857
 metagenomeSeq,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),-0.545022742212043
 monoclecount,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),0.187509316925051
 edgeRQLFDetRate,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),-0.184796225432758
+DESeq2betapFALSE,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),0.516823641672733
 DEsingle,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),0.422890957833814
 BPSC,EMTAB2805null,full-length,,48,1,log2(variance(CPM)),0.145569788899635
 edgeRLRT,EMTAB2805null,full-length,,48,1,CV(CPM),0.223769093263547
@@ -1557,6 +1648,7 @@ monocle,EMTAB2805null,full-length,,48,1,CV(CPM),0.246086678391515
 metagenomeSeq,EMTAB2805null,full-length,,48,1,CV(CPM),0.962564066432264
 monoclecount,EMTAB2805null,full-length,,48,1,CV(CPM),0.69468821349217
 edgeRQLFDetRate,EMTAB2805null,full-length,,48,1,CV(CPM),0.741494844266908
+DESeq2betapFALSE,EMTAB2805null,full-length,,48,1,CV(CPM),-0.144383400575285
 DEsingle,EMTAB2805null,full-length,,48,1,CV(CPM),0.0869905331516028
 BPSC,EMTAB2805null,full-length,,48,1,CV(CPM),0.421381459191201
 edgeRLRT,EMTAB2805null,full-length,,24,1,Fraction zeros,-0.0544806393332367
@@ -1572,6 +1664,7 @@ monoclecensus,EMTAB2805null,full-length,,24,1,Fraction zeros,0.147829431873182
 monocle,EMTAB2805null,full-length,,24,1,Fraction zeros,0.462279443937388
 monoclecount,EMTAB2805null,full-length,,24,1,Fraction zeros,0.718500201960044
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,1,Fraction zeros,0.76592259799448
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,1,Fraction zeros,-0.169933611527162
 DEsingle,EMTAB2805null,full-length,,24,1,Fraction zeros,-0.337626683911417
 BPSC,EMTAB2805null,full-length,,24,1,Fraction zeros,0.282009196238048
 edgeRLRT,EMTAB2805null,full-length,,24,1,log2(average CPM),0.34560142677673
@@ -1587,6 +1680,7 @@ monoclecensus,EMTAB2805null,full-length,,24,1,log2(average CPM),0.35858563072912
 monocle,EMTAB2805null,full-length,,24,1,log2(average CPM),-0.192842960957406
 monoclecount,EMTAB2805null,full-length,,24,1,log2(average CPM),-0.111853474867011
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,1,log2(average CPM),-0.322505067573459
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,1,log2(average CPM),0.413705199342744
 DEsingle,EMTAB2805null,full-length,,24,1,log2(average CPM),0.335016888467473
 BPSC,EMTAB2805null,full-length,,24,1,log2(average CPM),0.177727340562068
 edgeRLRT,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.501140085420829
@@ -1602,6 +1696,7 @@ monoclecensus,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.529525445441
 monocle,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),-0.138214079470437
 monoclecount,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.0725574300580689
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),-0.179836001039767
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.491946330401223
 DEsingle,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.473835577572304
 BPSC,EMTAB2805null,full-length,,24,1,log2(variance(CPM)),0.31919048120896
 edgeRLRT,EMTAB2805null,full-length,,24,1,CV(CPM),0.362206005445655
@@ -1617,6 +1712,7 @@ monoclecensus,EMTAB2805null,full-length,,24,1,CV(CPM),0.353282808950337
 monocle,EMTAB2805null,full-length,,24,1,CV(CPM),0.17952720451088
 monoclecount,EMTAB2805null,full-length,,24,1,CV(CPM),0.846211442650015
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,1,CV(CPM),0.827180810690429
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,1,CV(CPM),-0.0462001935570146
 DEsingle,EMTAB2805null,full-length,,24,1,CV(CPM),0.234387426610179
 BPSC,EMTAB2805null,full-length,,24,1,CV(CPM),0.330753220321696
 edgeRLRT,EMTAB2805null,full-length,,24,2,Fraction zeros,-0.0807769923291412
@@ -1632,6 +1728,7 @@ monoclecensus,EMTAB2805null,full-length,,24,2,Fraction zeros,0.128030844605773
 monocle,EMTAB2805null,full-length,,24,2,Fraction zeros,0.545832301582686
 monoclecount,EMTAB2805null,full-length,,24,2,Fraction zeros,0.664172993743192
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,2,Fraction zeros,0.694013106694933
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,2,Fraction zeros,-0.198509730224587
 DEsingle,EMTAB2805null,full-length,,24,2,Fraction zeros,-0.407646509056362
 BPSC,EMTAB2805null,full-length,,24,2,Fraction zeros,0.271265039702439
 edgeRLRT,EMTAB2805null,full-length,,24,2,log2(average CPM),0.298924269210715
@@ -1647,6 +1744,7 @@ monoclecensus,EMTAB2805null,full-length,,24,2,log2(average CPM),0.29310961127867
 monocle,EMTAB2805null,full-length,,24,2,log2(average CPM),-0.223124472126035
 monoclecount,EMTAB2805null,full-length,,24,2,log2(average CPM),-0.0818724778333473
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,2,log2(average CPM),-0.291666987760234
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,2,log2(average CPM),0.408632847266379
 DEsingle,EMTAB2805null,full-length,,24,2,log2(average CPM),0.311076183206211
 BPSC,EMTAB2805null,full-length,,24,2,log2(average CPM),0.134273350386345
 edgeRLRT,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.457900288145663
@@ -1662,6 +1760,7 @@ monoclecensus,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.432041087720
 monocle,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),-0.163833418372084
 monoclecount,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.111397221986768
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),-0.1521313419395
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.506456741984988
 DEsingle,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.438847902965229
 BPSC,EMTAB2805null,full-length,,24,2,log2(variance(CPM)),0.267919786142093
 edgeRLRT,EMTAB2805null,full-length,,24,2,CV(CPM),0.283441972898626
@@ -1677,6 +1776,7 @@ monoclecensus,EMTAB2805null,full-length,,24,2,CV(CPM),0.225275502024896
 monocle,EMTAB2805null,full-length,,24,2,CV(CPM),0.19810972747426
 monoclecount,EMTAB2805null,full-length,,24,2,CV(CPM),0.786681422356182
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,2,CV(CPM),0.747594338024033
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,2,CV(CPM),-0.0375260027585635
 DEsingle,EMTAB2805null,full-length,,24,2,CV(CPM),0.141814962873539
 BPSC,EMTAB2805null,full-length,,24,2,CV(CPM),0.286137981486618
 edgeRLRT,EMTAB2805null,full-length,,24,3,Fraction zeros,-0.116780506852368
@@ -1693,6 +1793,7 @@ monocle,EMTAB2805null,full-length,,24,3,Fraction zeros,0.511280230305605
 metagenomeSeq,EMTAB2805null,full-length,,24,3,Fraction zeros,0.546789421207154
 monoclecount,EMTAB2805null,full-length,,24,3,Fraction zeros,0.692385422771043
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,3,Fraction zeros,0.745295037052623
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,3,Fraction zeros,-0.234237825470991
 DEsingle,EMTAB2805null,full-length,,24,3,Fraction zeros,-0.377996351357746
 BPSC,EMTAB2805null,full-length,,24,3,Fraction zeros,0.248558611857965
 edgeRLRT,EMTAB2805null,full-length,,24,3,log2(average CPM),0.276575495759785
@@ -1709,6 +1810,7 @@ monocle,EMTAB2805null,full-length,,24,3,log2(average CPM),-0.198497068385652
 metagenomeSeq,EMTAB2805null,full-length,,24,3,log2(average CPM),-0.670714017241923
 monoclecount,EMTAB2805null,full-length,,24,3,log2(average CPM),-0.110819467369271
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,3,log2(average CPM),-0.318552924694262
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,3,log2(average CPM),0.422798892204956
 DEsingle,EMTAB2805null,full-length,,24,3,log2(average CPM),0.262989208355123
 BPSC,EMTAB2805null,full-length,,24,3,log2(average CPM),0.159065135257896
 edgeRLRT,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),0.422329622828079
@@ -1725,6 +1827,7 @@ monocle,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),-0.131034658727089
 metagenomeSeq,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),-0.654367142640397
 monoclecount,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),0.086834222669543
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),-0.16871497307304
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),0.522224460563447
 DEsingle,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),0.404325348067134
 BPSC,EMTAB2805null,full-length,,24,3,log2(variance(CPM)),0.304943097473808
 edgeRLRT,EMTAB2805null,full-length,,24,3,CV(CPM),0.24987891140928
@@ -1741,6 +1844,7 @@ monocle,EMTAB2805null,full-length,,24,3,CV(CPM),0.236310707776648
 metagenomeSeq,EMTAB2805null,full-length,,24,3,CV(CPM),0.658884311692505
 monoclecount,EMTAB2805null,full-length,,24,3,CV(CPM),0.840829538999726
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,3,CV(CPM),0.818905804053334
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,3,CV(CPM),-0.0649243760528939
 DEsingle,EMTAB2805null,full-length,,24,3,CV(CPM),0.223526160678289
 BPSC,EMTAB2805null,full-length,,24,3,CV(CPM),0.315347391048101
 edgeRLRT,EMTAB2805null,full-length,,24,4,Fraction zeros,-0.0706146756682389
@@ -1756,6 +1860,7 @@ monoclecensus,EMTAB2805null,full-length,,24,4,Fraction zeros,0.232600301058765
 monocle,EMTAB2805null,full-length,,24,4,Fraction zeros,0.502130550615862
 monoclecount,EMTAB2805null,full-length,,24,4,Fraction zeros,0.735366384525855
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,4,Fraction zeros,0.783361056571691
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,4,Fraction zeros,-0.215777871808307
 DEsingle,EMTAB2805null,full-length,,24,4,Fraction zeros,-0.440373876384665
 BPSC,EMTAB2805null,full-length,,24,4,Fraction zeros,0.300796021737627
 edgeRLRT,EMTAB2805null,full-length,,24,4,log2(average CPM),0.330697007773167
@@ -1771,6 +1876,7 @@ monoclecensus,EMTAB2805null,full-length,,24,4,log2(average CPM),0.28538432241823
 monocle,EMTAB2805null,full-length,,24,4,log2(average CPM),-0.243765262643641
 monoclecount,EMTAB2805null,full-length,,24,4,log2(average CPM),-0.129174216636459
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,4,log2(average CPM),-0.333616658943368
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,4,log2(average CPM),0.397556027576454
 DEsingle,EMTAB2805null,full-length,,24,4,log2(average CPM),0.398913036265065
 BPSC,EMTAB2805null,full-length,,24,4,log2(average CPM),0.120685697394687
 edgeRLRT,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.482909178247641
@@ -1786,6 +1892,7 @@ monoclecensus,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.446070133207
 monocle,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),-0.188461095793042
 monoclecount,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.0563526186337543
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),-0.189431949582719
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.479657074812327
 DEsingle,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.533648389958293
 BPSC,EMTAB2805null,full-length,,24,4,log2(variance(CPM)),0.250387732081385
 edgeRLRT,EMTAB2805null,full-length,,24,4,CV(CPM),0.346955088133285
@@ -1801,6 +1908,7 @@ monoclecensus,EMTAB2805null,full-length,,24,4,CV(CPM),0.339184083612515
 monocle,EMTAB2805null,full-length,,24,4,CV(CPM),0.215718131801002
 monoclecount,EMTAB2805null,full-length,,24,4,CV(CPM),0.860390603998314
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,4,CV(CPM),0.822262184970909
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,4,CV(CPM),-0.0688408871672328
 DEsingle,EMTAB2805null,full-length,,24,4,CV(CPM),0.218273477432372
 BPSC,EMTAB2805null,full-length,,24,4,CV(CPM),0.343569603399277
 edgeRLRT,EMTAB2805null,full-length,,24,5,Fraction zeros,-0.191146414718772
@@ -1816,6 +1924,7 @@ monoclecensus,EMTAB2805null,full-length,,24,5,Fraction zeros,0.00639684208713768
 monocle,EMTAB2805null,full-length,,24,5,Fraction zeros,0.43048900553963
 monoclecount,EMTAB2805null,full-length,,24,5,Fraction zeros,0.733482789284211
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,5,Fraction zeros,0.726400332949372
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,5,Fraction zeros,-0.263560979501523
 DEsingle,EMTAB2805null,full-length,,24,5,Fraction zeros,-0.560671878991961
 BPSC,EMTAB2805null,full-length,,24,5,Fraction zeros,0.229596372639191
 edgeRLRT,EMTAB2805null,full-length,,24,5,log2(average CPM),0.466088642099672
@@ -1831,6 +1940,7 @@ monoclecensus,EMTAB2805null,full-length,,24,5,log2(average CPM),0.39461484347386
 monocle,EMTAB2805null,full-length,,24,5,log2(average CPM),-0.191193804889192
 monoclecount,EMTAB2805null,full-length,,24,5,log2(average CPM),-0.104411295014013
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,5,log2(average CPM),-0.29244385534585
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,5,log2(average CPM),0.461007807562581
 DEsingle,EMTAB2805null,full-length,,24,5,log2(average CPM),0.462240744985894
 BPSC,EMTAB2805null,full-length,,24,5,log2(average CPM),0.170069196859189
 edgeRLRT,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.622500377406416
@@ -1846,6 +1956,7 @@ monoclecensus,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.550312358716
 monocle,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),-0.147504540592428
 monoclecount,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.078592896837827
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),-0.154255382335765
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.542277662782902
 DEsingle,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.59595405030804
 BPSC,EMTAB2805null,full-length,,24,5,log2(variance(CPM)),0.294711865270094
 edgeRLRT,EMTAB2805null,full-length,,24,5,CV(CPM),0.249222139506019
@@ -1861,6 +1972,7 @@ monoclecensus,EMTAB2805null,full-length,,24,5,CV(CPM),0.237551069894621
 monocle,EMTAB2805null,full-length,,24,5,CV(CPM),0.154990696196219
 monoclecount,EMTAB2805null,full-length,,24,5,CV(CPM),0.838821636412207
 edgeRQLFDetRate,EMTAB2805null,full-length,,24,5,CV(CPM),0.774983558265584
+DESeq2betapFALSE,EMTAB2805null,full-length,,24,5,CV(CPM),-0.0958100709226417
 DEsingle,EMTAB2805null,full-length,,24,5,CV(CPM),0.108578033754557
 BPSC,EMTAB2805null,full-length,,24,5,CV(CPM),0.280594880924954
 edgeRLRT,EMTAB2805null,full-length,,12,1,Fraction zeros,-0.242527902188179
@@ -1875,6 +1987,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,1,Fraction zeros,0.455533957170819
 monoclecensus,EMTAB2805null,full-length,,12,1,Fraction zeros,0.106034712906696
 monocle,EMTAB2805null,full-length,,12,1,Fraction zeros,0.352404545049197
 monoclecount,EMTAB2805null,full-length,,12,1,Fraction zeros,0.665665005587443
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,1,Fraction zeros,-0.195618300248557
 DEsingle,EMTAB2805null,full-length,,12,1,Fraction zeros,-0.594591222281582
 BPSC,EMTAB2805null,full-length,,12,1,Fraction zeros,-0.0478402565823757
 edgeRLRT,EMTAB2805null,full-length,,12,1,log2(average CPM),0.549010610797179
@@ -1889,6 +2002,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,1,log2(average CPM),-0.137264386042313
 monoclecensus,EMTAB2805null,full-length,,12,1,log2(average CPM),0.364374683653286
 monocle,EMTAB2805null,full-length,,12,1,log2(average CPM),-0.0847258111345647
 monoclecount,EMTAB2805null,full-length,,12,1,log2(average CPM),-0.0532712962671939
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,1,log2(average CPM),0.44185914397911
 DEsingle,EMTAB2805null,full-length,,12,1,log2(average CPM),0.506128780531588
 BPSC,EMTAB2805null,full-length,,12,1,log2(average CPM),0.510242732296095
 edgeRLRT,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.678707480626681
@@ -1903,6 +2017,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),-0.1108750806524
 monoclecensus,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.500544468673003
 monocle,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),-0.0403990685728044
 monoclecount,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.124512906869314
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.525991853530014
 DEsingle,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.652428642073964
 BPSC,EMTAB2805null,full-length,,12,1,log2(variance(CPM)),0.658965649007407
 edgeRLRT,EMTAB2805null,full-length,,12,1,CV(CPM),0.258287169172914
@@ -1917,6 +2032,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,1,CV(CPM),-0.0198303047441256
 monoclecensus,EMTAB2805null,full-length,,12,1,CV(CPM),0.32650699545071
 monocle,EMTAB2805null,full-length,,12,1,CV(CPM),0.105640141215723
 monoclecount,EMTAB2805null,full-length,,12,1,CV(CPM),0.827993961995868
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,1,CV(CPM),-0.0503255770389842
 DEsingle,EMTAB2805null,full-length,,12,1,CV(CPM),0.37022180193061
 BPSC,EMTAB2805null,full-length,,12,1,CV(CPM),0.111598548833248
 edgeRLRT,EMTAB2805null,full-length,,12,2,Fraction zeros,0.102952641439281
@@ -1932,6 +2048,7 @@ monocle,EMTAB2805null,full-length,,12,2,Fraction zeros,0.32380075498033
 metagenomeSeq,EMTAB2805null,full-length,,12,2,Fraction zeros,0.247991797837169
 monoclecount,EMTAB2805null,full-length,,12,2,Fraction zeros,0.680964029642818
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,2,Fraction zeros,0.69089889345141
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,2,Fraction zeros,-0.199996498412461
 DEsingle,EMTAB2805null,full-length,,12,2,Fraction zeros,-0.863746024124568
 BPSC,EMTAB2805null,full-length,,12,2,Fraction zeros,0.00880825113804341
 edgeRLRT,EMTAB2805null,full-length,,12,2,log2(average CPM),0.304905482469797
@@ -1947,6 +2064,7 @@ monocle,EMTAB2805null,full-length,,12,2,log2(average CPM),-0.0843175103116545
 metagenomeSeq,EMTAB2805null,full-length,,12,2,log2(average CPM),0.363315506972445
 monoclecount,EMTAB2805null,full-length,,12,2,log2(average CPM),-0.0632222322314982
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,2,log2(average CPM),-0.141896313785135
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,2,log2(average CPM),0.447002907291004
 DEsingle,EMTAB2805null,full-length,,12,2,log2(average CPM),0.307179947028602
 BPSC,EMTAB2805null,full-length,,12,2,log2(average CPM),0.479072355033705
 edgeRLRT,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.418836594049701
@@ -1962,6 +2080,7 @@ monocle,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),-0.045004555148905
 metagenomeSeq,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.473766702772369
 monoclecount,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.113903386474174
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),-0.00470343211715182
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.532674751582488
 DEsingle,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.481865217387085
 BPSC,EMTAB2805null,full-length,,12,2,log2(variance(CPM)),0.613866127653861
 edgeRLRT,EMTAB2805null,full-length,,12,2,CV(CPM),0.24359172923391
@@ -1977,6 +2096,7 @@ monocle,EMTAB2805null,full-length,,12,2,CV(CPM),0.0859667319374963
 metagenomeSeq,EMTAB2805null,full-length,,12,2,CV(CPM),-0.0207357227898155
 monoclecount,EMTAB2805null,full-length,,12,2,CV(CPM),0.830163376217722
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,2,CV(CPM),0.664788474669546
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,2,CV(CPM),-0.0630930933430457
 DEsingle,EMTAB2805null,full-length,,12,2,CV(CPM),0.442466588875763
 BPSC,EMTAB2805null,full-length,,12,2,CV(CPM),0.0383936361575274
 edgeRLRT,EMTAB2805null,full-length,,12,3,Fraction zeros,-0.203813728527428
@@ -1993,6 +2113,7 @@ monocle,EMTAB2805null,full-length,,12,3,Fraction zeros,0.341592308496073
 metagenomeSeq,EMTAB2805null,full-length,,12,3,Fraction zeros,0.471536031082919
 monoclecount,EMTAB2805null,full-length,,12,3,Fraction zeros,0.663393306940532
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,3,Fraction zeros,0.751676245257375
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,3,Fraction zeros,-0.265636136921155
 DEsingle,EMTAB2805null,full-length,,12,3,Fraction zeros,-0.645200876577996
 BPSC,EMTAB2805null,full-length,,12,3,Fraction zeros,-0.112585565966003
 edgeRLRT,EMTAB2805null,full-length,,12,3,log2(average CPM),0.504794163541049
@@ -2009,6 +2130,7 @@ monocle,EMTAB2805null,full-length,,12,3,log2(average CPM),-0.12208064960361
 metagenomeSeq,EMTAB2805null,full-length,,12,3,log2(average CPM),0.385801536745189
 monoclecount,EMTAB2805null,full-length,,12,3,log2(average CPM),-0.0501289505461534
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,3,log2(average CPM),-0.217925185297372
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,3,log2(average CPM),0.447338978172313
 DEsingle,EMTAB2805null,full-length,,12,3,log2(average CPM),0.418618080669097
 BPSC,EMTAB2805null,full-length,,12,3,log2(average CPM),0.46069200104367
 edgeRLRT,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.614972030548892
@@ -2025,6 +2147,7 @@ monocle,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),-0.0902778057168098
 metagenomeSeq,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.520332192007155
 monoclecount,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.117208149620513
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),-0.0800158060859157
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.518166165272185
 DEsingle,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.527068086615155
 BPSC,EMTAB2805null,full-length,,12,3,log2(variance(CPM)),0.573109602675904
 edgeRLRT,EMTAB2805null,full-length,,12,3,CV(CPM),0.187653078229446
@@ -2041,6 +2164,7 @@ monocle,EMTAB2805null,full-length,,12,3,CV(CPM),0.0835988717488224
 metagenomeSeq,EMTAB2805null,full-length,,12,3,CV(CPM),0.242783472176981
 monoclecount,EMTAB2805null,full-length,,12,3,CV(CPM),0.797350864205172
 edgeRQLFDetRate,EMTAB2805null,full-length,,12,3,CV(CPM),0.796429063145315
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,3,CV(CPM),-0.10054013484194
 DEsingle,EMTAB2805null,full-length,,12,3,CV(CPM),0.241240212243667
 BPSC,EMTAB2805null,full-length,,12,3,CV(CPM),0.111905798346391
 edgeRLRT,EMTAB2805null,full-length,,12,4,Fraction zeros,-0.0945571234001112
@@ -2054,6 +2178,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,12,4,Fraction zeros,-0.129693726592
 monoclecensus,EMTAB2805null,full-length,,12,4,Fraction zeros,0.0828507676960903
 monocle,EMTAB2805null,full-length,,12,4,Fraction zeros,0.349146932673971
 monoclecount,EMTAB2805null,full-length,,12,4,Fraction zeros,0.68815662845364
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,4,Fraction zeros,-0.227014618954153
 DEsingle,EMTAB2805null,full-length,,12,4,Fraction zeros,-0.615314923787303
 BPSC,EMTAB2805null,full-length,,12,4,Fraction zeros,-0.133056593933886
 edgeRLRT,EMTAB2805null,full-length,,12,4,log2(average CPM),0.429513060708431
@@ -2067,6 +2192,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,12,4,log2(average CPM),0.1159690365
 monoclecensus,EMTAB2805null,full-length,,12,4,log2(average CPM),0.499595174430757
 monocle,EMTAB2805null,full-length,,12,4,log2(average CPM),-0.0583778612412145
 monoclecount,EMTAB2805null,full-length,,12,4,log2(average CPM),-0.0699528464115343
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,4,log2(average CPM),0.478604662234445
 DEsingle,EMTAB2805null,full-length,,12,4,log2(average CPM),0.442512840414098
 BPSC,EMTAB2805null,full-length,,12,4,log2(average CPM),-0.000375231350293308
 edgeRLRT,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.515422931278595
@@ -2080,6 +2206,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.17908082
 monoclecensus,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.689242496618791
 monocle,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),-0.0219189530312793
 monoclecount,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.104840959982871
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.565956101724529
 DEsingle,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.586229817827587
 BPSC,EMTAB2805null,full-length,,12,4,log2(variance(CPM)),0.0427720343316756
 edgeRLRT,EMTAB2805null,full-length,,12,4,CV(CPM),0.00508762348128426
@@ -2093,6 +2220,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,12,4,CV(CPM),0.103637506989056
 monoclecensus,EMTAB2805null,full-length,,12,4,CV(CPM),0.309393358008371
 monocle,EMTAB2805null,full-length,,12,4,CV(CPM),0.0796536023809795
 monoclecount,EMTAB2805null,full-length,,12,4,CV(CPM),0.855424725193315
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,4,CV(CPM),-0.0866313798984265
 DEsingle,EMTAB2805null,full-length,,12,4,CV(CPM),0.320822749489511
 BPSC,EMTAB2805null,full-length,,12,4,CV(CPM),0.1151565152066
 edgeRLRT,EMTAB2805null,full-length,,12,5,Fraction zeros,-0.0495834010227705
@@ -2107,6 +2235,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,5,Fraction zeros,0.0798295233415887
 monoclecensus,EMTAB2805null,full-length,,12,5,Fraction zeros,-0.0783289015243698
 monocle,EMTAB2805null,full-length,,12,5,Fraction zeros,0.280929579343846
 monoclecount,EMTAB2805null,full-length,,12,5,Fraction zeros,0.664614710349477
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,5,Fraction zeros,-0.196585243980258
 DEsingle,EMTAB2805null,full-length,,12,5,Fraction zeros,-0.490118931224159
 BPSC,EMTAB2805null,full-length,,12,5,Fraction zeros,-0.165339863899597
 edgeRLRT,EMTAB2805null,full-length,,12,5,log2(average CPM),0.432047477769296
@@ -2121,6 +2250,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,5,log2(average CPM),0.145160360108081
 monoclecensus,EMTAB2805null,full-length,,12,5,log2(average CPM),0.471801108455324
 monocle,EMTAB2805null,full-length,,12,5,log2(average CPM),-0.0740403487138427
 monoclecount,EMTAB2805null,full-length,,12,5,log2(average CPM),-0.0582660487107722
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,5,log2(average CPM),0.466204293728328
 DEsingle,EMTAB2805null,full-length,,12,5,log2(average CPM),0.39484318918932
 BPSC,EMTAB2805null,full-length,,12,5,log2(average CPM),0.465447088267092
 edgeRLRT,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.555106174544815
@@ -2135,6 +2265,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.14431537881216
 monoclecensus,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.603026760084837
 monocle,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),-0.0434023098945488
 monoclecount,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.111536397119614
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.553637068641148
 DEsingle,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.553147351844459
 BPSC,EMTAB2805null,full-length,,12,5,log2(variance(CPM)),0.568597715096637
 edgeRLRT,EMTAB2805null,full-length,,12,5,CV(CPM),0.25676978422477
@@ -2149,6 +2280,7 @@ SeuratTobit,EMTAB2805null,full-length,,12,5,CV(CPM),-0.18435393401398
 monoclecensus,EMTAB2805null,full-length,,12,5,CV(CPM),0.143643262951043
 monocle,EMTAB2805null,full-length,,12,5,CV(CPM),0.0681923865517786
 monoclecount,EMTAB2805null,full-length,,12,5,CV(CPM),0.823494979837958
+DESeq2betapFALSE,EMTAB2805null,full-length,,12,5,CV(CPM),-0.0456068113446949
 DEsingle,EMTAB2805null,full-length,,12,5,CV(CPM),0.303703955326699
 BPSC,EMTAB2805null,full-length,,12,5,CV(CPM),0.0791495303436928
 DESeq2,EMTAB2805null,full-length,,6,1,Fraction zeros,-0.277569804983339
@@ -2159,6 +2291,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,1,Fraction zeros,-0.2295589728330
 SeuratTobit,EMTAB2805null,full-length,,6,1,Fraction zeros,-0.175319016301134
 monoclecensus,EMTAB2805null,full-length,,6,1,Fraction zeros,-0.0684731365358449
 monocle,EMTAB2805null,full-length,,6,1,Fraction zeros,0.0762152567645527
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,1,Fraction zeros,-0.0621723464071218
 DESeq2,EMTAB2805null,full-length,,6,1,log2(average CPM),0.50534969974694
 DESeq2nofilt,EMTAB2805null,full-length,,6,1,log2(average CPM),0.566082035366787
 edgeRLRTrobust,EMTAB2805null,full-length,,6,1,log2(average CPM),0.650154392075053
@@ -2167,6 +2300,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,1,log2(average CPM),0.17034892449
 SeuratTobit,EMTAB2805null,full-length,,6,1,log2(average CPM),0.0573549629769091
 monoclecensus,EMTAB2805null,full-length,,6,1,log2(average CPM),0.589784111175994
 monocle,EMTAB2805null,full-length,,6,1,log2(average CPM),0.0627626632391467
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,1,log2(average CPM),0.442238959401922
 DESeq2,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.584937569541019
 DESeq2nofilt,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.663939906871194
 edgeRLRTrobust,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.717069183674389
@@ -2175,6 +2309,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.235080515
 SeuratTobit,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),-0.00410879324152746
 monoclecensus,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.740899010778486
 monocle,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.0699026908602014
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,1,log2(variance(CPM)),0.533581801983476
 DESeq2,EMTAB2805null,full-length,,6,1,CV(CPM),0.0173638459659581
 DESeq2nofilt,EMTAB2805null,full-length,,6,1,CV(CPM),0.0834321416947845
 edgeRLRTrobust,EMTAB2805null,full-length,,6,1,CV(CPM),-0.145801905426966
@@ -2183,6 +2318,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,1,CV(CPM),0.179687842149837
 SeuratTobit,EMTAB2805null,full-length,,6,1,CV(CPM),-0.398724708071373
 monoclecensus,EMTAB2805null,full-length,,6,1,CV(CPM),0.313073950204436
 monocle,EMTAB2805null,full-length,,6,1,CV(CPM),-0.105561073033957
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,1,CV(CPM),0.11126021957863
 DESeq2,EMTAB2805null,full-length,,6,2,Fraction zeros,-0.318125521882413
 DESeq2nofilt,EMTAB2805null,full-length,,6,2,Fraction zeros,-0.317784005960083
 edgeRLRTrobust,EMTAB2805null,full-length,,6,2,Fraction zeros,0.0958794029109891
@@ -2192,6 +2328,7 @@ SeuratTobit,EMTAB2805null,full-length,,6,2,Fraction zeros,0.355827405806417
 monoclecensus,EMTAB2805null,full-length,,6,2,Fraction zeros,0.061732250680964
 monocle,EMTAB2805null,full-length,,6,2,Fraction zeros,0.0686021589783217
 metagenomeSeq,EMTAB2805null,full-length,,6,2,Fraction zeros,0.157066329521159
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,2,Fraction zeros,-0.111322254421729
 DESeq2,EMTAB2805null,full-length,,6,2,log2(average CPM),0.480454586977342
 DESeq2nofilt,EMTAB2805null,full-length,,6,2,log2(average CPM),0.522632393853648
 edgeRLRTrobust,EMTAB2805null,full-length,,6,2,log2(average CPM),0.769130449056359
@@ -2201,6 +2338,7 @@ SeuratTobit,EMTAB2805null,full-length,,6,2,log2(average CPM),-0.199358796630904
 monoclecensus,EMTAB2805null,full-length,,6,2,log2(average CPM),0.521702477482382
 monocle,EMTAB2805null,full-length,,6,2,log2(average CPM),0.0576611289898739
 metagenomeSeq,EMTAB2805null,full-length,,6,2,log2(average CPM),0.41781765616353
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,2,log2(average CPM),0.45598581756029
 DESeq2,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.542256382758081
 DESeq2nofilt,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.611257738654618
 edgeRLRTrobust,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.889717083266874
@@ -2210,6 +2348,7 @@ SeuratTobit,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),-0.22101501699016
 monoclecensus,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.672352258289669
 monocle,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.0663238785638773
 metagenomeSeq,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.542302467216702
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,2,log2(variance(CPM)),0.544316222453876
 DESeq2,EMTAB2805null,full-length,,6,2,CV(CPM),-0.041802466587589
 DESeq2nofilt,EMTAB2805null,full-length,,6,2,CV(CPM),0.106044615046359
 edgeRLRTrobust,EMTAB2805null,full-length,,6,2,CV(CPM),0.0304219029543847
@@ -2219,6 +2358,7 @@ SeuratTobit,EMTAB2805null,full-length,,6,2,CV(CPM),-0.247191211212335
 monoclecensus,EMTAB2805null,full-length,,6,2,CV(CPM),0.415489631368031
 monocle,EMTAB2805null,full-length,,6,2,CV(CPM),-0.083528466546262
 metagenomeSeq,EMTAB2805null,full-length,,6,2,CV(CPM),0.180616833165719
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,2,CV(CPM),0.0862817742068206
 edgeRLRT,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.264209442442305
 NODES,EMTAB2805null,full-length,,6,3,Fraction zeros,-1.16912518053798
 DESeq2,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.25954129530764
@@ -2231,6 +2371,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.2003242326598
 monoclecensus,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.0720954909075622
 monocle,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.011514098333638
 monoclecount,EMTAB2805null,full-length,,6,3,Fraction zeros,0.623536374443023
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,3,Fraction zeros,-0.0778903933129961
 edgeRLRT,EMTAB2805null,full-length,,6,3,log2(average CPM),0.616559743031154
 NODES,EMTAB2805null,full-length,,6,3,log2(average CPM),1.10479528524773
 DESeq2,EMTAB2805null,full-length,,6,3,log2(average CPM),0.449403172677616
@@ -2243,6 +2384,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,3,log2(average CPM),0.16773208540
 monoclecensus,EMTAB2805null,full-length,,6,3,log2(average CPM),0.554483804788455
 monocle,EMTAB2805null,full-length,,6,3,log2(average CPM),0.0111465479830336
 monoclecount,EMTAB2805null,full-length,,6,3,log2(average CPM),0.00774762810291651
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,3,log2(average CPM),0.423803272159269
 edgeRLRT,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.647554655770885
 NODES,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.921422561994775
 DESeq2,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.528727404223466
@@ -2255,6 +2397,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.242415420
 monoclecensus,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.666858640735828
 monocle,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.0074846484256059
 monoclecount,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.16502605478364
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,3,log2(variance(CPM)),0.525628125851246
 edgeRLRT,EMTAB2805null,full-length,,6,3,CV(CPM),-0.0282648187632198
 NODES,EMTAB2805null,full-length,,6,3,CV(CPM),-0.959781943631973
 DESeq2,EMTAB2805null,full-length,,6,3,CV(CPM),0.0194941416417625
@@ -2267,6 +2410,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,3,CV(CPM),0.195068099182407
 monoclecensus,EMTAB2805null,full-length,,6,3,CV(CPM),0.220352955880168
 monocle,EMTAB2805null,full-length,,6,3,CV(CPM),-0.146677472107752
 monoclecount,EMTAB2805null,full-length,,6,3,CV(CPM),0.811958711598268
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,3,CV(CPM),0.120704221930353
 edgeRLRT,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.062877852491931
 DESeq2,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.3310336621509
 DESeq2nofilt,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.318025308094166
@@ -2277,6 +2421,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.2145506751188
 SeuratTobit,EMTAB2805null,full-length,,6,4,Fraction zeros,0.579765035626714
 monoclecensus,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.0475957170027236
 monocle,EMTAB2805null,full-length,,6,4,Fraction zeros,0.0510830812240353
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,4,Fraction zeros,-0.123698079764121
 edgeRLRT,EMTAB2805null,full-length,,6,4,log2(average CPM),0.734313100492815
 DESeq2,EMTAB2805null,full-length,,6,4,log2(average CPM),0.450787807225746
 DESeq2nofilt,EMTAB2805null,full-length,,6,4,log2(average CPM),0.50192320114234
@@ -2287,6 +2432,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,4,log2(average CPM),0.17016208274
 SeuratTobit,EMTAB2805null,full-length,,6,4,log2(average CPM),-0.403378049448952
 monoclecensus,EMTAB2805null,full-length,,6,4,log2(average CPM),0.571777352477175
 monocle,EMTAB2805null,full-length,,6,4,log2(average CPM),0.0639953784848386
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,4,log2(average CPM),0.428508909524133
 edgeRLRT,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.86260942201684
 DESeq2,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.519032831634619
 DESeq2nofilt,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.595891140820195
@@ -2297,6 +2443,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.236071557
 SeuratTobit,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),-0.43333570130204
 monoclecensus,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.74303516876017
 monocle,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.0726708613130614
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,4,log2(variance(CPM)),0.519156201328275
 edgeRLRT,EMTAB2805null,full-length,,6,4,CV(CPM),0.329888089501333
 DESeq2,EMTAB2805null,full-length,,6,4,CV(CPM),-0.020727043054542
 DESeq2nofilt,EMTAB2805null,full-length,,6,4,CV(CPM),0.133533113244222
@@ -2307,6 +2454,7 @@ SeuratBimodnofilt,EMTAB2805null,full-length,,6,4,CV(CPM),0.165967555786152
 SeuratTobit,EMTAB2805null,full-length,,6,4,CV(CPM),-0.21437396406226
 monoclecensus,EMTAB2805null,full-length,,6,4,CV(CPM),0.52894599163513
 monocle,EMTAB2805null,full-length,,6,4,CV(CPM),-0.0919645773970511
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,4,CV(CPM),0.0897550199027416
 NODES,EMTAB2805null,full-length,,6,5,Fraction zeros,-1.09218517298949
 DESeq2,EMTAB2805null,full-length,,6,5,Fraction zeros,-0.280959418654059
 DESeq2nofilt,EMTAB2805null,full-length,,6,5,Fraction zeros,-0.293578612559016
@@ -2317,6 +2465,7 @@ monoclecensus,EMTAB2805null,full-length,,6,5,Fraction zeros,0.181631542030033
 monocle,EMTAB2805null,full-length,,6,5,Fraction zeros,0.0197139478931147
 metagenomeSeq,EMTAB2805null,full-length,,6,5,Fraction zeros,0.0349042080880677
 monoclecount,EMTAB2805null,full-length,,6,5,Fraction zeros,0.589107071379786
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,5,Fraction zeros,-0.0856511157843168
 NODES,EMTAB2805null,full-length,,6,5,log2(average CPM),1.19240690954392
 DESeq2,EMTAB2805null,full-length,,6,5,log2(average CPM),0.386203976756579
 DESeq2nofilt,EMTAB2805null,full-length,,6,5,log2(average CPM),0.463250019452046
@@ -2327,6 +2476,7 @@ monoclecensus,EMTAB2805null,full-length,,6,5,log2(average CPM),0.459479753785766
 monocle,EMTAB2805null,full-length,,6,5,log2(average CPM),0.0830584628751537
 metagenomeSeq,EMTAB2805null,full-length,,6,5,log2(average CPM),0.192821777911971
 monoclecount,EMTAB2805null,full-length,,6,5,log2(average CPM),0.0166742193172377
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,5,log2(average CPM),0.377126345274594
 NODES,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),1.10903500505808
 DESeq2,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.430385965040575
 DESeq2nofilt,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.538632405426044
@@ -2337,6 +2487,7 @@ monoclecensus,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.6151036113125
 monocle,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.0921639008707199
 metagenomeSeq,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.234147431272821
 monoclecount,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.174924717985471
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,5,log2(variance(CPM)),0.450335652710886
 NODES,EMTAB2805null,full-length,,6,5,CV(CPM),-1.07318697940586
 DESeq2,EMTAB2805null,full-length,,6,5,CV(CPM),-0.0972456562070572
 DESeq2nofilt,EMTAB2805null,full-length,,6,5,CV(CPM),0.077022309957578
@@ -2347,6 +2498,7 @@ monoclecensus,EMTAB2805null,full-length,,6,5,CV(CPM),0.395051790585547
 monocle,EMTAB2805null,full-length,,6,5,CV(CPM),-0.0836006405054669
 metagenomeSeq,EMTAB2805null,full-length,,6,5,CV(CPM),-0.0122640643568152
 monoclecount,EMTAB2805null,full-length,,6,5,CV(CPM),0.762062702673231
+DESeq2betapFALSE,EMTAB2805null,full-length,,6,5,CV(CPM),0.0454817801110456
 edgeRQLF,GSE60749-GPL13112null,full-length,,47,1,Fraction zeros,0.584379482378279
 NODES,GSE60749-GPL13112null,full-length,,47,1,Fraction zeros,-0.892591350262591
 edgeRLRTrobust,GSE60749-GPL13112null,full-length,,47,1,Fraction zeros,0.208072426434086
@@ -2880,6 +3032,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,1,Fraction zeros,-0.322006691
 monocle,GSE60749-GPL13112null,full-length,,6,1,Fraction zeros,0.220749527350489
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,1,Fraction zeros,0.259748851588549
 monoclecount,GSE60749-GPL13112null,full-length,,6,1,Fraction zeros,-0.104690072488997
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,1,Fraction zeros,-0.571695674207565
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.41285699914438
 NODES,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.920060420340351
 DESeq2,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.634770277243112
@@ -2893,6 +3046,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.9636527
 monocle,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),-0.170481010353895
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),-0.158441415350798
 monoclecount,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.354095621356988
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,1,log2(average CPM),0.634770277243112
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.624259693251107
 NODES,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.877727450600984
 DESeq2,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.795568518965633
@@ -2906,6 +3060,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),1.36355
 monocle,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),-0.149399767918419
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.0232806211638678
 monoclecount,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.583885382660582
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.795568518965633
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),0.132900346332311
 NODES,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),-0.724600856362386
 DESeq2,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),-0.175563086103004
@@ -2919,6 +3074,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),0.265931720234526
 monocle,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),0.0587285377234389
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),0.503825442107259
 monoclecount,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),0.279654024444178
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,1,CV(CPM),-0.175563086103004
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.264905212976876
 NODES,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.934054410513202
 DESeq2,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.717813830740085
@@ -2932,6 +3088,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.270041159
 monocle,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,0.248282868017713
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,0.606159038045385
 monoclecount,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.0806381844906926
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,2,Fraction zeros,-0.933729869789243
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.515372444452763
 NODES,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.978312606636191
 DESeq2,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.734589663946129
@@ -2945,6 +3102,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.7268563
 monocle,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),-0.189390747265984
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),-0.492024177757787
 monoclecount,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.348195263180777
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,2,log2(average CPM),0.789132624066358
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.670435877907217
 NODES,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.886169592785203
 DESeq2,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.81053248738056
@@ -2958,6 +3116,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),1.04980
 monocle,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),-0.16830065681072
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),-0.380092804512433
 monoclecount,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.593708820876114
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.865686549810861
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),0.0415194894774374
 NODES,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),-0.791085137943494
 DESeq2,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),-0.418880301608554
@@ -2971,6 +3130,7 @@ monoclecensus,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),0.223143822511848
 monocle,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),0.0693399419254103
 metagenomeSeq,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),0.546351895653771
 monoclecount,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),0.325537634249452
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,2,CV(CPM),-0.432349683324447
 NODES,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,-0.936316565481596
 edgeRLRTrobust,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,0.0510809248527204
 SeuratBimod,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,-0.805457100550284
@@ -2979,6 +3139,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,0.549286946430
 monoclecensus,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,-0.45481093416805
 monocle,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,0.247694055003943
 monoclecount,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,-0.0564633642483977
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,3,Fraction zeros,-0.342431260478755
 NODES,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),1.03353005041253
 edgeRLRTrobust,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),0.23932715757274
 SeuratBimod,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),1.14375620908027
@@ -2987,6 +3148,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),-0.41956284
 monoclecensus,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),0.764150407224003
 monocle,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),-0.197702037415583
 monoclecount,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),0.327296436769549
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,3,log2(average CPM),0.640243424319551
 NODES,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.993545667367666
 edgeRLRTrobust,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.357722095561137
 SeuratBimod,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.44123283421695
@@ -2995,6 +3157,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),-0.404228
 monoclecensus,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.13915815497584
 monocle,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),-0.17223517379029
 monoclecount,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.55431317990974
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.757731266708219
 NODES,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),-0.780616616401625
 edgeRLRTrobust,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.00622585398995494
 SeuratBimod,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.101638444081699
@@ -3003,6 +3166,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.198773811501091
 monoclecensus,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.495476492485328
 monocle,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.0789819897865626
 monoclecount,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),0.316054586878916
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,3,CV(CPM),-0.17547623430741
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.151354400850801
 DESeq2,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.494481921912575
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.456588098371966
@@ -3014,6 +3178,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,0.363246019580
 monoclecensus,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.272933773149005
 monocle,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,0.245813173280431
 monoclecount,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.0630262944589785
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,4,Fraction zeros,-0.510361680514334
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.395131580021581
 DESeq2,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.607700719127958
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.615461591301583
@@ -3025,6 +3190,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),-0.29702985
 monoclecensus,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.735009378545615
 monocle,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),-0.199170286490575
 monoclecount,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.315512025378352
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,4,log2(average CPM),0.602964924349417
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.565361361932265
 DESeq2,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.727071550410733
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.743440748079539
@@ -3036,6 +3202,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),-0.277543
 monoclecensus,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.989361280531796
 monocle,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),-0.176784626351236
 monoclecount,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.547228677565894
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.740932017321729
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.170733207783238
 DESeq2,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),-0.0168149253525489
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.0223054768042284
@@ -3047,6 +3214,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.133875254741525
 monoclecensus,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.330007299075036
 monocle,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.0710524631172431
 monoclecount,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.329456680091848
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,4,CV(CPM),0.03359380540286
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.0954066232197892
 DESeq2,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.495273870866127
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.455641067021398
@@ -3058,6 +3226,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,0.797482797830
 monoclecensus,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.353136983047128
 monocle,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,0.284554950526011
 monoclecount,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.133179085957633
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,5,Fraction zeros,-0.500976899133134
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.410913053984857
 DESeq2,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.629306117417396
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.576607098647592
@@ -3069,6 +3238,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),-0.63317747
 monoclecensus,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.846126525716386
 monocle,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),-0.230501683970333
 monoclecount,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.384023123011761
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,5,log2(average CPM),0.660143219310937
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.58608329077875
 DESeq2,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.796786053920613
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.752385095942447
@@ -3080,6 +3250,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),-0.585329
 monoclecensus,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),1.14449824322161
 monocle,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),-0.204159867066386
 monoclecount,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.602572853167873
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.80691846105145
 edgeRLRT,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),0.196935045646367
 DESeq2,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),-0.266343518842304
 DESeq2nofilt,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),-0.20720991049415
@@ -3091,6 +3262,7 @@ SeuratTobit,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),0.394269353951967
 monoclecensus,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),0.295060632158467
 monocle,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),0.103713948297137
 monoclecount,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),0.235819746980742
+DESeq2betapFALSE,GSE60749-GPL13112null,full-length,,6,5,CV(CPM),-0.0785782140851068
 edgeRLRT,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,-0.176987497590903
 edgeRQLF,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.513692965577661
 DESeq2,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,-0.688893530159167
@@ -3104,6 +3276,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.024703035
 monocle,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.419423067282571
 monoclecount,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.482842716135747
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.546578407502378
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,-0.513831334380741
 DEsingle,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,-0.642018639096215
 BPSC,GSE48968-GPL13112null,full-length,,48,1,Fraction zeros,0.36545255303086
 edgeRLRT,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.381500690448033
@@ -3119,6 +3292,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.395391
 monocle,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),-0.151254519112856
 monoclecount,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.0815355603778253
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),-0.215659185804274
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.596350412410771
 DEsingle,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.510380618171315
 BPSC,GSE48968-GPL13112null,full-length,,48,1,log2(average CPM),0.0779258832177273
 edgeRLRT,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.499940089042602
@@ -3134,6 +3308,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.5316
 monocle,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),-0.116799476073238
 monoclecount,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.238795564795419
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),-0.112292843055835
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.625362704185893
 DEsingle,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.556278154328916
 BPSC,GSE48968-GPL13112null,full-length,,48,1,log2(variance(CPM)),0.181066344109637
 edgeRLRT,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.24365326110707
@@ -3149,6 +3324,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.34141552408866
 monocle,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.0990502648473508
 monoclecount,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.59210534544005
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.591858757827188
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),-0.333460158293548
 DEsingle,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),-0.146167464650785
 BPSC,GSE48968-GPL13112null,full-length,,48,1,CV(CPM),0.307730052145169
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-0.311031673378141
@@ -3167,6 +3343,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-0.19662161
 monocle,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,0.405037159671782
 monoclecount,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,0.46023153336946
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,0.590919737112768
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-0.552978698026549
 DEsingle,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-0.690577379435724
 BPSC,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-0.0201879056255052
 ROTScpm,GSE48968-GPL13112null,full-length,,24,1,Fraction zeros,-1.49062399066877
@@ -3187,6 +3364,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),0.524040
 monocle,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),-0.154900851906253
 monoclecount,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),0.110331833295126
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),-0.211653912333984
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),0.523114977793437
 DEsingle,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),0.528996924362452
 BPSC,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),0.281134822507147
 ROTScpm,GSE48968-GPL13112null,full-length,,24,1,log2(average CPM),1.29573553943128
@@ -3207,6 +3385,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),0.6364
 monocle,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),-0.124083673711033
 monoclecount,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),0.251732520405533
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),-0.1141039439374
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),0.541134207575529
 DEsingle,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),0.578300714056691
 BPSC,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),0.346263779313451
 ROTScpm,GSE48968-GPL13112null,full-length,,24,1,log2(variance(CPM)),1.06901498657057
@@ -3227,6 +3406,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),0.197385383870903
 monocle,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),0.110132966829036
 monoclecount,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),0.596231003455452
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),0.649318011689897
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),-0.29573374879888
 DEsingle,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),-0.0450264806498794
 BPSC,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),0.0822047729655122
 ROTScpm,GSE48968-GPL13112null,full-length,,24,1,CV(CPM),-1.43374242585197
@@ -3245,6 +3425,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,0.188594408
 monocle,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,0.349257798233174
 monoclecount,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,0.546175224137682
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,0.60360960243431
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,-0.370462548690366
 DEsingle,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,-0.693528069909704
 BPSC,GSE48968-GPL13112null,full-length,,24,2,Fraction zeros,0.16854838911807
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.529825933240385
@@ -3261,6 +3442,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.425281
 monocle,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),-0.107788602001762
 monoclecount,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.0674731205320672
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),-0.231091987783485
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.55069242881191
 DEsingle,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.530007660205942
 BPSC,GSE48968-GPL13112null,full-length,,24,2,log2(average CPM),0.192369810174651
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.622043792680665
@@ -3277,6 +3459,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.5687
 monocle,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),-0.079517783641831
 monoclecount,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.214219171844884
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),-0.130181134976753
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.59775758524631
 DEsingle,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.554965867657686
 BPSC,GSE48968-GPL13112null,full-length,,24,2,log2(variance(CPM)),0.280243216360495
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.267831109515871
@@ -3293,6 +3476,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.533432274590198
 monocle,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.0658026973408039
 monoclecount,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.698879023247788
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.673309818000625
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),-0.165315381570345
 DEsingle,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),-0.161923687268307
 BPSC,GSE48968-GPL13112null,full-length,,24,2,CV(CPM),0.25047965246801
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,-0.171319120468271
@@ -3310,6 +3494,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,0.076064748
 monocle,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,0.367303588478381
 monoclecount,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,0.499196403803626
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,0.610565031819432
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,-0.527557353667125
 DEsingle,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,-0.746421177963451
 BPSC,GSE48968-GPL13112null,full-length,,24,3,Fraction zeros,0.140955321224929
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.458858512675565
@@ -3327,6 +3512,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.472119
 monocle,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),-0.0946268490667094
 monoclecount,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.0916002753398602
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),-0.220497877902949
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.595006569612917
 DEsingle,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.532649376337003
 BPSC,GSE48968-GPL13112null,full-length,,24,3,log2(average CPM),0.227668139312905
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.563400301150178
@@ -3344,6 +3530,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.6160
 monocle,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),-0.0603201319514397
 monoclecount,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.239537190345537
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),-0.119271567755232
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.640052060135191
 DEsingle,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.578290217313235
 BPSC,GSE48968-GPL13112null,full-length,,24,3,log2(variance(CPM)),0.315692481915564
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.338047759757331
@@ -3361,6 +3548,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.478644854523736
 monocle,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.104918580373647
 monoclecount,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.639356929408402
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.664583679077671
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),-0.212851660352477
 DEsingle,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),-0.0800366917589654
 BPSC,GSE48968-GPL13112null,full-length,,24,3,CV(CPM),0.205502774964546
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,-0.21010142501246
@@ -3378,6 +3566,7 @@ monocle,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,0.339709825182197
 metagenomeSeq,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,0.44131041449453
 monoclecount,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,0.496993111653121
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,0.622002268694228
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,-0.294050547007624
 DEsingle,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,-0.746872583384038
 BPSC,GSE48968-GPL13112null,full-length,,24,4,Fraction zeros,0.194645925319653
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),0.470056397056252
@@ -3395,6 +3584,7 @@ monocle,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),-0.07269478088
 metagenomeSeq,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),-0.952723212497448
 monoclecount,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),0.0959885136447176
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),-0.235194483567178
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),0.546399848828472
 DEsingle,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),0.515903132391113
 BPSC,GSE48968-GPL13112null,full-length,,24,4,log2(average CPM),0.211486717659691
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),0.570140924005646
@@ -3412,6 +3602,7 @@ monocle,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),-0.033612402
 metagenomeSeq,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),-0.957671687013638
 monoclecount,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),0.247648431681778
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),-0.12753550847938
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),0.613724568865988
 DEsingle,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),0.551281759292018
 BPSC,GSE48968-GPL13112null,full-length,,24,4,log2(variance(CPM)),0.313038454676103
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.298136228724535
@@ -3429,6 +3620,7 @@ monocle,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.108715317200321
 metagenomeSeq,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.737169045972142
 monoclecount,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.630592033588092
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.700142092729469
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),-0.0927014972195064
 DEsingle,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),-0.0798379114723777
 BPSC,GSE48968-GPL13112null,full-length,,24,4,CV(CPM),0.25063068011881
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,-0.0465343593530538
@@ -3445,6 +3637,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,0.007549806
 monocle,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,0.418708979319868
 monoclecount,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,0.587269056968879
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,0.639684576811534
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,-0.230046681927629
 DEsingle,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,-0.633259006006405
 BPSC,GSE48968-GPL13112null,full-length,,24,5,Fraction zeros,0.225672244234448
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.411975683361095
@@ -3461,6 +3654,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.428863
 monocle,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),-0.104472431414872
 monoclecount,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.0426463892068437
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),-0.242613401291337
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.487523176344658
 DEsingle,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.473206588175263
 BPSC,GSE48968-GPL13112null,full-length,,24,5,log2(average CPM),0.176707573142369
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.520062221117844
@@ -3477,6 +3671,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.5625
 monocle,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),-0.0717290420108067
 monoclecount,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.193189179846312
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),-0.138451413172088
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.54927497805565
 DEsingle,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.522438413196132
 BPSC,GSE48968-GPL13112null,full-length,,24,5,log2(variance(CPM)),0.266367472361845
 edgeRLRT,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.348881139005522
@@ -3493,6 +3688,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.429064948972399
 monocle,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.0804734750841135
 monoclecount,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.715502227143098
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.688133195879768
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),-0.100343067679898
 DEsingle,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.00248196141710776
 BPSC,GSE48968-GPL13112null,full-length,,24,5,CV(CPM),0.254151230040773
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,-0.0287032976537506
@@ -3510,6 +3706,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,0.019005801
 monocle,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,0.199174249690973
 monoclecount,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,0.50165961936436
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,0.60269377129014
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,-0.321791271799125
 DEsingle,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,-0.778948911922436
 BPSC,GSE48968-GPL13112null,full-length,,12,1,Fraction zeros,-0.164130927376164
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.717598782209661
@@ -3527,6 +3724,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.495569
 monocle,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.0465322877346125
 monoclecount,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.109022945718029
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),-0.140072448319124
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.541297922065368
 DEsingle,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.681204086290702
 BPSC,GSE48968-GPL13112null,full-length,,12,1,log2(average CPM),0.434781667848103
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.800330105447445
@@ -3544,6 +3742,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.6253
 monocle,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.0553379405302729
 monoclecount,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.231801282032424
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),-0.0515535356814698
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.567389985408591
 DEsingle,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.739146357598224
 BPSC,GSE48968-GPL13112null,full-length,,12,1,log2(variance(CPM)),0.483702161158047
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),0.246563266178542
@@ -3561,6 +3760,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),0.568217827539726
 monocle,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),-0.0563832095747867
 monoclecount,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),0.655681994556644
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),0.634106524086234
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),-0.194718815968063
 DEsingle,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),0.171030552899692
 BPSC,GSE48968-GPL13112null,full-length,,12,1,CV(CPM),-0.0164118592141664
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,-0.0786279688895766
@@ -3576,6 +3776,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,-0.01353245
 monocle,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,0.170712601112452
 monoclecount,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,0.358374605062772
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,0.4850599869656
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,-0.407902428632364
 BPSC,GSE48968-GPL13112null,full-length,,12,2,Fraction zeros,-0.12289772655862
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.644443003494553
 edgeRQLF,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),-0.152909710416951
@@ -3590,6 +3791,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.465463
 monocle,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.0795020265847067
 monoclecount,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.215423901788054
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.0436600805023436
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.65792276091402
 BPSC,GSE48968-GPL13112null,full-length,,12,2,log2(average CPM),0.482314365517373
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.699776616407667
 edgeRQLF,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),-0.0566943856279567
@@ -3604,6 +3806,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.5858
 monocle,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.0933613381328402
 monoclecount,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.332074436117023
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.128479395180706
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.694221147396742
 BPSC,GSE48968-GPL13112null,full-length,,12,2,log2(variance(CPM)),0.53621969685884
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.215520649402516
 edgeRQLF,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.76929509721431
@@ -3618,6 +3821,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.564705118076328
 monocle,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),-0.046484392946992
 monoclecount,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.507205499186264
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.476053861689701
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),-0.201210534805916
 BPSC,GSE48968-GPL13112null,full-length,,12,2,CV(CPM),0.00534237705443163
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,-0.245896124458717
 edgeRQLF,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,0.71140237867222
@@ -3634,6 +3838,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,0.182368436653197
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,-0.066134605438902
 monoclecount,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,0.537890300783155
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,0.591947017062217
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,-0.258786446977495
 DEsingle,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,-0.761869940498181
 BPSC,GSE48968-GPL13112null,full-length,,12,3,Fraction zeros,-0.0264202321942691
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.660312413823441
@@ -3651,6 +3856,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.075472209290
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.110143924135024
 monoclecount,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.110010393349093
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),-0.0758178037254499
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.554530538840823
 DEsingle,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.534172808657342
 BPSC,GSE48968-GPL13112null,full-length,,12,3,log2(average CPM),0.0920838923952789
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.720041236251117
@@ -3668,6 +3874,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.0958012267
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.111153456334749
 monoclecount,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.243751536890768
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.0186058405939694
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.593291656247914
 DEsingle,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.668711037348177
 BPSC,GSE48968-GPL13112null,full-length,,12,3,log2(variance(CPM)),0.129415382941222
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),0.145407831798431
@@ -3685,6 +3892,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),-0.0181609143953053
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),-0.228179834996332
 monoclecount,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),0.705640462241602
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),0.592051681104093
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),-0.149326305783447
 DEsingle,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),0.600667937217515
 BPSC,GSE48968-GPL13112null,full-length,,12,3,CV(CPM),0.135304709696066
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,-0.0976825034077774
@@ -3701,6 +3909,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,-0.32407843
 monocle,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,0.253209892216428
 monoclecount,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,0.468249768308854
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,0.658247038051469
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,-0.355210381544933
 DEsingle,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,-0.584414558120559
 BPSC,GSE48968-GPL13112null,full-length,,12,4,Fraction zeros,-0.149229229409987
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.720360809368815
@@ -3717,6 +3926,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.719261
 monocle,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.0354841554542368
 monoclecount,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.160760822940975
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),-0.103228695270789
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.603820090864769
 DEsingle,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.546949752075201
 BPSC,GSE48968-GPL13112null,full-length,,12,4,log2(average CPM),0.456629146144808
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.831099529204998
@@ -3733,6 +3943,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.8220
 monocle,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.0541186076334374
 monoclecount,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.2919923512221
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),-0.00385697595797119
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.652471886616771
 DEsingle,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.637068574500106
 BPSC,GSE48968-GPL13112null,full-length,,12,4,log2(variance(CPM)),0.516981424291576
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.441577008905241
@@ -3749,6 +3960,7 @@ monoclecensus,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.239648334409681
 monocle,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.00294838087512655
 monoclecount,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.692845811391683
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.654799464466559
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),-0.137556659861014
 DEsingle,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.419510341417793
 BPSC,GSE48968-GPL13112null,full-length,,12,4,CV(CPM),0.0679681039642787
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,-0.354252512492407
@@ -3768,6 +3980,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,0.012846774219637
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,-0.113585146264739
 monoclecount,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,0.494220501875205
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,0.588910147102502
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,-0.631484415312761
 DEsingle,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,-0.914889167080127
 BPSC,GSE48968-GPL13112null,full-length,,12,5,Fraction zeros,-0.343913905624425
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.703969940617346
@@ -3787,6 +4000,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.163048584067
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.211385391637586
 monoclecount,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.123332807608135
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),-0.114604435178422
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.638420029895989
 DEsingle,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.672372178879384
 BPSC,GSE48968-GPL13112null,full-length,,12,5,log2(average CPM),0.547315496245147
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.776448242085413
@@ -3806,6 +4020,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.1622543518
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.202999178971608
 monoclecount,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.244501363171525
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),-0.0281123650868545
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.661145003624297
 DEsingle,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.701387226279137
 BPSC,GSE48968-GPL13112null,full-length,,12,5,log2(variance(CPM)),0.583914783554821
 edgeRLRT,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),0.121424811501237
@@ -3825,6 +4040,7 @@ monocle,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),-0.156224046102588
 metagenomeSeq,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),-0.280743198227018
 monoclecount,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),0.613684564601298
 edgeRQLFDetRate,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),0.582745509835291
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),-0.251160664748909
 DEsingle,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),-0.146361398531202
 BPSC,GSE48968-GPL13112null,full-length,,12,5,CV(CPM),-0.077843300853671
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,0.172426960207408
@@ -3838,6 +4054,7 @@ SeuratBimodIsExpr2,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,-1.7230
 DESeq2census,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,-1.57970860131443
 monoclecensus,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,-0.419447808023507
 monocle,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,-0.112879881297904
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,1,Fraction zeros,-0.29977417611761
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),1.05516300243339
 DESeq2,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),0.682772011770775
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),0.735279267755608
@@ -3849,6 +4066,7 @@ SeuratBimodIsExpr2,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),1.54
 DESeq2census,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),1.11186741287306
 monoclecensus,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),0.910648015475197
 monocle,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),0.307679186274313
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,1,log2(average CPM),0.621995699362384
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),1.24195680283007
 DESeq2,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.717419402916566
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.769875691534806
@@ -3860,6 +4078,7 @@ SeuratBimodIsExpr2,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),1.
 DESeq2census,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),1.10068302833048
 monoclecensus,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),1.00862717173028
 monocle,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.30022181595316
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,1,log2(variance(CPM)),0.670638000125776
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),0.497693339177461
 DESeq2,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.178174127355563
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.0645204096273433
@@ -3871,6 +4090,7 @@ SeuratBimodIsExpr2,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.92311832384
 DESeq2census,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.670030637777044
 monoclecensus,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),0.240168923061959
 monocle,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.212646951984603
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,1,CV(CPM),-0.0637030860350618
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,0.0984374310915734
 DESeq2,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.272605431730505
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.356830106865588
@@ -3880,6 +4100,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.47577140203
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.281689067983614
 monoclecensus,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,0.220424425780672
 monocle,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.0956731198228709
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,2,Fraction zeros,-0.0563479810425086
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.852759325846988
 DESeq2,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.561602690639743
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.566292874630903
@@ -3889,6 +4110,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.759108675
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.289733111232735
 monoclecensus,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.645855412701931
 monocle,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.269004248031759
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,2,log2(average CPM),0.510908535246097
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.954300436934851
 DESeq2,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.609099589647332
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.609658605939484
@@ -3898,6 +4120,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.8522289
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.333461496614957
 monoclecensus,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.778892024271081
 monocle,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.259757575128077
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,2,log2(variance(CPM)),0.575957292889791
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.467147512006029
 DESeq2,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),-0.0358941918736274
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.163937603238375
@@ -3907,6 +4130,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.0778674462810451
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.11712580140418
 monoclecensus,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.305448676521534
 monocle,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),-0.213893980448035
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,2,CV(CPM),0.0901693346436763
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,0.129981822706516
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,0.0660588938747026
 DESeq2,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,-0.455950192385509
@@ -3919,6 +4143,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,-0.23424369
 monoclecensus,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,-0.229948973642975
 monocle,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,-0.0787247044561944
 monoclecount,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,0.349794878282742
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,3,Fraction zeros,-0.162129624406962
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.876000029506331
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),1.13175480772719
 DESeq2,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.743989671900543
@@ -3931,6 +4156,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),1.074695
 monoclecensus,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.96794672946235
 monocle,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.23778989979666
 monoclecount,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.288313991568366
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,3,log2(average CPM),0.640572712931123
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.00843926008981
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.30072778500236
 DESeq2,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.798985734523261
@@ -3943,6 +4169,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.2482
 monoclecensus,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),1.10448352054275
 monocle,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.227536818701719
 monoclecount,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.40939087279197
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,3,log2(variance(CPM)),0.711659651013086
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),0.566223237628705
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),0.833552716841035
 DESeq2,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),-0.0592101562075463
@@ -3955,6 +4182,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),1.12352779549084
 monoclecensus,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),0.619986473655659
 monocle,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),-0.210550251814363
 monoclecount,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),0.600709599732077
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,3,CV(CPM),0.0483319173168412
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.377495056349743
 DESeq2,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.273696711642349
 DESeq2nofilt,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.324606195289424
@@ -3964,6 +4192,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.53513452366
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.320086798613505
 monoclecensus,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.125366917741613
 monocle,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.0805242385244899
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.104274673032018
 DEsingle,GSE48968-GPL13112null,full-length,,6,4,Fraction zeros,-0.812386517641427
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.991524948560572
 DESeq2,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.547870001615401
@@ -3974,6 +4203,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.798448908
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.29290289087327
 monoclecensus,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.695320198450399
 monocle,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.274132499812471
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.501467566766017
 DEsingle,GSE48968-GPL13112null,full-length,,6,4,log2(average CPM),0.794806389459137
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),1.00777596030447
 DESeq2,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.586970689096772
@@ -3984,6 +4214,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.8803519
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.334723402510625
 monoclecensus,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.821967265257557
 monocle,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.26696020075509
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.557766801488162
 DEsingle,GSE48968-GPL13112null,full-length,,6,4,log2(variance(CPM)),0.820656794043465
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),0.118068689962538
 DESeq2,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),-0.082236195019558
@@ -3994,6 +4225,7 @@ SeuratBimod,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),0.0834191048223244
 SeuratBimodnofilt,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),0.101998958021866
 monoclecensus,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),0.498665746699079
 monocle,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),-0.208404974936544
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),0.0312516256190959
 DEsingle,GSE48968-GPL13112null,full-length,,6,4,CV(CPM),-0.0285518594643489
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,0.212276540428446
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,0.447323464822639
@@ -4007,6 +4239,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,0.197879381
 monoclecensus,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,-0.105639101756135
 monocle,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,-0.0434116612605264
 monoclecount,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,0.49535588996896
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,5,Fraction zeros,-0.0486183868391698
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.798690455387634
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),1.2686785919953
 DESeq2,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.618768908546915
@@ -4019,6 +4252,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),1.144003
 monoclecensus,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.858329849277659
 monocle,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.227211264046881
 monoclecount,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.183569441257597
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,5,log2(average CPM),0.512315586051557
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.887234483061799
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),1.47102102952945
 DESeq2,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.657529648099704
@@ -4031,6 +4265,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),1.3046
 monoclecensus,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.976067586239929
 monocle,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.220120383614475
 monoclecount,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.300508759138492
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,5,log2(variance(CPM)),0.580939040882385
 edgeRLRT,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),0.395728476045287
 edgeRQLF,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),1.10225653031615
 DESeq2,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),-0.11190511040951
@@ -4043,6 +4278,7 @@ edgeRLRTcensus,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),1.10873360950002
 monoclecensus,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),0.587203308933707
 monocle,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),-0.19455622383028
 monoclecount,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),0.674211283414403
+DESeq2betapFALSE,GSE48968-GPL13112null,full-length,,6,5,CV(CPM),0.100872292372788
 edgeRLRT,UsoskinGSE59739null,UMI,,24,1,Fraction zeros,0.345521888719075
 edgeRQLF,UsoskinGSE59739null,UMI,,24,1,Fraction zeros,0.330552306328404
 edgeRLRTdeconv,UsoskinGSE59739null,UMI,,24,1,Fraction zeros,0.0971644023036104
@@ -4656,6 +4892,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,-1.4105370488
 monocle,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,0.174625064149519
 monoclecount,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,-0.175725914144892
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,0.232818402651274
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,-0.968542261949386
 DEsingle,GSE62270-GPL17021null,UMI,,120,5,Fraction zeros,-0.996183673558558
 edgeRQLF,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),0.34755638648839
 NODES,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),1.41661204577361
@@ -4666,6 +4903,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),2.24738935
 monocle,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),0.0490387544278603
 monoclecount,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),0.902463894741239
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),0.131146378802397
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),1.93360732243524
 DEsingle,GSE62270-GPL17021null,UMI,,120,5,log2(average CPM),1.14231217794998
 edgeRQLF,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),0.614153347094699
 NODES,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),1.29738707639822
@@ -4676,6 +4914,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),2.764759
 monocle,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),0.0465740105812103
 monoclecount,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),1.14488653816985
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),0.350453654672772
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),2.24845360958612
 DEsingle,GSE62270-GPL17021null,UMI,,120,5,log2(variance(CPM)),1.09365855512968
 edgeRQLF,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),0.108841454435443
 NODES,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-1.21662334894812
@@ -4686,6 +4925,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-0.700668787971135
 monocle,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-0.235541575892711
 monoclecount,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-0.211093410497187
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),0.188226022266539
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-0.66790792643861
 DEsingle,GSE62270-GPL17021null,UMI,,120,5,CV(CPM),-0.726889583875918
 edgeRLRT,GSE62270-GPL17021null,UMI,,48,1,Fraction zeros,0.145566719801802
 edgeRQLF,GSE62270-GPL17021null,UMI,,48,1,Fraction zeros,0.245877563038224
@@ -4963,6 +5203,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,-0.75049084626
 monocle,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,-0.0511803824911863
 monoclecount,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,-0.253012041017158
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,0.0785945688332842
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,-0.85892449859159
 BPSC,GSE62270-GPL17021null,UMI,,24,3,Fraction zeros,-0.187932675337548
 edgeRLRT,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),1.18067580110779
 edgeRQLF,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),0.452903564857261
@@ -4976,6 +5217,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),1.828554724
 monocle,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),0.26423388975927
 monoclecount,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),1.01542235442322
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),0.328823145937899
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),1.70675529931525
 BPSC,GSE62270-GPL17021null,UMI,,24,3,log2(average CPM),2.03029980195371
 edgeRLRT,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),1.5529788641024
 edgeRQLF,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),0.654183984128283
@@ -4989,6 +5231,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),1.9218526
 monocle,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),0.203731242724566
 monoclecount,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),1.22705863447941
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),0.453761540516932
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),1.79784225962966
 BPSC,GSE62270-GPL17021null,UMI,,24,3,log2(variance(CPM)),2.78798893885344
 edgeRLRT,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),0.0126365518239033
 edgeRQLF,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),0.0790804277972406
@@ -5002,6 +5245,7 @@ SeuratBimodIsExpr2,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.557565512880503
 monocle,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.48786293893741
 monoclecount,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.139250535191722
 edgeRQLFDetRate,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.0721416473917173
+DESeq2betapFALSE,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.509322731204241
 BPSC,GSE62270-GPL17021null,UMI,,24,3,CV(CPM),-0.329863175090322
 edgeRQLF,GSE62270-GPL17021null,UMI,,24,4,Fraction zeros,0.279843208199059
 edgeRLRTdeconv,GSE62270-GPL17021null,UMI,,24,4,Fraction zeros,-0.970203495509685

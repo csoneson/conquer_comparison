@@ -20,7 +20,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
                      geom_point(position = position_jitter(width = 0.2), size = 0.5)),
                 gglayers0)
   gglayersfdr <- c(list(geom_hline(yintercept = 0.05)), 
-                   gglayers)
+                   gglayers,
+                   scale_y_sqrt(breaks = c(0.05, 0.5, 1), limits = c(-0.1, 1.3)))
   
   ## Initialize list to hold all plots
   plots <- list()
@@ -137,6 +138,8 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   ## ------------------------------- Performance ------------------------------ ##
   pdf(paste0(figdir, "/summary_trueperformance", dtpext, "_2.pdf"),
       width = 10, height = 7)
+  lineval <- c(FDR = 1, TPR = 1.1, AUROC = 1.1)
+  yticks <- list(FDR = c(0.05, 0.5, 1), TPR = c(0, 0.5, 1), AUROC = c(0, 0.5, 1))
   
   for (f in unique(fdrtprauc$filt)) {
     for (asp in c("FDR", "TPR", "AUROC")) {
@@ -151,15 +154,48 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       plots[[paste0(asp, "_all_", f)]] <- p
       print(plots[[paste0(asp, "_all_", f)]] + guides(color = FALSE))
       
-      ## All methods, order by fraction NA
-      p <- ggplot(fdrtprauc %>% dplyr::filter(filt == f) %>%
-                    dplyr::mutate(method = forcats::fct_reorder(method, fracNA, 
-                                                                fun = median, na.rm = TRUE,
-                                                                .desc = TRUE)),
-                  aes_string(x = "method", y = asp, color = "method")) + 
+      ## With n indicated
+      x0 <- fdrtprauc %>% dplyr::filter(filt == f) %>%
+        dplyr::mutate(method = forcats::fct_reorder(
+          method, FDR, fun = median, na.rm = TRUE, .desc = TRUE))
+      p <- ggplot(x0, aes_string(x = "method", y = asp, color = "method")) + 
         ylab(paste0(aspmod(asp))) + ggtitle(f)
-      if (asp == "FDR") p <- p + gglayersfdr
-      else p <- p + gglayers
+      if (asp == "FDR") p <- p + gglayersfdr + 
+        stat_summary(fun.data = function(x) {
+          return(data.frame(y = 1,
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90)
+      else p <- p + gglayers + 
+        stat_summary(fun.data = function(x) {
+          return(data.frame(y = 1.1,
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90) 
+      p <- p + geom_hline(yintercept = lineval[asp], linetype = "dashed")
+      plots[[paste0(asp, "_all_", f, "_withN")]] <- p
+      print(plots[[paste0(asp, "_all_", f, "_withN")]] + guides(color = FALSE))
+      
+      ## All methods, order by fraction NA
+      x0 <- fdrtprauc %>% dplyr::filter(filt == f) %>%
+        dplyr::mutate(method = forcats::fct_reorder(method, fracNA, 
+                                                    fun = median, na.rm = TRUE,
+                                                    .desc = TRUE))
+      p <- ggplot(x0, aes_string(x = "method", y = asp, color = "method")) + 
+        ylab(paste0(aspmod(asp))) + ggtitle(f)
+      if (asp == "FDR") p <- p + gglayersfdr + 
+        stat_summary(fun.data = function(x) {
+          return(data.frame(y = 1,
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90)
+      else p <- p + gglayers + 
+        stat_summary(fun.data = function(x) {
+          return(data.frame(y = 1.1,
+                            label = paste0("n=", sum(!is.na(x)))))}, 
+          geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+          hjust = -0.2, angle = 90) 
+      p <- p + geom_hline(yintercept = lineval[asp], linetype = "dashed")
       plots[[paste0(asp, "_all_fracnaorder_", f)]] <- p
       print(plots[[paste0(asp, "_all_fracnaorder_", f)]] + guides(color = FALSE))
       
@@ -175,14 +211,25 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
       
       ## With IHW for all methods, order by median FDP, facet by FDR control
       if (asp %in% c("FDR", "TPR")) {
-        p <- ggplot(fdrtpr_ihw %>% dplyr::filter(filt == f) %>%
-                      dplyr::mutate(method = forcats::fct_reorder(method, FDR, 
-                                                                  fun = median, na.rm = TRUE,
-                                                                  .desc = TRUE)),
-                    aes_string(x = "method", y = asp, color = "method")) + 
+        x0 <- fdrtpr_ihw %>% dplyr::filter(filt == f) %>%
+          dplyr::mutate(method = forcats::fct_reorder(method, FDR, 
+                                                      fun = median, na.rm = TRUE,
+                                                      .desc = TRUE))
+        p <- ggplot(x0, aes_string(x = "method", y = asp, color = "method")) + 
           ylab(paste0(aspmod(asp))) + ggtitle(paste0(f, " IHW"))
-        if (asp == "FDR") p <- p + gglayersfdr
-        else p <- p + gglayers
+        if (asp == "FDR") p <- p + gglayersfdr + 
+          stat_summary(fun.data = function(x) {
+            return(data.frame(y = 1,
+                              label = paste0("n=", sum(!is.na(x)))))}, 
+            geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+            hjust = -0.2, angle = 90)
+        else p <- p + gglayers + 
+          stat_summary(fun.data = function(x) {
+            return(data.frame(y = 1.1,
+                              label = paste0("n=", sum(!is.na(x)))))}, 
+            geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+            hjust = -0.2, angle = 90) 
+        p <- p + geom_hline(yintercept = lineval[asp], linetype = "dashed")
         plots[[paste0(asp, "_all_", f, "_IHW")]] <- p
         print(plots[[paste0(asp, "_all_", f, "_IHW")]] + 
                 facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + guides(color = FALSE))
@@ -216,37 +263,43 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   }
   
   dev.off()
-  
+
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol", dtpext, ".pdf"), width = 12, height = 12)
-  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_")]] + 
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all__withN")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(), 
-                           plots[[paste0("FDR_all_TPM_1_25p")]] + 
+                             ggtitle("Without filtering"), 
+                           plots[[paste0("FDR_all_TPM_1_25p_withN")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(),
+                             ggtitle("After filtering"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                 plot_grid(plots[[paste0("TPR_all_")]] + 
+                 plot_grid(plots[[paste0("TPR_all__withN")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1), 
-                           plots[[paste0("TPR_all_TPM_1_25p")]] + 
+                             ggtitle("Without filtering") + 
+                             scale_y_continuous(breaks = yticks$TPR, 
+                                                limits = c(-0.01, 1.3)), 
+                           plots[[paste0("TPR_all_TPM_1_25p_withN")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1),
+                             ggtitle("After filtering") + 
+                             scale_y_continuous(breaks = yticks$TPR, 
+                                                limits = c(-0.01, 1.3)),
                            labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                 plot_grid(plots[[paste0("AUROC_all_")]] + 
+                 plot_grid(plots[[paste0("AUROC_all__withN")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1), 
-                           plots[[paste0("AUROC_all_TPM_1_25p")]] +
+                             ggtitle("Without filtering") + 
+                             scale_y_continuous(breaks = yticks$AUROC, 
+                                                limits = c(-0.01, 1.3)), 
+                           plots[[paste0("AUROC_all_TPM_1_25p_withN")]] +
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") +
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1),
+                             ggtitle("After filtering") + 
+                             scale_y_continuous(breaks = yticks$AUROC, 
+                                                limits = c(-0.01, 1.3)),
                            labels = c("E", "F"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  rel_heights = c(1.7, 1.7, 1.7), ncol = 1)
   print(p)
@@ -254,19 +307,19 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   
   ## Ordered by fracNA
   pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol_fracnaorder", dtpext, ".pdf"), width = 12, height = 8)
-  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_fracnaorder_")]] + theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(), 
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all_fracnaorder_")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("Without filtering"), 
                            plots[[paste0("FDR_all_fracnaorder_TPM_1_25p")]] + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(),
+                             ggtitle("After filtering"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                 plot_grid(plots[[paste0("TPR_all_fracnaorder_")]] + theme(legend.position = "none") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                 plot_grid(plots[[paste0("TPR_all_fracnaorder_")]] + 
+                             theme(legend.position = "none") + 
+                             ggtitle("Without filtering") + ylim(-0.01, 1.3), 
                            plots[[paste0("TPR_all_fracnaorder_TPM_1_25p")]] + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1),
+                             ggtitle("After filtering") + ylim(-0.01, 1.3),
                            labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  rel_heights = c(1.7, 1.7), ncol = 1)
   print(p)
@@ -274,23 +327,23 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   
   ## IHW
   pdf(paste0(figdir, "/trueperformance_final_byfdrcontrol_ihw", dtpext, ".pdf"), width = 12, height = 8)
-  p <- plot_grid(plot_grid(plots[[paste0("FDR_all__IHW")]] + theme(legend.position = "none") + 
+  p <- plot_grid(plot_grid(plots[[paste0("FDR_all__IHW")]] + 
+                             theme(legend.position = "none") + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(), 
+                             ggtitle("Without filtering"), 
                            plots[[paste0("FDR_all_TPM_1_25p_IHW")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1) + 
-                             scale_y_sqrt(),
+                             ggtitle("After filtering"),
                            labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1),
-                 plot_grid(plots[[paste0("TPR_all__IHW")]] + theme(legend.position = "none") + 
+                 plot_grid(plots[[paste0("TPR_all__IHW")]] + 
+                             theme(legend.position = "none") + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
-                             ggtitle("Without filtering") + ylim(-0.01, 1), 
+                             ggtitle("Without filtering") + ylim(-0.01, 1.3), 
                            plots[[paste0("TPR_all_TPM_1_25p_IHW")]] + 
                              facet_grid(~ fdrcontrol, scales = "free_x", space = "free_x") + 
                              theme(legend.position = "none") + 
-                             ggtitle("After filtering") + ylim(-0.01, 1),
+                             ggtitle("After filtering") + ylim(-0.01, 1.3),
                            labels = c("C", "D"), align = "h", rel_widths = c(1, 1), nrow = 1),
                  rel_heights = c(1.7, 1.7), ncol = 1)
   print(p)

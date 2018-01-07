@@ -107,7 +107,13 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
              dplyr::mutate(method = forcats::fct_reorder(method, rel_timing, 
                                                          fun = median, na.rm = TRUE,
                                                          .desc = TRUE)), 
-           aes(x = method, y = rel_timing, color = method)) + gglayersp
+           aes(x = method, y = rel_timing, color = method)) + gglayersp + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = log10(5),
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+      hjust = 1, angle = 90) + 
+    geom_hline(yintercept = 1.3, linetype = "dashed")
   print(plots[["rel_timing_boxplot_comb"]])
 
   ## Relative time requirement, all methods, ordered by median relative time
@@ -139,7 +145,13 @@ summarize_timing <- function(figdir, datasets, exts, dtpext, cols,
                                                          .desc = TRUE)), 
            aes(x = method, y = expn, color = method)) + 
     gglayers + geom_point(position = position_jitter(width = 0.2), size = 1) + 
-    ylab("Exponent in power model of \ntiming vs number of cells")
+    ylab("Exponent in power model of \ntiming vs number of cells") + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = 1.9,
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+      hjust = 1, angle = 90) + 
+    geom_hline(yintercept = 1.7, linetype = "dashed")
   print(plots[["timing_exponent_ncells"]])
   
   ## Timing dependence on number of cells, per method

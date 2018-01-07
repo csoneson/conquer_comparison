@@ -56,23 +56,39 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
           dplyr::mutate(signal_vs_mock = mean(AUCs[tp == "signal"]) - mean(AUCs[tp == "mock"])) %>%
           dplyr::ungroup()
         
-        p <- concs %>% dplyr::filter(tp == "signal") %>%
+        x0 <- concs %>% dplyr::filter(tp == "signal") %>%
           dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
                                                       fun = median, na.rm = TRUE,
-                                                      .desc = TRUE)) %>%
+                                                      .desc = TRUE))
+        p <- x0 %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
           ylab("Area under concordance curve,\nsignal data set") + 
-          gglayers + ggtitle(paste0(f, ", top-", k0, " genes"))
+          gglayers + ggtitle(paste0(f, ", top-", k0, " genes")) + 
+          stat_summary(fun.data = function(x) {
+            return(data.frame(y = 1.05,
+                              label = paste0("n=", sum(!is.na(x)))))}, 
+            geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+            hjust = -0.2, angle = 90) + 
+          scale_y_continuous(limits = c(0, 1.3), breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+          geom_hline(yintercept = 1.05, linetype = "dashed")
         print(p)
         plots[[paste0("auc_signal_sep_", nm, "_", f, "_", k0)]] <- p
         
-        p <- concs %>% dplyr::filter(tp == "mock") %>%
+        x0 <- concs %>% dplyr::filter(tp == "mock") %>%
           dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
                                                       fun = median, na.rm = TRUE,
-                                                      .desc = TRUE)) %>%
+                                                      .desc = TRUE))
+        p <- x0 %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
           ylab("Area under concordance curve,\nnull data set") + 
-          gglayers + ggtitle(paste0(f, ", top-", k0, " genes"))
+          gglayers + ggtitle(paste0(f, ", top-", k0, " genes")) + 
+          stat_summary(fun.data = function(x) {
+            return(data.frame(y = 1.05,
+                              label = paste0("n=", sum(!is.na(x)))))}, 
+            geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+            hjust = -0.2, angle = 90) + 
+          scale_y_continuous(limits = c(0, 1.3), breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+          geom_hline(yintercept = 1.05, linetype = "dashed")
         print(p)
         plots[[paste0("auc_mock_sep_", nm, "_", f, "_", k0)]] <- p
       }

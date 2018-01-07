@@ -43,7 +43,13 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
       guides(color = guide_legend(ncol = 2, title = "Number of \ncells per group")) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
             axis.text.y = element_text(size = 12),
-            axis.title.y = element_text(size = 13))
+            axis.title.y = element_text(size = 13)) + 
+      stat_summary(fun.data = function(x) {
+        return(data.frame(y = 0.66,
+                          label = paste0("n=", sum(!is.na(x)))))}, 
+        geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+        hjust = 1, angle = 90) + 
+      geom_hline(yintercept = 0.6, linetype = "dashed")
     
     p2 <- ggplot(L %>% dplyr::select(-retain) %>%
                    tidyr::gather(dst, nbrgenes, filtered, unfiltered) %>% 
@@ -61,7 +67,13 @@ summarize_filtering <- function(figdir, datasets, exts, dtpext, cols,
       scale_fill_manual(values = c(filtered = "lightblue", unfiltered = "pink")) + 
       geom_vline(xintercept = 0.5 + seq_len(length(unique(L$dataset)) - 1),
                  linetype = "dashed", alpha = 0.3) + 
-      guides(alpha = FALSE, fill = FALSE)
+      guides(alpha = FALSE, fill = FALSE) + 
+      stat_summary(fun.data = function(x) {
+        return(data.frame(y = 55000,
+                          label = paste0("n=", sum(!is.na(x)))))}, 
+        geom = "text", alpha = 1, color = "black", size = 3, vjust = 0.5,
+        hjust = 1, angle = 90) + 
+      geom_hline(yintercept = 50000, linetype = "dashed")
     
     pcomb <- plot_grid(plot_grid(p1 + theme(legend.position = "none"), 
                                  p2 + theme(legend.position = "none"),

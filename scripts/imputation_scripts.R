@@ -7,6 +7,10 @@ impute_dropouts <- function(count, tpm, condt, avetxlength, imputationmethod) {
     source("scripts/drimpute_dropouts.R")
     imputed <- drimpute_dropouts(count = count, tpm = tpm, condt = condt, 
                                  avetxlength = avetxlength)
+  } else if (imputationmethod == "knnsmooth") {
+    source("scripts/knnsmooth_dropouts.R")
+    imputed <- knnsmooth_dropouts(count = count, tpm = tpm, condt = condt,
+                                  avetxlength = avetxlength)
   }
   imputed
 }

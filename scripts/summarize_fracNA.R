@@ -10,7 +10,7 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
     theme_bw(),
     xlab(""),
     scale_color_manual(values = cols),
-    ylim(0, 1), 
+    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0, 1.2)),
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13),
@@ -48,7 +48,13 @@ summarize_fracNA <- function(figdir, datasets, exts, dtpext, cols,
                                                            .desc = TRUE)),
              aes(x = method, y = fracNA, color = method)) + 
       gglayers + ylab("Fraction of NA adjusted p-values") + 
-      ggtitle(f)
+      ggtitle(f) + 
+      stat_summary(fun.data = function(x) {
+        return(data.frame(y = 1.05,
+                          label = paste0("n=", sum(!is.na(x)))))}, 
+        geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5,
+        hjust = -0.2, angle = 90) + 
+      geom_hline(yintercept = 1.05, linetype = "dashed")
     print(plots[[paste0("fracna_comb_", f)]])
     
     ## Separate plot for each data set

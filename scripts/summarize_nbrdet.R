@@ -48,13 +48,19 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   ## ------------------------------------------------------------------------ ##
   
   for (f in unique(nbrgenes$filt)) {
+    x0 <- nbrgenes %>% dplyr::filter(filt == f) %>% 
+      dplyr::mutate(method = forcats::fct_reorder(method, nbr_sign_adjp0.05_rel, 
+                                                  fun = median, na.rm = TRUE,
+                                                  .desc = TRUE))
     plots[[paste0("nbrdet_sep_", f)]] <- 
-      ggplot(nbrgenes %>% dplyr::filter(filt == f) %>% 
-               dplyr::mutate(method = forcats::fct_reorder(method, nbr_sign_adjp0.05_rel, 
-                                                           fun = median, na.rm = TRUE,
-                                                           .desc = TRUE)), 
-             aes(x = method, y = nbr_sign_adjp0.05, color = method)) + 
-      gglayersp + facet_wrap(~ dataset, scales = "free_y") + ggtitle(f)
+      ggplot(x0, aes(x = method, y = nbr_sign_adjp0.05, color = method)) + 
+      gglayersp + facet_wrap(~ dataset, scales = "fixed") + ggtitle(f) + 
+      scale_y_sqrt() + 
+      stat_summary(fun.data = function(x) {
+        return(data.frame(y = max(x) + sqrt(1000),
+                          label = paste0("n=", sum(!is.na(x)))))}, 
+        geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5,
+        hjust = 1, angle = 90)
     print(plots[[paste0("nbrdet_sep_", f)]])
     
     ## Line plot
@@ -66,20 +72,25 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   }
   
   ## Compare before and after filtering
+  x0 <- nbrgenes %>%
+    dplyr::group_by(method, ncells_fact, repl, dataset, dtype, plot_color) %>%
+    dplyr::filter(length(nbr_sign_adjp0.05) == 2) %>%
+    dplyr::summarize(ratio_nbr_sign_adjp0.05 = 
+                       nbr_sign_adjp0.05[filt == "TPM_1_25p"]/nbr_sign_adjp0.05[filt == ""]) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(ratio_nbr_sign_adjp0.05 = replace(ratio_nbr_sign_adjp0.05, 
+                                                    ratio_nbr_sign_adjp0.05 > 10, 10)) %>%
+    dplyr::mutate(method = forcats::fct_reorder(method, ratio_nbr_sign_adjp0.05, 
+                                                fun = median, na.rm = TRUE,
+                                                .desc = TRUE))
   plots[["nbrdet_bydtype_ratio"]] <- 
-    ggplot(nbrgenes %>%
-             dplyr::group_by(method, ncells_fact, repl, dataset, dtype, plot_color) %>%
-             dplyr::filter(length(nbr_sign_adjp0.05) == 2) %>%
-             dplyr::summarize(ratio_nbr_sign_adjp0.05 = 
-                                nbr_sign_adjp0.05[filt == "TPM_1_25p"]/nbr_sign_adjp0.05[filt == ""]) %>%
-             dplyr::ungroup() %>%
-             dplyr::mutate(ratio_nbr_sign_adjp0.05 = replace(ratio_nbr_sign_adjp0.05, 
-                                                             ratio_nbr_sign_adjp0.05 > 10, 10)) %>%
-             dplyr::mutate(method = forcats::fct_reorder(method, ratio_nbr_sign_adjp0.05, 
-                                                         fun = median, na.rm = TRUE,
-                                                         .desc = TRUE)),
-           aes(x = method, y = ratio_nbr_sign_adjp0.05, color = method)) + 
+    ggplot(x0, aes(x = method, y = ratio_nbr_sign_adjp0.05, color = method)) + 
     geom_hline(yintercept = 1) + gglayersp + facet_wrap(~ dtype, ncol = 1) + scale_y_sqrt() + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = sqrt(14),
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5,
+      hjust = 1, angle = 90)
     ylab("Ratio between number of genes with adjusted p-value\nbelow 0.05 for filtered and unfiltered data set instances")
   print(plots[["nbrdet_bydtype_ratio"]])
   

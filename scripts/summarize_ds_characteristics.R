@@ -36,60 +36,82 @@ summarize_ds_characteristics <- function(figdir, datasets, exts, dtpext, cols,
   Y <- dplyr::left_join(Y, dstypes, by = "dataset") %>%
     dplyr::mutate(ds = gsub("mock", "null", ds))
   
-  p0 <- ggplot(Y, aes(x = ds, y = nbinom_minus_zifnbinom_standard_aic)) + 
+  Y0 <- Y %>% dplyr::filter(!is.na(nbinom_minus_zifnbinom_standard_aic))
+  p0 <- ggplot(Y0, aes(x = ds, y = nbinom_minus_zifnbinom_standard_aic)) + 
     geom_hline(yintercept = 0, linetype = "dashed") + 
     geom_point(alpha = 0.2, position = position_jitter(width = 0.2), size = 0.25) + 
-    geom_violin(aes(color = dtype), trim = TRUE, scale = "width", draw_quantiles = 0.5, adjust = 0.5) + 
+    geom_violin(aes(color = dtype), trim = TRUE, scale = "width", 
+                draw_quantiles = 0.5, adjust = 0.5) + 
     guides(fill = FALSE, color = FALSE) + 
     thm() + 
     xlab("") + ylab(expression(arcsinh(AIC[NB] - AIC[ZINB]))) + 
     scale_color_manual(values = c("#B17BA6", "#90C987")) + 
     stat_summary(fun.data = function(x) {
-      return(data.frame(y = max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
-                        label = paste0(round(100 * mean(x > 0), 1), "%")))}, 
+      return(data.frame(y = max(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        label = paste0("n=", sum(!is.na(x)), "\n", 
+                                       round(100 * mean(x > 0), 1), "%")))}, 
       geom = "text", alpha = 1, size = 3, vjust = -1) + 
-    expand_limits(y = c(min(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
-                        1.1 * max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
+    expand_limits(y = c(min(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        1.2 * max(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
   
-  p0nofilt <- ggplot(Y %>% dplyr::filter(filt == ""), 
+  p0nofilt <- ggplot(Y0 %>% dplyr::filter(filt == ""), 
                      aes(x = ds, y = nbinom_minus_zifnbinom_standard_aic)) + 
     geom_hline(yintercept = 0, linetype = "dashed") + 
     geom_point(alpha = 0.2, position = position_jitter(width = 0.2), size = 0.25) + 
-    geom_violin(aes(color = dtype), trim = TRUE, scale = "width", draw_quantiles = 0.5, adjust = 0.5) + 
+    geom_violin(aes(color = dtype), trim = TRUE, scale = "width", 
+                draw_quantiles = 0.5, adjust = 0.5) + 
     guides(fill = FALSE, color = FALSE) + 
     thm() + 
     xlab("") + ylab(expression(arcsinh(AIC[NB] - AIC[ZINB]))) + 
     scale_color_manual(values = c("#B17BA6", "#90C987")) + 
     stat_summary(fun.data = function(x) {
-      return(data.frame(y = max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
-                        label = paste0(round(100 * mean(x > 0), 1), "%")))}, 
+      return(data.frame(y = max(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        label = paste0("n=", sum(!is.na(x)), "\n", 
+                                       round(100 * mean(x > 0), 1), "%")))}, 
       geom = "text", alpha = 1, size = 3, vjust = -1) + 
-    expand_limits(y = c(min(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
-                        1.1 * max(Y$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
+    expand_limits(y = c(min(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE),
+                        1.2 * max(Y0$nbinom_minus_zifnbinom_standard_aic, na.rm = TRUE)))
   
   pdf(paste0(figdir, "/ds_characteristics_final", dtpext, ".pdf"), width = 18, height = 15.6)
   
+  X <- X %>% dplyr::filter(!is.na(value))
+  X$value[X$mtype == "libsize"] <- log10(X$value[X$mtype == "libsize"])
   p1 <- ggplot(X %>% dplyr::filter(mtype == "fraczero"), 
                aes(x = dataset, y = value)) + 
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
     guides(color = FALSE) + 
-    xlab("") + ylab("Fraction zeros per cell") + thm()
+    xlab("") + ylab("Fraction zeros per cell") + thm() + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = 1.02,
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 3, vjust = -1) + 
+    expand_limits(y = 1.06)
   p2 <- ggplot(X %>% dplyr::filter(mtype == "libsize"), 
                aes(x = dataset, y = value)) + 
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
-    guides(color = FALSE) + scale_y_log10() + 
-    xlab("") + ylab("Library size per cell") + thm()
+    guides(color = FALSE) + #scale_y_log10() + 
+    xlab("") + ylab("log10(library size per cell)") + thm() + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = 7.51,
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 3, vjust = -1) + 
+    expand_limits(y = 7.75)
   p3 <- ggplot(X %>% dplyr::filter(mtype == "silhouette"), 
                aes(x = dataset, y = value)) + 
     geom_boxplot(outlier.size = -1) +  
     geom_point(position = position_jitter(width = 0.2), size = 0.5, aes(color = condition)) + 
     scale_color_manual(values = structure(c("blue", "red"), names = c(TRUE, FALSE))) + 
     guides(color = FALSE) + 
-    xlab("") + ylab("Silhouette width per cell") + thm() 
+    xlab("") + ylab("Silhouette width per cell") + thm() + 
+    stat_summary(fun.data = function(x) {
+      return(data.frame(y = 0.39,
+                        label = paste0("n=", sum(!is.na(x)))))}, 
+      geom = "text", alpha = 1, color = "black", size = 3, vjust = -1) + 
+    expand_limits(y = 0.42)
 
   print(plot_grid(plot_grid(p1, p2, p3, labels = c("A", "B", "C"), align = "h", 
                             rel_widths = c(1, 1, 1), nrow = 1),

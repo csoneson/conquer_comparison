@@ -2,7 +2,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                               singledsfigdir, cobradir, concordancedir, 
                               dschardir, origvsmockdir, distrdir, plotmethods, 
                               dstypes, pch_ncells) {
-  
+
   gglayers <- list(
     geom_hline(yintercept = 0.05),
     geom_boxplot(outlier.size = -1),
@@ -84,14 +84,35 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     print(plots[[paste0("truefpr_sep_", f)]])
     
     print(plots[[paste0("truefpr_sep_", f)]] + facet_wrap(~ dtype, ncol = 1))
+    
+    ## With n indicated
+    dftmp <- truefpr %>% dplyr::filter(filt == f) %>% 
+      dplyr::filter(!is.na(FPR)) %>%
+      dplyr::mutate(method = forcats::fct_reorder(method, FPR, 
+                                                  fun = median, na.rm = TRUE,
+                                                  .desc = TRUE))
+    plots[[paste0("truefpr_sep_", f, "_withN")]] <- 
+      ggplot(dftmp, aes(x = method, y = FPR, color = method)) + 
+      gglayers + ggtitle(f) + 
+      stat_summary(fun.data = function(x) {
+        return(data.frame(y = 1,
+                          label = paste0("n=", sum(!is.na(x)))))}, 
+        geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
+        hjust = -0.2, angle = 90) + 
+      expand_limits(y = c(min(dftmp$FPR), 1.25)) + 
+      geom_hline(yintercept = 1, linetype = "dashed")
+    print(plots[[paste0("truefpr_sep_", f, "_withN")]])
+    
+    print(plots[[paste0("truefpr_sep_", f, "_withN")]] + facet_wrap(~ dtype, ncol = 1))
   }
   
   dev.off()
   
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/truefpr_final", dtpext, ".pdf"), width = 12, height = 6)
-  p <- plot_grid(plots$truefpr_sep_ + ggtitle("Without filtering") + scale_y_sqrt(), 
-                 plots$truefpr_sep_TPM_1_25p + ggtitle("After filtering") + scale_y_sqrt(),
+  p <- plot_grid(plots$truefpr_sep__withN + ggtitle("Without filtering") + scale_y_sqrt(), 
+                 plots$truefpr_sep_TPM_1_25p_withN + ggtitle("After filtering") + 
+                   scale_y_sqrt(),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
@@ -106,9 +127,9 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   dev.off()
   
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
-  p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dtype, ncol = 1) + 
+  p <- plot_grid(plots$truefpr_sep__withN + facet_wrap(~ dtype, ncol = 1) + 
                    ggtitle("Without filtering") + scale_y_sqrt(), 
-                 plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dtype, ncol = 1) + 
+                 plots$truefpr_sep_TPM_1_25p_withN + facet_wrap(~ dtype, ncol = 1) + 
                    ggtitle("After filtering") + scale_y_sqrt(),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
