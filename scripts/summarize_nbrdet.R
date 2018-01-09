@@ -75,7 +75,9 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
   x0 <- nbrgenes %>%
     dplyr::group_by(method, ncells_fact, repl, dataset, dtype, plot_color) %>%
     dplyr::filter(length(nbr_sign_adjp0.05) == 2) %>%
-    dplyr::summarize(ratio_nbr_sign_adjp0.05 = 
+    dplyr::summarize(nbr_sign_adjp0.05_unfilt = nbr_sign_adjp0.05[filt == ""],
+                     nbr_sign_adjp0.05_filt = nbr_sign_adjp0.05[filt == "TPM_1_25p"],
+                     ratio_nbr_sign_adjp0.05 = 
                        nbr_sign_adjp0.05[filt == "TPM_1_25p"]/nbr_sign_adjp0.05[filt == ""]) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(ratio_nbr_sign_adjp0.05 = replace(ratio_nbr_sign_adjp0.05, 
@@ -90,7 +92,7 @@ summarize_nbrdet <- function(figdir, datasets, exts, dtpext, cols,
       return(data.frame(y = sqrt(14),
                         label = paste0("n=", sum(!is.na(x)))))}, 
       geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5,
-      hjust = 1, angle = 90)
+      hjust = 1, angle = 90) + 
     ylab("Ratio between number of genes with adjusted p-value\nbelow 0.05 for filtered and unfiltered data set instances")
   print(plots[["nbrdet_bydtype_ratio"]])
   

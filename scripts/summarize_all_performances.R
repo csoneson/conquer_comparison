@@ -334,7 +334,7 @@ rownames(allperf) <- tmp
 allperf <- allperf[order(rowMeans(allperf, na.rm = TRUE), decreasing = TRUE), , drop = FALSE]
 
 write.table(cbind(method = rownames(allperf), allperf), 
-            file = "export_results/Figure6.csv", row.names = FALSE, col.names = TRUE, 
+            file = "export_results/Figure5.csv", row.names = FALSE, col.names = TRUE, 
             sep = ",", quote = FALSE)
 
 pdf(gsub("rds$", "pdf", outrds), width = 6, height = 8)

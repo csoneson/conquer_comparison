@@ -35,7 +35,7 @@ names(pch_ncells) <- as.character(c(6, 12, 22, 24, 26, 36, 44, 47, 48, 50, 58,
 cols <- c("#771155", "#AA4488", "#CC99BB", 
           "#3A0027", "#BCA2B4", "#FF02AC",
           "#000000", "#4477AA", "#BEBEBE", 
-          "#117777", "#44AAAA", "#77CCCC",
+          "#117777", "#44AAAA", "#77CCCC", "#77D6B2", "#21FFFF", 
           "#117744", "#44AA77", "#88CCAA", "#004120",
           "#777711", "#AAAA44", "#C1C185", 
           "#774411", "#AA7744", "#827262", "#DBCDBE",
@@ -44,11 +44,12 @@ cols <- c("#771155", "#AA4488", "#CC99BB",
           "#114477", "#77AADD", "#0280FF", 
           "#FFA500", "#7CFC00",
           "#00BFFF", "#00688B",
-          "#FF99ED", "#3B5D93")
+          "#FF99ED", "#3B5D93",
+          "#4286F4", "#98BAF2")
 names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus", 
                  "edgeRQLF", "edgeRLRTrobust", "edgeRQLFDetRate",
                  "ROTSvoom", "ROTScpm", "ROTStpm",
-                 "DESeq2", "DESeq2nofilt", "DESeq2census",
+                 "DESeq2", "DESeq2nofilt", "DESeq2census", "DESeq2betapFALSE", "DESeq2LRT", 
                  "MASTtpm", "MASTcpm", "MASTtpmDetRate", "MASTcpmDetRate",
                  "monocle", "monoclecensus", "monoclecount", 
                  "SeuratBimod", "SeuratBimodnofilt", "SeuratTobit", "SeuratBimodIsExpr2", 
@@ -57,7 +58,8 @@ names(cols) <- c("edgeRLRT", "edgeRLRTdeconv", "edgeRLRTcensus",
                  "voomlimma", "limmatrend", "limmatrendDetRate",
                  "metagenomeSeq", "scDD",
                  "zingeRedgeR", "zingeRedgeRnofilt",
-                 "ttest", "DEsingle")
+                 "ttest", "DEsingle",
+                 "zinbwaveedgeR", "zinbwaveDESeq2")
 
 ## Write color definitions to file
 s <- sapply(1:length(cols), function(x) {

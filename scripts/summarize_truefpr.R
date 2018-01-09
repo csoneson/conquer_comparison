@@ -11,6 +11,7 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
     xlab(""),
     ylab("FPR (fraction of genes with p < 0.05)"),
     scale_color_manual(values = cols),
+    scale_y_sqrt(breaks = c(0.05, 0.5, 1), limits = c(0, 1.25)), 
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
           axis.text.y = element_text(size = 12),
           axis.title.y = element_text(size = 13),
@@ -99,7 +100,6 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                           label = paste0("n=", sum(!is.na(x)))))}, 
         geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
         hjust = -0.2, angle = 90) + 
-      expand_limits(y = c(min(dftmp$FPR), 1.25)) + 
       geom_hline(yintercept = 1, linetype = "dashed")
     print(plots[[paste0("truefpr_sep_", f, "_withN")]])
     
@@ -110,27 +110,26 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   
   ## -------------------------- Final summary plots ------------------------- ##
   pdf(paste0(figdir, "/truefpr_final", dtpext, ".pdf"), width = 12, height = 6)
-  p <- plot_grid(plots$truefpr_sep__withN + ggtitle("Without filtering") + scale_y_sqrt(), 
-                 plots$truefpr_sep_TPM_1_25p_withN + ggtitle("After filtering") + 
-                   scale_y_sqrt(),
+  p <- plot_grid(plots$truefpr_sep__withN + ggtitle("Without filtering"), 
+                 plots$truefpr_sep_TPM_1_25p_withN + ggtitle("After filtering"),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_byds.pdf"), width = 12, height = 18)
   p <- plot_grid(plots$truefpr_sep_ + facet_wrap(~ dataset, ncol = 1) + 
-                   ggtitle("Without filtering") + scale_y_sqrt(), 
+                   ggtitle("Without filtering"), 
                  plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dataset, ncol = 1) + 
-                   ggtitle("After filtering") + scale_y_sqrt(),
+                   ggtitle("After filtering"),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
   
   pdf(paste0(figdir, "/truefpr_final", dtpext, "_bydtype.pdf"), width = 12, height = 7)
   p <- plot_grid(plots$truefpr_sep__withN + facet_wrap(~ dtype, ncol = 1) + 
-                   ggtitle("Without filtering") + scale_y_sqrt(), 
+                   ggtitle("Without filtering"), 
                  plots$truefpr_sep_TPM_1_25p_withN + facet_wrap(~ dtype, ncol = 1) + 
-                   ggtitle("After filtering") + scale_y_sqrt(),
+                   ggtitle("After filtering"),
                  labels = c("A", "B"), align = "h", rel_widths = c(1, 1), nrow = 1)
   print(p)
   dev.off()
@@ -138,15 +137,15 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
   if (dtpext == "_real") {
     write.table(truefpr %>% dplyr::select(method, dataset, dtype, filt, ncells_fact, repl, FPR) %>%
                   dplyr::mutate(dataset = gsub("mock", "null", dataset)), 
-                file = "export_results/Figure2.csv", 
+                file = "export_results/Figure1.csv", 
                 row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
     
     pdf(paste0(figdir, "/truefpr_for_slides_filt", dtpext, ".pdf"), width = 8, height = 4.8)
-    print(plots$truefpr_sep_TPM_1_25p + scale_y_sqrt() + ggtitle(""))
+    print(plots$truefpr_sep_TPM_1_25p + ggtitle(""))
     dev.off()
     
     pdf(paste0(figdir, "/truefpr_for_slides", dtpext, "_bydtype_filt.pdf"), width = 8, height = 5.6)
-    print(plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dtype, ncol = 1) + ggtitle("") + scale_y_sqrt())
+    print(plots$truefpr_sep_TPM_1_25p + facet_wrap(~ dtype, ncol = 1) + ggtitle(""))
     dev.off()
   }
   

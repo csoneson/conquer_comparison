@@ -389,7 +389,7 @@ summarize_trueperformance <- function(figdir, datasets, exts, dtpext, cols,
   }
   
   if (dtpext == "_sim") {
-    write.table(fdrtprauc, file = "export_results/Figure5.csv", 
+    write.table(fdrtprauc, file = "export_results/Figure4.csv", 
                 row.names = FALSE, col.names = TRUE, sep = ",", quote = FALSE)
     
     pdf(paste0(figdir, "/trueFDR_for_slides", dtpext, "_filt.pdf"), width = 8, height = 4.8)

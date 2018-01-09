@@ -143,7 +143,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                   dplyr::filter(!is.na(snr)) %>%
                   dplyr::filter(is.finite(snr)) %>%
                   dplyr::filter(!(charac == "arcsinh(AIC[NB]-AIC[ZINB])")),
-                file = "export_results/Figure3.csv", row.names = FALSE,
+                file = "export_results/Figure2.csv", row.names = FALSE,
                 col.names = TRUE, sep = ",", quote = FALSE)
 
     pdf(paste0(figdir, "/de_characteristics_for_slides",
