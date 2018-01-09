@@ -69,7 +69,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
         geom_point(position = position_jitter(width = 0.2), size = 0.5) + 
         facet_wrap(~ charac, scales = "fixed") + xlab("") + ylab(statname) + 
         ggtitle(f) + stat_summary(fun.data = function(x) {
-          return(data.frame(y = max(x0[[stat]]),
+          return(data.frame(y = max(x0[["snr"]]),
                             label = paste0("n=", sum(!is.na(x)))))}, 
           geom = "text", alpha = 1, color = "black", size = 2, vjust = 0.5, 
           hjust = -0.2, angle = 90) + 
