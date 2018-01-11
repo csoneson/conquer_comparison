@@ -56,13 +56,14 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
           dplyr::mutate(signal_vs_mock = mean(AUCs[tp == "signal"]) - mean(AUCs[tp == "mock"])) %>%
           dplyr::ungroup()
         
-        x0 <- concs %>% dplyr::filter(tp == "signal") %>%
+        xtmp <- concs %>% 
           dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
                                                       fun = median, na.rm = TRUE,
                                                       .desc = TRUE))
+        x0 <- xtmp %>% dplyr::filter(tp == "signal")
         p <- x0 %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          ylab("Area under concordance curve,\nsignal data set") + 
+          ylab("Area under concordance curve, signal data set") + 
           gglayers + ggtitle(paste0(f, ", top-", k0, " genes")) + 
           stat_summary(fun.data = function(x) {
             return(data.frame(y = 1.05,
@@ -74,13 +75,10 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
         print(p)
         plots[[paste0("auc_signal_sep_", nm, "_", f, "_", k0)]] <- p
         
-        x0 <- concs %>% dplyr::filter(tp == "mock") %>%
-          dplyr::mutate(method = forcats::fct_reorder(method, signal_vs_mock, 
-                                                      fun = median, na.rm = TRUE,
-                                                      .desc = TRUE))
+        x0 <- xtmp %>% dplyr::filter(tp == "mock")
         p <- x0 %>%
           ggplot(aes(x = method, y = AUCs, col = method)) + 
-          ylab("Area under concordance curve,\nnull data set") + 
+          ylab("Area under concordance curve, null data set") + 
           gglayers + ggtitle(paste0(f, ", top-", k0, " genes")) + 
           stat_summary(fun.data = function(x) {
             return(data.frame(y = 1.05,
