@@ -298,7 +298,8 @@ complex <- data.frame(ComplexDesign = c(voomlimma = "good", Wilcoxon = "bad",
                                         monoclecount = "good", 
                                         edgeRQLFDetRate = "good",
                                         zinbwaveedgeR = "good", zinbwaveDESeq2 = "good",
-                                        DESeq2betapFALSE = "good", DESeq2LRT = "good"),
+                                        DESeq2betapFALSE = "good", DESeq2LRT = "good",
+                                        logregLRT = "bad"),
                       stringsAsFactors = FALSE) %>%
   tibble::rownames_to_column(var = "method")
 

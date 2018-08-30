@@ -2,9 +2,11 @@
 
 This repository contains all the necessary code to perform the evaluation of differential expression analysis methods in single-cell RNA-seq data, available in 
 
-* C Soneson & MD Robinson: [Bias, robustness and scalability in differential expression analysis of single-cell RNA-seq data](http://biorxiv.org/content/early/2017/05/28/143289). bioRxiv doi:https://doi.org/10.1101/143289
+* C Soneson & MD Robinson: [Bias, robustness and scalability in single-cell differential expression analysis](https://www.nature.com/articles/nmeth.4612). Nature Methods 15:255-261 (2018).
 
 In this paper, we compare the performance of more than 30 approaches to differential gene expression analysis in the context of single-cell RNA-seq data. The main results can be further browsed in a [shiny app](http://imlspenticton.uzh.ch:3838/scrnaseq_de_evaluation). 
+
+**Note:** The purpose of the `conquer_comparison` repository is to provide a public record of the exact code that was used for our publication ([Soneson & Robinson, Nature Methods 2018](https://www.nature.com/articles/nmeth.4612)). In particular, it is not intended to be a software package or a general pipeline for differential expression analysis of single-cell data. As a consequence, running the code requires the same software and package versions that were used for our analyses (all versions are indicated in the paper). As the analysis involved running a large number of methods on many data sets and over an extended period of time, we cannot guarantee that it will run successfully with new releases of the software, or that exactly the same results will be obtained with newer versions of the packages. While the repository will not be updated to ensure that it runs with every new version of the used packages, the issues can be used to post questions and/or solutions as they arise. 
 
 The repository contains the following information:
 

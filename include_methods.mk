@@ -11,6 +11,7 @@ limmatrendDetRate edgeRQLFDetRate DESeq2betapFALSE
 ## Methods run with R 3.4/Bioconductor 3.5
 MT3.4 := scDD DEsingle
 ## Methods run with R 3.4/Bioconductor 3.6
+MT3.4bc3.6 := zinbwaveedgeR zinbwaveDESeq2 DESeq2LRT logregLRT
 
 ## All methods
 MT := $(MT3.3) $(MT3.4) $(MT3.4bc3.6)

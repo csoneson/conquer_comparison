@@ -147,7 +147,7 @@ summarize_de_characteristics <- function(figdir, datasets, exts, dtpext, cols,
                 col.names = TRUE, sep = ",", quote = FALSE)
 
     pdf(paste0(figdir, "/de_characteristics_for_slides",
-               dtpext, "_snr.pdf"), width = 10, height = 6)
+               dtpext, "_snr.pdf"), width = 13, height = 6)
     print(plots[["snr_bystat__sub"]] + theme(strip.text = element_text(size = 15)))
     dev.off()
   }
