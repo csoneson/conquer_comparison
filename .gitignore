@@ -5,6 +5,7 @@ Rout/
 # data files
 data/*.rds
 results/
+subsets/
 
 # conquer output
 output/
