@@ -7,14 +7,6 @@ This repository contains all the necessary code to perform the evaluation of dif
 
 ## Docker container
 
-Build using
-
-```bash
-docker build -t conquer .
-```
-
-from the *conquer_comparison* root directory.
-
 Run the container with 
 
 ```bash
