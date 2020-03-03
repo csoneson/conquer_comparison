@@ -1,0 +1,10 @@
+# R stuff
+Rout/
+.R.Rout
+
+# data files
+data/*.rds
+results/
+
+# conquer output
+output/

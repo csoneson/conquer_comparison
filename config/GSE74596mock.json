@@ -1,0 +1,1 @@
+{"mae":"data/GSE74596mock.rds","subfile":"subsets/GSE74596mock_subsets.rds","resfilebase":"results/GSE74596mock","figfilebase":"figures/diffexpression/GSE74596mock","groupid":"source_name_ch1","keepgroups":"Single_cell_RNA-seq_NKT0","seed":42,"sizes":[22,12,6],"nreps":[1,5,5]}

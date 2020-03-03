@@ -1,0 +1,1 @@
+{"mae":"data/EMTAB2805mock.rds","subfile":"subsets/EMTAB2805mock_subsets.rds","resfilebase":"results/EMTAB2805mock","figfilebase":"figures/diffexpression/EMTAB2805mock","groupid":"cell_cycle_stage","keepgroups":"G2M","seed":42,"sizes":[48,24,12,6],"nreps":[1,5,5,5]}

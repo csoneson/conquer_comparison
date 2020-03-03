@@ -1,0 +1,1 @@
+{"mae":"data/UsoskinGSE59739.rds","subfile":"subsets/UsoskinGSE59739_subsets.rds","resfilebase":"results/UsoskinGSE59739","figfilebase":"figures/diffexpression/UsoskinGSE59739","groupid":"Picking.sessions.Level.3","keepgroups":["RT-1.NP1","RT-1.TH"],"seed":42,"sizes":[58,36,24,12],"nreps":[1,5,5,5]}

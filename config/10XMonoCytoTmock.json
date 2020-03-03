@@ -1,0 +1,1 @@
+{"mae":"data/10XMonoCytoTmock.rds","subfile":"subsets/10XMonoCytoTmock_subsets.rds","resfilebase":"results/10XMonoCytoTmock","figfilebase":"figures/diffexpression/10XMonoCytoTmock","groupid":"group","keepgroups":"cytotoxict","seed":42,"sizes":[120,48,24,12],"nreps":[1,5,5,5]}

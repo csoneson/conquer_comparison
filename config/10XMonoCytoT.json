@@ -1,0 +1,1 @@
+{"mae":"data/10XMonoCytoT.rds","subfile":"subsets/10XMonoCytoT_subsets.rds","resfilebase":"results/10XMonoCytoT","figfilebase":"figures/diffexpression/10XMonoCytoT","groupid":"group","keepgroups":["monocyte","cytotoxict"],"seed":42,"sizes":[240,120,48,24],"nreps":[1,5,5,5]}

@@ -1,0 +1,1 @@
+{"mae":"data/GSE77847mock.rds","subfile":"subsets/GSE77847mock_subsets.rds","resfilebase":"results/GSE77847mock","figfilebase":"figures/diffexpression/GSE77847mock","groupid":"characteristics_ch1","keepgroups":"sample type: cKit+ Flt3ITD/ITD,Dnmt3afl/- MxCre  AML-1","seed":42,"sizes":[24,12,6],"nreps":[1,3,3]}

@@ -1,0 +1,1 @@
+{"mae":"data/GSE74596sim123scimputemock.rds","subfile":"subsets/GSE74596sim123scimputemock_subsets.rds","resfilebase":"results/GSE74596sim123scimputemock","figfilebase":"figures/diffexpression/GSE74596sim123scimputemock","groupid":"group","keepgroups":"Single_cell_RNA-seq_NKT0","seed":42,"sizes":[22,12,6],"nreps":[1,5,5],"impute":"scimpute"}
