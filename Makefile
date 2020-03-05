@@ -405,7 +405,7 @@ $(eval $(call dgerule3.4,GSE62270-GPL17021,DESeq2devel,,,$(R34bc36)))
 define cobrarulemock
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk \
-$(distrdir)/$(1)$(3)_distribution_fit_summary_data.rds
+$(distrdir)/$(1)$(3)_distribution_fit_summary_data.rds subsets/$(1)_subsets.rds
 	mkdir -p $(cobradir)
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
@@ -418,7 +418,8 @@ $(foreach F,$(FILT),$(foreach Y,$(DSbulkmock),$(eval $(call cobrarulemock,$(Y),$
 
 define cobrarulesignal
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
-$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk
+$(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk \
+subsets/$(1)_subsets.rds
 	mkdir -p $(cobradir)
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
