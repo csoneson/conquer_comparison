@@ -6,7 +6,7 @@ include include_methods.mk
 
 ## Define methods to include in summary plots
 #MTplot := $(MT)
-MTplot := edgeRLRT SAMseq Wilcoxon#\
+MTplot := edgeRLRT Wilcoxon#\
 # edgeRQLF NODES NODESnofilt BPSC DESeq2 DESeq2nofilt edgeRLRTdeconv \
 # MASTcpm MASTcpmDetRate MASTtpm MASTtpmDetRate SCDE edgeRLRTrobust voomlimma SeuratBimod \
 # SeuratBimodnofilt SeuratBimodIsExpr2 SeuratTobit DESeq2census edgeRLRTcensus monoclecensus \
