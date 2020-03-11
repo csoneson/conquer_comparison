@@ -10,9 +10,8 @@ This repository contains all the necessary code to perform the evaluation of dif
 Run the container with 
 
 ```bash
-docker run --rm \
+docker run --rm -d \
     -e PASSWORD=conquer \
-    -p 8787:8787 \
     -v /Users/milan/Projects/conquer_test:/home/conquer \
     conquer
 ```
