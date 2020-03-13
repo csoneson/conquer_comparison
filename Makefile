@@ -405,8 +405,8 @@ $(eval $(call dgerule3.4,GSE62270-GPL17021,DESeq2devel,,,$(R34bc36)))
 define cobrarulemock
 $(cobradir)/$(1)$(3)_cobra.rds: scripts/prepare_cobra_for_evaluation.R \
 $(addsuffix $(3).rds, $(addprefix results/$(1)_, $(foreach M,$(4),$(M)))) include_methods.mk \
-$(distrdir)/$(1)$(3)_distribution_fit_summary_data.rds subsets/$(1)_subsets.rds \
-data/$(1).rds config/$(1).json
+subsets/$(1)_subsets.rds data/$(1).rds config/$(1).json
+#$(distrdir)/$(1)$(3)_distribution_fit_summary_data.rds 
 	mkdir -p $(cobradir)
 	$(R) "--args demethods='$(5)' dataset='$(1)' config_file='config/$(1).json' filt='$(2)' resdir='results' distrdir='$(distrdir)' outdir='$(cobradir)'" scripts/prepare_cobra_for_evaluation.R Rout/prepare_cobra_for_evaluation_$(1)$(3)$(6).Rout
 endef
@@ -868,8 +868,8 @@ $(eval $(call summaryrule_tsne,_sim,$(DSsimsignal),${DSsimsignalc},,))
 define summaryrule_dschar
 $(multidsfigdir)/ds_characteristics/summary_ds_characteristics$(1).rds: $(addsuffix _dataset_characteristics_summary_data.rds, $(addprefix $(dschardir)/, $(foreach Y,$(2),$(Y)))) \
 scripts/run_plot_multi_dataset_summarization.R scripts/summarize_ds_characteristics.R include_datasets.mk \
-$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(6),$(Y)))) \
-$(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(4),$(foreach Y,$(6),$(Y)_$(F)))))
+# $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach Y,$(6),$(Y)))) \
+# $(addsuffix _distribution_fit_summary_data.rds, $(addprefix $(distrdir)/, $(foreach F,$(4),$(foreach Y,$(6),$(Y)_$(F)))))
 	mkdir -p $$(@D)
 	$(R) "--args datasets='$(3)' filt='$(5)' summarytype='ds_characteristics' dstypetxt='$(dstypetxt)' plotmethods='$(7)' dtpext='$(1)' figdir='$(multidsfigdir)/ds_characteristics' singledsfigdir='$(singledsfigdir)' cobradir='$(cobradir)' dschardir='$(dschardir)' origvsmockdir='$(figdir)/orig_vs_mock' distrdir='$(distrdir)' concordancedir='$(concordancedir)'" scripts/run_plot_multi_dataset_summarization.R Rout/run_plot_multi_dataset_summarization_ds_characteristics$(1).Rout
 endef
