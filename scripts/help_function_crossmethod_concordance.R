@@ -52,7 +52,7 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   tmpdist <- 1 - cmcons
   tmpdist[is.na(tmpdist)] <- 1
   hcl_average <- hclust(as.dist(tmpdist))
-  plot(hcl_average)
+  # plot(hcl_average)
   ## Get all subclusters
   subclusters_average <- get_subclusters(hcl_average)
   
@@ -72,10 +72,13 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
     get_subclusters(hclust(as.dist(1 - cmtmp2)))
   })
   
-  ## Get stability values for ech subcluster in subclusters_average
-  stability_scores <- rowMeans(sapply(subclusters_all, function(w) {
-    subclusters_average %in% w
-  }))
+  ## Get stability values for each subcluster in subclusters_average
+  stability_scores <- rowMeans(
+    vapply(subclusters_all, function(w) {
+      subclusters_average %in% w
+    }, logical(length(subclusters_average))) %>%
+    matrix(nrow = length(subclusters_average), ncol = length(subclusters_all))
+  )
   
   plots[["stability_scores"]] <- stability_scores
   plots[["subclusters_average"]] <- subclusters_average
