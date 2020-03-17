@@ -24,4 +24,4 @@ docker exec -it <container ID> /bin/bash
 
 __after__ the container has been launched. This should open a bash shell inside the container. The container ID can be found by checking the active containers with `docker ps -a`.
 
-__Note__: some of the steps in the pipeline require quite some memory, so make sure to assign __at least 4GB__ of memory to your Docker instance (default is 2GB). Instructions for this can be found [here](https://stackoverflow.com/a/44533437/11801854).
+__Note__: some of the steps in the pipeline require quite some memory, so make sure to assign __at least 6GB__ of memory to your Docker instance (default is 2GB). Instructions for this can be found [here](https://stackoverflow.com/a/44533437/11801854).
