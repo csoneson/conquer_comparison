@@ -10,16 +10,9 @@ This repository contains all the necessary code to perform the evaluation of dif
 Run the container with 
 
 ```bash
-docker run --rm -d \
-    -e PASSWORD=conquer \
+docker run -it \
     -v /Users/milan/Projects/conquer_test:/home/conquer \
-    conquer
-```
-
-To access the running container via command line, run
-
-```
-docker exec -it <container ID> /bin/bash
+    conquer:latest bash
 ```
 
 __after__ the container has been launched. This should open a bash shell inside the container. The container ID can be found by checking the active containers with `docker ps -a`.
