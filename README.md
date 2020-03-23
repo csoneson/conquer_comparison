@@ -46,6 +46,12 @@ To run all the unit tests, start `R`, load the `testthat` package and run
 
 ## Docker container
 
+Build container by running
+
+```bash
+docker build -t conquer .
+```
+
 Run the container with 
 
 ```bash
