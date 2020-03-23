@@ -55,16 +55,10 @@ docker build -t conquer .
 Run the container with 
 
 ```bash
-docker run --rm -d \
-    -e PASSWORD=conquer \
+docker run -it --rm \
+    --name conquer \
     -v </path/to/local/conquer/directory>:/home/conquer \
-    conquer
-```
-
-To access the running container via command line, run
-
-```
-docker exec -it <container ID> /bin/bash
+    conquer:latest bash
 ```
 
 __after__ the container has been launched. This should open a bash shell inside the container. The container ID can be found by checking the active containers with `docker ps -a`.
