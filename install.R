@@ -23,8 +23,12 @@ BiocInstaller::biocLite(
     "iCOBRA",
     "monocle",
     "edgeR",
+    "MAST",
+    "limma",
+    "genefilter",
     "scater",
-    "IHW"
+    "IHW",
+    "GEOquery"
   ))
   
 # GitHub packages
