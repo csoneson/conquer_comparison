@@ -1,6 +1,8 @@
 # R stuff
 Rout/
 .R.Rout
+.Rproj.user
+.Rhistory
 
 # data files
 data/*.rds
@@ -11,3 +13,9 @@ subsets/
 output/
 figures/
 color_definitions.txt
+
+# RMarkdown output
+analysis/*_cache
+analysis/*_files
+analysis/*.html
+
