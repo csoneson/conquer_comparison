@@ -41,7 +41,7 @@ DSTYPE3 := real bulk# realdrimpute realscimpute realknnsmooth
 .PHONY: all
 
 ## Define the default rule
-all: plotds plotind plotorigmock plotdistr plotprepare plotprepareII cobra diffexp sim \
+all: plotds plotind plotorigmock plotprepare plotprepareII cobra diffexp sim \
 $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
@@ -62,6 +62,7 @@ $(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final_real_100_
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simknnsmooth.rds \
+# plotdistr 
 
 ## Update data for shiny app
 updateshiny: export_results/shiny_results.rds
@@ -308,6 +309,7 @@ define dgerule3.3
 results/$(1)_$(2)$(4).rds: scripts/apply_$(2).R \
 scripts/run_diffexpression.R subsets/$(1)_subsets.rds data/$(1).rds
 	mkdir -p results
+	mkdir -p figures/diffexpression
 	$(R) "--args config_file='config/$(1).json' demethod='$(2)' filt='$(3)'" scripts/run_diffexpression.R Rout/run_diffexpression_$(1)_$(2)$(4).Rout
 endef
 $(foreach M,$(MT3.3),$(foreach Y,$(DSnonimpute),$(eval $(call dgerule3.3,$(Y),$(M),,))))
