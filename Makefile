@@ -41,7 +41,7 @@ DSTYPE3 := real bulk# realdrimpute realscimpute realknnsmooth
 .PHONY: all
 
 ## Define the default rule
-all: plotds plotind plotorigmock plotdistr plotprepare plotprepareII cobra diffexp sim \
+all: plotds plotind plotorigmock plotprepare plotprepareII cobra diffexp sim \
 $(addsuffix _real.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _sim.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
 $(addsuffix _bulk.rds, $(addprefix $(multidsfigdir)/filtering/summary_filtering_, $(foreach F,$(FILT),$(F)))) \
@@ -62,6 +62,7 @@ $(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final_real_100_
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simdrimpute.rds \
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simscimpute.rds \
 #$(multidsfigdir)/trueperformance/summary_trueperformance_simknnsmooth.rds \
+# plotdistr 
 
 ## Update data for shiny app
 updateshiny: export_results/shiny_results.rds
