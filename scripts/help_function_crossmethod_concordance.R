@@ -52,7 +52,10 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   tmpdist <- 1 - cmcons
   tmpdist[is.na(tmpdist)] <- 1
   hcl_average <- hclust(as.dist(tmpdist))
-  # plot(hcl_average)
+  # only plot hclust dendrogram if > 2 methods (fails otherwise)
+  if (attr(tmpdist, "Size") > 2) {
+    plot(hcl_average)
+  }
   ## Get all subclusters
   subclusters_average <- get_subclusters(hcl_average)
   

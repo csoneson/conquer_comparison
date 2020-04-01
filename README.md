@@ -56,9 +56,9 @@ Run the container with
 
 ```bash
 docker run -it --rm \
-    --name conquer \
-    -v </path/to/local/conquer/directory>:/home/conquer \
-    conquer:latest bash
+	--name conquer \
+	-v </path/to/local/conquer/directory>:/home/conquer \
+	conquer:latest bash
 ```
 
 This should open a bash shell inside the container, from where the pipeline can be run using `make`. 
