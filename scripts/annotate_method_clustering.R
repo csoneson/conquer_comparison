@@ -24,7 +24,14 @@ colors <- list(
   NAresults = c(yes = "#4C4001", no = "#8E8D86")
 )
 
-ggt <- ggtree(as.phylo(clust))
+# Manually implement xlim_tree
+# taken from https://github.com/YuLab-SMU/ggtree/blob/e90134d2117fc7dd6661dedce6b7e7a4c9572d45/R/facet_plot.R#L40-L43
+xlim_tree <- function(xlim) {
+  dummy <- data.frame(x = xlim, panel = "Tree")
+  geom_blank(aes_(x = ~x), dummy, inherit.aes = FALSE)
+}
+
+ggt <- ggtree(ape::as.phylo(clust))
 for (m in seq_len(length(subcl))) {
   tryCatch({
     i <- MRCA(ggt, subcl[[m]])
@@ -142,4 +149,3 @@ dev.off()
 saveRDS(NULL, outrds)
 sessionInfo()
 date()
-

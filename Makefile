@@ -792,7 +792,7 @@ $(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final$(1)_$(2)_
 $(multidsfigdir)/crossmethod_consistency/summary_crossmethod_consistency$(1).rds \
 DEmethod_characteristics.txt scripts/annotate_method_clustering.R
 	mkdir -p $$(@D)
-	$(R34) "--args hclustrds='$(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final$(1)_$(2)_plots.rds' chartxt='DEmethod_characteristics.txt' outrds='$$(@)'" scripts/annotate_method_clustering.R Rout/annotate_method_clustering$(1)_$(2).Rout
+	$(R) "--args hclustrds='$(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final$(1)_$(2)_plots.rds' chartxt='DEmethod_characteristics.txt' outrds='$$(@)'" scripts/annotate_method_clustering.R Rout/annotate_method_clustering$(1)_$(2).Rout
 endef
 $(eval $(call clustannotrule,_real,100))
 
