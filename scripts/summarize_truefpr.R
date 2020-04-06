@@ -58,17 +58,14 @@ summarize_truefpr <- function(figdir, datasets, exts, dtpext, cols,
                                     levels = as.character(sort(unique(as.numeric(as.character(ncells)))))))
     rownames(annotation_row) <- annotation_row$id
     
-    # make method names compatible with cols
-    method_ext <- paste0(colnames(y), rep(exts, each = length(colnames(y))))
-    
     pheatmap(y, cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
              main = paste0("FPR, ", f), display_numbers = TRUE, 
              color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
              breaks = seq(0, 1, length.out = 101), 
              annotation_row = dplyr::select(annotation_row, ncells, dataset), 
              show_rownames = FALSE, 
-             annotation_col = data.frame(method = method_ext, row.names = colnames(y)),
-             annotation_colors = list(method = cols[method_ext]),
+             annotation_col = data.frame(method = colnames(y), row.names = colnames(y)),
+             annotation_colors = list(method = cols[colnames(y)]),
              annotation_names_col = FALSE)
   }
   dev.off()
