@@ -10,7 +10,8 @@ install.packages(
     "Rtsne",
     "akima",
     "scatterplot3d",
-    "statmod"
+    "statmod",
+    "cowplot"
   )
 )
 
@@ -29,7 +30,8 @@ BiocInstaller::biocLite(
     "genefilter",
     "scater",
     "IHW",
-    "GEOquery"
+    "GEOquery",
+    "ggtree"
   ))
   
 # GitHub packages
