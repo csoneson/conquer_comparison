@@ -11,7 +11,26 @@ install.packages(
     "akima",
     "scatterplot3d",
     "statmod",
-    "cowplot"
+    "cowplot",
+    "Matrix",
+    "pheatmap",
+    "reshape2",
+    "cluster",
+    "lazyeval",
+    "samr",
+    "UpSetR",
+    "RColorBrewer",
+    # Seurat dependencies
+    "mixtools",
+    "lars",
+    "tsne",
+    "fpc",
+    "pbapply",
+    "FNN",
+    "caret",
+    "RcppProgress",
+    "tclust",
+    "ranger"
   )
 )
 
@@ -19,7 +38,9 @@ install.packages(
 source("https://bioconductor.org/biocLite.R")
 BiocInstaller::biocLite(
   c(
+    "Biobase",
     "Biostrings",
+    "DESeq2",
     "SummarizedExperiment",
     "MultiAssayExperiment",
     "iCOBRA",
@@ -28,11 +49,18 @@ BiocInstaller::biocLite(
     "MAST",
     "limma",
     "genefilter",
+    "scran",
     "scater",
     "IHW",
     "GEOquery",
-    "ggtree"
+    "ggtree",
+    "metagenomeSeq",
+    "ROTS",
+    "scde",
+    "tximport",
+    "impute"
   ))
   
 # GitHub packages
 devtools::install_github("vqv/ggbiplot")
+devtools::install_github("nghiavtr/BPSC")
