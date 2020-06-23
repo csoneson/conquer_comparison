@@ -8,8 +8,8 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libcairo2-dev \
     libnlopt-dev \
     # Clean up
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
     
 # install R packages
 COPY install.R /tmp/install.R
