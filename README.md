@@ -42,3 +42,25 @@ The list of mouse cell cycle genes was obtained from [http://www.sabiosciences.c
 ## Unit tests
 To run all the unit tests, start `R`, load the `testthat` package and run 
 ``source("scripts/run_unit_tests.R")``. Alternatively, to run just the unit tests in a given file, do e.g. ``test_file("unit_tests/test_trueperformance.R", reporter = "summary")``.
+
+
+## Docker container
+
+Build container by running
+
+```bash
+docker build -t conquer .
+```
+
+Run the container with 
+
+```bash
+docker run -it --rm \
+	--name conquer \
+	-v </path/to/local/conquer/directory>:/home/conquer \
+	conquer:latest bash
+```
+
+This should open a bash shell inside the container, from where the pipeline can be run using `make`. 
+
+__Note__: some of the steps in the pipeline require quite some memory, so make sure to assign __at least 10GB__ of memory to your Docker instance (default is 2GB). Instructions for this can be found [here](https://stackoverflow.com/a/44533437/11801854).
