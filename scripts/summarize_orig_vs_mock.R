@@ -43,13 +43,12 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
   )
   (dslist <- dslist[sapply(dslist, length) > 0])
   
-  for (f in unique(concordances$filt)) {
-    for (k0 in unique(concordances$k)) {
-      concs0 <- concordances %>% dplyr::filter(filt == f) %>%
-        dplyr::filter(k == k0)
-      for (nm in names(dslist)) {
-        concs <- concs0  %>%
-          dplyr::filter(dataset %in% dslist[[nm]]) %>%
+  for (nm in names(dslist)) {
+    concs0 <- concordances %>% filter(dataset %in% dslist[[nm]])
+    for (f in unique(concs0$filt)) {
+      for (k0 in unique(concs0$k)) {
+        concs <- concs0 %>% dplyr::filter(filt == f) %>%
+          dplyr::filter(k == k0) %>%
           dplyr::group_by(method, dataset, filt, ncells, k) %>%
           dplyr::mutate(tokeep = length(unique(tp)) == 2) %>%
           dplyr::filter(tokeep) %>% 
@@ -96,8 +95,9 @@ summarize_orig_vs_mock <- function(figdir, datasets, exts, dtpext, cols,
     
   ## -------------------------- Final summary plots ------------------------- ##
 
-  for (k0 in unique(concordances$k)) {
-    for (nm in names(dslist)) {
+  for (nm in names(dslist)) {
+    concs0 <- concordances %>% filter(dataset %in% dslist[[nm]])
+    for (k0 in unique(concs$k)) {
       ## Split by data set
       pdf(paste0(figdir, "/orig_vs_mock_final", dtpext, "_", k0, "_sepbyds_", nm, ".pdf"), 
           width = 15, height = length(dslist[[nm]]) * 2 + 3)

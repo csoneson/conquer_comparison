@@ -23,12 +23,15 @@ summarize_runfailure <- function(figdir, datasets, exts, dtpext, cols,
   rownames(runstatus) <- runstatus$method
   runstatus$method <- NULL
 
-  ## --------------------------- Final summary plot ------------------------- ##
-  pdf(paste0(figdir, "/runfailure_final", dtpext, ".pdf"), width = 10, height = 10)
-  pheatmap::pheatmap(runstatus, cluster_rows = FALSE, cluster_cols = FALSE,
-                     main = "Failure rates by data set", 
-                     color = colorRampPalette(brewer.pal(n = 7, name = "PuBuGn"))(100))
-  dev.off()
-
+  if (all(runstatus == 0)) {
+    message("No run failures detected.")
+  } else{
+    ## --------------------------- Final summary plot ------------------------- ##
+    pdf(paste0(figdir, "/runfailure_final", dtpext, ".pdf"), width = 10, height = 10)
+    pheatmap::pheatmap(runstatus, cluster_rows = FALSE, cluster_cols = FALSE,
+                       main = "Failure rates by data set", 
+                       color = colorRampPalette(brewer.pal(n = 7, name = "PuBuGn"))(100))
+    dev.off()
+  }
   runstatus
 }

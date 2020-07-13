@@ -8,6 +8,9 @@ In this paper, we compare the performance of more than 30 approaches to differen
 
 **Note:** The purpose of the `conquer_comparison` repository is to provide a public record of the exact code that was used for our publication ([Soneson & Robinson, Nature Methods 2018](https://www.nature.com/articles/nmeth.4612)). In particular, it is not intended to be a software package or a general pipeline for differential expression analysis of single-cell data. As a consequence, running the code requires the same software and package versions that were used for our analyses (all versions are indicated in the paper). As the analysis involved running a large number of methods on many data sets and over an extended period of time, we cannot guarantee that it will run successfully with new releases of the software, or that exactly the same results will be obtained with newer versions of the packages. While the repository will not be updated to ensure that it runs with every new version of the used packages, the issues can be used to post questions and/or solutions as they arise. 
 
+**Update (13/07/2020, [Milan Malfait](https://github.com/milanmlft))**: it is now possible to run the pipeline in a Docker container (see [below](#docker-container) for details), using the (as close as possible) same package versions as originally used for the publication. This should make it easier to reproduce the results and to add more methods. Note that, currently, the Docker container is built with __R 3.3.2__ (the R version used for most of the methods from the original publication). So any additional methods added should be compatible with that version of R.
+
+
 The repository contains the following information:
 
 * `config/` contains configuration files for all the data sets that we considered. The configuration files detail the cell populations that were compared, as well as the number of cells per group used in each comparison.
@@ -18,6 +21,8 @@ The repository contains the following information:
 * `unit_tests/` contains unit tests that were used to check the calculations
 * `Makefile` is the master script, which outlines the entire evaluation and calls all scripts in the appropriate order
 * `include_filterings.mk`, `include_datasets.mk`, `include_methods.mk` and `plot_methods.mk` are additional makefiles listing the filter settings, data set and differential expression methods used in the comparison 
+* `Dockerfile`: build instructions for the Docker container
+* `install.R`: used by the Docker container to install the necessary R packages to run the pipeline
  
 
 ## Running the comparison
@@ -42,3 +47,45 @@ The list of mouse cell cycle genes was obtained from [http://www.sabiosciences.c
 ## Unit tests
 To run all the unit tests, start `R`, load the `testthat` package and run 
 ``source("scripts/run_unit_tests.R")``. Alternatively, to run just the unit tests in a given file, do e.g. ``test_file("unit_tests/test_trueperformance.R", reporter = "summary")``.
+
+
+## Docker container
+
+A [Docker](https://www.docker.com/) container is provided to run the pipeline with the original versions of the methods used in the paper (see [Supplementary Table 2](https://static-content.springer.com/esm/art%3A10.1038%2Fnmeth.4612/MediaObjects/41592_2018_BFnmeth4612_MOESM1_ESM.pdf) for details).
+
+Currently the Docker container is built on R 3.3.2 and so only supports methods compatible with that version of R. This excludes *scDD*, *DEsingle* and the *zinbwave*-related methods. Furthermore, the *powsim* package used for simulations has *scDD* as a dependency and so is also not available in the Docker container. However, simulated data sets are included in the archive available [here](http://imlspenticton.uzh.ch/robinson_lab/conquer_de_comparison/).
+
+__Note__: some of the methods in the pipeline require quite some memory (depending on the data sets being used), so make sure to assign __at least 10GB__ of memory to your Docker instance (default is 2GB). Instructions for this can be found [here](https://stackoverflow.com/a/44533437/11801854).
+
+
+To run the pipeline inside the Docker container, follow these steps:
+
+1. Clone the repository
+
+    ```
+    git clone https://github.com/csoneson/conquer_comparison.git
+    cd conquer_comparison
+    ```
+   
+2. Add data sets according to the instructions given [above](#adding-a-data-set) to the `data/` directory
+
+3. Optional: exclude any methods and/or add new ones according to the instructions [above](#adding-a-differential-expression-method) Build image by running (you can tag it with any name you want with the `-t` option). Don't forget the `.` at the end.
+
+    ```
+    docker build -t conquer .
+    ```
+    
+    This can take some time but needs to be performed only once. Afterwards you can just re-access the container using step 5.
+
+5. Run the container with 
+
+    ```
+    docker run -it --rm \
+    	--name conquer \
+    	-v ${PWD}:/home/conquer \
+    	conquer:latest
+    ```
+    
+    The `-v` argument mounts your local *conquer* directory inside the Docker container. This is essential to make the scripts necessary to run the pipeline available inside the container and to get the results back. `-it` runs the container interactively and `--rm` automatically removes the container when you stop it.
+
+Launching the Docker should open a bash shell inside the container, from where the pipeline can be run using `make`. Note that any changes you make in your local *conquer* directory, outside Docker, will propagate to the container because of the mounted volume. When you're done, just type `exit` in the container shell. The container will be stopped and removed but the installed image will still be present, so to re-access you only have to repeat step 5.

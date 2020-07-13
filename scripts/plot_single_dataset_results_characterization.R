@@ -108,6 +108,11 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
       summary_data$stats_charac <- rbind(summary_data$stats_charac, df3)
 
       ## Plot
+      # determine how many levels for "sign" and
+      # select override for alpha guide fill based on that
+      n_sign_levels <- length(unique(df2$sign))
+      override_alpha_guide_fill <- hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8))[1:n_sign_levels]
+
       p <- ggplot(df2, aes_string(x = "method", y = pname, 
                                   fill = "method", dodge = "sign", alpha = "sign")) + 
         geom_boxplot() + theme_bw() + scale_fill_manual(values = colvec, name = "") + 
@@ -115,9 +120,10 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 12),
               axis.text.y = element_text(size = 12),
               axis.title.y = element_text(size = 13)) + 
-        guides(alpha = guide_legend(override.aes = 
-                                      list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                           colour = NA))) + 
+        guides(alpha = guide_legend(override.aes = list(
+          fill = override_alpha_guide_fill,
+          colour = NA
+        ))) + 
         stat_summary(fun.data = function(x) {return(c(y = ifelse(y %in% dolog2, 
                                                                  log2(max(df2[, y])),
                                                                  max(df2[, y])),
@@ -135,9 +141,10 @@ plot_results_characterization <- function(cobra, colvec, exts, summary_data = li
         scale_alpha_manual(values = c(0.2, 0.8), name = "FDR <= 0.05") + 
         facet_wrap(~method, scales = "free_y") + 
         theme(axis.title.y = element_text(size = 13)) + 
-        guides(alpha = guide_legend(override.aes = 
-                                      list(fill = hcl(c(15, 195), 100, 0, alpha = c(0.2, 0.8)),
-                                           colour = NA))) + 
+        guides(alpha = guide_legend(override.aes = list(
+          fill = override_alpha_guide_fill,
+          colour = NA
+        ))) + 
         ggtitle(paste0(ifelse(exts == "", "", paste0(gsub("^_", "", exts), ", ")), szi))
       if (y %in% dolog2) p <- p + xlab(substitute(paste(log[2], "(", nn, ")"), list(nn = nn)))
       else p <- p + xlab(nn)
