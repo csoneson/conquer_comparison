@@ -8,6 +8,9 @@ In this paper, we compare the performance of more than 30 approaches to differen
 
 **Note:** The purpose of the `conquer_comparison` repository is to provide a public record of the exact code that was used for our publication ([Soneson & Robinson, Nature Methods 2018](https://www.nature.com/articles/nmeth.4612)). In particular, it is not intended to be a software package or a general pipeline for differential expression analysis of single-cell data. As a consequence, running the code requires the same software and package versions that were used for our analyses (all versions are indicated in the paper). As the analysis involved running a large number of methods on many data sets and over an extended period of time, we cannot guarantee that it will run successfully with new releases of the software, or that exactly the same results will be obtained with newer versions of the packages. While the repository will not be updated to ensure that it runs with every new version of the used packages, the issues can be used to post questions and/or solutions as they arise. 
 
+**Update (13/07/2020, [Milan Malfait](https://github.com/milanmlft))**: it is now possible to run the pipeline in a Docker container (see [below](#docker-container) for details), using the (as close as possible) same package versions as originally used for the publication. This should make it easier to reproduce the results and to add more methods. Note that, currently, the Docker container is built with __R 3.3.2__ (the R version used for most of the methods from the original publication). So any additional methods added should be compatible with that version of R.
+
+
 The repository contains the following information:
 
 * `config/` contains configuration files for all the data sets that we considered. The configuration files detail the cell populations that were compared, as well as the number of cells per group used in each comparison.
@@ -18,6 +21,8 @@ The repository contains the following information:
 * `unit_tests/` contains unit tests that were used to check the calculations
 * `Makefile` is the master script, which outlines the entire evaluation and calls all scripts in the appropriate order
 * `include_filterings.mk`, `include_datasets.mk`, `include_methods.mk` and `plot_methods.mk` are additional makefiles listing the filter settings, data set and differential expression methods used in the comparison 
+* `Dockerfile`: build instructions for the Docker container
+* `install.R`: used by the Docker container to install the necessary R packages to run the pipeline
  
 
 ## Running the comparison
@@ -27,10 +32,10 @@ Assuming that all prerequisites are available, the comparison can be run by simp
 
 from the top directory (note, however, that this will take a **significant** amount of time!). The Makefile reads the three files *include_filterings.mk*, *include_datasets.mk* and *include_methods.mk* and performs the evaluation using the data sets, methods and filterings defined in these. The file *plot_methods.mk* detail the methods included in the final summary plots. For the code to execute properly, an *.rds* file containing a *MultiAssayExperiment* object for each data set must be provided in the `data/` directory. Such files can be downloaded, e.g., from the [`conquer`](http://imlspenticton.uzh.ch:3838/conquer/) database. The files used for the evaluation are bundled together in an archive that can be downloaded from [here](http://imlspenticton.uzh.ch/robinson_lab/conquer_de_comparison/)
 
-## Adding a differential expression method {#add-methods}
+## Adding a differential expression method
 To add a differential expression method to the evaluation, construct a script in the form of the provided `apply_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the method. Then add the name of the method to `include_methods.mk`. To make it show up in the summary plots, add it to `plot_methods.mk` and assign it a color in `scripts/plot_setup.R`.
 
-## Adding a data set {#add-data}
+## Adding a data set
 To add a data set, put the *.rds* file containing the *MultiArrayExperiment* object in the `data/` folder and construct a script in the form of the provided `generate_config_*.R` scripts (in the `scripts/` directory), where `*` should be the name of the data set. Then add the name of the dataset to the appropriate variables in `include_datasets.mk`. Also, add the data set to the `data/dataset_type.txt` file, indicating the type of values in each data set.
 
 ## A note on the data sets
@@ -62,11 +67,9 @@ To run the pipeline inside the Docker container, follow these steps:
     cd conquer_comparison
     ```
    
-2. Add data sets according to the instructions given [above](#add-data) to the `data/` directory
+2. Add data sets according to the instructions given [above](#adding-a-data-set) to the `data/` directory
 
-3. Optional: exclude any methods and/or add new ones according to the instructions [above](#add-methods)
-
-4. Build image by running (you can tag it with any name you want with the `-t` option). Don't forget the `.` at the end.
+3. Optional: exclude any methods and/or add new ones according to the instructions [above](#adding-a-differential-expression-method) Build image by running (you can tag it with any name you want with the `-t` option). Don't forget the `.` at the end.
 
     ```
     docker build -t conquer .
