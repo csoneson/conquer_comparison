@@ -36,7 +36,7 @@ DSTYPE1 := real sim bulk
 DSTYPE2 := real sim
 DSTYPE3 := real bulk
 
-.PHONY: all
+.PHONY: all clean
 
 ## Define the default rule
 all: plotds plotind plotorigmock plotprepare plotprepareII cobra diffexp sim \
@@ -58,6 +58,10 @@ $(addsuffix .rds, $(addprefix $(multidsfigdir)/, $(foreach D,$(DSTYPE3),$(foreac
 figures/misc/voomlimma_investigation.rds figures/misc/performance_summary.rds \
 $(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final_real_100_hclust_annot.rds
 # plotdistr 
+
+# Clean rule: removes all generated files
+clean:
+	rm -rf color_definitions.txt export_results figures output results
 
 ## Update data for shiny app
 updateshiny: export_results/shiny_results.rds
