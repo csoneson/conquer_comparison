@@ -61,7 +61,7 @@ $(multidsfigdir)/crossmethod_consistency/crossmethod_consistency_final_real_100_
 
 # Clean rule: removes all generated files
 clean:
-	rm -rf color_definitions.txt export_results figures output results
+	rm -rf color_definitions.txt export_results figures output results subsets Rout
 
 ## Update data for shiny app
 updateshiny: export_results/shiny_results.rds
