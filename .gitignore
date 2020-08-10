@@ -1,6 +1,8 @@
 # R stuff
 Rout/
 .R.Rout
+.Rproj.user
+.Rhistory
 
 # data files
 data/*.rds
