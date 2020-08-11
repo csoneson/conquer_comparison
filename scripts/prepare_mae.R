@@ -1,4 +1,4 @@
-source("scripts/imputation_scripts.R")
+# source("scripts/imputation_scripts.R")
 
 clean_mae <- function(mae, groupid) {
   mae@sampleMap$assay <- factor(mae@sampleMap$assay)
@@ -59,17 +59,17 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
     }
   }
   
-  if (!is.null(impute) && impute != "no" && !is.na(impute)) {
-    imputed <- impute_dropouts(count = count, tpm = tpm, condt = condt, 
-                               avetxlength = avetxlength, 
-                               imputationmethod = impute)
-    count <- imputed$count
-    tpm <- imputed$tpm
-    condt <- imputed$condt
-    nimp <- imputed$nimp  ## number of imputed values
-  } else {
-    nimp <- NULL
-  }
+  # if (!is.null(impute) && impute != "no" && !is.na(impute)) {
+  #   imputed <- impute_dropouts(count = count, tpm = tpm, condt = condt, 
+  #                              avetxlength = avetxlength, 
+  #                              imputationmethod = impute)
+  #   count <- imputed$count
+  #   tpm <- imputed$tpm
+  #   condt <- imputed$condt
+  #   nimp <- imputed$nimp  ## number of imputed values
+  # } else {
+  nimp <- NULL
+  # }
   
   if (filt == "") {
     count <- count[rowSums(count) > 0, ]
@@ -101,9 +101,9 @@ subset_mae <- function(mae, keep_samples, sz, i, imposed_condition, filt,
   summary(rowSums(count))
   summary(rowSums(tpm))
   
-  if (!is.null(nimp)) {
-    nimp <- nimp[match(rownames(count), rownames(nimp)), ]
-  }
+  # if (!is.null(nimp)) {
+  #   nimp <- nimp[match(rownames(count), rownames(nimp)), ]
+  # }
   
   list(count = count, tpm = tpm, condt = condt, nimp = nimp)
 }
