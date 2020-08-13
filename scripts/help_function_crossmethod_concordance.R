@@ -51,7 +51,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   ## Hierarchical clustering based on 1 - cmcons
   tmpdist <- 1 - cmcons
   tmpdist[is.na(tmpdist)] <- 1
-  hcl_average <- hclust(as.dist(tmpdist))
+  tmpdist <- as.dist(tmpdist)
+  hcl_average <- hclust(tmpdist)
   # only plot hclust dendrogram if > 2 methods (fails otherwise)
   if (attr(tmpdist, "Size") > 2) {
     plot(hcl_average)
@@ -87,8 +88,8 @@ help_function_crossmethod_concordance <- function(concordance_betweenmethods_pai
   plots[["subclusters_average"]] <- subclusters_average
   plots[["clustering_average"]] <- hcl_average
   
-  phm <- pheatmap(cmcons, clustering_distance_rows = as.dist(tmpdist), 
-                  clustering_distance_cols = as.dist(tmpdist), clustering_method = "complete", 
+  phm <- pheatmap(cmcons, clustering_distance_rows = tmpdist, 
+                  clustering_distance_cols = tmpdist, clustering_method = "complete", 
                   main = paste0("Area under method/method concordance curve,", 
                                 "\naveraged across all data set instances, top-", 
                                 k0, " genes, ", titleext), 
